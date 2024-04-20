@@ -22,6 +22,16 @@ public class GradeLevel {
 	@JoinColumn(name = "strand")
 	private Strand strand;
 
+	public GradeLevel() {
+	}
+
+	public GradeLevel(Integer id, String level, String name, Strand strand) {
+		this.id = id;
+		this.level = level;
+		this.name = name;
+		this.strand = strand;
+	}
+
 	public Integer getId() {
 		return id;
 	}

@@ -46,6 +46,22 @@ public class Student {
 	@OneToMany(mappedBy = "studentLrn")
 	private List<Guardian> guardians = new ArrayList<>();
 
+	public Student() {
+	}
+
+	public Student(Long id, String firstName, String middleInitial, String lastName, GradeLevel gradeLevel, String sex, Section section, String address, LocalDate birthdate, List<Guardian> guardians) {
+		this.id = id;
+		this.firstName = firstName;
+		this.middleInitial = middleInitial;
+		this.lastName = lastName;
+		this.gradeLevel = gradeLevel;
+		this.sex = sex;
+		this.section = section;
+		this.address = address;
+		this.birthdate = birthdate;
+		this.guardians = guardians;
+	}
+
 	public Long getId() {
 		return id;
 	}

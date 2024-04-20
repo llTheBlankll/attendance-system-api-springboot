@@ -37,6 +37,18 @@ public class Attendance {
 	@Column(name = "time_out")
 	private LocalTime timeOut;
 
+	public Attendance() {
+	}
+
+	public Attendance(Integer id, Student student, String status, LocalDate date, LocalTime time, LocalTime timeOut) {
+		this.id = id;
+		this.student = student;
+		this.status = status;
+		this.date = date;
+		this.time = time;
+		this.timeOut = timeOut;
+	}
+
 	public Integer getId() {
 		return id;
 	}

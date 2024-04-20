@@ -33,6 +33,19 @@ public class User {
 	@Column(name = "created_at")
 	private LocalDateTime createdAt;
 
+	public User() {
+	}
+
+	public User(Integer id, String username, String password, String email, String roleId, LocalDateTime lastLogin, LocalDateTime createdAt) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.roleId = roleId;
+		this.lastLogin = lastLogin;
+		this.createdAt = createdAt;
+	}
+
 	public Integer getId() {
 		return id;
 	}

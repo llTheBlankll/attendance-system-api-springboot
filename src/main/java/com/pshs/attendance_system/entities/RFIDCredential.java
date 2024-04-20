@@ -24,6 +24,16 @@ public class RFIDCredential {
 	@Column(name = "salt", nullable = false, length = 16)
 	private String salt;
 
+	public RFIDCredential() {
+	}
+
+	public RFIDCredential(Integer id, Student lrn, String hashedLrn, String salt) {
+		this.id = id;
+		this.lrn = lrn;
+		this.hashedLrn = hashedLrn;
+		this.salt = salt;
+	}
+
 	public Integer getId() {
 		return id;
 	}

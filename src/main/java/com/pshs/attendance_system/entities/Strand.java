@@ -20,6 +20,20 @@ public class Strand {
 	@OneToMany(mappedBy = "strand")
 	private List<GradeLevel> gradeLevels = new ArrayList<>();
 
+	public Strand() {
+	}
+
+	public Strand(Integer id, String name, List<GradeLevel> gradeLevels) {
+		this.id = id;
+		this.name = name;
+		this.gradeLevels = gradeLevels;
+	}
+
+	public Strand(Integer id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
 	public Integer getId() {
 		return id;
 	}

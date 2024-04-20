@@ -29,6 +29,24 @@ public class Teacher {
 	@OneToMany(mappedBy = "teacher")
 	private List<Section> sections = new ArrayList<>();
 
+	public Teacher() {
+	}
+
+	public Teacher(Integer id, String firstName, String lastName, String sex, List<Section> sections) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.sex = sex;
+		this.sections = sections;
+	}
+
+	public Teacher(Integer id, String firstName, String lastName, String sex) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.sex = sex;
+	}
+
 	public Integer getId() {
 		return id;
 	}

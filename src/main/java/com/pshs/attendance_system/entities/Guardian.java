@@ -24,6 +24,16 @@ public class Guardian {
 	@Column(name = "contact_number", length = 32)
 	private String contactNumber;
 
+	public Guardian() {
+	}
+
+	public Guardian(Integer id, Student studentLrn, String fullName, String contactNumber) {
+		this.id = id;
+		this.studentLrn = studentLrn;
+		this.fullName = fullName;
+		this.contactNumber = contactNumber;
+	}
+
 	public Integer getId() {
 		return id;
 	}

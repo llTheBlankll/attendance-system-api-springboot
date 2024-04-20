@@ -17,6 +17,15 @@ public class Subject {
 	@Column(name = "description", length = Integer.MAX_VALUE)
 	private String description;
 
+	public Subject() {
+	}
+
+	public Subject(Integer id, String name, String description) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+	}
+
 	public Integer getId() {
 		return id;
 	}
