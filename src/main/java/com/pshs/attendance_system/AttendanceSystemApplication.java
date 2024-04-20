@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AttendanceSystemApiSpringbootApplication {
+public class AttendanceSystemApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AttendanceSystemApiSpringbootApplication.class, args);
+		SpringApplication.run(AttendanceSystemApplication.class, args);
 	}
 
 }
