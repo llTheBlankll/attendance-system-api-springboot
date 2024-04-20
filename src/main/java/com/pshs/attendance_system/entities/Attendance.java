@@ -1,5 +1,6 @@
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.AttendanceDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
@@ -15,7 +16,7 @@ public class Attendance {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@ColumnDefault("nextval('attendances_id_seq'::regclass)")
 	@Column(name = "id", nullable = false)
-	private Integer id;
+	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@OnDelete(action = OnDeleteAction.SET_NULL)
@@ -40,7 +41,7 @@ public class Attendance {
 	public Attendance() {
 	}
 
-	public Attendance(Integer id, Student student, String status, LocalDate date, LocalTime time, LocalTime timeOut) {
+	public Attendance(Long id, Student student, String status, LocalDate date, LocalTime time, LocalTime timeOut) {
 		this.id = id;
 		this.student = student;
 		this.status = status;
@@ -49,11 +50,15 @@ public class Attendance {
 		this.timeOut = timeOut;
 	}
 
-	public Integer getId() {
+	public AttendanceDTO toDTO() {
+		return new AttendanceDTO(id, student.toDTO(), status, date, time, timeOut);
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

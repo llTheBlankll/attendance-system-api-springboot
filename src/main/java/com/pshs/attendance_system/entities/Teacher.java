@@ -2,6 +2,7 @@ package com.pshs.attendance_system.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.pshs.attendance_system.dto.TeacherDTO;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -45,6 +46,10 @@ public class Teacher {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.sex = sex;
+	}
+
+	public TeacherDTO toDTO() {
+		return new TeacherDTO(id, firstName, lastName, sex);
 	}
 
 	public Integer getId() {

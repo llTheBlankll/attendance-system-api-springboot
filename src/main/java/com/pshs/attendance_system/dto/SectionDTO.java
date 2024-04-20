@@ -3,6 +3,7 @@ package com.pshs.attendance_system.dto;
 import com.pshs.attendance_system.entities.Section;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -11,18 +12,32 @@ import java.util.Objects;
 public class SectionDTO implements Serializable {
 	private final Integer id;
 	private final TeacherDTO teacher;
+	private final GradeLevelDTO gradeLevel;
+	private final StrandDTO strand;
 	private final String room;
 	private final String sectionName;
+	private final List<StudentDTO> students;
 
-	public SectionDTO(Integer id, TeacherDTO teacher, String room, String sectionName) {
+	public SectionDTO(Integer id, TeacherDTO teacher, GradeLevelDTO gradeLevel, StrandDTO strand, String room, String sectionName, List<StudentDTO> students) {
 		this.id = id;
 		this.teacher = teacher;
+		this.gradeLevel = gradeLevel;
+		this.strand = strand;
 		this.room = room;
 		this.sectionName = sectionName;
+		this.students = students;
 	}
 
 	public Section toEntity() {
-		return new Section(id, teacher.toEntity(), room, sectionName);
+		return new Section(id, teacher.toEntity(), room, sectionName, students.stream().map(StudentDTO::toEntity).toList());
+	}
+
+	public GradeLevelDTO getGradeLevel() {
+		return gradeLevel;
+	}
+
+	public StrandDTO getStrand() {
+		return strand;
 	}
 
 	public Integer getId() {

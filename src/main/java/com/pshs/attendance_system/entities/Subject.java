@@ -26,6 +26,10 @@ public class Subject {
 		this.description = description;
 	}
 
+	public Subject toDTO() {
+		return new Subject(id, name, description);
+	}
+
 	public Integer getId() {
 		return id;
 	}

@@ -1,5 +1,6 @@
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.UserDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -44,6 +45,10 @@ public class User {
 		this.roleId = roleId;
 		this.lastLogin = lastLogin;
 		this.createdAt = createdAt;
+	}
+
+	public UserDTO toDTO() {
+		return new UserDTO(id, username, password, email, roleId, lastLogin, createdAt);
 	}
 
 	public Integer getId() {

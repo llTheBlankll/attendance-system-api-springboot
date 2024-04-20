@@ -1,5 +1,6 @@
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.StudentDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -60,6 +61,10 @@ public class Student {
 		this.address = address;
 		this.birthdate = birthdate;
 		this.guardians = guardians;
+	}
+
+	public StudentDTO toDTO() {
+		return new StudentDTO(id, firstName, middleInitial, lastName, gradeLevel.toDTO(), sex, section.toDTO(), address, birthdate, guardians.stream().map(Guardian::toDTO).toList());
 	}
 
 	public Long getId() {

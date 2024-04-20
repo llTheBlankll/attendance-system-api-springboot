@@ -1,5 +1,6 @@
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.GuardianDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -32,6 +33,10 @@ public class Guardian {
 		this.studentLrn = studentLrn;
 		this.fullName = fullName;
 		this.contactNumber = contactNumber;
+	}
+
+	public GuardianDTO toDTO() {
+		return new GuardianDTO(id, fullName, studentLrn.toDTO(), contactNumber);
 	}
 
 	public Integer getId() {

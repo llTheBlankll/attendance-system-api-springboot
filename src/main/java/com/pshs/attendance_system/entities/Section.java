@@ -2,6 +2,7 @@ package com.pshs.attendance_system.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.pshs.attendance_system.dto.SectionDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -56,11 +57,16 @@ public class Section {
 		this.students = students;
 	}
 
-	public Section(Integer id, Teacher teacher, String room, String sectionName) {
+	public Section(Integer id, Teacher teacher, String room, String sectionName, List<Student> students) {
 		this.id = id;
 		this.teacher = teacher;
 		this.room = room;
 		this.sectionName = sectionName;
+		this.students = students;
+	}
+
+	public SectionDTO toDTO() {
+		return new SectionDTO(id, teacher.toDTO(), gradeLevel.toDTO(), strand.toDTO(), room, sectionName, students.stream().map(Student::toDTO).toList());
 	}
 
 	public Integer getId() {

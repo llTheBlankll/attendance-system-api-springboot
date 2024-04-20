@@ -1,5 +1,6 @@
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.StrandDTO;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -32,6 +33,10 @@ public class Strand {
 	public Strand(Integer id, String name) {
 		this.id = id;
 		this.name = name;
+	}
+
+	public StrandDTO toDTO() {
+		return new StrandDTO(id, name);
 	}
 
 	public Integer getId() {

@@ -1,5 +1,6 @@
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.GradeLevelDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -30,6 +31,10 @@ public class GradeLevel {
 		this.level = level;
 		this.name = name;
 		this.strand = strand;
+	}
+
+	public GradeLevelDTO toDTO() {
+		return new GradeLevelDTO(id, level, name, strand.toDTO());
 	}
 
 	public Integer getId() {
