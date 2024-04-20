@@ -6,7 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "rfid_credentials")
-public class RfidCredential {
+public class RFIDCredential {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rfid_credentials_id_gen")
 	@SequenceGenerator(name = "rfid_credentials_id_gen", sequenceName = "rfid_credentials_id_seq", allocationSize = 1)

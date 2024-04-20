@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "teachers")
@@ -27,7 +27,7 @@ public class Teacher {
 	private String sex;
 
 	@OneToMany(mappedBy = "teacher")
-	private Set<Section> sections = new LinkedHashSet<>();
+	private List<Section> sections = new ArrayList<>();
 
 	public Integer getId() {
 		return id;
@@ -61,11 +61,11 @@ public class Teacher {
 		this.sex = sex;
 	}
 
-	public Set<Section> getSections() {
+	public List<Section> getSections() {
 		return sections;
 	}
 
-	public void setSections(Set<Section> sections) {
+	public void setSections(List<Section> sections) {
 		this.sections = sections;
 	}
 

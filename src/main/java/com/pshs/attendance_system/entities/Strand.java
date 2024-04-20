@@ -2,8 +2,8 @@ package com.pshs.attendance_system.entities;
 
 import jakarta.persistence.*;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "strand")
@@ -18,7 +18,7 @@ public class Strand {
 	private String name;
 
 	@OneToMany(mappedBy = "strand")
-	private Set<GradeLevel> gradeLevels = new LinkedHashSet<>();
+	private List<GradeLevel> gradeLevels = new ArrayList<>();
 
 	public Integer getId() {
 		return id;
@@ -36,11 +36,11 @@ public class Strand {
 		this.name = name;
 	}
 
-	public Set<GradeLevel> getGradeLevels() {
+	public List<GradeLevel> getGradeLevels() {
 		return gradeLevels;
 	}
 
-	public void setGradeLevels(Set<GradeLevel> gradeLevels) {
+	public void setGradeLevels(List<GradeLevel> gradeLevels) {
 		this.gradeLevels = gradeLevels;
 	}
 

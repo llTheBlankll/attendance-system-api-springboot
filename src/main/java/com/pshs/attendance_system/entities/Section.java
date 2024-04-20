@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "sections")
@@ -41,7 +41,7 @@ public class Section {
 	private String sectionName;
 
 	@OneToMany(mappedBy = "section")
-	private Set<Student> students = new LinkedHashSet<>();
+	private List<Student> students = new ArrayList<>();
 
 	public Integer getId() {
 		return id;
@@ -91,11 +91,11 @@ public class Section {
 		this.sectionName = sectionName;
 	}
 
-	public Set<Student> getStudents() {
+	public List<Student> getStudents() {
 		return students;
 	}
 
-	public void setStudents(Set<Student> students) {
+	public void setStudents(List<Student> students) {
 		this.students = students;
 	}
 

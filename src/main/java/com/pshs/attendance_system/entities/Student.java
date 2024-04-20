@@ -5,8 +5,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "students")
@@ -44,7 +44,7 @@ public class Student {
 	private LocalDate birthdate;
 
 	@OneToMany(mappedBy = "studentLrn")
-	private Set<Guardian> guardians = new LinkedHashSet<>();
+	private List<Guardian> guardians = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -118,11 +118,11 @@ public class Student {
 		this.birthdate = birthdate;
 	}
 
-	public Set<Guardian> getGuardians() {
+	public List<Guardian> getGuardians() {
 		return guardians;
 	}
 
-	public void setGuardians(Set<Guardian> guardians) {
+	public void setGuardians(List<Guardian> guardians) {
 		this.guardians = guardians;
 	}
 
