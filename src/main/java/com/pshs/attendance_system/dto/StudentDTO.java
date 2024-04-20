@@ -1,9 +1,12 @@
 package com.pshs.attendance_system.dto;
 
+import com.pshs.attendance_system.entities.Student;
+
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * DTO for {@link com.pshs.attendance_system.entities.Student}
@@ -18,9 +21,9 @@ public class StudentDTO implements Serializable {
 	private final SectionDTO section;
 	private final String address;
 	private final LocalDate birthdate;
-	private final Set<GuardianDTO> guardians;
+	private final List<GuardianDTO> guardians;
 
-	public StudentDTO(Long id, String firstName, String middleInitial, String lastName, GradeLevelDTO gradeLevel, String sex, SectionDTO section, String address, LocalDate birthdate, Set<GuardianDTO> guardians) {
+	public StudentDTO(Long id, String firstName, String middleInitial, String lastName, GradeLevelDTO gradeLevel, String sex, SectionDTO section, String address, LocalDate birthdate, List<GuardianDTO> guardians) {
 		this.id = id;
 		this.firstName = firstName;
 		this.middleInitial = middleInitial;
@@ -31,6 +34,21 @@ public class StudentDTO implements Serializable {
 		this.address = address;
 		this.birthdate = birthdate;
 		this.guardians = guardians;
+	}
+
+	public Student toEntity() {
+		return new Student(
+			id,
+			firstName,
+			middleInitial,
+			lastName,
+			gradeLevel.toEntity(),
+			sex,
+			section.toEntity(),
+			address,
+			birthdate,
+			guardians.stream().map(GuardianDTO::toEntity).collect(Collectors.toList())
+			);
 	}
 
 	public Long getId() {
@@ -69,7 +87,7 @@ public class StudentDTO implements Serializable {
 		return birthdate;
 	}
 
-	public Set<GuardianDTO> getGuardians() {
+	public List<GuardianDTO> getGuardians() {
 		return guardians;
 	}
 

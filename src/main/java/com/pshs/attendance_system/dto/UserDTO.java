@@ -1,5 +1,7 @@
 package com.pshs.attendance_system.dto;
 
+import com.pshs.attendance_system.entities.User;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -24,6 +26,10 @@ public class UserDTO implements Serializable {
 		this.roleId = roleId;
 		this.lastLogin = lastLogin;
 		this.createdAt = createdAt;
+	}
+
+	public User toEntity() {
+		return new User(id, username, password, email, roleId, lastLogin, createdAt);
 	}
 
 	public Integer getId() {

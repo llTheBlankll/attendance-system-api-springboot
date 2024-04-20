@@ -1,5 +1,8 @@
 package com.pshs.attendance_system.dto;
 
+import com.pshs.attendance_system.entities.Guardian;
+import com.pshs.attendance_system.entities.Student;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -9,12 +12,22 @@ import java.util.Objects;
 public class GuardianDTO implements Serializable {
 	private final Integer id;
 	private final String fullName;
+	private final StudentDTO studentLrn;
 	private final String contactNumber;
 
-	public GuardianDTO(Integer id, String fullName, String contactNumber) {
+	public GuardianDTO(Integer id, String fullName, StudentDTO studentLrn, String contactNumber) {
 		this.id = id;
 		this.fullName = fullName;
+		this.studentLrn = studentLrn;
 		this.contactNumber = contactNumber;
+	}
+
+	public Guardian toEntity() {
+		return new Guardian(id, studentLrn.toEntity(), fullName, contactNumber);
+	}
+
+	public StudentDTO getStudentLrn() {
+		return studentLrn;
 	}
 
 	public Integer getId() {

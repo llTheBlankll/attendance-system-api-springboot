@@ -1,5 +1,7 @@
 package com.pshs.attendance_system.dto;
 
+import com.pshs.attendance_system.entities.Strand;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -13,6 +15,10 @@ public class StrandDTO implements Serializable {
 	public StrandDTO(Integer id, String name) {
 		this.id = id;
 		this.name = name;
+	}
+
+	public Strand toEntity() {
+		return new Strand(id, name);
 	}
 
 	public Integer getId() {

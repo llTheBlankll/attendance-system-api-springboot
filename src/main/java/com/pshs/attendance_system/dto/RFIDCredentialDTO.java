@@ -21,6 +21,10 @@ public class RFIDCredentialDTO implements Serializable {
 		this.salt = salt;
 	}
 
+	public RFIDCredential toEntity() {
+		return new RFIDCredential(id, lrn.toEntity(), hashedLrn, salt);
+	}
+
 	public Integer getId() {
 		return id;
 	}

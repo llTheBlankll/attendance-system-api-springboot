@@ -1,5 +1,7 @@
 package com.pshs.attendance_system.dto;
 
+import com.pshs.attendance_system.entities.GradeLevel;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,6 +19,10 @@ public class GradeLevelDTO implements Serializable {
 		this.level = level;
 		this.name = name;
 		this.strand = strand;
+	}
+
+	public GradeLevel toEntity() {
+		return new GradeLevel(id, level, name, strand.toEntity());
 	}
 
 	public Integer getId() {

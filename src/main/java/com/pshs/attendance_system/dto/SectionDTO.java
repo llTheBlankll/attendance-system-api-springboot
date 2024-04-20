@@ -1,5 +1,7 @@
 package com.pshs.attendance_system.dto;
 
+import com.pshs.attendance_system.entities.Section;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,6 +19,10 @@ public class SectionDTO implements Serializable {
 		this.teacher = teacher;
 		this.room = room;
 		this.sectionName = sectionName;
+	}
+
+	public Section toEntity() {
+		return new Section(id, teacher.toEntity(), room, sectionName);
 	}
 
 	public Integer getId() {
