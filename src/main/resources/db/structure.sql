@@ -5,11 +5,11 @@ CREATE TABLE Strand
 );
 
 -- * GRADE LEVELS TABLE
-CREATE TABLE GradeLevels
+CREATE TABLE IF NOT EXISTS grade_levels
 (
     id     SERIAL PRIMARY KEY,
-    level  SERIAL PRIMARY KEY,
-    name   VARCHAR(255) NOT NULL,
+    level  VARCHAR(128) NOT NULL,
+    name   VARCHAR(128) NOT NULL,
     strand INT,
     -- The length of a name should be at least 3 characters.
     CONSTRAINT name_length CHECK (LENGTH(name) >= 3),
@@ -25,14 +25,14 @@ CREATE TYPE Status AS ENUM ('LATE','ON_TIME', 'OUT', 'ABSENT');
 CREATE CAST (CHARACTER VARYING as Status) WITH INOUT AS IMPLICIT;
 
 -- * Creates Subjects Table.
-CREATE TABLE Subjects
+CREATE TABLE IF NOT EXISTS subjects
 (
     id          SERIAL PRIMARY KEY,
     name        VARCHAR(128),
     description TEXT
 );
 -- * Creates Teachers Table.
-CREATE TABLE Teachers
+CREATE TABLE IF NOT EXISTS teachers
 (
     id         SERIAL,
     first_name VARCHAR(32),
@@ -42,7 +42,7 @@ CREATE TABLE Teachers
 );
 
 -- * SECTIONS TABLE
-CREATE TABLE Sections
+CREATE TABLE IF NOT EXISTS sections
 (
     id           SERIAL PRIMARY KEY,
     teacher      INT          NULL,
@@ -50,13 +50,13 @@ CREATE TABLE Sections
     strand       INT,
     grade_level  INT          NOT NULL,
     section_name VARCHAR(255) NOT NULL,
-    FOREIGN KEY (grade_level) REFERENCES GradeLevels (level) ON DELETE SET NULL,
-    FOREIGN KEY (teacher) REFERENCES Teachers (id) ON DELETE SET NULL,
+    FOREIGN KEY (grade_level) REFERENCES grade_levels (id) ON DELETE SET NULL,
+    FOREIGN KEY (teacher) REFERENCES teachers (id) ON DELETE SET NULL,
     FOREIGN KEY (strand) REFERENCES Strand (id) ON DELETE SET NULL
 );
 
 -- * STUDENTS TABLE
-CREATE TABLE Students
+CREATE TABLE IF NOT EXISTS students
 (
     lrn            BIGINT PRIMARY KEY,
     first_name     VARCHAR(128) NOT NULL,
@@ -67,19 +67,21 @@ CREATE TABLE Students
     section_id     INT,
     address        TEXT,
     birthdate      DATE         NOT NULL,
-    FOREIGN KEY (grade_level) REFERENCES GradeLevels (level) ON DELETE SET NULL,
-    FOREIGN KEY (section_id) REFERENCES Sections (id) ON DELETE SET NULL
+    CHECK ( LENGTH(first_name) >= 2 ),
+    CHECK ( LENGTH(last_name) >= 2 ),
+    FOREIGN KEY (grade_level) REFERENCES grade_levels (id) ON DELETE SET NULL,
+    FOREIGN KEY (section_id) REFERENCES sections (id) ON DELETE SET NULL
 );
-CREATE INDEX students_section_id_idx ON Students (section_id);
-CREATE INDEX students_grade_level_idx ON Students (grade_level);
+CREATE INDEX students_section_id_idx ON students (section_id);
+CREATE INDEX students_grade_level_idx ON students (grade_level);
 
 -- * RFID CREDENTIALS
-CREATE TABLE rfid_credentials
+CREATE TABLE IF NOT EXISTS rfid_credentials
 (
     id         SERIAL PRIMARY KEY,
-    lrn        BIGINT NOT NULL PRIMARY KEY,
-    hashed_lrn CHAR(32),
-    salt       VARCHAR(16),
+    lrn        BIGINT      NOT NULL UNIQUE,
+    hashed_lrn CHAR(32)    NOT NULL,
+    salt       VARCHAR(16) NOT NULL,
     CHECK (LENGTH(hashed_lrn) = 32),
     CHECK (LENGTH(salt) = 16),
     FOREIGN KEY (lrn) REFERENCES students (lrn) ON DELETE CASCADE
@@ -87,20 +89,20 @@ CREATE TABLE rfid_credentials
 CREATE INDEX rfid_credentials_lrn_idx ON rfid_credentials (lrn);
 
 -- * GUARDIANS TABLE
-CREATE TABLE Guardians
+CREATE TABLE IF NOT EXISTS guardians
 (
     id             SERIAL PRIMARY KEY,
     student_lrn    BIGINT,
     full_name      VARCHAR(255) NOT NULL,
     contact_number VARCHAR(32)  NULL,
     CHECK (LENGTH(full_name) >= 2),
-    FOREIGN KEY (student_lrn) REFERENCES Students (lrn) ON DELETE CASCADE
+    FOREIGN KEY (student_lrn) REFERENCES students (lrn) ON DELETE CASCADE
 );
-CREATE INDEX guardian_student_id_idx ON Guardians (student_lrn);
-CREATE INDEX guardian_full_name_idx ON Guardians (full_name);
+CREATE INDEX guardian_student_id_idx ON guardians (student_lrn);
+CREATE INDEX guardian_full_name_idx ON guardians (full_name);
 
 -- * ATTENDANCE TABLE
-CREATE TABLE Attendance
+CREATE TABLE IF NOT EXISTS attendances
 (
     id         SERIAL PRIMARY KEY,
     student_id BIGINT NOT NULL,
@@ -110,21 +112,20 @@ CREATE TABLE Attendance
     time_out   TIME DEFAULT LOCALTIME,
     CONSTRAINT fk_student_lrn FOREIGN KEY (student_id) REFERENCES students (lrn) ON DELETE SET NULL ON UPDATE CASCADE
 );
-CREATE INDEX attendance_student_id_idx ON Attendance (student_id);
-CREATE INDEX attendance_date_idx on Attendance (date);
+CREATE INDEX attendance_date_idx on attendances (date);
 
 -- * MAKE ATTENDANCE ENUM TYPE CHARACTER VARYING
-ALTER TABLE Attendance
-ALTER COLUMN status TYPE CHARACTER VARYING;
+ALTER TABLE attendances
+    ALTER COLUMN status TYPE CHARACTER VARYING;
 
 -- * CREATE STUDENT ID INDEX
-CREATE INDEX attendance_student_id_idx ON Attendance (student_id);
+CREATE INDEX attendance_student_id_idx ON attendances (student_id);
 
 -- * CREATE USERS TABLE
-CREATE TABLE Users
+CREATE TABLE IF NOT EXISTS Users
 (
-    id    SERIAL PRIMARY KEY,
-    username  VARCHAR(64),
+    id         SERIAL PRIMARY KEY,
+    username   VARCHAR(64),
     password   CHAR(64),
     email      VARCHAR(128),
     role_id    VARCHAR(48),
@@ -138,27 +139,27 @@ CREATE TABLE Users
 CREATE OR REPLACE FUNCTION notify_changes_attendance() RETURNS TRIGGER AS
 $$
 DECLARE
-payload VARCHAR;
+    payload VARCHAR;
     channel TEXT := 'attendance_channel';
 BEGIN
     IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN
-SELECT json_build_object(
-               'new', NEW,
-               'old', OLD
-       )::text
-INTO payload;
-PERFORM pg_notify(channel, payload);
-RETURN NEW;
-END IF;
-RETURN NEW;
+        SELECT json_build_object(
+                       'new', NEW,
+                       'old', OLD
+               )::text
+        INTO payload;
+        PERFORM pg_notify(channel, payload);
+        RETURN NEW;
+    END IF;
+    RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER on_event_attendance
     AFTER INSERT OR UPDATE
-                        ON Attendance
-                        FOR EACH ROW
-                        EXECUTE FUNCTION notify_changes_attendance();
+    ON attendances
+    FOR EACH ROW
+EXECUTE FUNCTION notify_changes_attendance();
 
 -- ==================== SELECT STATEMENTS =================== --
 
@@ -168,7 +169,8 @@ FROM sections;
 
 -- show all grade levels.
 select level, name
-FROM GradeLevels;
+FROM grade_levels
+;
 
 -- Select all data from sections.
 SELECT *
