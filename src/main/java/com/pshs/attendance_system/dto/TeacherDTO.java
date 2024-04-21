@@ -1,8 +1,10 @@
 package com.pshs.attendance_system.dto;
 
+import com.pshs.attendance_system.entities.Section;
 import com.pshs.attendance_system.entities.Teacher;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -13,16 +15,22 @@ public class TeacherDTO implements Serializable {
 	private final String firstName;
 	private final String lastName;
 	private final String sex;
+	private final List<Section> sections;
 
-	public TeacherDTO(Integer id, String firstName, String lastName, String sex) {
+	public TeacherDTO(Integer id, String firstName, String lastName, String sex, List<Section> sections) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.sex = sex;
+		this.sections = sections;
 	}
 
 	public Teacher toEntity() {
-		return new Teacher(id, firstName, lastName, sex);
+		return new Teacher(id, firstName, lastName, sex, sections);
+	}
+
+	public List<Section> getSections() {
+		return sections;
 	}
 
 	public Integer getId() {

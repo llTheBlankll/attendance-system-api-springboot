@@ -49,7 +49,7 @@ public class Teacher {
 	}
 
 	public TeacherDTO toDTO() {
-		return new TeacherDTO(id, firstName, lastName, sex);
+		return new TeacherDTO(id, firstName, lastName, sex, sections);
 	}
 
 	public Integer getId() {

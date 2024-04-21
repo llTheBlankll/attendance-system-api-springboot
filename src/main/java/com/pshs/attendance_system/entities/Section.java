@@ -47,26 +47,17 @@ public class Section {
 	public Section() {
 	}
 
-	public Section(Integer id, Teacher teacher, String room, Strand strand, GradeLevel gradeLevel, String sectionName, List<Student> students) {
+	public Section(Integer id, Teacher teacher, String room, Strand strand, GradeLevel gradeLevel, String sectionName) {
 		this.id = id;
 		this.teacher = teacher;
 		this.room = room;
 		this.strand = strand;
 		this.gradeLevel = gradeLevel;
 		this.sectionName = sectionName;
-		this.students = students;
-	}
-
-	public Section(Integer id, Teacher teacher, String room, String sectionName, List<Student> students) {
-		this.id = id;
-		this.teacher = teacher;
-		this.room = room;
-		this.sectionName = sectionName;
-		this.students = students;
 	}
 
 	public SectionDTO toDTO() {
-		return new SectionDTO(id, teacher.toDTO(), gradeLevel.toDTO(), strand.toDTO(), room, sectionName, students.stream().map(Student::toDTO).toList());
+		return new SectionDTO(id, teacher.toDTO(), gradeLevel.toDTO(), strand.toDTO(), room, sectionName);
 	}
 
 	public Integer getId() {

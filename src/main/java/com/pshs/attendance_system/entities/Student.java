@@ -1,5 +1,7 @@
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.GradeLevelDTO;
+import com.pshs.attendance_system.dto.SectionDTO;
 import com.pshs.attendance_system.dto.StudentDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -64,7 +66,21 @@ public class Student {
 	}
 
 	public StudentDTO toDTO() {
-		return new StudentDTO(id, firstName, middleInitial, lastName, gradeLevel.toDTO(), sex, section.toDTO(), address, birthdate, guardians.stream().map(Guardian::toDTO).toList());
+		if (gradeLevel == null || section == null) {
+			System.out.println("Grade Level or Section is null");
+		}
+
+		return new StudentDTO(id,
+			firstName,
+			middleInitial,
+			lastName,
+			gradeLevel.toDTO(),
+			sex,
+			section.toDTO(),
+			address,
+			birthdate,
+			guardians.stream().map(Guardian::toDTO).toList()
+		);
 	}
 
 	public Long getId() {
