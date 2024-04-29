@@ -60,8 +60,9 @@ CREATE TABLE IF NOT EXISTS students
 (
     lrn            BIGINT PRIMARY KEY,
     first_name     VARCHAR(128) NOT NULL,
-    middle_initial CHAR(1),
+    middle_initial CHAR(1) NULL,
     last_name      VARCHAR(128) NOT NULL,
+    prefix         CHAR(4) NULL,
     grade_level    INT,
     sex            VARCHAR(6),
     section_id     INT,
