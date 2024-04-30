@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS Users
     username   VARCHAR(64),
     password   CHAR(64),
     email      VARCHAR(128),
-    role_id    VARCHAR(48),
+    role    VARCHAR(48),
     last_login TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CHECK ( LENGTH(username) >= 3 ),

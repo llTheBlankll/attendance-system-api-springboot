@@ -46,8 +46,8 @@ public class User {
 	@Column(name = "email", length = 128)
 	private String email;
 
-	@Column(name = "role_id", length = 48)
-	private String roleId;
+	@Column(name = "role", length = 48)
+	private String role;
 
 	@Column(name = "last_login")
 	private Instant lastLogin;
@@ -88,12 +88,12 @@ public class User {
 		this.email = email;
 	}
 
-	public String getRoleId() {
-		return roleId;
+	public String getRole() {
+		return role;
 	}
 
-	public void setRoleId(String roleId) {
-		this.roleId = roleId;
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public Instant getLastLogin() {
