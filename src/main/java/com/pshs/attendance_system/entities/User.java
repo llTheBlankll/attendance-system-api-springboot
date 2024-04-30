@@ -23,6 +23,7 @@
 
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.UserDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -55,6 +56,22 @@ public class User {
 	@ColumnDefault("CURRENT_TIMESTAMP")
 	@Column(name = "created_at")
 	private Instant createdAt;
+
+	public User() {}
+
+	public User(Integer id, String username, String password, String email, String role, Instant lastLogin, Instant createdAt) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.role = role;
+		this.lastLogin = lastLogin;
+		this.createdAt = createdAt;
+	}
+
+	public UserDTO toDTO() {
+		return new UserDTO(id, username, password, email, role, lastLogin, createdAt);
+	}
 
 	public Integer getId() {
 		return id;

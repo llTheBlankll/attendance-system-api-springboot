@@ -23,6 +23,7 @@
 
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.TeacherDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -42,6 +43,19 @@ public class Teacher {
 
 	@Column(name = "sex", length = 8)
 	private String sex;
+
+	public Teacher() {}
+
+	public Teacher(Integer id, String firstName, String lastName, String sex) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.sex = sex;
+	}
+
+	public TeacherDTO toDTO() {
+		return new TeacherDTO(id, firstName, lastName, sex);
+	}
 
 	public Integer getId() {
 		return id;

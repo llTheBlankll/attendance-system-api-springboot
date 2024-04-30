@@ -23,6 +23,7 @@
 
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.RFIDCredentialDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -46,6 +47,20 @@ public class RFIDCredential {
 
 	@Column(name = "salt", nullable = false, length = 16)
 	private String salt;
+
+	public RFIDCredential() {
+	}
+
+	public RFIDCredential(Integer id, Student lrn, String hashedLrn, String salt) {
+		this.id = id;
+		this.lrn = lrn;
+		this.hashedLrn = hashedLrn;
+		this.salt = salt;
+	}
+
+	public RFIDCredentialDTO toDTO() {
+		return new RFIDCredentialDTO(id, lrn.toDTO(), hashedLrn, salt);
+	}
 
 	public Integer getId() {
 		return id;
