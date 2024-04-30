@@ -23,6 +23,8 @@
 
 package com.pshs.attendance_system.dto;
 
+import com.pshs.attendance_system.entities.RFIDCredential;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -43,6 +45,14 @@ public class RFIDCredentialDTO implements Serializable {
 		this.lrn = lrn;
 		this.hashedLrn = hashedLrn;
 		this.salt = salt;
+	}
+
+	public RFIDCredential toEntity() {
+		return new RFIDCredential()
+			.setId(id)
+			.setLrn(lrn.toEntity())
+			.setHashedLrn(hashedLrn)
+			.setSalt(salt);
 	}
 
 	public Integer getId() {

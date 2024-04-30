@@ -23,6 +23,8 @@
 
 package com.pshs.attendance_system.dto;
 
+import com.pshs.attendance_system.entities.Student;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -52,6 +54,18 @@ public class StudentDTO implements Serializable {
 		this.sex = sex;
 		this.address = address;
 		this.birthdate = birthdate;
+	}
+
+	public Student toEntity() {
+		return new Student()
+			.setId(id)
+			.setFirstName(firstName)
+			.setMiddleInitial(middleInitial)
+			.setLastName(lastName)
+			.setGradeLevel(gradeLevel.toEntity())
+			.setSex(sex)
+			.setAddress(address)
+			.setBirthdate(birthdate);
 	}
 
 	public Long getId() {

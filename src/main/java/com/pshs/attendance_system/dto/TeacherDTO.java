@@ -23,6 +23,8 @@
 
 package com.pshs.attendance_system.dto;
 
+import com.pshs.attendance_system.entities.Teacher;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -43,6 +45,14 @@ public class TeacherDTO implements Serializable {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.sex = sex;
+	}
+
+	public Teacher toEntity() {
+		return new Teacher()
+			.setId(id)
+			.setFirstName(firstName)
+			.setLastName(lastName)
+			.setSex(sex);
 	}
 
 	public Integer getId() {

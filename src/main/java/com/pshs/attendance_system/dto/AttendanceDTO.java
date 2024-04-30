@@ -23,6 +23,8 @@
 
 package com.pshs.attendance_system.dto;
 
+import com.pshs.attendance_system.entities.Attendance;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -49,6 +51,16 @@ public class AttendanceDTO implements Serializable {
 		this.date = date;
 		this.time = time;
 		this.timeOut = timeOut;
+	}
+
+	public Attendance toEntity() {
+		return new Attendance()
+			.setId(id)
+			.setStudent(student.toEntity())
+			.setStatus(status)
+			.setDate(date)
+			.setTime(time)
+			.setTimeOut(timeOut);
 	}
 
 	public Integer getId() {

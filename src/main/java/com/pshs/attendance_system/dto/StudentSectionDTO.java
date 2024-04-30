@@ -23,7 +23,10 @@
 
 package com.pshs.attendance_system.dto;
 
+import com.pshs.attendance_system.entities.Section;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +37,9 @@ import java.util.List;
  */
 public class StudentSectionDTO extends SectionDTO implements Serializable {
 
-	private List<StudentDTO> students;
+	private List<StudentDTO> students = new ArrayList<>();
+
+	public StudentSectionDTO() {}
 
 	public StudentSectionDTO(List<StudentDTO> students) {
 		this.students = students;
@@ -47,6 +52,31 @@ public class StudentSectionDTO extends SectionDTO implements Serializable {
 
 	public StudentSectionDTO(Integer id, TeacherDTO teacher, String room, StrandDTO strand, GradeLevelDTO gradeLevel, String sectionName) {
 		super(id, teacher, room, strand, gradeLevel, sectionName);
+	}
+
+	public StudentSectionDTO(SectionDTO section, List<StudentDTO> students) {
+		super(section.getId(), section.getTeacher(), section.getRoom(), section.getStrand(), section.getGradeLevel(), section.getSectionName());
+		this.students = students;
+	}
+
+	/**
+	 * Assigns the values of the given SectionDTO to this DTO.
+	 * The list of students will be empty and must be set manually.
+	 *
+	 * @param section the SectionDTO to copy values from
+	 */
+	public StudentSectionDTO(SectionDTO section) {
+		super(section.getId(), section.getTeacher(), section.getRoom(), section.getStrand(), section.getGradeLevel(), section.getSectionName());
+	}
+
+	public Section toEntity() {
+		return new Section()
+			.setId(getId())
+			.setTeacher(getTeacher().toEntity())
+			.setRoom(getRoom())
+			.setStrand(getStrand().toEntity())
+			.setGradeLevel(getGradeLevel().toEntity())
+			.setSectionName(getSectionName());
 	}
 
 	public List<StudentDTO> getStudents() {
