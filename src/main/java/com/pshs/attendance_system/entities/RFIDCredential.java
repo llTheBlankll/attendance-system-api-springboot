@@ -21,12 +21,62 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system.repositories;
+package com.pshs.attendance_system.entities;
 
-import com.pshs.attendance_system.entities.Guardian;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-@Repository
-public interface GuardianRepository extends JpaRepository<Guardian, Integer> {
+@Entity
+@Table(name = "rfid_credentials")
+public class RFIDCredential {
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rfid_credentials_id_gen")
+	@SequenceGenerator(name = "rfid_credentials_id_gen", sequenceName = "rfid_credentials_id_seq", allocationSize = 1)
+	@Column(name = "id", nullable = false)
+	private Integer id;
+
+	@OneToOne(fetch = FetchType.LAZY, optional = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JoinColumn(name = "lrn", nullable = false)
+	private Student lrn;
+
+	@Column(name = "hashed_lrn", nullable = false, length = 32)
+	private String hashedLrn;
+
+	@Column(name = "salt", nullable = false, length = 16)
+	private String salt;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Student getLrn() {
+		return lrn;
+	}
+
+	public void setLrn(Student lrn) {
+		this.lrn = lrn;
+	}
+
+	public String getHashedLrn() {
+		return hashedLrn;
+	}
+
+	public void setHashedLrn(String hashedLrn) {
+		this.hashedLrn = hashedLrn;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
 }
