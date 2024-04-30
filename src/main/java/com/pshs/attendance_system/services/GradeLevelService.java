@@ -103,17 +103,6 @@ public interface GradeLevelService {
 	Page<GradeLevel> searchGradeLevelsByName(String name, int page, int size);
 
 	/**
-	 * Search grade levels by level in the database, and return the results in pages.
-	 * ! Level Cannot be Empty. The page and size are optional and has already been set to 0 and 10 respectively.
-	 *
-	 * @param level Level of the grade level to be searched
-	 * @param page Page number of the results
-	 * @param size Number of results per page
-	 * @return Page of GradeLevel objects, none if not found.
-	 */
-	Page<GradeLevel> searchGradeLevelsByLevel(String level, int page, int size);
-
-	/**
 	 * Search grade levels by name and strand in the database, and return the results in pages.
 	 * ! Name Cannot be Empty. The page and size are optional and has already been set to 0 and 10 respectively.
 	 * ! Strand ID must be greater than 0 and valid. The page and size are optional and has already been set to 0 and 10 respectively.
@@ -125,5 +114,4 @@ public interface GradeLevelService {
 	 * @return Page of GradeLevel objects, none if not found
 	 */
 	Page<GradeLevel> searchGradeLevelsByNameAndStrand(String name, int strandId, int page, int size);
-	Page<GradeLevel> searchGradeLevelsByLevelAndStrand(String level, int strandId, int page, int size);
 }
