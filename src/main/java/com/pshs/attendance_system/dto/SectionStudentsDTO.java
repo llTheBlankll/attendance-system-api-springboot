@@ -28,33 +28,32 @@ import com.pshs.attendance_system.entities.Section;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * This DTO is primarily used for Student class with a Section object.
- * Instead of using the {@link com.pshs.attendance_system.dto.SectionDTO}, we will use this DTO to include the list of students in the section.
- * This DTO extends to {@link com.pshs.attendance_system.dto.SectionDTO} and adds a list of students.
+ * This class represents a Section with a list of students.
  * DTO for {@link com.pshs.attendance_system.entities.Section}
  */
-public class StudentSectionDTO extends SectionDTO implements Serializable {
+public class SectionStudentsDTO extends SectionDTO implements Serializable {
 
 	private List<StudentDTO> students = new ArrayList<>();
 
-	public StudentSectionDTO() {}
+	public SectionStudentsDTO() {}
 
-	public StudentSectionDTO(List<StudentDTO> students) {
+	public SectionStudentsDTO(List<StudentDTO> students) {
 		this.students = students;
 	}
 
-	public StudentSectionDTO(Integer id, TeacherDTO teacher, String room, StrandDTO strand, GradeLevelDTO gradeLevel, String sectionName, List<StudentDTO> students) {
+	public SectionStudentsDTO(Integer id, TeacherDTO teacher, String room, StrandDTO strand, GradeLevelDTO gradeLevel, String sectionName, List<StudentDTO> students) {
 		super(id, teacher, room, strand, gradeLevel, sectionName);
 		this.students = students;
 	}
 
-	public StudentSectionDTO(Integer id, TeacherDTO teacher, String room, StrandDTO strand, GradeLevelDTO gradeLevel, String sectionName) {
+	public SectionStudentsDTO(Integer id, TeacherDTO teacher, String room, StrandDTO strand, GradeLevelDTO gradeLevel, String sectionName) {
 		super(id, teacher, room, strand, gradeLevel, sectionName);
 	}
 
-	public StudentSectionDTO(SectionDTO section, List<StudentDTO> students) {
+	public SectionStudentsDTO(SectionDTO section, List<StudentDTO> students) {
 		super(section.getId(), section.getTeacher(), section.getRoom(), section.getStrand(), section.getGradeLevel(), section.getSectionName());
 		this.students = students;
 	}
@@ -65,7 +64,7 @@ public class StudentSectionDTO extends SectionDTO implements Serializable {
 	 *
 	 * @param section the SectionDTO to copy values from
 	 */
-	public StudentSectionDTO(SectionDTO section) {
+	public SectionStudentsDTO(SectionDTO section) {
 		super(section.getId(), section.getTeacher(), section.getRoom(), section.getStrand(), section.getGradeLevel(), section.getSectionName());
 	}
 
@@ -76,14 +75,15 @@ public class StudentSectionDTO extends SectionDTO implements Serializable {
 			.setRoom(getRoom())
 			.setStrand(getStrand().toEntity())
 			.setGradeLevel(getGradeLevel().toEntity())
-			.setSectionName(getSectionName());
+			.setSectionName(getSectionName())
+			.setStudents(students.stream().map(StudentDTO::toEntity).collect(Collectors.toList()));
 	}
 
 	public List<StudentDTO> getStudents() {
 		return students;
 	}
 
-	public StudentSectionDTO setStudents(List<StudentDTO> students) {
+	public SectionStudentsDTO setStudents(List<StudentDTO> students) {
 		this.students = students;
 		return this;
 	}

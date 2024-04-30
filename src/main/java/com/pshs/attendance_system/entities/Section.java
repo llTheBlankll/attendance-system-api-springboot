@@ -23,6 +23,8 @@
 
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.SectionDTO;
+import com.pshs.attendance_system.dto.SectionStudentsDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -62,6 +64,26 @@ public class Section {
 
 	@OneToMany(mappedBy = "section")
 	private List<Student> students = new ArrayList<>();
+
+	public Section() {}
+
+	public Section(Integer id, Teacher teacher, String room, Strand strand, GradeLevel gradeLevel, String sectionName, List<Student> students) {
+		this.id = id;
+		this.teacher = teacher;
+		this.room = room;
+		this.strand = strand;
+		this.gradeLevel = gradeLevel;
+		this.sectionName = sectionName;
+		this.students = students;
+	}
+
+	public SectionDTO toDTO() {
+		return new SectionDTO(id, teacher.toDTO(), room, strand.toDTO(), gradeLevel.toDTO(), sectionName);
+	}
+
+	public SectionStudentsDTO toStudentSectionDTO() {
+		return new SectionStudentsDTO(id, teacher.toDTO(), room, strand.toDTO(), gradeLevel.toDTO(), sectionName, students.stream().map(Student::toDTO).toList());
+	}
 
 	public Integer getId() {
 		return id;

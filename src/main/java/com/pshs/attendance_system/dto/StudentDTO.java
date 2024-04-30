@@ -37,21 +37,25 @@ public class StudentDTO implements Serializable {
 	private String firstName;
 	private String middleInitial;
 	private String lastName;
+	private String prefix;
 	private GradeLevelDTO gradeLevel;
 	private String sex;
+	private SectionDTO section;
 	private String address;
 	private LocalDate birthdate;
 
 	public StudentDTO() {
 	}
 
-	public StudentDTO(Long id, String firstName, String middleInitial, String lastName, GradeLevelDTO gradeLevel, String sex, String address, LocalDate birthdate) {
+	public StudentDTO(Long id, String firstName, String middleInitial, String lastName, String prefix, GradeLevelDTO gradeLevel, String sex, SectionDTO section, String address, LocalDate birthdate) {
 		this.id = id;
 		this.firstName = firstName;
 		this.middleInitial = middleInitial;
 		this.lastName = lastName;
+		this.prefix = prefix;
 		this.gradeLevel = gradeLevel;
 		this.sex = sex;
+		this.section = section;
 		this.address = address;
 		this.birthdate = birthdate;
 	}
@@ -104,6 +108,15 @@ public class StudentDTO implements Serializable {
 		return this;
 	}
 
+	public String getPrefix() {
+		return prefix;
+	}
+
+	public StudentDTO setPrefix(String prefix) {
+		this.prefix = prefix;
+		return this;
+	}
+
 	public GradeLevelDTO getGradeLevel() {
 		return gradeLevel;
 	}
@@ -119,6 +132,15 @@ public class StudentDTO implements Serializable {
 
 	public StudentDTO setSex(String sex) {
 		this.sex = sex;
+		return this;
+	}
+
+	public SectionDTO getSection() {
+		return section;
+	}
+
+	public StudentDTO setSection(SectionStudentsDTO section) {
+		this.section = section;
 		return this;
 	}
 

@@ -85,7 +85,7 @@ public class Student {
 	}
 
 	public StudentDTO toDTO() {
-		return new StudentDTO(id, firstName, middleInitial, lastName, gradeLevel.toDTO(), sex, address, birthdate);
+		return new StudentDTO(id, firstName, middleInitial, lastName, prefix, gradeLevel.toDTO(), sex, section.toDTO(), address, birthdate);
 	}
 
 	public Long getId() {
