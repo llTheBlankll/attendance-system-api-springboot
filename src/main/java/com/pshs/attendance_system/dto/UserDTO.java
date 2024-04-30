@@ -10,13 +10,13 @@ import java.util.Objects;
  * DTO for {@link com.pshs.attendance_system.entities.User}
  */
 public class UserDTO implements Serializable {
-	private final Integer id;
-	private final String username;
-	private final String password;
-	private final String email;
-	private final String roleId;
-	private final LocalDateTime lastLogin;
-	private final LocalDateTime createdAt;
+	private Integer id;
+	private String username;
+	private String password;
+	private String email;
+	private String roleId;
+	private LocalDateTime lastLogin;
+	private LocalDateTime createdAt;
 
 	public UserDTO(Integer id, String username, String password, String email, String roleId, LocalDateTime lastLogin, LocalDateTime createdAt) {
 		this.id = id;
@@ -30,6 +30,41 @@ public class UserDTO implements Serializable {
 
 	public User toEntity() {
 		return new User(id, username, password, email, roleId, lastLogin, createdAt);
+	}
+
+	public UserDTO setId(Integer id) {
+		this.id = id;
+		return this;
+	}
+
+	public UserDTO setUsername(String username) {
+		this.username = username;
+		return this;
+	}
+
+	public UserDTO setPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
+	public UserDTO setEmail(String email) {
+		this.email = email;
+		return this;
+	}
+
+	public UserDTO setRoleId(String roleId) {
+		this.roleId = roleId;
+		return this;
+	}
+
+	public UserDTO setLastLogin(LocalDateTime lastLogin) {
+		this.lastLogin = lastLogin;
+		return this;
+	}
+
+	public UserDTO setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+		return this;
 	}
 
 	public Integer getId() {

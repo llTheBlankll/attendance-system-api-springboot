@@ -9,12 +9,22 @@ import java.util.Objects;
  * DTO for {@link com.pshs.attendance_system.entities.Strand}
  */
 public class StrandDTO implements Serializable {
-	private final Integer id;
-	private final String name;
+	private Integer id;
+	private String name;
 
 	public StrandDTO(Integer id, String name) {
 		this.id = id;
 		this.name = name;
+	}
+
+	public StrandDTO setId(Integer id) {
+		this.id = id;
+		return this;
+	}
+
+	public StrandDTO setName(String name) {
+		this.name = name;
+		return this;
 	}
 
 	public Strand toEntity() {

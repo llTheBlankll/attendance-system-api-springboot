@@ -41,9 +41,6 @@ public class Section {
 	@Column(name = "section_name", nullable = false)
 	private String sectionName;
 
-	@OneToMany(mappedBy = "section")
-	private List<Student> students = new ArrayList<>();
-
 	public Section() {
 	}
 
@@ -106,14 +103,6 @@ public class Section {
 
 	public void setSectionName(String sectionName) {
 		this.sectionName = sectionName;
-	}
-
-	public List<Student> getStudents() {
-		return students;
-	}
-
-	public void setStudents(List<Student> students) {
-		this.students = students;
 	}
 
 }

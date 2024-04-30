@@ -4,18 +4,20 @@ import com.pshs.attendance_system.entities.Section;
 
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * DTO for {@link com.pshs.attendance_system.entities.Section}
  */
 public class SectionDTO implements Serializable {
-	private final Integer id;
-	private final TeacherDTO teacher;
-	private final GradeLevelDTO gradeLevel;
-	private final StrandDTO strand;
-	private final String room;
-	private final String sectionName;
+	private Integer id;
+	private TeacherDTO teacher;
+	private GradeLevelDTO gradeLevel;
+	private StrandDTO strand;
+	private String room;
+	private String sectionName;
+	private List<StudentDTO> students = Collections.emptyList();
 
 	public SectionDTO(Integer id, TeacherDTO teacher, GradeLevelDTO gradeLevel, StrandDTO strand, String room, String sectionName) {
 		this.id = id;
@@ -26,8 +28,47 @@ public class SectionDTO implements Serializable {
 		this.sectionName = sectionName;
 	}
 
+	public List<StudentDTO> getStudents() {
+		return students;
+	}
+
+	public SectionDTO setStudents(List<StudentDTO> students) {
+		this.students = students;
+		return this;
+	}
+
 	public Section toEntity() {
 		return new Section(id, teacher.toEntity(), room, strand.toEntity(), gradeLevel.toEntity(), sectionName);
+	}
+
+	public SectionDTO setId(Integer id) {
+		this.id = id;
+		return this;
+	}
+
+	public SectionDTO setTeacher(TeacherDTO teacher) {
+		this.teacher = teacher;
+		return this;
+	}
+
+	public SectionDTO setGradeLevel(GradeLevelDTO gradeLevel) {
+		this.gradeLevel = gradeLevel;
+		return this;
+	}
+
+	public SectionDTO setStrand(StrandDTO strand) {
+		this.strand = strand;
+		return this;
+	}
+
+	public SectionDTO setRoom(String room) {
+		this.room = room;
+		return this;
+	}
+
+	public SectionDTO setSectionName(String sectionName) {
+		this.sectionName = sectionName;
+		return this;
 	}
 
 	public GradeLevelDTO getGradeLevel() {

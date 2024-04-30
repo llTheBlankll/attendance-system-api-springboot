@@ -12,16 +12,16 @@ import java.util.stream.Collectors;
  * DTO for {@link com.pshs.attendance_system.entities.Student}
  */
 public class StudentDTO implements Serializable {
-	private final Long id;
-	private final String firstName;
-	private final String middleInitial;
-	private final String lastName;
-	private final GradeLevelDTO gradeLevel;
-	private final String sex;
-	private final SectionDTO section;
-	private final String address;
-	private final LocalDate birthdate;
-	private final List<GuardianDTO> guardians;
+	private Long id;
+	private String firstName;
+	private String middleInitial;
+	private String lastName;
+	private GradeLevelDTO gradeLevel;
+	private String sex;
+	private SectionDTO section;
+	private String address;
+	private LocalDate birthdate;
+	private List<GuardianDTO> guardians;
 
 	public StudentDTO(Long id, String firstName, String middleInitial, String lastName, GradeLevelDTO gradeLevel, String sex, SectionDTO section, String address, LocalDate birthdate, List<GuardianDTO> guardians) {
 		this.id = id;
@@ -49,6 +49,56 @@ public class StudentDTO implements Serializable {
 			birthdate,
 			guardians.stream().map(GuardianDTO::toEntity).collect(Collectors.toList())
 			);
+	}
+
+	public StudentDTO setId(Long id) {
+		this.id = id;
+		return this;
+	}
+
+	public StudentDTO setFirstName(String firstName) {
+		this.firstName = firstName;
+		return this;
+	}
+
+	public StudentDTO setMiddleInitial(String middleInitial) {
+		this.middleInitial = middleInitial;
+		return this;
+	}
+
+	public StudentDTO setLastName(String lastName) {
+		this.lastName = lastName;
+		return this;
+	}
+
+	public StudentDTO setGradeLevel(GradeLevelDTO gradeLevel) {
+		this.gradeLevel = gradeLevel;
+		return this;
+	}
+
+	public StudentDTO setSex(String sex) {
+		this.sex = sex;
+		return this;
+	}
+
+	public StudentDTO setSection(SectionDTO section) {
+		this.section = section;
+		return this;
+	}
+
+	public StudentDTO setAddress(String address) {
+		this.address = address;
+		return this;
+	}
+
+	public StudentDTO setBirthdate(LocalDate birthdate) {
+		this.birthdate = birthdate;
+		return this;
+	}
+
+	public StudentDTO setGuardians(List<GuardianDTO> guardians) {
+		this.guardians = guardians;
+		return this;
 	}
 
 	public Long getId() {

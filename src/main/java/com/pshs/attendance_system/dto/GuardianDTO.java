@@ -10,10 +10,10 @@ import java.util.Objects;
  * DTO for {@link com.pshs.attendance_system.entities.Guardian}
  */
 public class GuardianDTO implements Serializable {
-	private final Integer id;
-	private final String fullName;
-	private final StudentDTO studentLrn;
-	private final String contactNumber;
+	private Integer id;
+	private String fullName;
+	private StudentDTO studentLrn;
+	private String contactNumber;
 
 	public GuardianDTO(Integer id, String fullName, StudentDTO studentLrn, String contactNumber) {
 		this.id = id;
@@ -24,6 +24,26 @@ public class GuardianDTO implements Serializable {
 
 	public Guardian toEntity() {
 		return new Guardian(id, studentLrn.toEntity(), fullName, contactNumber);
+	}
+
+	public GuardianDTO setId(Integer id) {
+		this.id = id;
+		return this;
+	}
+
+	public GuardianDTO setFullName(String fullName) {
+		this.fullName = fullName;
+		return this;
+	}
+
+	public GuardianDTO setStudentLrn(StudentDTO studentLrn) {
+		this.studentLrn = studentLrn;
+		return this;
+	}
+
+	public GuardianDTO setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
+		return this;
 	}
 
 	public StudentDTO getStudentLrn() {

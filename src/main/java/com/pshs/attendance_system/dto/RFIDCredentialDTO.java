@@ -9,10 +9,10 @@ import java.util.Objects;
  * DTO for {@link RFIDCredential}
  */
 public class RFIDCredentialDTO implements Serializable {
-	private final Integer id;
-	private final StudentDTO lrn;
-	private final String hashedLrn;
-	private final String salt;
+	private Integer id;
+	private StudentDTO lrn;
+	private String hashedLrn;
+	private String salt;
 
 	public RFIDCredentialDTO(Integer id, StudentDTO lrn, String hashedLrn, String salt) {
 		this.id = id;
@@ -23,6 +23,26 @@ public class RFIDCredentialDTO implements Serializable {
 
 	public RFIDCredential toEntity() {
 		return new RFIDCredential(id, lrn.toEntity(), hashedLrn, salt);
+	}
+
+	public RFIDCredentialDTO setId(Integer id) {
+		this.id = id;
+		return this;
+	}
+
+	public RFIDCredentialDTO setLrn(StudentDTO lrn) {
+		this.lrn = lrn;
+		return this;
+	}
+
+	public RFIDCredentialDTO setHashedLrn(String hashedLrn) {
+		this.hashedLrn = hashedLrn;
+		return this;
+	}
+
+	public RFIDCredentialDTO setSalt(String salt) {
+		this.salt = salt;
+		return this;
 	}
 
 	public Integer getId() {

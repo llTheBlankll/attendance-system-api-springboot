@@ -9,10 +9,10 @@ import java.util.Objects;
  * DTO for {@link com.pshs.attendance_system.entities.GradeLevel}
  */
 public class GradeLevelDTO implements Serializable {
-	private final Integer id;
-	private final String level;
-	private final String name;
-	private final StrandDTO strand;
+	private Integer id;
+	private String level;
+	private String name;
+	private StrandDTO strand;
 
 	public GradeLevelDTO(Integer id, String level, String name, StrandDTO strand) {
 		this.id = id;
@@ -23,6 +23,26 @@ public class GradeLevelDTO implements Serializable {
 
 	public GradeLevel toEntity() {
 		return new GradeLevel(id, level, name, strand.toEntity());
+	}
+
+	public GradeLevelDTO setId(Integer id) {
+		this.id = id;
+		return this;
+	}
+
+	public GradeLevelDTO setLevel(String level) {
+		this.level = level;
+		return this;
+	}
+
+	public GradeLevelDTO setName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public GradeLevelDTO setStrand(StrandDTO strand) {
+		this.strand = strand;
+		return this;
 	}
 
 	public Integer getId() {

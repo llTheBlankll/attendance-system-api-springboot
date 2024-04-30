@@ -11,11 +11,11 @@ import java.util.Objects;
  * DTO for {@link com.pshs.attendance_system.entities.Teacher}
  */
 public class TeacherDTO implements Serializable {
-	private final Integer id;
-	private final String firstName;
-	private final String lastName;
-	private final String sex;
-	private final List<Section> sections;
+	private Integer id;
+	private String firstName;
+	private String lastName;
+	private String sex;
+	private List<Section> sections;
 
 	public TeacherDTO(Integer id, String firstName, String lastName, String sex, List<Section> sections) {
 		this.id = id;
@@ -27,6 +27,31 @@ public class TeacherDTO implements Serializable {
 
 	public Teacher toEntity() {
 		return new Teacher(id, firstName, lastName, sex, sections);
+	}
+
+	public TeacherDTO setId(Integer id) {
+		this.id = id;
+		return this;
+	}
+
+	public TeacherDTO setFirstName(String firstName) {
+		this.firstName = firstName;
+		return this;
+	}
+
+	public TeacherDTO setLastName(String lastName) {
+		this.lastName = lastName;
+		return this;
+	}
+
+	public TeacherDTO setSex(String sex) {
+		this.sex = sex;
+		return this;
+	}
+
+	public TeacherDTO setSections(List<Section> sections) {
+		this.sections = sections;
+		return this;
 	}
 
 	public List<Section> getSections() {

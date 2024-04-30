@@ -11,12 +11,12 @@ import java.util.Objects;
  * DTO for {@link com.pshs.attendance_system.entities.Attendance}
  */
 public class AttendanceDTO implements Serializable {
-	private final Long id;
-	private final StudentDTO student;
-	private final String status;
-	private final LocalDate date;
-	private final LocalTime time;
-	private final LocalTime timeOut;
+	private Long id;
+	private StudentDTO student;
+	private String status;
+	private LocalDate date;
+	private LocalTime time;
+	private LocalTime timeOut;
 
 	public AttendanceDTO(Long id, StudentDTO student, String status, LocalDate date, LocalTime time, LocalTime timeOut) {
 		this.id = id;
@@ -25,6 +25,36 @@ public class AttendanceDTO implements Serializable {
 		this.date = date;
 		this.time = time;
 		this.timeOut = timeOut;
+	}
+
+	public AttendanceDTO setId(Long id) {
+		this.id = id;
+		return this;
+	}
+
+	public AttendanceDTO setStudent(StudentDTO student) {
+		this.student = student;
+		return this;
+	}
+
+	public AttendanceDTO setStatus(String status) {
+		this.status = status;
+		return this;
+	}
+
+	public AttendanceDTO setDate(LocalDate date) {
+		this.date = date;
+		return this;
+	}
+
+	public AttendanceDTO setTime(LocalTime time) {
+		this.time = time;
+		return this;
+	}
+
+	public AttendanceDTO setTimeOut(LocalTime timeOut) {
+		this.timeOut = timeOut;
+		return this;
 	}
 
 	/**
