@@ -23,6 +23,7 @@
 
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.GuardianDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -46,6 +47,19 @@ public class Guardian {
 
 	@Column(name = "contact_number", length = 32)
 	private String contactNumber;
+
+	public Guardian() {}
+
+	public Guardian(Integer id, Student studentLrn, String fullName, String contactNumber) {
+		this.id = id;
+		this.studentLrn = studentLrn;
+		this.fullName = fullName;
+		this.contactNumber = contactNumber;
+	}
+
+	public GuardianDTO toDTO() {
+		return new GuardianDTO(id, studentLrn.toDTO(), fullName, contactNumber);
+	}
 
 	public Integer getId() {
 		return id;

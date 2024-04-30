@@ -23,6 +23,7 @@
 
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.StrandDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -36,6 +37,17 @@ public class Strand {
 
 	@Column(name = "name", nullable = false)
 	private String name;
+
+	public Strand() {}
+
+	public Strand(Integer id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
+	public StrandDTO toDTO() {
+		return new StrandDTO(id, name);
+	}
 
 	public Integer getId() {
 		return id;

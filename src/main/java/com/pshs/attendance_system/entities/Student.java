@@ -23,6 +23,7 @@
 
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.StudentDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -45,6 +46,9 @@ public class Student {
 	@Column(name = "last_name", nullable = false, length = 128)
 	private String lastName;
 
+	@Column(name = "prefix", nullable = true, length = 4)
+	private String prefix;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.SET_NULL)
 	@JoinColumn(name = "grade_level")
@@ -63,6 +67,26 @@ public class Student {
 
 	@Column(name = "birthdate", nullable = false)
 	private LocalDate birthdate;
+
+	public Student() {
+	}
+
+	public Student(Long id, String firstName, String middleInitial, String lastName, String prefix, GradeLevel gradeLevel, String sex, Section section, String address, LocalDate birthdate) {
+		this.id = id;
+		this.firstName = firstName;
+		this.middleInitial = middleInitial;
+		this.lastName = lastName;
+		this.prefix = prefix;
+		this.gradeLevel = gradeLevel;
+		this.sex = sex;
+		this.section = section;
+		this.address = address;
+		this.birthdate = birthdate;
+	}
+
+	public StudentDTO toDTO() {
+		return new StudentDTO(id, firstName, middleInitial, lastName, gradeLevel.toDTO(), sex, address, birthdate);
+	}
 
 	public Long getId() {
 		return id;
@@ -97,6 +121,15 @@ public class Student {
 
 	public Student setLastName(String lastName) {
 		this.lastName = lastName;
+		return this;
+	}
+
+	public String getPrefix() {
+		return prefix;
+	}
+
+	public Student setPrefix(String prefix) {
+		this.prefix = prefix;
 		return this;
 	}
 

@@ -23,6 +23,7 @@
 
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.GradeLevelDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -40,6 +41,18 @@ public class GradeLevel {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "strand")
 	private Strand strand;
+
+	public GradeLevel() {}
+
+	public GradeLevel(Integer id, String name, Strand strand) {
+		this.id = id;
+		this.name = name;
+		this.strand = strand;
+	}
+
+	public GradeLevelDTO toDTO() {
+		return new GradeLevelDTO(id, name, strand.toDTO());
+	}
 
 	public Integer getId() {
 		return id;

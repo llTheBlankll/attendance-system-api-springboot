@@ -23,6 +23,7 @@
 
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.AttendanceDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
@@ -59,6 +60,22 @@ public class Attendance {
 	@ColumnDefault("LOCALTIME")
 	@Column(name = "time_out")
 	private LocalTime timeOut;
+
+	public Attendance() {
+	}
+
+	public Attendance(Integer id, Student student, String status, LocalDate date, LocalTime time, LocalTime timeOut) {
+		this.id = id;
+		this.student = student;
+		this.status = status;
+		this.date = date;
+		this.time = time;
+		this.timeOut = timeOut;
+	}
+
+	public AttendanceDTO toDTO() {
+		return new AttendanceDTO(id, student.toDTO(), status, date, time, timeOut);
+	}
 
 	public Integer getId() {
 		return id;
