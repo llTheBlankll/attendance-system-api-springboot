@@ -4,11 +4,11 @@ CREATE TABLE Strand
     name VARCHAR(255) NOT NULL
 );
 
+
 -- * GRADE LEVELS TABLE
 CREATE TABLE IF NOT EXISTS grade_levels
 (
     id     SERIAL PRIMARY KEY,
-    level  VARCHAR(128) NOT NULL,
     name   VARCHAR(128) NOT NULL,
     strand INT,
     -- The length of a name should be at least 3 characters.
@@ -24,20 +24,13 @@ CREATE TYPE Status AS ENUM ('LATE','ON_TIME', 'OUT', 'ABSENT');
 -- Entity findByMyEnum(MyEnum myEnum)
 CREATE CAST (CHARACTER VARYING as Status) WITH INOUT AS IMPLICIT;
 
--- * Creates Subjects Table.
-CREATE TABLE IF NOT EXISTS subjects
-(
-    id          SERIAL PRIMARY KEY,
-    name        VARCHAR(128),
-    description TEXT
-);
 -- * Creates Teachers Table.
 CREATE TABLE IF NOT EXISTS teachers
 (
     id         SERIAL,
     first_name VARCHAR(32),
     last_name  VARCHAR(32),
-    sex        VARCHAR(8),
+    sex        VARCHAR(16),
     PRIMARY KEY (id)
 );
 
@@ -56,6 +49,11 @@ CREATE TABLE IF NOT EXISTS sections
 );
 
 -- * STUDENTS TABLE
+-- Mockaroo
+-- if level == "Grade 11" || level == "Grade 12" then "Senior High School"
+-- elseif level == "Grade 7" || level == "Grade 8" || level == "Grade 9" || level == "Grade 10" then "Junior High School"
+-- elseif level == "Grade 1" || level == "Grade 2" || level == "Grade 3" || level == "Grade 4" || level == "Grade 5" || level == "Grade 6" then "Elementary"
+-- end
 CREATE TABLE IF NOT EXISTS students
 (
     lrn            BIGINT PRIMARY KEY,
@@ -169,7 +167,7 @@ SELECT *
 FROM sections;
 
 -- show all grade levels.
-select level, name
+select name
 FROM grade_levels
 ;
 

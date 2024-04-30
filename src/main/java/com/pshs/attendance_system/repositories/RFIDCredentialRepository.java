@@ -23,10 +23,10 @@
 
 package com.pshs.attendance_system.repositories;
 
-import com.pshs.attendance_system.entities.range.RfidCredential;
+import com.pshs.attendance_system.entities.RFIDCredential;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RfidCredentialRepository extends JpaRepository<RfidCredential, Integer> {
+public interface RFIDCredentialRepository extends JpaRepository<RFIDCredential, Integer> {
 }
