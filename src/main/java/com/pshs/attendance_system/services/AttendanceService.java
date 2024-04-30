@@ -122,7 +122,7 @@ public interface AttendanceService {
 	 * @param timeIn - The specific time the students checked in
 	 * @param date - The specific date
 	 * @param attendanceStatus - The attendance status (LATE, ON_TIME, ...)
-	 * @return the number of students
+	 * @return the number of attendances of all the students with time in, date, and status.
 	 */
 	int countStudentsAttendancesTimeInByDateAndStatus(LocalTime timeIn, LocalDate date, AttendanceStatus attendanceStatus);
 
@@ -131,7 +131,7 @@ public interface AttendanceService {
 	 *
 	 * @param timeIn - The specific time the students checked in
 	 * @param date - The specific date
-	 * @return the number of students
+	 * @return the number of attendances of all the students with time in and date only.
 	 */
 	int countStudentsAttendancesTimeInByDate(LocalTime timeIn, LocalDate date);
 
@@ -150,7 +150,7 @@ public interface AttendanceService {
 	 *
 	 * @param timeOut - The specific time the students checked out
 	 * @param date - The specific date
-	 * @return the number of students
+	 * @return the number of students attendances where when they went out of the school and with the date.
 	 */
 	int countStudentsAttendancesTimeOutByDate(LocalTime timeOut, LocalDate date);
 	// End: Statistics / Numbers
