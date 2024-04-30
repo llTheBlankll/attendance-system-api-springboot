@@ -53,7 +53,7 @@ public class Attendance {
 	private LocalDate date;
 
 	@ColumnDefault("LOCALTIME")
-	@Column(name = "\"time\"")
+	@Column(name = "time")
 	private LocalTime time;
 
 	@ColumnDefault("LOCALTIME")
@@ -64,48 +64,53 @@ public class Attendance {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public Attendance setId(Integer id) {
 		this.id = id;
+		return this;
 	}
 
 	public Student getStudent() {
 		return student;
 	}
 
-	public void setStudent(Student student) {
+	public Attendance setStudent(Student student) {
 		this.student = student;
+		return this;
 	}
 
 	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public Attendance setStatus(String status) {
 		this.status = status;
+		return this;
 	}
 
 	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public Attendance setDate(LocalDate date) {
 		this.date = date;
+		return this;
 	}
 
 	public LocalTime getTime() {
 		return time;
 	}
 
-	public void setTime(LocalTime time) {
+	public Attendance setTime(LocalTime time) {
 		this.time = time;
+		return this;
 	}
 
 	public LocalTime getTimeOut() {
 		return timeOut;
 	}
 
-	public void setTimeOut(LocalTime timeOut) {
+	public Attendance setTimeOut(LocalTime timeOut) {
 		this.timeOut = timeOut;
+		return this;
 	}
-
 }

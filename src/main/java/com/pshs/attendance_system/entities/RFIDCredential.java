@@ -51,32 +51,35 @@ public class RFIDCredential {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public RFIDCredential setId(Integer id) {
 		this.id = id;
+		return this;
 	}
 
 	public Student getLrn() {
 		return lrn;
 	}
 
-	public void setLrn(Student lrn) {
+	public RFIDCredential setLrn(Student lrn) {
 		this.lrn = lrn;
+		return this;
 	}
 
 	public String getHashedLrn() {
 		return hashedLrn;
 	}
 
-	public void setHashedLrn(String hashedLrn) {
+	public RFIDCredential setHashedLrn(String hashedLrn) {
 		this.hashedLrn = hashedLrn;
+		return this;
 	}
 
 	public String getSalt() {
 		return salt;
 	}
 
-	public void setSalt(String salt) {
+	public RFIDCredential setSalt(String salt) {
 		this.salt = salt;
+		return this;
 	}
-
 }

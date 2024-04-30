@@ -47,32 +47,35 @@ public class Teacher {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public Teacher setId(Integer id) {
 		this.id = id;
+		return this;
 	}
 
 	public String getFirstName() {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public Teacher setFirstName(String firstName) {
 		this.firstName = firstName;
+		return this;
 	}
 
 	public String getLastName() {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public Teacher setLastName(String lastName) {
 		this.lastName = lastName;
+		return this;
 	}
 
 	public String getSex() {
 		return sex;
 	}
 
-	public void setSex(String sex) {
+	public Teacher setSex(String sex) {
 		this.sex = sex;
+		return this;
 	}
-
 }

@@ -34,9 +34,6 @@ public class GradeLevel {
 	@Column(name = "id", nullable = false)
 	private Integer id;
 
-	@Column(name = "level", nullable = false, length = 128)
-	private String level;
-
 	@Column(name = "name", nullable = false, length = 128)
 	private String name;
 
@@ -48,32 +45,26 @@ public class GradeLevel {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public GradeLevel setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getLevel() {
-		return level;
-	}
-
-	public void setLevel(String level) {
-		this.level = level;
+		return this;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public GradeLevel setName(String name) {
 		this.name = name;
+		return this;
 	}
 
 	public Strand getStrand() {
 		return strand;
 	}
 
-	public void setStrand(Strand strand) {
+	public GradeLevel setStrand(Strand strand) {
 		this.strand = strand;
+		return this;
 	}
-
 }

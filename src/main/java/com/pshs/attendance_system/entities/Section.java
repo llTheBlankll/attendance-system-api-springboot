@@ -27,8 +27,8 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "sections")
@@ -61,62 +61,68 @@ public class Section {
 	private String sectionName;
 
 	@OneToMany(mappedBy = "section")
-	private Set<Student> students = new LinkedHashSet<>();
+	private List<Student> students = new ArrayList<>();
 
 	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public Section setId(Integer id) {
 		this.id = id;
+		return this;
 	}
 
 	public Teacher getTeacher() {
 		return teacher;
 	}
 
-	public void setTeacher(Teacher teacher) {
+	public Section setTeacher(Teacher teacher) {
 		this.teacher = teacher;
+		return this;
 	}
 
 	public String getRoom() {
 		return room;
 	}
 
-	public void setRoom(String room) {
+	public Section setRoom(String room) {
 		this.room = room;
+		return this;
 	}
 
 	public Strand getStrand() {
 		return strand;
 	}
 
-	public void setStrand(Strand strand) {
+	public Section setStrand(Strand strand) {
 		this.strand = strand;
+		return this;
 	}
 
 	public GradeLevel getGradeLevel() {
 		return gradeLevel;
 	}
 
-	public void setGradeLevel(GradeLevel gradeLevel) {
+	public Section setGradeLevel(GradeLevel gradeLevel) {
 		this.gradeLevel = gradeLevel;
+		return this;
 	}
 
 	public String getSectionName() {
 		return sectionName;
 	}
 
-	public void setSectionName(String sectionName) {
+	public Section setSectionName(String sectionName) {
 		this.sectionName = sectionName;
+		return this;
 	}
 
-	public Set<Student> getStudents() {
+	public List<Student> getStudents() {
 		return students;
 	}
 
-	public void setStudents(Set<Student> students) {
+	public Section setStudents(List<Student> students) {
 		this.students = students;
+		return this;
 	}
-
 }

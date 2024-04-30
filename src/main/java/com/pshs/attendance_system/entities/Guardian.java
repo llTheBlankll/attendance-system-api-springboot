@@ -51,32 +51,35 @@ public class Guardian {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public Guardian setId(Integer id) {
 		this.id = id;
+		return this;
 	}
 
 	public Student getStudentLrn() {
 		return studentLrn;
 	}
 
-	public void setStudentLrn(Student studentLrn) {
+	public Guardian setStudentLrn(Student studentLrn) {
 		this.studentLrn = studentLrn;
+		return this;
 	}
 
 	public String getFullName() {
 		return fullName;
 	}
 
-	public void setFullName(String fullName) {
+	public Guardian setFullName(String fullName) {
 		this.fullName = fullName;
+		return this;
 	}
 
 	public String getContactNumber() {
 		return contactNumber;
 	}
 
-	public void setContactNumber(String contactNumber) {
+	public Guardian setContactNumber(String contactNumber) {
 		this.contactNumber = contactNumber;
+		return this;
 	}
-
 }

@@ -68,72 +68,80 @@ public class Student {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public Student setId(Long id) {
 		this.id = id;
+		return this;
 	}
 
 	public String getFirstName() {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public Student setFirstName(String firstName) {
 		this.firstName = firstName;
+		return this;
 	}
 
 	public String getMiddleInitial() {
 		return middleInitial;
 	}
 
-	public void setMiddleInitial(String middleInitial) {
+	public Student setMiddleInitial(String middleInitial) {
 		this.middleInitial = middleInitial;
+		return this;
 	}
 
 	public String getLastName() {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public Student setLastName(String lastName) {
 		this.lastName = lastName;
+		return this;
 	}
 
 	public GradeLevel getGradeLevel() {
 		return gradeLevel;
 	}
 
-	public void setGradeLevel(GradeLevel gradeLevel) {
+	public Student setGradeLevel(GradeLevel gradeLevel) {
 		this.gradeLevel = gradeLevel;
+		return this;
 	}
 
 	public String getSex() {
 		return sex;
 	}
 
-	public void setSex(String sex) {
+	public Student setSex(String sex) {
 		this.sex = sex;
+		return this;
 	}
 
 	public Section getSection() {
 		return section;
 	}
 
-	public void setSection(Section section) {
+	public Student setSection(Section section) {
 		this.section = section;
+		return this;
 	}
 
 	public String getAddress() {
 		return address;
 	}
 
-	public void setAddress(String address) {
+	public Student setAddress(String address) {
 		this.address = address;
+		return this;
 	}
 
 	public LocalDate getBirthdate() {
 		return birthdate;
 	}
 
-	public void setBirthdate(LocalDate birthdate) {
+	public Student setBirthdate(LocalDate birthdate) {
 		this.birthdate = birthdate;
+		return this;
 	}
-
 }
