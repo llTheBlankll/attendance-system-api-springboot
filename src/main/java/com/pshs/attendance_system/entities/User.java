@@ -1,10 +1,45 @@
+/*
+ * Copyright (c) 2024  Vince Angelo Batecan
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, and/or sublicense
+ * copies of the Software, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * MODIFICATIONS:
+ *
+ * Any modifications or derivative works of the Software shall be considered part
+ * of the Software and shall be subject to the terms and conditions of this license.
+ * Any person or entity making modifications to the Software shall assign and
+ * transfer all right, title, and interest in and to such modifications to  Vince Angelo Batecan.
+ *  Vince Angelo Batecan shall own all intellectual property rights in and to such modifications.
+ *
+ * NO COMMERCIAL USE:
+ *
+ * The Software shall not be sold, rented, leased, or otherwise commercially exploited.
+ * The Software is intended for personal, non-commercial use only.
+ *
+ * NO WARRANTIES:
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.pshs.attendance_system.entities;
 
-import com.pshs.attendance_system.dto.UserDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "users")
@@ -28,28 +63,11 @@ public class User {
 	private String roleId;
 
 	@Column(name = "last_login")
-	private LocalDateTime lastLogin;
+	private Instant lastLogin;
 
 	@ColumnDefault("CURRENT_TIMESTAMP")
 	@Column(name = "created_at")
-	private LocalDateTime createdAt;
-
-	public User() {
-	}
-
-	public User(Integer id, String username, String password, String email, String roleId, LocalDateTime lastLogin, LocalDateTime createdAt) {
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.email = email;
-		this.roleId = roleId;
-		this.lastLogin = lastLogin;
-		this.createdAt = createdAt;
-	}
-
-	public UserDTO toDTO() {
-		return new UserDTO(id, username, password, email, roleId, lastLogin, createdAt);
-	}
+	private Instant createdAt;
 
 	public Integer getId() {
 		return id;
@@ -91,19 +109,19 @@ public class User {
 		this.roleId = roleId;
 	}
 
-	public LocalDateTime getLastLogin() {
+	public Instant getLastLogin() {
 		return lastLogin;
 	}
 
-	public void setLastLogin(LocalDateTime lastLogin) {
+	public void setLastLogin(Instant lastLogin) {
 		this.lastLogin = lastLogin;
 	}
 
-	public LocalDateTime getCreatedAt() {
+	public Instant getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(LocalDateTime createdAt) {
+	public void setCreatedAt(Instant createdAt) {
 		this.createdAt = createdAt;
 	}
 

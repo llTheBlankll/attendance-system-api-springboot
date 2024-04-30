@@ -34,21 +34,32 @@
  * SOFTWARE.
  */
 
-package com.pshs.attendance_system.entities;
+package com.pshs.attendance_system.entities.range;
 
+import com.pshs.attendance_system.entities.Student;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "strand")
-public class Strand {
+@Table(name = "rfid_credentials")
+public class RfidCredential {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "strand_id_gen")
-	@SequenceGenerator(name = "strand_id_gen", sequenceName = "strand_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rfid_credentials_id_gen")
+	@SequenceGenerator(name = "rfid_credentials_id_gen", sequenceName = "rfid_credentials_id_seq", allocationSize = 1)
 	@Column(name = "id", nullable = false)
 	private Integer id;
 
-	@Column(name = "name", nullable = false)
-	private String name;
+	@OneToOne(fetch = FetchType.LAZY, optional = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JoinColumn(name = "lrn", nullable = false)
+	private Student lrn;
+
+	@Column(name = "hashed_lrn", nullable = false, length = 32)
+	private String hashedLrn;
+
+	@Column(name = "salt", nullable = false, length = 16)
+	private String salt;
 
 	public Integer getId() {
 		return id;
@@ -58,12 +69,28 @@ public class Strand {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public Student getLrn() {
+		return lrn;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setLrn(Student lrn) {
+		this.lrn = lrn;
+	}
+
+	public String getHashedLrn() {
+		return hashedLrn;
+	}
+
+	public void setHashedLrn(String hashedLrn) {
+		this.hashedLrn = hashedLrn;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 
 }

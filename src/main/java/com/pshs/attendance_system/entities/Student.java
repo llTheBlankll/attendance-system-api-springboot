@@ -1,15 +1,46 @@
+/*
+ * Copyright (c) 2024  Vince Angelo Batecan
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, and/or sublicense
+ * copies of the Software, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * MODIFICATIONS:
+ *
+ * Any modifications or derivative works of the Software shall be considered part
+ * of the Software and shall be subject to the terms and conditions of this license.
+ * Any person or entity making modifications to the Software shall assign and
+ * transfer all right, title, and interest in and to such modifications to  Vince Angelo Batecan.
+ *  Vince Angelo Batecan shall own all intellectual property rights in and to such modifications.
+ *
+ * NO COMMERCIAL USE:
+ *
+ * The Software shall not be sold, rented, leased, or otherwise commercially exploited.
+ * The Software is intended for personal, non-commercial use only.
+ *
+ * NO WARRANTIES:
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.pshs.attendance_system.entities;
 
-import com.pshs.attendance_system.dto.GradeLevelDTO;
-import com.pshs.attendance_system.dto.SectionDTO;
-import com.pshs.attendance_system.dto.StudentDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "students")
@@ -45,43 +76,6 @@ public class Student {
 
 	@Column(name = "birthdate", nullable = false)
 	private LocalDate birthdate;
-
-	@OneToMany(mappedBy = "studentLrn")
-	private List<Guardian> guardians = new ArrayList<>();
-
-	public Student() {
-	}
-
-	public Student(Long id, String firstName, String middleInitial, String lastName, GradeLevel gradeLevel, String sex, Section section, String address, LocalDate birthdate, List<Guardian> guardians) {
-		this.id = id;
-		this.firstName = firstName;
-		this.middleInitial = middleInitial;
-		this.lastName = lastName;
-		this.gradeLevel = gradeLevel;
-		this.sex = sex;
-		this.section = section;
-		this.address = address;
-		this.birthdate = birthdate;
-		this.guardians = guardians;
-	}
-
-	public StudentDTO toDTO() {
-		if (gradeLevel == null || section == null) {
-			System.out.println("Grade Level or Section is null");
-		}
-
-		return new StudentDTO(id,
-			firstName,
-			middleInitial,
-			lastName,
-			gradeLevel.toDTO(),
-			sex,
-			section.toDTO(),
-			address,
-			birthdate,
-			guardians.stream().map(Guardian::toDTO).toList()
-		);
-	}
 
 	public Long getId() {
 		return id;
@@ -153,14 +147,6 @@ public class Student {
 
 	public void setBirthdate(LocalDate birthdate) {
 		this.birthdate = birthdate;
-	}
-
-	public List<Guardian> getGuardians() {
-		return guardians;
-	}
-
-	public void setGuardians(List<Guardian> guardians) {
-		this.guardians = guardians;
 	}
 
 }

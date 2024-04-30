@@ -1,18 +1,50 @@
+/*
+ * Copyright (c) 2024  Vince Angelo Batecan
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, and/or sublicense
+ * copies of the Software, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * MODIFICATIONS:
+ *
+ * Any modifications or derivative works of the Software shall be considered part
+ * of the Software and shall be subject to the terms and conditions of this license.
+ * Any person or entity making modifications to the Software shall assign and
+ * transfer all right, title, and interest in and to such modifications to  Vince Angelo Batecan.
+ *  Vince Angelo Batecan shall own all intellectual property rights in and to such modifications.
+ *
+ * NO COMMERCIAL USE:
+ *
+ * The Software shall not be sold, rented, leased, or otherwise commercially exploited.
+ * The Software is intended for personal, non-commercial use only.
+ *
+ * NO WARRANTIES:
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.pshs.attendance_system.entities;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.pshs.attendance_system.dto.SectionDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "sections")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Section {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sections_id_gen")
@@ -41,21 +73,8 @@ public class Section {
 	@Column(name = "section_name", nullable = false)
 	private String sectionName;
 
-	public Section() {
-	}
-
-	public Section(Integer id, Teacher teacher, String room, Strand strand, GradeLevel gradeLevel, String sectionName) {
-		this.id = id;
-		this.teacher = teacher;
-		this.room = room;
-		this.strand = strand;
-		this.gradeLevel = gradeLevel;
-		this.sectionName = sectionName;
-	}
-
-	public SectionDTO toDTO() {
-		return new SectionDTO(id, teacher.toDTO(), gradeLevel.toDTO(), strand.toDTO(), room, sectionName);
-	}
+	@OneToMany(mappedBy = "section")
+	private Set<Student> students = new LinkedHashSet<>();
 
 	public Integer getId() {
 		return id;
@@ -103,6 +122,14 @@ public class Section {
 
 	public void setSectionName(String sectionName) {
 		this.sectionName = sectionName;
+	}
+
+	public Set<Student> getStudents() {
+		return students;
+	}
+
+	public void setStudents(Set<Student> students) {
+		this.students = students;
 	}
 
 }
