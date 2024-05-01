@@ -42,7 +42,7 @@ public class UserCreationDTO extends UserDTO implements Serializable {
 	}
 
 	public UserCreationDTO(UserDTO user, boolean isLocked, boolean isEnabled, boolean isExpired, boolean isCredentialsExpired) {
-		super(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(), user.getRole(), user.getLastLogin(), user.getCreatedAt());
+		super(user.getId(), user.getUsername(), user.getEmail(), user.getRole(), user.getLastLogin(), user.getCreatedAt());
 		this.isLocked = isLocked;
 		this.isEnabled = isEnabled;
 		this.isExpired = isExpired;
@@ -53,7 +53,6 @@ public class UserCreationDTO extends UserDTO implements Serializable {
 		return new User()
 				.setId(getId())
 				.setUsername(getUsername())
-				.setPassword(getPassword())
 				.setEmail(getEmail())
 				.setRole(getRole())
 				.setLastLogin(getLastLogin())

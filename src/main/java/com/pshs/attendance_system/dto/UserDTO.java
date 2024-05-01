@@ -35,7 +35,6 @@ import java.util.Objects;
 public class UserDTO implements Serializable {
 	private Integer id;
 	private String username;
-	private String password;
 	private String email;
 	private String role;
 	private Instant lastLogin;
@@ -44,10 +43,9 @@ public class UserDTO implements Serializable {
 	public UserDTO() {
 	}
 
-	public UserDTO(Integer id, String username, String password, String email, String role, Instant lastLogin, Instant createdAt) {
+	public UserDTO(Integer id, String username, String email, String role, Instant lastLogin, Instant createdAt) {
 		this.id = id;
 		this.username = username;
-		this.password = password;
 		this.email = email;
 		this.role = role;
 		this.lastLogin = lastLogin;
@@ -58,12 +56,10 @@ public class UserDTO implements Serializable {
 		return new User()
 			.setId(id)
 			.setUsername(username)
-			.setPassword(password)
 			.setEmail(email)
 			.setRole(role)
 			.setLastLogin(lastLogin)
 			.setCreatedAt(createdAt);
-
 	}
 
 	public Integer getId() {
@@ -81,15 +77,6 @@ public class UserDTO implements Serializable {
 
 	public UserDTO setUsername(String username) {
 		this.username = username;
-		return this;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public UserDTO setPassword(String password) {
-		this.password = password;
 		return this;
 	}
 
@@ -136,7 +123,6 @@ public class UserDTO implements Serializable {
 		UserDTO entity = (UserDTO) o;
 		return Objects.equals(this.id, entity.id) &&
 			Objects.equals(this.username, entity.username) &&
-			Objects.equals(this.password, entity.password) &&
 			Objects.equals(this.email, entity.email) &&
 			Objects.equals(this.role, entity.role) &&
 			Objects.equals(this.lastLogin, entity.lastLogin) &&
@@ -145,7 +131,7 @@ public class UserDTO implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, username, password, email, role, lastLogin, createdAt);
+		return Objects.hash(id, username, email, role, lastLogin, createdAt);
 	}
 
 	@Override
@@ -153,7 +139,6 @@ public class UserDTO implements Serializable {
 		return getClass().getSimpleName() + "(" +
 			"id = " + id + ", " +
 			"username = " + username + ", " +
-			"password = " + password + ", " +
 			"email = " + email + ", " +
 			"role = " + role + ", " +
 			"lastLogin = " + lastLogin + ", " +

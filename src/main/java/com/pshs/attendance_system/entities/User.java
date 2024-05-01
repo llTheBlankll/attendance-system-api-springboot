@@ -87,7 +87,7 @@ public class User implements UserDetails {
 	}
 
 	public UserDTO toDTO() {
-		return new UserDTO(id, username, password, email, role, lastLogin, createdAt);
+		return new UserDTO(id, username, email, role, lastLogin, createdAt);
 	}
 
 	public UserCreationDTO toUserCreationDTO() {
