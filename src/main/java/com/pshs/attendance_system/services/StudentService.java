@@ -23,16 +23,86 @@
 
 package com.pshs.attendance_system.services;
 
+import com.pshs.attendance_system.entities.GradeLevel;
+import com.pshs.attendance_system.entities.Guardian;
+import com.pshs.attendance_system.entities.Section;
 import com.pshs.attendance_system.entities.Student;
 import com.pshs.attendance_system.enums.ExecutionStatus;
+import org.springframework.data.domain.Page;
+
+import java.time.LocalDate;
+import java.util.Map;
 
 public interface StudentService {
 
 	ExecutionStatus createStudent(Student student);
 
-	ExecutionStatus updateStudent(Student student);
-
 	ExecutionStatus deleteStudent(Student student);
 
+	ExecutionStatus updateStudent(Long studentId, Student student);
+
+	ExecutionStatus updateStudentFirstName(Long studentId, String firstName);
+
+	ExecutionStatus updateStudentLastName(Long studentId, String lastName);
+
+	ExecutionStatus updateStudentMiddleInitial(Long studentId, String middleName);
+
+	ExecutionStatus updateStudentGradeLevel(Long studentId, int gradeLevel);
+
+	ExecutionStatus updateStudentSection(Long studentId, String section);
+
+	ExecutionStatus updateStudentAddress(Long studentId, String address);
+
+	ExecutionStatus updateStudentBirthDate(Long studentId, LocalDate birthDate);
+
 	Student getStudentById(Long id);
+
+	Student getStudentByGuardian(Guardian guardian);
+
+	Student getStudentByGuardian(int guardianId);
+
+	// Region: Retrieval
+	Page<Student> getAllStudents(int page, int size);
+
+	Page<Student> searchStudentsByFirstName(String firstName, int page, int size);
+
+	Page<Student> searchStudentsByLastName(String lastName, int page, int size);
+
+	Page<Student> searchStudentsByFirstAndLastName(String firstName, String lastName, int page, int size);
+
+	Page<Student> searchStudentsByGradeLevel(int gradeLevel, int page, int size);
+	Page<Student> searchStudentsByGradeLevel(GradeLevel gradeLevel, int page, int size);
+
+	Page<Student> searchStudentsBySection(int sectionId, int page, int size);
+	Page<Student> searchStudentsBySection(Section section, int page, int size);
+
+
+	// End Region
+
+	// Region: Statistics: Statistics
+
+	// TODO: Implement student age column.
+	Map<String, Double> getAverageAge();
+	Map<String, Long> countStudents();
+	Map<String, Long> countStudentsBySex(String sex);
+
+	Map<String, Long> countStudentsInSection(Section section);
+	Map<String, Long> countStudentsInSection(int sectionId);
+
+	Map<String, Long> countStudentsInGradeLevel(GradeLevel gradeLevel);
+	Map<String, Long> countStudentsInGradeLevel(int gradeLevelId);
+
+	Map<String, Long> countStudentsInGradeLevelAndSection(GradeLevel gradeLevel, Section section);
+	Map<String, Long> countStudentsInGradeLevelAndSection(int gradeLevelId, int sectionId);
+
+	Map<String, Long> countStudentsByFirstNameInGradeLevelAndSection(String firstName, GradeLevel gradeLevel, Section section);
+	Map<String, Long> countStudentsByFirstNameInGradeLevelAndSection(String firstName, int gradeLevelId, int sectionId);
+
+	Map<String, Long> countStudentsByLastNameInGradeLevelAndSection(String lastName, GradeLevel gradeLevel, Section section);
+	Map<String, Long> countStudentsByLastNameInGradeLevelAndSection(String lastName, int gradeLevelId, int sectionId);
+
+	Map<String, Long> countStudentsByFirstAndLastNameInGradeLevelAndSection(String firstName, String lastName, GradeLevel gradeLevel, Section section);
+	Map<String, Long> countStudentsByFirstAndLastNameInGradeLevelAndSection(String firstName, String lastName, int gradeLevelId, int sectionId);
+
+	// End: Statistics
 }
