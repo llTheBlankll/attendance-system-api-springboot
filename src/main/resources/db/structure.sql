@@ -58,9 +58,9 @@ CREATE TABLE IF NOT EXISTS students
 (
     lrn            BIGINT PRIMARY KEY,
     first_name     VARCHAR(128) NOT NULL,
-    middle_initial CHAR(1) NULL,
+    middle_initial CHAR(1)      NULL,
     last_name      VARCHAR(128) NOT NULL,
-    prefix         CHAR(4) NULL,
+    prefix         CHAR(4)      NULL,
     grade_level    INT,
     sex            VARCHAR(6),
     section_id     INT,
@@ -123,13 +123,17 @@ CREATE INDEX attendance_student_id_idx ON attendances (student_id);
 -- * CREATE USERS TABLE
 CREATE TABLE IF NOT EXISTS Users
 (
-    id         SERIAL PRIMARY KEY,
-    username   VARCHAR(64),
-    password   CHAR(64),
-    email      VARCHAR(128),
-    role    VARCHAR(48),
-    last_login TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id                     SERIAL PRIMARY KEY,
+    username               VARCHAR(64),
+    password               CHAR(64),
+    email                  VARCHAR(128),
+    role                   VARCHAR(48) DEFAULT 'GUEST',
+    is_expired             BOOLEAN     DEFAULT FALSE,
+    is_locked              BOOLEAN     DEFAULT FALSE,
+    is_credentials_expired BOOLEAN     DEFAULT FALSE,
+    is_enabled             BOOLEAN     DEFAULT TRUE,
+    last_login             TIMESTAMP,
+    created_at             TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
     CHECK ( LENGTH(username) >= 3 ),
     CHECK ( LENGTH(email) >= 3 )
 );

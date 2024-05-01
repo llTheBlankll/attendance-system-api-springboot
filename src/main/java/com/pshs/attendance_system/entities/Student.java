@@ -46,7 +46,7 @@ public class Student {
 	@Column(name = "last_name", nullable = false, length = 128)
 	private String lastName;
 
-	@Column(name = "prefix", nullable = true, length = 4)
+	@Column(name = "prefix", length = 4)
 	private String prefix;
 
 	@ManyToOne(fetch = FetchType.LAZY)
