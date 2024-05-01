@@ -128,7 +128,7 @@ public interface AttendanceService {
 	 * @param date Specific Date
 	 * @return the number of attendance of all the student with the specific status with the specific date
 	 */
-	int countStudentAttendancesByStatus(int studentId, AttendanceStatus attendanceStatus, LocalDate date);
+	int countStudentAttendancesByStatusBetweenDate(Long studentId, AttendanceStatus attendanceStatus, LocalDate date);
 
 	/**
 	 * Count the total number of students with the attendance status between two date.
@@ -137,7 +137,7 @@ public interface AttendanceService {
 	 * @param dateRange from 2024-10-1 to 2024-12-1
 	 * @return the number of attendance of all student with the specific status between the date range
 	 */
-	int countStudentAttendancesByStatus(int studentId, AttendanceStatus attendanceStatus, DateRange dateRange);
+	int countStudentAttendancesByStatusBetweenDate(Long studentId, AttendanceStatus attendanceStatus, DateRange dateRange);
 
 	/**
 	 * Count the total number of students who checked in at a specific time and have a specific attendance status on a specific date.

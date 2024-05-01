@@ -24,9 +24,56 @@
 package com.pshs.attendance_system.repositories;
 
 import com.pshs.attendance_system.entities.Attendance;
+import com.pshs.attendance_system.entities.Student;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 
 @Repository
 public interface AttendanceRepository extends JpaRepository<Attendance, Integer> {
+	@Query("select distinct a from Attendance a where a.student = :student order by a.date DESC LIMIT :limit")
+	List<Attendance> findAttendancesByStudentOrderByDateDesc(@Param("student") @NonNull Student student, @Param("limit") @NonNull int limit, Sort sort);
+
+	@Query("select a from Attendance a where a.student.id = :id")
+	List<Attendance> getAttendancesByStudentId(@Param("id") @NonNull Long id, Sort sort);
+
+	@Query("select a from Attendance a where a.student.id = :id")
+	Page<Attendance> findAllAttendancesByStudentId(@Param("id") @NonNull Long id, Pageable pageable);
+
+	@Query("""
+		select count(distinct a) from Attendance a
+		where a.status = :status and a.date between :dateStart and :dateEnd""")
+	long countStudentsByStatusAndDateRange(@Param("status") @NonNull String status, @Param("dateStart") @NonNull LocalDate dateStart, @Param("dateEnd") @NonNull LocalDate dateEnd);
+
+	@Query("select count(distinct a) from Attendance a where a.status = :status and a.date = :date")
+	long countStudentsByStatusAndDate(@Param("status") @NonNull String status, @Param("date") LocalDate date);
+
+	@Query("""
+		select count(distinct a) from Attendance a
+		where a.student.id = :id and a.status = :status and a.date = :date""")
+	long countStudentAttendancesByStatusAndDate(@Param("id") @NonNull Long id, @Param("status") @NonNull String status, @Param("date") @NonNull LocalDate date);
+
+	@Query("""
+		select count(distinct a) from Attendance a
+		where a.student.id = :id and a.status = :status and a.date between :dateStart and :dateEnd""")
+	long countStudentAttendancesByStatusBetweenDate(@Param("id") @NonNull Long id, @Param("status") @NonNull String status, @Param("dateStart") @NonNull LocalDate dateStart, @Param("dateEnd") @NonNull LocalDate dateEnd);
+
+	@Query("select count(distinct a) from Attendance a where a.time = :time and a.date = :date and a.status = :status")
+	long countStudentsAttendancesTimeInByDateAndStatus(@Param("time") @NonNull LocalTime time, @Param("date") @NonNull LocalDate date, @Param("status") @NonNull String status);
+
+	long countByTimeAndDate(@NonNull LocalTime time, @NonNull LocalDate date);
+
+	@Query("""
+		select count(distinct a) from Attendance a
+		where a.timeOut = :timeOut and a.date = :date and a.status = :status""")
+	long countStudentsAttendancesTimeOutBydateAndStatus(@Param("timeOut") @NonNull LocalTime timeOut, @Param("date") @NonNull LocalDate date, @Param("status") @NonNull String status);
 }

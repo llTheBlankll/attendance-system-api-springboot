@@ -21,13 +21,26 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system.services;
+package com.pshs.attendance_system.impl;
 
 import com.pshs.attendance_system.entities.Strand;
 import com.pshs.attendance_system.enums.ExecutionStatus;
+import com.pshs.attendance_system.repositories.StrandRepository;
+import com.pshs.attendance_system.services.StrandService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 
-public interface StandService {
+@Service
+public class StrandServiceImpl implements StrandService {
+
+	private static final Logger logger = LogManager.getLogger(StrandServiceImpl.class);
+	private final StrandRepository strandRepository;
+
+	public StrandServiceImpl(StrandRepository strandRepository) {
+		this.strandRepository = strandRepository;
+	}
 
 	/**
 	 * Create a new strand record.
@@ -35,7 +48,16 @@ public interface StandService {
 	 * @param strand Strand object to be created
 	 * @return Execution Status (SUCCESS, FAILURE, or VALIDATION_ERROR)
 	 */
-	ExecutionStatus createStrand(Strand strand);
+	@Override
+	public ExecutionStatus createStrand(Strand strand) {
+		if (isExistingStrand(strand.getId())) {
+			return strandExisted("Strand with ID " + strand.getId() + " already exists");
+		}
+
+		strandRepository.save(strand);
+		logger.debug("Strand with ID {} has been created", strand.getId());
+		return ExecutionStatus.SUCCESS;
+	}
 
 	/**
 	 * Delete a strand record.
@@ -43,7 +65,16 @@ public interface StandService {
 	 * @param strandId ID of the strand to be deleted
 	 * @return Execution Status (SUCCESS, FAILURE, or NOT_FOUND)
 	 */
-	ExecutionStatus deleteStrand(int strandId);
+	@Override
+	public ExecutionStatus deleteStrand(int strandId) {
+		if (!isExistingStrand(strandId)) {
+			return strandExisted("Strand with ID " + strandId + " does not exist");
+		}
+
+		strandRepository.deleteById(strandId);
+		logger.debug("Strand with ID {} has been deleted", strandId);
+		return ExecutionStatus.SUCCESS;
+	}
 
 	/**
 	 * Update a strand record.
@@ -52,7 +83,16 @@ public interface StandService {
 	 * @param strand Updated strand object
 	 * @return Execution Status (SUCCESS, FAILURE, NOT_FOUND, or VALIDATION_ERROR)
 	 */
-	ExecutionStatus updateStrand(int strandId, Strand strand);
+	@Override
+	public ExecutionStatus updateStrand(int strandId, Strand strand) {
+		if (!isExistingStrand(strandId)) {
+			return strandExisted("Strand with ID " + strandId + " does not exist");
+		}
+
+		strandRepository.save(strand);
+		logger.debug("Strand with ID {} has been updated", strandId);
+		return ExecutionStatus.SUCCESS;
+	}
 
 	/**
 	 * Retrieve a strand record.
@@ -60,12 +100,40 @@ public interface StandService {
 	 * @param strandId ID of the strand to be retrieved
 	 * @return Strand object if found, otherwise null
 	 */
-	Strand getStrand(int strandId);
+	@Override
+	public Strand getStrand(int strandId) {
+		return null;
+	}
 
 	/**
 	 * Retrieve all strand records.
 	 *
 	 * @return The page of strand records
 	 */
-	Page<Strand> getStrands(int page, int size);
+	@Override
+	public Page<Strand> getAllStrands(int page, int size) {
+		return null;
+	}
+
+	/**
+	 * Check if the strand exists in the database.
+	 *
+	 * @param strandId Strand ID
+	 * @return True if the strand exists, otherwise false.
+	 */
+	private boolean isExistingStrand(int strandId) {
+		return strandRepository.existsById(strandId);
+	}
+
+	/**
+	 * This function is called when the strand already exists in the database.
+	 * Was created to avoid code duplication.
+	 *
+	 * @param message Message to be logged
+	 * @return ExecutionStatus.VALIDATION_ERROR
+	 */
+	private ExecutionStatus strandExisted(String message) {
+		logger.warn(message);
+		return ExecutionStatus.VALIDATION_ERROR;
+	}
 }

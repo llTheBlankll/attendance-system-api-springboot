@@ -21,29 +21,51 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system.repositories;
+package com.pshs.attendance_system.services;
 
-import com.pshs.attendance_system.entities.Guardian;
-import com.pshs.attendance_system.entities.Student;
+import com.pshs.attendance_system.entities.Strand;
+import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+public interface StrandService {
 
-@Repository
-public interface GuardianRepository extends JpaRepository<Guardian, Integer> {
-	@Query("select g from Guardian g where g.studentLrn = :studentLrn")
-	@NonNull
-	Optional<Guardian> findGuardianOfStudent(@Param("studentLrn") @NonNull Student studentLrn);
+	/**
+	 * Create a new strand record.
+	 *
+	 * @param strand Strand object to be created
+	 * @return Execution Status (SUCCESS, FAILURE, or VALIDATION_ERROR)
+	 */
+	ExecutionStatus createStrand(Strand strand);
 
-	@Query("select g from Guardian g where g.fullName like concat('%', :fullName, '%')")
-	Page<Guardian> searchGuardianByFullName(@Param("fullName") @NonNull String fullName, Pageable pageable);
+	/**
+	 * Delete a strand record.
+	 *
+	 * @param strandId ID of the strand to be deleted
+	 * @return Execution Status (SUCCESS, FAILURE, or NOT_FOUND)
+	 */
+	ExecutionStatus deleteStrand(int strandId);
 
-	@Query("select g from Guardian g where upper(g.contactNumber) like upper(concat('%', :contactNumber, '%'))")
-	Page<Guardian> searchGuardianByContactNumber(@Param("contactNumber") @NonNull String contactNumber, Pageable pageable);
+	/**
+	 * Update a strand record.
+	 *
+	 * @param strandId ID of the strand to be updated
+	 * @param strand Updated strand object
+	 * @return Execution Status (SUCCESS, FAILURE, NOT_FOUND, or VALIDATION_ERROR)
+	 */
+	ExecutionStatus updateStrand(int strandId, Strand strand);
+
+	/**
+	 * Retrieve a strand record.
+	 *
+	 * @param strandId ID of the strand to be retrieved
+	 * @return Strand object if found, otherwise null
+	 */
+	Strand getStrand(int strandId);
+
+	/**
+	 * Retrieve all strand records.
+	 *
+	 * @return The page of strand records
+	 */
+	Page<Strand> getAllStrands(int page, int size);
 }
