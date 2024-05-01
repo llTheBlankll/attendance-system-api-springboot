@@ -58,7 +58,7 @@ public interface GradeLevelService {
 	 * Retrieve a grade level record
 	 *
 	 * @param gradeLevelId ID of the grade level to be retrieved
-	 * @return GradeLevel object
+	 * @return GradeLevel object, null if not found
 	 */
 	GradeLevel getGradeLevel(int gradeLevelId);
 
