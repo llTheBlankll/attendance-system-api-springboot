@@ -23,15 +23,20 @@
 
 package com.pshs.attendance_system.entities;
 
+import com.pshs.attendance_system.dto.UserCreationDTO;
 import com.pshs.attendance_system.dto.UserDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_gen")
 	@SequenceGenerator(name = "users_id_gen", sequenceName = "users_id_seq", allocationSize = 1)
@@ -49,6 +54,18 @@ public class User {
 
 	@Column(name = "role", length = 48)
 	private String role;
+
+	@Column(name = "is_enabled", columnDefinition = "BOOLEAN DEFAULT TRUE")
+	private Boolean isEnabled = true;
+
+	@Column(name = "is_expired", columnDefinition = "BOOLEAN DEFAULT FALSE")
+	private Boolean isExpired = false;
+
+	@Column(name = "is_locked", columnDefinition = "BOOLEAN DEFAULT FALSE")
+	private Boolean isLocked = false;
+
+	@Column(name = "is_credentials_expired", columnDefinition = "BOOLEAN DEFAULT FALSE")
+	private Boolean isCredentialsExpired = false;
 
 	@Column(name = "last_login")
 	private Instant lastLogin;
@@ -73,6 +90,10 @@ public class User {
 		return new UserDTO(id, username, password, email, role, lastLogin, createdAt);
 	}
 
+	public UserCreationDTO toUserCreationDTO() {
+		return new UserCreationDTO(this.toDTO(), isEnabled, isExpired, isLocked, isCredentialsExpired);
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -86,9 +107,72 @@ public class User {
 		return username;
 	}
 
+	@Override
+	public boolean isAccountNonExpired() {
+		return !isExpired;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return !isLocked;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return !isCredentialsExpired;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return isEnabled;
+	}
+
+	public Boolean getEnabled() {
+		return isEnabled;
+	}
+
+	public User setEnabled(Boolean enabled) {
+		isEnabled = enabled;
+		return this;
+	}
+
+	public Boolean getExpired() {
+		return isExpired;
+	}
+
+	public User setExpired(Boolean expired) {
+		isExpired = expired;
+		return this;
+	}
+
+	public Boolean getLocked() {
+		return isLocked;
+	}
+
+	public User setLocked(Boolean locked) {
+		isLocked = locked;
+		return this;
+	}
+
+	public Boolean getCredentialsExpired() {
+		return isCredentialsExpired;
+	}
+
+	public User setCredentialsExpired(Boolean credentialsExpired) {
+		isCredentialsExpired = credentialsExpired;
+		return this;
+	}
+
 	public User setUsername(String username) {
 		this.username = username;
 		return this;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of(
+			(GrantedAuthority) () -> role
+		);
 	}
 
 	public String getPassword() {
