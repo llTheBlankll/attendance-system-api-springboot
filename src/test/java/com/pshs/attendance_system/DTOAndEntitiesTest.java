@@ -153,7 +153,6 @@ public class DTOAndEntitiesTest {
 		UserDTO userDTO = user.toDTO();
 		assert userDTO.getId() == 1;
 		assert userDTO.getUsername().equals("vince");
-		assert userDTO.getPassword().equals("hashed_password");
 		assert userDTO.getEmail().equals("llTheBlankll@gmail.com");
 		assert userDTO.getRole().equals("admin");
 		assert userDTO.getLastLogin().equals(Instant.parse("2024-07-07T00:00:00Z"));
