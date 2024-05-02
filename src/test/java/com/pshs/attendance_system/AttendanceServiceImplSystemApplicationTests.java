@@ -8,6 +8,7 @@ class AttendanceServiceImplSystemApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }

@@ -21,66 +21,42 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system;
+package com.pshs.attendance_system.entities;
 
-import com.pshs.attendance_system.entities.Strand;
-import com.pshs.attendance_system.repositories.StrandRepository;
-import jakarta.transaction.Transactional;
+import com.pshs.attendance_system.services.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootTest
-public class StrandImplTest {
+public class UserImplTest {
 
 
-	private static final Logger logger = LogManager.getLogger(StrandImplTest.class);
-	private final StrandRepository strandRepository;
-
+	private static final Logger logger = LogManager.getLogger(UserImplTest.class);
+	private final UserService userService;
 
 	@Autowired
-	public StrandImplTest(StrandRepository strandRepository) {
-		this.strandRepository = strandRepository;
+	public UserImplTest(UserService userService) {
+		this.userService = userService;
 	}
 
 	@Test
-	@Transactional
-	@Rollback
-	void testCreateStrand() {
-		Strand strand = new Strand(
-			null,
-			"STEM TEST"
-		);
-
-		try {
-			assert strandRepository.save(strand).equals(strand);
-			logger.debug("Strand with ID {} has been created", strand.getId());
-		} catch (Exception e) {
-			logger.error("Error creating strand", e);
-		}
+	void contextLoad() {
+		assert userService != null;
 	}
 
 	@Test
-	@Transactional
-	@Rollback
-	void testDeleteStrand() {
-		Strand strand = new Strand(
-			null,
-			"STEM TEST"
-		);
-
-		try {
-			strandRepository.save(strand);
-			strandRepository.deleteById(strand.getId());
-
-			// Check if exists
-			assert strandRepository.findById(strand.getId()).isEmpty();
-			logger.debug("Strand with ID {} has been deleted", strand.getId());
-		} catch (Exception e) {
-			logger.error("Error deleting strand", e);
-		}
+	void getAllUsersCount() {
+		Map<String, Integer> hashMap = new HashMap<>();
+		hashMap.put("count", userService.countAllUsers());
+		logger.info(hashMap);
+		logger.info("Count: {}", hashMap.get("count"));
+		assert hashMap.get("count") != null;
+		assert hashMap.get("count") == 1;
 	}
 }
