@@ -101,7 +101,7 @@ CREATE INDEX guardian_student_id_idx ON guardians (student_lrn);
 CREATE INDEX guardian_full_name_idx ON guardians (full_name);
 
 -- * ATTENDANCE TABLE
-CREATE TABLE IF NOT EXISTS attendances
+CREATE TABLE IF NOT EXISTS Attendances
 (
     id         SERIAL PRIMARY KEY,
     student_id BIGINT NOT NULL,
@@ -111,14 +111,14 @@ CREATE TABLE IF NOT EXISTS attendances
     time_out   TIME DEFAULT LOCALTIME,
     CONSTRAINT fk_student_lrn FOREIGN KEY (student_id) REFERENCES students (lrn) ON DELETE SET NULL ON UPDATE CASCADE
 );
-CREATE INDEX attendance_date_idx on attendances (date);
+CREATE INDEX attendance_date_idx on Attendances (date);
 
 -- * MAKE ATTENDANCE ENUM TYPE CHARACTER VARYING
-ALTER TABLE attendances
+ALTER TABLE Attendances
     ALTER COLUMN status TYPE CHARACTER VARYING;
 
 -- * CREATE STUDENT ID INDEX
-CREATE INDEX attendance_student_id_idx ON attendances (student_id);
+CREATE INDEX attendance_student_id_idx ON Attendances (student_id);
 
 -- * CREATE USERS TABLE
 CREATE TABLE IF NOT EXISTS Users
@@ -160,7 +160,7 @@ $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER on_event_attendance
     AFTER INSERT OR UPDATE
-    ON attendances
+    ON Attendances
     FOR EACH ROW
 EXECUTE FUNCTION notify_changes_attendance();
 

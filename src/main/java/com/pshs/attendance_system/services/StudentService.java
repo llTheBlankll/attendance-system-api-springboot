@@ -83,26 +83,26 @@ public interface StudentService {
 
 	// TODO: Implement student age column.
 	Map<String, Double> getAverageAge();
-	Map<String, Long> countStudents();
-	Map<String, Long> countStudentsBySex(String sex);
+	Long countStudents();
+	Long countStudentsBySex(String sex);
 
-	Map<String, Long> countStudentsInSection(Section section);
-	Map<String, Long> countStudentsInSection(int sectionId);
+	Long countStudentsInSection(Section section);
+	Long countStudentsInSection(int sectionId);
 
-	Map<String, Long> countStudentsInGradeLevel(GradeLevel gradeLevel);
-	Map<String, Long> countStudentsInGradeLevel(int gradeLevelId);
+	Long countStudentsInGradeLevel(GradeLevel gradeLevel);
+	Long countStudentsInGradeLevel(int gradeLevelId);
 
-	Map<String, Long> countStudentsInGradeLevelAndSection(GradeLevel gradeLevel, Section section);
-	Map<String, Long> countStudentsInGradeLevelAndSection(int gradeLevelId, int sectionId);
+	Long countStudentsInGradeLevelAndSection(GradeLevel gradeLevel, Section section);
+	Long countStudentsInGradeLevelAndSection(int gradeLevelId, int sectionId);
 
-	Map<String, Long> countStudentsByFirstNameInGradeLevelAndSection(String firstName, GradeLevel gradeLevel, Section section);
-	Map<String, Long> countStudentsByFirstNameInGradeLevelAndSection(String firstName, int gradeLevelId, int sectionId);
+	Long countStudentsByFirstNameInGradeLevelAndSection(String firstName, GradeLevel gradeLevel, Section section);
+	Long countStudentsByFirstNameInGradeLevelAndSection(String firstName, int gradeLevelId, int sectionId);
 
-	Map<String, Long> countStudentsByLastNameInGradeLevelAndSection(String lastName, GradeLevel gradeLevel, Section section);
-	Map<String, Long> countStudentsByLastNameInGradeLevelAndSection(String lastName, int gradeLevelId, int sectionId);
+	Long countStudentsByLastNameInGradeLevelAndSection(String lastName, GradeLevel gradeLevel, Section section);
+	Long countStudentsByLastNameInGradeLevelAndSection(String lastName, int gradeLevelId, int sectionId);
 
-	Map<String, Long> countStudentsByFirstAndLastNameInGradeLevelAndSection(String firstName, String lastName, GradeLevel gradeLevel, Section section);
-	Map<String, Long> countStudentsByFirstAndLastNameInGradeLevelAndSection(String firstName, String lastName, int gradeLevelId, int sectionId);
+	Long countStudentsByFirstAndLastNameInGradeLevelAndSection(String firstName, String lastName, GradeLevel gradeLevel, Section section);
+	Long countStudentsByFirstAndLastNameInGradeLevelAndSection(String firstName, String lastName, int gradeLevelId, int sectionId);
 
 	// End: Statistics
 }
