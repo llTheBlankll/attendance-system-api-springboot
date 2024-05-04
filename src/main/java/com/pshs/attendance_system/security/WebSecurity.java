@@ -30,6 +30,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
@@ -47,7 +49,11 @@ public class WebSecurity {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
 		return security
-			.csrf(AbstractHttpConfigurer::disable)
+			.csrf(
+				csrf ->
+					csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+						.csrfTokenRequestHandler(new XorCsrfTokenRequestAttributeHandler())
+			)
 			.cors(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(authorizeRequests ->
 				authorizeRequests

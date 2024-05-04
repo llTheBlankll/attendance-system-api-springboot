@@ -23,8 +23,48 @@
 
 package com.pshs.attendance_system.controllers;
 
+import com.pshs.attendance_system.dto.GradeLevelDTO;
+import com.pshs.attendance_system.entities.GradeLevel;
+import com.pshs.attendance_system.services.GradeLevelService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.http.RequestEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Tag(
+	name = "Grade Level",
+	description = "API Endpoints for Grade Level"
+)
+@RequestMapping("/api/v1/grade-level")
 public class GradeLevelController {
+
+	private static final Logger logger = LogManager.getLogger(GradeLevelController.class);
+	private final GradeLevelService gradeLevelService
+
+	public GradeLevelController(GradeLevelService gradeLevelService) {
+		this.gradeLevelService = gradeLevelService;
+	}
+
+	@GetMapping("/")
+	public RequestEntity<Page<GradeLevelDTO>> getAllGradeLevels(
+		@RequestParam(defaultValue = "0") Integer page,
+		@RequestParam(defaultValue = "10") Integer size
+	) {
+		logger.info("Fetching all grade levels");
+		return RequestEntity.ok(gradeLevelService.getAllGradeLevels(page, size));
+	}
+
+	@GetMapping(/{id})
+	public RequestEntity<GradeLevelDTO> getGradeLevelById(@PathVariable Long id) {
+		logger.info("Fetching grade level by id: {}", id);
+		return RequestEntity.ok(gradeLevelService.getGradeLevelById(id));
+	}
+
 }
