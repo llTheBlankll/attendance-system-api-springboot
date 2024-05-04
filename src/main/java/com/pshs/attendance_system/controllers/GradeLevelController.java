@@ -24,17 +24,17 @@
 package com.pshs.attendance_system.controllers;
 
 import com.pshs.attendance_system.dto.GradeLevelDTO;
+import com.pshs.attendance_system.dto.StrandDTO;
 import com.pshs.attendance_system.entities.GradeLevel;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.GradeLevelService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,6 +55,16 @@ public class GradeLevelController {
 		this.gradeLevelService = gradeLevelService;
 	}
 
+	@Operation(
+		summary = "Get All Grade Levels",
+		description = "Get all grade levels paginated",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "List of grade levels"
+			)
+		}
+	)
 	@GetMapping("/")
 	public ResponseEntity<Page<GradeLevelDTO>> getAllGradeLevels(
 		@RequestParam(defaultValue = "0") Integer page,
@@ -68,17 +78,38 @@ public class GradeLevelController {
 		);
 	}
 
+	@Operation(
+		summary = "Create Grade Level",
+		description = "Create a new grade level",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "Shows the status of the operation"
+			)
+		}
+	)
 	@PostMapping("/")
 	public ResponseEntity<Map<String, ExecutionStatus>> createGradeLevel(@RequestBody GradeLevelDTO gradeLevelDTO) {
 		logger.info("Creating grade level: {}", gradeLevelDTO);
+		ExecutionStatus status = gradeLevelService.createGradeLevel(gradeLevelDTO.toEntity());
 		return ResponseEntity.ok(
 			Map.of(
 				"status",
-				gradeLevelService.createGradeLevel(gradeLevelDTO.toEntity())
+				status
 			)
 		);
 	}
 
+	@Operation(
+		summary = "Delete Grade Level",
+		description = "Delete a grade level by ID",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "Shows the status of the operation"
+			)
+		}
+	)
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, ExecutionStatus>> deleteGradeLevel(@PathVariable Integer id) {
 		logger.info("Deleting grade level by id: {}", id);
@@ -90,6 +121,16 @@ public class GradeLevelController {
 		);
 	}
 
+	@Operation(
+		summary = "Get Grade Level by ID",
+		description = "Get a grade level by ID",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "Grade Level object"
+			)
+		}
+	)
 	@GetMapping("/{id}")
 	public ResponseEntity<GradeLevelDTO> getGradeLevelById(@PathVariable Integer id) {
 		logger.info("Fetching grade level by id: {}", id);
@@ -98,9 +139,16 @@ public class GradeLevelController {
 		);
 	}
 
-	@ApiResponse(
-		responseCode = "200",
-		description = "Grade Level updated successfully"
+
+	@Operation(
+		summary = "Update Grade Level",
+		description = "Update a grade level by ID",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "Shows the status of the operation"
+			)
+		}
 	)
 	@PutMapping("/{id}")
 	public ResponseEntity<Map<String, ExecutionStatus>> updateGradeLevel(@PathVariable Integer id, @RequestBody GradeLevelDTO gradeLevelDTO) {
@@ -112,4 +160,37 @@ public class GradeLevelController {
 			)
 		);
 	}
+
+	@GetMapping("/count")
+	public ResponseEntity<Map<String, Integer>> countAllGradeLevels() {
+		logger.info("Counting all grade levels");
+		return ResponseEntity.ok(
+			Map.of(
+				"count",
+				gradeLevelService.countAllGradeLevels()
+			)
+		);
+	}
+
+	@GetMapping("/search")
+	public ResponseEntity<Page<GradeLevel>> searchGradeLevels(@RequestParam(required = false) String name, @RequestBody(required = false) StrandDTO strand, @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size) {
+		if (!name.isEmpty() && strand != null) {
+			return ResponseEntity.ok(
+				gradeLevelService.searchGradeLevelsByNameAndStrand(name, strand.getId(), page, size)
+			);
+		} else if (strand != null) {
+			return ResponseEntity.ok(
+				gradeLevelService.searchGradeLevelsByStrand(strand.getId(), page, size)
+			);
+		} else if (!name.isEmpty()) {
+			return ResponseEntity.ok(
+				gradeLevelService.searchGradeLevelsByName(name, page, size)
+			);
+		} else {
+			return ResponseEntity.badRequest()
+				.body(Page.empty());
+		}
+	}
+
+
 }
