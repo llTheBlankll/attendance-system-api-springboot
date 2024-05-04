@@ -29,6 +29,7 @@ import java.io.Serializable;
 
 public class UserCreationDTO extends UserDTO implements Serializable {
 
+	private String password;
 	private boolean isLocked;
 	private boolean isEnabled;
 	private boolean isExpired;
@@ -51,16 +52,26 @@ public class UserCreationDTO extends UserDTO implements Serializable {
 
 	public User toEntity() {
 		return new User()
-				.setId(getId())
-				.setUsername(getUsername())
-				.setEmail(getEmail())
-				.setRole(getRole())
-				.setLastLogin(getLastLogin())
-				.setCreatedAt(getCreatedAt())
-				.setLocked(isLocked)
-				.setEnabled(isEnabled)
-				.setExpired(isExpired)
-				.setCredentialsExpired(isCredentialsExpired);
+			.setId(getId())
+			.setUsername(getUsername())
+			.setPassword(password)
+			.setEmail(getEmail())
+			.setRole(getRole())
+			.setLastLogin(getLastLogin())
+			.setCreatedAt(getCreatedAt())
+			.setLocked(isLocked)
+			.setEnabled(isEnabled)
+			.setExpired(isExpired)
+			.setCredentialsExpired(isCredentialsExpired);
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public UserCreationDTO setPassword(String password) {
+		this.password = password;
+		return this;
 	}
 
 	public boolean isLocked() {

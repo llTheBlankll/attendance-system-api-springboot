@@ -174,15 +174,17 @@ public class GradeLevelController {
 
 	@GetMapping("/search")
 	public ResponseEntity<Page<GradeLevel>> searchGradeLevels(@RequestParam(required = false) String name, @RequestBody(required = false) StrandDTO strand, @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size) {
+
+		// If name is not empty and strand is provided, then search grade levels by name and strand
 		if (!name.isEmpty() && strand != null) {
 			return ResponseEntity.ok(
 				gradeLevelService.searchGradeLevelsByNameAndStrand(name, strand.getId(), page, size)
 			);
-		} else if (strand != null) {
+		} else if (strand != null) { // If strand iso only provided, then search grade levels by strand
 			return ResponseEntity.ok(
 				gradeLevelService.searchGradeLevelsByStrand(strand.getId(), page, size)
 			);
-		} else if (!name.isEmpty()) {
+		} else if (!name.isEmpty()) { // If name is only provided, then search grade levels by name
 			return ResponseEntity.ok(
 				gradeLevelService.searchGradeLevelsByName(name, page, size)
 			);
@@ -191,6 +193,4 @@ public class GradeLevelController {
 				.body(Page.empty());
 		}
 	}
-
-
 }
