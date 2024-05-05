@@ -17,16 +17,17 @@ public class UserController {
 
 	private static final Logger logger = LogManager.getLogger(UserController.class);
 	private final UserService userService;
+	private final String STATUS = "status";
 
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
 
 	@PostMapping("/")
-	public ResponseEntity<?> createUser(@RequestBody UserCreationDTO userCreationDTO) {
+	public ResponseEntity<Map<String, ExecutionStatus>> createUser(@RequestBody UserCreationDTO userCreationDTO) {
 		logger.info("Creating user: {}", userCreationDTO);
 		ExecutionStatus status = userService.createUser(userCreationDTO.toEntity());
-		Map<String, ExecutionStatus> statusMap = Map.of("status", status);
+		Map<String, ExecutionStatus> statusMap = Map.of(STATUS, status);
 
 		return ResponseEntity.ok(
 			statusMap
@@ -48,7 +49,7 @@ public class UserController {
 	public ResponseEntity<Map<String, ExecutionStatus>> updateUser(@PathVariable int id, @RequestBody UserCreationDTO userCreationDTO) {
 		logger.info("Updating user with ID: {}", id);
 		ExecutionStatus status = userService.updateUser(id, userCreationDTO.toEntity());
-		Map<String, ExecutionStatus> statusMap = Map.of("status", status);
+		Map<String, ExecutionStatus> statusMap = Map.of(STATUS, status);
 
 		return ResponseEntity.ok(
 			statusMap
@@ -129,12 +130,36 @@ public class UserController {
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<Page<UserDTO>> searchUsers(@RequestParam(required = false) String username,
-	                                                 @RequestParam(required = false) String email,
+	public ResponseEntity<Page<UserDTO>> searchUsers(
+		@RequestParam(required = false) String username,
+		@RequestParam(required = false) String email,
+		@RequestParam(required = false) String role,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "10") int size
+	) {
+		boolean isUsernameEmpty = username.isEmpty();
+		boolean isEmailEmpty = email.isEmpty();
+		boolean isRoleEmpty = role.isEmpty();
+		Page<User> result;
 
-	                                                 @RequestParam int page, @RequestParam int size) {
+		if (!isUsernameEmpty && isEmailEmpty && isRoleEmpty) {
+			result = userService.searchUsersByUsername(username, page, size);
+		} else if (isUsernameEmpty && !isEmailEmpty && isRoleEmpty) {
+			result = userService.searchUsersByEmail(email, page, size);
+		} else if (isUsernameEmpty && isEmailEmpty && !isRoleEmpty) {
+			result = userService.searchUsersByRole(role, page, size);
+		} else if (!isUsernameEmpty && !isEmailEmpty && isRoleEmpty) {
+			result = userService.searchUsersByUsernameAndEmail(username, email, page, size);
+		} else if (!isUsernameEmpty && isEmailEmpty) {
+			result = userService.searchUsersByUsernameAndRole(username, role, page, size);
+		} else if (isUsernameEmpty && !isEmailEmpty) {
+			result = userService.searchUsersByEmailAndRole(email, role, page, size);
+		} else {
+			result = userService.searchUsersByUsernameAndEmailAndRole(username, email, role, page, size);
+		}
 
+		return ResponseEntity.ok(
+			result.map(User::toDTO)
+		);
 	}
-
-
 }

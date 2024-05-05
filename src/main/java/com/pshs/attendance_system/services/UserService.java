@@ -147,6 +147,27 @@ public interface UserService {
 	Page<User> searchUsersByEmail(String email, int page, int size);
 
 	/**
+	 * Search users with the given role.
+	 *
+	 * @param role The role of the user.
+	 * @param page Page
+	 * @param size Shows how many users will it display.
+	 * @return return the page object
+	 */
+	Page<User> searchUsersByRole(String role, int page, int size);
+
+	/**
+	 * Search all users with the given username and email.
+	 *
+	 * @param username The username that will be searched.
+	 * @param email The email that will be searched.
+	 * @param page Page
+	 * @param size Shows how many users will it display.
+	 * @return return the page object
+	 */
+	Page<User> searchUsersByUsernameAndEmail(String username, String email, int page, int size);
+
+	/**
 	 * Search all users with the given role and username.
 	 *
 	 * @param username The username that will be searched.
@@ -167,6 +188,18 @@ public interface UserService {
 	 * @return return the page object
 	 */
 	Page<User> searchUsersByEmailAndRole(String email, String role, int page, int size);
+
+	/**
+	 * Search users by their username, email, and role.
+	 *
+	 * @param username The username of the user that will be searched
+	 * @param email The email of the user that will be searched.
+	 * @param role The role of the user that will be searced.
+	 * @param page The page
+	 * @param size The maximum size of a page.
+	 * @return return the page of users.
+	 */
+	Page<User> searchUsersByUsernameAndEmailAndRole(String username, String email, String role, int page, int size);
 
 	// Region: User Statistics
 

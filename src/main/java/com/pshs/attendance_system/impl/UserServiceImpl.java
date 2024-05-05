@@ -320,6 +320,16 @@ public class UserServiceImpl implements UserService {
 		return userRepository.searchUsersByEmail(email, PageRequest.of(page, size));
 	}
 
+	@Override
+	public Page<User> searchUsersByRole(String role, int page, int size) {
+		return userRepository.searchUsersByRole(role, PageRequest.of(page, size));
+	}
+
+	@Override
+	public Page<User> searchUsersByUsernameAndEmail(String username, String email, int page, int size) {
+		return userRepository.searchUsersByUsernameAndEmail(username, email, PageRequest.of(page, size));
+	}
+
 	/**
 	 * Search all users with the given role and username.
 	 *
@@ -346,6 +356,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Page<User> searchUsersByEmailAndRole(String email, String role, int page, int size) {
 		return userRepository.searchUsersByEmailAndRole(email, role, PageRequest.of(page, size));
+	}
+
+	@Override
+	public Page<User> searchUsersByUsernameAndEmailAndRole(String username, String email, String role, int page, int size) {
+		return userRepository.searchUsersByUsernameAndEmailAndRole(username, email, role, PageRequest.of(page, size));
 	}
 
 	/**
