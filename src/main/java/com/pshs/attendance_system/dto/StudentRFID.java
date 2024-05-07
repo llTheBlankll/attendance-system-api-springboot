@@ -21,10 +21,39 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system.broker;
+package com.pshs.attendance_system.dto;
 
-import org.springframework.stereotype.Component;
+import java.io.Serializable;
 
-@Component
-public class RabbitMQConsumer {
+public class StudentRFID implements Serializable {
+
+	private Long lrn;
+	private String rfid;
+
+	public StudentRFID() {
+
+	}
+
+	public StudentRFID(Long lrn, String rfid) {
+		this.lrn = lrn;
+		this.rfid = rfid;
+	}
+
+	public Long getLrn() {
+		return lrn;
+	}
+
+	public StudentRFID setLrn(Long lrn) {
+		this.lrn = lrn;
+		return this;
+	}
+
+	public String getRfid() {
+		return rfid;
+	}
+
+	public StudentRFID setRfid(String rfid) {
+		this.rfid = rfid;
+		return this;
+	}
 }
