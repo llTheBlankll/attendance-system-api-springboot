@@ -30,6 +30,7 @@ import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.repositories.AttendanceRepository;
 import com.pshs.attendance_system.services.AttendanceService;
+import com.pshs.attendance_system.services.StudentService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -45,9 +46,11 @@ import java.util.List;
 public class AttendanceServiceImpl implements AttendanceService {
 
 	private static final Logger logger = LogManager.getLogger(AttendanceServiceImpl.class);
+	private final StudentService studentService;
 	private final AttendanceRepository attendanceRepository;
 
-	public AttendanceServiceImpl(AttendanceRepository attendanceRepository) {
+	public AttendanceServiceImpl(StudentService studentService, AttendanceRepository attendanceRepository) {
+		this.studentService = studentService;
 		this.attendanceRepository = attendanceRepository;
 	}
 
@@ -224,7 +227,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 	/**
 	 * Count the total number of students with the attendance status on a specific date.
 	 *
-	 * @param studentId      Student ID
+	 * @param studentId        Student ID
 	 * @param attendanceStatus Attendance Status (LATE, ON_TIME, ...)
 	 * @param date             Specific Date
 	 * @return the number of attendance of all the student with the specific status with the specific date
@@ -237,7 +240,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 	/**
 	 * Count the total number of students with the attendance status between two date.
 	 *
-	 * @param studentId      Student ID
+	 * @param studentId        Student ID
 	 * @param attendanceStatus Attendance Status (LATE, ON_TIME, ...)
 	 * @param dateRange        from 2024-10-1 to 2024-12-1
 	 * @return the number of attendance of all student with the specific status between the date range
@@ -295,6 +298,23 @@ public class AttendanceServiceImpl implements AttendanceService {
 	@Override
 	public int countStudentsAttendancesTimeOutByDate(LocalTime timeOut, LocalDate date) {
 		return (int) attendanceRepository.count();
+	}
+
+	@Override
+	public boolean isCheckedIn(Long lrn) {
+		return false;
+	}
+
+	@Override
+	public boolean isOut(Long lrn) {
+		// Get the date now.
+		LocalDate today = LocalDate.now();
+		Student student = studentService.
+	}
+
+	@Override
+	public boolean isAttendanceExist(int attendanceId) {
+		return false;
 	}
 
 	private boolean isAttendanceNotExist(Long id) {

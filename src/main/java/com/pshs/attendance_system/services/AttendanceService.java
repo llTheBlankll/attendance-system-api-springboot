@@ -50,7 +50,7 @@ public interface AttendanceService {
 	/**
 	 * Update the attendance record with the student. Requires the attendance id, and a new attendance object with the updated values.
 	 *
-	 * @param id Attendance ID
+	 * @param id         Attendance ID
 	 * @param attendance Updated Attendance Object
 	 * @return ExecutionStatus
 	 */
@@ -93,11 +93,9 @@ public interface AttendanceService {
 	Page<Attendance> getAllAttendances(int page, int size);
 
 	/**
-	 *
-	 *
 	 * @param studentId Student ID
-	 * @param page Page
-	 * @param size How many student it will display.
+	 * @param page      Page
+	 * @param size      How many student it will display.
 	 * @return return the page object
 	 */
 	Page<Attendance> getAllAttendancesByStudentId(Long studentId, int page, int size);
@@ -109,7 +107,7 @@ public interface AttendanceService {
 	 * Count the total number of students with the attendance status between two date.
 	 *
 	 * @param attendanceStatus Attendance Status (LATE, ON_TIME, ...)
-	 * @param dateRange from 2024-10-1 to 2024-12-1
+	 * @param dateRange        from 2024-10-1 to 2024-12-1
 	 * @return the number of attendance of all student.
 	 */
 	int countStudentsByStatusAndDateRange(AttendanceStatus attendanceStatus, DateRange dateRange);
@@ -118,7 +116,7 @@ public interface AttendanceService {
 	 * Count the total number of students with the attendance status on a specific date.
 	 *
 	 * @param attendanceStatus Attendance Status (LATE, ON_TIME, ...)
-	 * @param date Specific Date
+	 * @param date             Specific Date
 	 * @return the number of attendance of all the student with the specific status with the specific date
 	 */
 	int countStudentsByStatusAndDate(AttendanceStatus attendanceStatus, LocalDate date);
@@ -127,7 +125,7 @@ public interface AttendanceService {
 	 * Count the total number of students with the attendance status on a specific date.
 	 *
 	 * @param attendanceStatus Attendance Status (LATE, ON_TIME, ...)
-	 * @param date Specific Date
+	 * @param date             Specific Date
 	 * @return the number of attendance of all the student with the specific status with the specific date
 	 */
 	int countStudentAttendancesByStatusBetweenDate(Long studentId, AttendanceStatus attendanceStatus, LocalDate date);
@@ -136,7 +134,7 @@ public interface AttendanceService {
 	 * Count the total number of students with the attendance status between two date.
 	 *
 	 * @param attendanceStatus Attendance Status (LATE, ON_TIME, ...)
-	 * @param dateRange from 2024-10-1 to 2024-12-1
+	 * @param dateRange        from 2024-10-1 to 2024-12-1
 	 * @return the number of attendance of all student with the specific status between the date range
 	 */
 	int countStudentAttendancesByStatusBetweenDate(Long studentId, AttendanceStatus attendanceStatus, DateRange dateRange);
@@ -144,8 +142,8 @@ public interface AttendanceService {
 	/**
 	 * Count the total number of students who checked in at a specific time and have a specific attendance status on a specific date.
 	 *
-	 * @param timeIn The specific time the students checked in
-	 * @param date The specific date
+	 * @param timeIn           The specific time the students checked in
+	 * @param date             The specific date
 	 * @param attendanceStatus The attendance status (LATE, ON_TIME, ...)
 	 * @return the number of attendances of all the students with time in, date, and status.
 	 */
@@ -155,7 +153,7 @@ public interface AttendanceService {
 	 * Count the total number of students who checked in at a specific time on a specific date.
 	 *
 	 * @param timeIn The specific time the students checked in
-	 * @param date The specific date
+	 * @param date   The specific date
 	 * @return the number of attendances of all the students with time in and date only.
 	 */
 	int countStudentsAttendancesTimeInByDate(LocalTime timeIn, LocalDate date);
@@ -163,8 +161,8 @@ public interface AttendanceService {
 	/**
 	 * Count the total number of students who checked out at a specific time and have a specific attendance status on a specific date.
 	 *
-	 * @param timeOut The specific time the students checked out
-	 * @param date The specific date
+	 * @param timeOut          The specific time the students checked out
+	 * @param date             The specific date
 	 * @param attendanceStatus The attendance status (LATE, ON_TIME, ...)
 	 * @return the number of students
 	 */
@@ -174,9 +172,16 @@ public interface AttendanceService {
 	 * Count the total number of students who checked out at a specific time on a specific date.
 	 *
 	 * @param timeOut The specific time the students checked out
-	 * @param date The specific date
+	 * @param date    The specific date
 	 * @return the number of students attendances where when they went out of the school and with the date.
 	 */
 	int countStudentsAttendancesTimeOutByDate(LocalTime timeOut, LocalDate date);
 	// End: Statistics / Numbers
+
+	// Region: Custom Queries
+	boolean isCheckedIn(Long lrn);
+
+	boolean isOut(Long lrn);
+
+	boolean isAttendanceExist(int attendanceId);
 }
