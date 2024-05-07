@@ -59,6 +59,7 @@ public class AttendanceReceiver {
 			RFIDCredential rfidCredential = rfidCredentialService.getRFIDCredentialByStudentId(studentRFID.getLrn());
 
 			if (rfidCredential.getLrn() != null) {
+				// TODO: Implement method to create attendance
 				attendanceService.createAttendance(rfidCredential.getLrn().getId());
 			}
 

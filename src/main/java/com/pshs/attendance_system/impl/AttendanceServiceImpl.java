@@ -74,7 +74,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 			return ExecutionStatus.VALIDATION_ERROR;
 		}
 
-		// Check if the student has already an attendance record for today.
+		// Check if the student already has an attendance record for today.
 		if (isStudentRecordExist(student)) {
 			logger.debug("Student {} already has an attendance record for today.", student.getFirstName());
 			return ExecutionStatus.FAILURE;
@@ -83,6 +83,12 @@ public class AttendanceServiceImpl implements AttendanceService {
 		attendanceRepository.save(attendance);
 		logger.debug("Attendance of {}, {} has been created.", attendance.getStudent().getFirstName(), attendance.getStudent().getLastName());
 		return ExecutionStatus.SUCCESS;
+	}
+
+	@Override
+	public ExecutionStatus createAttendance(Long studentId) {
+		// TODO: implement method
+		return null;
 	}
 
 	/**
