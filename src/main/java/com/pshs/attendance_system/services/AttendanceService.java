@@ -45,6 +45,8 @@ public interface AttendanceService {
 	 */
 	ExecutionStatus createAttendance(Attendance attendance);
 
+	ExecutionStatus createAttendance(Long studentId);
+
 	/**
 	 * Update the attendance record with the student. Requires the attendance id, and a new attendance object with the updated values.
 	 *
