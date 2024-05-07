@@ -4,11 +4,11 @@ CREATE TABLE Strand
     name VARCHAR(255) NOT NULL
 );
 
+
 -- * GRADE LEVELS TABLE
 CREATE TABLE IF NOT EXISTS grade_levels
 (
     id     SERIAL PRIMARY KEY,
-    level  VARCHAR(128) NOT NULL,
     name   VARCHAR(128) NOT NULL,
     strand INT,
     -- The length of a name should be at least 3 characters.
@@ -24,20 +24,13 @@ CREATE TYPE Status AS ENUM ('LATE','ON_TIME', 'OUT', 'ABSENT');
 -- Entity findByMyEnum(MyEnum myEnum)
 CREATE CAST (CHARACTER VARYING as Status) WITH INOUT AS IMPLICIT;
 
--- * Creates Subjects Table.
-CREATE TABLE IF NOT EXISTS subjects
-(
-    id          SERIAL PRIMARY KEY,
-    name        VARCHAR(128),
-    description TEXT
-);
 -- * Creates Teachers Table.
 CREATE TABLE IF NOT EXISTS teachers
 (
     id         SERIAL,
     first_name VARCHAR(32),
     last_name  VARCHAR(32),
-    sex        VARCHAR(8),
+    sex        VARCHAR(16),
     PRIMARY KEY (id)
 );
 
@@ -56,12 +49,18 @@ CREATE TABLE IF NOT EXISTS sections
 );
 
 -- * STUDENTS TABLE
+-- Mockaroo
+-- if level == "Grade 11" || level == "Grade 12" then "Senior High School"
+-- elseif level == "Grade 7" || level == "Grade 8" || level == "Grade 9" || level == "Grade 10" then "Junior High School"
+-- elseif level == "Grade 1" || level == "Grade 2" || level == "Grade 3" || level == "Grade 4" || level == "Grade 5" || level == "Grade 6" then "Elementary"
+-- end
 CREATE TABLE IF NOT EXISTS students
 (
     lrn            BIGINT PRIMARY KEY,
     first_name     VARCHAR(128) NOT NULL,
-    middle_initial CHAR(1),
+    middle_initial CHAR(1)      NULL,
     last_name      VARCHAR(128) NOT NULL,
+    prefix         CHAR(4)      NULL,
     grade_level    INT,
     sex            VARCHAR(6),
     section_id     INT,
@@ -102,7 +101,7 @@ CREATE INDEX guardian_student_id_idx ON guardians (student_lrn);
 CREATE INDEX guardian_full_name_idx ON guardians (full_name);
 
 -- * ATTENDANCE TABLE
-CREATE TABLE IF NOT EXISTS attendances
+CREATE TABLE IF NOT EXISTS Attendances
 (
     id         SERIAL PRIMARY KEY,
     student_id BIGINT NOT NULL,
@@ -112,25 +111,29 @@ CREATE TABLE IF NOT EXISTS attendances
     time_out   TIME DEFAULT LOCALTIME,
     CONSTRAINT fk_student_lrn FOREIGN KEY (student_id) REFERENCES students (lrn) ON DELETE SET NULL ON UPDATE CASCADE
 );
-CREATE INDEX attendance_date_idx on attendances (date);
+CREATE INDEX attendance_date_idx on Attendances (date);
 
 -- * MAKE ATTENDANCE ENUM TYPE CHARACTER VARYING
-ALTER TABLE attendances
+ALTER TABLE Attendances
     ALTER COLUMN status TYPE CHARACTER VARYING;
 
 -- * CREATE STUDENT ID INDEX
-CREATE INDEX attendance_student_id_idx ON attendances (student_id);
+CREATE INDEX attendance_student_id_idx ON Attendances (student_id);
 
 -- * CREATE USERS TABLE
 CREATE TABLE IF NOT EXISTS Users
 (
-    id         SERIAL PRIMARY KEY,
-    username   VARCHAR(64),
-    password   CHAR(64),
-    email      VARCHAR(128),
-    role_id    VARCHAR(48),
-    last_login TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id                     SERIAL PRIMARY KEY,
+    username               VARCHAR(64),
+    password               CHAR(64),
+    email                  VARCHAR(128),
+    role                   VARCHAR(48) DEFAULT 'GUEST',
+    is_expired             BOOLEAN     DEFAULT FALSE,
+    is_locked              BOOLEAN     DEFAULT FALSE,
+    is_credentials_expired BOOLEAN     DEFAULT FALSE,
+    is_enabled             BOOLEAN     DEFAULT TRUE,
+    last_login             TIMESTAMP,
+    created_at             TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
     CHECK ( LENGTH(username) >= 3 ),
     CHECK ( LENGTH(email) >= 3 )
 );
@@ -157,7 +160,7 @@ $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER on_event_attendance
     AFTER INSERT OR UPDATE
-    ON attendances
+    ON Attendances
     FOR EACH ROW
 EXECUTE FUNCTION notify_changes_attendance();
 
@@ -168,7 +171,7 @@ SELECT *
 FROM sections;
 
 -- show all grade levels.
-select level, name
+select name
 FROM grade_levels
 ;
 

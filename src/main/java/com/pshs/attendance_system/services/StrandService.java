@@ -21,18 +21,51 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system;
+package com.pshs.attendance_system.services;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
+import com.pshs.attendance_system.entities.Strand;
+import com.pshs.attendance_system.enums.ExecutionStatus;
+import org.springframework.data.domain.Page;
 
-@SpringBootApplication
-@EnableCaching
-public class AttendanceSystemApplication {
+public interface StrandService {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AttendanceSystemApplication.class, args);
-	}
+	/**
+	 * Create a new strand record.
+	 *
+	 * @param strand Strand object to be created
+	 * @return Execution Status (SUCCESS, FAILURE, or VALIDATION_ERROR)
+	 */
+	ExecutionStatus createStrand(Strand strand);
 
+	/**
+	 * Delete a strand record.
+	 *
+	 * @param strandId ID of the strand to be deleted
+	 * @return Execution Status (SUCCESS, FAILURE, or NOT_FOUND)
+	 */
+	ExecutionStatus deleteStrand(int strandId);
+
+	/**
+	 * Update a strand record.
+	 *
+	 * @param strandId ID of the strand to be updated
+	 * @param strand Updated strand object
+	 * @return Execution Status (SUCCESS, FAILURE, NOT_FOUND, or VALIDATION_ERROR)
+	 */
+	ExecutionStatus updateStrand(int strandId, Strand strand);
+
+	/**
+	 * Retrieve a strand record.
+	 *
+	 * @param strandId ID of the strand to be retrieved
+	 * @return Strand object if found, otherwise null
+	 */
+	Strand getStrand(int strandId);
+
+	/**
+	 * Retrieve all strand records.
+	 *
+	 * @return The page of strand records
+	 */
+	Page<Strand> getAllStrands(int page, int size);
 }

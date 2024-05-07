@@ -21,18 +21,22 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system;
+package com.pshs.attendance_system.repositories;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
+import com.pshs.attendance_system.entities.RFIDCredential;
+import com.pshs.attendance_system.entities.Student;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Repository;
 
-@SpringBootApplication
-@EnableCaching
-public class AttendanceSystemApplication {
+import java.util.Optional;
 
-	public static void main(String[] args) {
-		SpringApplication.run(AttendanceSystemApplication.class, args);
-	}
+@Repository
+public interface RFIDCredentialRepository extends JpaRepository<RFIDCredential, Integer> {
+	@Query("select r from RFIDCredential r where r.lrn = ?1")
+	Optional<RFIDCredential> getRFIDCredentialByStudent(@NonNull Student lrn);
 
+	@Query("select r from RFIDCredential r where r.lrn.id = ?1")
+	Optional<RFIDCredential> getRFIDCredentialByStudentId(@NonNull Long id);
 }

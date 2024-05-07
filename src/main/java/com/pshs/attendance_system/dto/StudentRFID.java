@@ -21,18 +21,39 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system;
+package com.pshs.attendance_system.dto;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
+import java.io.Serializable;
 
-@SpringBootApplication
-@EnableCaching
-public class AttendanceSystemApplication {
+public class StudentRFID implements Serializable {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AttendanceSystemApplication.class, args);
+	private Long lrn;
+	private String rfid;
+
+	public StudentRFID() {
+
 	}
 
+	public StudentRFID(Long lrn, String rfid) {
+		this.lrn = lrn;
+		this.rfid = rfid;
+	}
+
+	public Long getLrn() {
+		return lrn;
+	}
+
+	public StudentRFID setLrn(Long lrn) {
+		this.lrn = lrn;
+		return this;
+	}
+
+	public String getRfid() {
+		return rfid;
+	}
+
+	public StudentRFID setRfid(String rfid) {
+		this.rfid = rfid;
+		return this;
+	}
 }

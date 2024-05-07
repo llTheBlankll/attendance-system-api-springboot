@@ -21,18 +21,12 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system;
+package com.pshs.attendance_system.repositories;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
+import com.pshs.attendance_system.entities.Strand;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@SpringBootApplication
-@EnableCaching
-public class AttendanceSystemApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(AttendanceSystemApplication.class, args);
-	}
-
+@Repository
+public interface StrandRepository extends JpaRepository<Strand, Integer> {
 }

@@ -21,18 +21,25 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system;
+package com.pshs.attendance_system.repositories;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
+import com.pshs.attendance_system.entities.GradeLevel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Repository;
 
-@SpringBootApplication
-@EnableCaching
-public class AttendanceSystemApplication {
+@Repository
+public interface GradeLevelRepository extends JpaRepository<GradeLevel, Integer> {
+	@Query("select g from GradeLevel g where g.name like concat('%', :name, '%')")
+	Page<GradeLevel> searchGradeLevelsByName(@Param("name") @NonNull String name, Pageable pageable);
 
-	public static void main(String[] args) {
-		SpringApplication.run(AttendanceSystemApplication.class, args);
-	}
+	@Query("select g from GradeLevel g where g.name like concat('%', :name, '%') and g.strand.id = :id")
+	Page<GradeLevel> searchGradeLevelsByNameAndStrand(@Param("name") @NonNull String name, @Param("id") @NonNull Integer id, Pageable pageable);
 
+	@Query("select g from GradeLevel g where g.strand.id = :id")
+	Page<GradeLevel> searchGradeLevelsByStrand(@Param("id") @NonNull Integer id, Pageable pageable);
 }

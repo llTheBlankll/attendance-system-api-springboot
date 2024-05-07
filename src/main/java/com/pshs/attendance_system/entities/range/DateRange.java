@@ -21,18 +21,35 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system;
+package com.pshs.attendance_system.entities.range;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
+import java.time.LocalDate;
 
-@SpringBootApplication
-@EnableCaching
-public class AttendanceSystemApplication {
+public class DateRange {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AttendanceSystemApplication.class, args);
+	private LocalDate startDate;
+	private LocalDate endDate;
+
+	public DateRange(LocalDate startDate, LocalDate endDate) {
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public DateRange setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+		return this;
+	}
+
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+
+	public DateRange setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
+		return this;
+	}
 }

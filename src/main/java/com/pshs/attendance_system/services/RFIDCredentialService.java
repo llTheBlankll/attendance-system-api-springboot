@@ -21,18 +21,51 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system;
+package com.pshs.attendance_system.services;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
+import com.pshs.attendance_system.entities.RFIDCredential;
+import com.pshs.attendance_system.entities.Student;
+import com.pshs.attendance_system.enums.ExecutionStatus;
 
-@SpringBootApplication
-@EnableCaching
-public class AttendanceSystemApplication {
+public interface RFIDCredentialService {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AttendanceSystemApplication.class, args);
-	}
+	/**
+	 * Create a new RFID Credential
+	 *
+	 * @param rfidCredential RFID Credential to be created
+	 * @return ExecutionStatus (SUCCESS, FAILURE)
+	 */
+	ExecutionStatus createRFIDCredential(RFIDCredential rfidCredential);
 
+	/**
+	 * Delete an RFID Credential
+	 *
+	 * @param rfidCredential RFID Credential to be deleted
+	 * @return ExecutionStatus (SUCCESS, FAILURE)
+	 */
+	ExecutionStatus deleteRFIDCredential(RFIDCredential rfidCredential);
+
+	/**
+	 * Update an RFID Credential
+	 *
+	 * @param rfidCredential RFID Credential to be updated
+	 * @return ExecutionStatus (SUCCESS, FAILURE)
+	 */
+	ExecutionStatus updateRFIDCredential(RFIDCredential rfidCredential);
+
+	/**
+	 * Get an RFID Credential by Student
+	 *
+	 * @param student Student to get the RFID Credential
+	 * @return RFIDCredential
+	 */
+	RFIDCredential getRFIDCredentialByStudent(Student student);
+
+	/**
+	 * Get an RFID Credential by Student ID
+	 *
+	 * @param studentId Student ID to get the RFID Credential
+	 * @return RFIDCredential
+	 */
+	RFIDCredential getRFIDCredentialByStudentId(Long studentId);
 }

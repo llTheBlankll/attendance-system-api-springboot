@@ -21,18 +21,49 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system;
+package com.pshs.attendance_system.entities;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
+import com.pshs.attendance_system.dto.StrandDTO;
+import jakarta.persistence.*;
 
-@SpringBootApplication
-@EnableCaching
-public class AttendanceSystemApplication {
+@Entity
+@Table(name = "strand")
+public class Strand {
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "strand_id_gen")
+	@SequenceGenerator(name = "strand_id_gen", sequenceName = "strand_id_seq", allocationSize = 1)
+	@Column(name = "id", nullable = false)
+	private Integer id;
 
-	public static void main(String[] args) {
-		SpringApplication.run(AttendanceSystemApplication.class, args);
+	@Column(name = "name", nullable = false)
+	private String name;
+
+	public Strand() {}
+
+	public Strand(Integer id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 
+	public StrandDTO toDTO() {
+		return new StrandDTO(id, name);
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public Strand setId(Integer id) {
+		this.id = id;
+		return this;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Strand setName(String name) {
+		this.name = name;
+		return this;
+	}
 }
