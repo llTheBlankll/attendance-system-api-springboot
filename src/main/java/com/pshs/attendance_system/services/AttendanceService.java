@@ -75,6 +75,8 @@ public interface AttendanceService {
 	 */
 	Attendance getAttendanceById(Long id);
 
+	Attendance getAttendanceByStudentDate(Long studentId, LocalDate date);
+
 	/**
 	 * Get the attendance record of a student by the student id.
 	 *
@@ -183,5 +185,5 @@ public interface AttendanceService {
 
 	boolean isOut(Long lrn);
 
-	boolean isAttendanceExist(int attendanceId);
+	boolean isAttendanceExist(int attendanceId, LocalDate date);
 }

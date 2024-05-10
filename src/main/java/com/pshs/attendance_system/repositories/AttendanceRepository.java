@@ -37,6 +37,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AttendanceRepository extends JpaRepository<Attendance, Integer> {
@@ -76,4 +77,7 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Integer>
 		select count(distinct a) from Attendance a
 		where a.timeOut = :timeOut and a.date = :date and a.status = :status""")
 	long countStudentsAttendancesTimeOutBydateAndStatus(@Param("timeOut") @NonNull LocalTime timeOut, @Param("date") @NonNull LocalDate date, @Param("status") @NonNull String status);
+
+	@Query("select a from Attendance a where a.student.id = :id and a.date = :date")
+	Optional<Attendance> getAttendanceByStudentDate(@Param("id") @NonNull Long id, @Param("date") @NonNull LocalDate date);
 }

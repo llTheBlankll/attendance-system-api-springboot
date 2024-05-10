@@ -35,22 +35,83 @@ import java.util.Map;
 
 public interface StudentService {
 
+	/**
+	 * Create a new student record by providing a student object
+	 *
+	 * @param student Student Object
+	 * @return ExecutionStatus
+	 */
 	ExecutionStatus createStudent(Student student);
 
+	/**
+	 * Delete student record by providing a student object
+	 *
+	 * @param student Student Object that will be deleted
+	 * @return ExecutionStatus
+	 */
 	ExecutionStatus deleteStudent(Student student);
 
+	/**
+	 * Delete student record by providing a student id
+	 *
+	 * @param id student ID that will be deleted
+	 * @return ExecutionStatus
+	 */
+	ExecutionStatus deleteStudent(int id);
+
+	/**
+	 * Update student record by providing a student object and student id
+	 *
+	 * @param studentId student id that will be updated
+	 * @param student the newly updated information of a student.
+	 * @return ExecutionStatus
+	 */
 	ExecutionStatus updateStudent(Long studentId, Student student);
 
+	/**
+	 * Update Student first name
+	 *
+	 * @param studentId student id that will be updated
+	 * @param firstName the new first name of the student
+	 * @return ExecutionStatus
+	 */
 	ExecutionStatus updateStudentFirstName(Long studentId, String firstName);
 
+	/**
+	 * Update Student last name
+	 *
+	 * @param studentId student id that will be updated
+	 * @param lastName the new last name of the student
+	 * @return ExecutionStatus
+	 */
 	ExecutionStatus updateStudentLastName(Long studentId, String lastName);
 
+	/**
+	 * Update Student middle initial
+	 *
+	 * @param studentId student id that will be updated
+	 * @param middleName the new middle initial of the student
+	 * @return ExecutionStatus
+	 */
 	ExecutionStatus updateStudentMiddleInitial(Long studentId, String middleName);
 
+	/**
+	 * Update Student Grade Level
+	 * @param studentId student id that will be updated
+	 * @param gradeLevel the new grade level of the student
+	 * @return ExecutionStatus
+	 */
 	ExecutionStatus updateStudentGradeLevel(Long studentId, int gradeLevel);
 
+	/**
+	 * Update Student Section
+	 * @param studentId student id that will be updated
+	 * @param section the new section of the student
+	 * @return ExecutionStatus
+	 */
 	ExecutionStatus updateStudentSection(Long studentId, String section);
 
+	
 	ExecutionStatus updateStudentAddress(Long studentId, String address);
 
 	ExecutionStatus updateStudentBirthDate(Long studentId, LocalDate birthDate);
@@ -62,6 +123,7 @@ public interface StudentService {
 	Student getStudentByGuardian(int guardianId);
 
 	// Region: Retrieval
+
 	Page<Student> getAllStudents(int page, int size);
 
 	Page<Student> searchStudentsByFirstName(String firstName, int page, int size);

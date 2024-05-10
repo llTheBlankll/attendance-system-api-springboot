@@ -28,7 +28,10 @@ import com.pshs.attendance_system.entities.Guardian;
 import com.pshs.attendance_system.entities.Section;
 import com.pshs.attendance_system.entities.Student;
 import com.pshs.attendance_system.enums.ExecutionStatus;
+import com.pshs.attendance_system.repositories.StudentRepository;
 import com.pshs.attendance_system.services.StudentService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -38,185 +41,10 @@ import java.util.Map;
 @Service
 public class StudentServiceImpl implements StudentService {
 
+	private static final Logger logger = LogManager.getLogger(StudentServiceImpl.class);
+	private final StudentRepository studentRepository;
 
-
-	@Override
-	public ExecutionStatus createStudent(Student student) {
-		return null;
-	}
-
-	@Override
-	public ExecutionStatus deleteStudent(Student student) {
-		return null;
-	}
-
-	@Override
-	public ExecutionStatus updateStudent(Long studentId, Student student) {
-		return null;
-	}
-
-	@Override
-	public ExecutionStatus updateStudentFirstName(Long studentId, String firstName) {
-		return null;
-	}
-
-	@Override
-	public ExecutionStatus updateStudentLastName(Long studentId, String lastName) {
-		return null;
-	}
-
-	@Override
-	public ExecutionStatus updateStudentMiddleInitial(Long studentId, String middleName) {
-		return null;
-	}
-
-	@Override
-	public ExecutionStatus updateStudentGradeLevel(Long studentId, int gradeLevel) {
-		return null;
-	}
-
-	@Override
-	public ExecutionStatus updateStudentSection(Long studentId, String section) {
-		return null;
-	}
-
-	@Override
-	public ExecutionStatus updateStudentAddress(Long studentId, String address) {
-		return null;
-	}
-
-	@Override
-	public ExecutionStatus updateStudentBirthDate(Long studentId, LocalDate birthDate) {
-		return null;
-	}
-
-	@Override
-	public Student getStudentById(Long id) {
-		return null;
-	}
-
-	@Override
-	public Student getStudentByGuardian(Guardian guardian) {
-		return null;
-	}
-
-	@Override
-	public Student getStudentByGuardian(int guardianId) {
-		return null;
-	}
-
-	@Override
-	public Page<Student> getAllStudents(int page, int size) {
-		return null;
-	}
-
-	@Override
-	public Page<Student> searchStudentsByFirstName(String firstName, int page, int size) {
-		return null;
-	}
-
-	@Override
-	public Page<Student> searchStudentsByLastName(String lastName, int page, int size) {
-		return null;
-	}
-
-	@Override
-	public Page<Student> searchStudentsByFirstAndLastName(String firstName, String lastName, int page, int size) {
-		return null;
-	}
-
-	@Override
-	public Page<Student> searchStudentsByGradeLevel(int gradeLevel, int page, int size) {
-		return null;
-	}
-
-	@Override
-	public Page<Student> searchStudentsByGradeLevel(GradeLevel gradeLevel, int page, int size) {
-		return null;
-	}
-
-	@Override
-	public Page<Student> searchStudentsBySection(int sectionId, int page, int size) {
-		return null;
-	}
-
-	@Override
-	public Page<Student> searchStudentsBySection(Section section, int page, int size) {
-		return null;
-	}
-
-	@Override
-	public Map<String, Double> getAverageAge() {
-		return Map.of();
-	}
-
-	@Override
-	public Long countStudents() {
-		return 0;
-	}
-
-	@Override
-	public Long countStudentsBySex(String sex) {
-		return 0;
-	}
-
-	@Override
-	public Long countStudentsInSection(Section section) {
-		return 0;
-	}
-
-	@Override
-	public Long countStudentsInSection(int sectionId) {
-		return 0;
-	}
-
-	@Override
-	public Long countStudentsInGradeLevel(GradeLevel gradeLevel) {
-		return 0;
-	}
-
-	@Override
-	public Long countStudentsInGradeLevel(int gradeLevelId) {
-		return 0;
-	}
-
-	@Override
-	public Long countStudentsInGradeLevelAndSection(GradeLevel gradeLevel, Section section) {
-		return 0;
-	}
-
-	@Override
-	public Long countStudentsInGradeLevelAndSection(int gradeLevelId, int sectionId) {
-		return 0;
-	}
-
-	@Override
-	public Long countStudentsByFirstNameInGradeLevelAndSection(String firstName, GradeLevel gradeLevel, Section section) {
-		return 0;
-	}
-
-	@Override
-	public Long countStudentsByFirstNameInGradeLevelAndSection(String firstName, int gradeLevelId, int sectionId) {
-		return 0;
-	}
-
-	@Override
-	public Long countStudentsByLastNameInGradeLevelAndSection(String lastName, GradeLevel gradeLevel, Section section) {
-		return 0;
-	}
-
-	@Override
-	public Long countStudentsByLastNameInGradeLevelAndSection(String lastName, int gradeLevelId, int sectionId) {
-		return 0;
-	}
-
-	@Override
-	public Long countStudentsByFirstAndLastNameInGradeLevelAndSection(String firstName, String lastName, GradeLevel gradeLevel, Section section) {
-		return 0;
-	}
-
-	@Override
-	public Long countStudentsByFirstAndLastNameInGradeLevelAndSection(String firstName, String lastName, int gradeLevelId, int sectionId) {
-		return 0;
+	public StudentServiceImpl(StudentRepository studentRepository) {
+		this.studentRepository = studentRepository;
 	}
 }

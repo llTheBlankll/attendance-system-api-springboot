@@ -160,6 +160,11 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return attendanceRepository.findById(id.intValue()).orElse(null);
 	}
 
+	@Override
+	public Attendance getAttendanceByStudentDate(Long studentId, LocalDate date) {
+		return attendanceRepository.getAttendanceByStudentDate(studentId, date).orElse(null);
+	}
+
 	/**
 	 * Get the attendance record of a student by the student id.
 	 *
@@ -309,7 +314,13 @@ public class AttendanceServiceImpl implements AttendanceService {
 	public boolean isOut(Long lrn) {
 		// Get the date now.
 		LocalDate today = LocalDate.now();
-		Student student = studentService.
+		Student student = studentService.getStudentById(lrn);
+
+	}
+
+	@Override
+	public boolean isAttendanceExist(int attendanceId, LocalDate date) {
+		return false;
 	}
 
 	@Override
