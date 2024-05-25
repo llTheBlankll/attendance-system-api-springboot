@@ -30,9 +30,6 @@ import com.pshs.attendance_system.entities.Student;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
 
-import java.time.LocalDate;
-import java.util.Map;
-
 public interface StudentService {
 
 	/**
@@ -69,33 +66,6 @@ public interface StudentService {
 	ExecutionStatus updateStudent(Long studentId, Student student);
 
 	/**
-	 * Update Student first name
-	 *
-	 * @param studentId student id that will be updated
-	 * @param firstName the new first name of the student
-	 * @return ExecutionStatus
-	 */
-	ExecutionStatus updateStudentFirstName(Long studentId, String firstName);
-
-	/**
-	 * Update Student last name
-	 *
-	 * @param studentId student id that will be updated
-	 * @param lastName the new last name of the student
-	 * @return ExecutionStatus
-	 */
-	ExecutionStatus updateStudentLastName(Long studentId, String lastName);
-
-	/**
-	 * Update Student middle initial
-	 *
-	 * @param studentId student id that will be updated
-	 * @param middleName the new middle initial of the student
-	 * @return ExecutionStatus
-	 */
-	ExecutionStatus updateStudentMiddleInitial(Long studentId, String middleName);
-
-	/**
 	 * Update Student Grade Level
 	 * @param studentId student id that will be updated
 	 * @param gradeLevel the new grade level of the student
@@ -109,26 +79,7 @@ public interface StudentService {
 	 * @param section the new section of the student
 	 * @return ExecutionStatus
 	 */
-	ExecutionStatus updateStudentSection(Long studentId, String section);
-
-	/**
-	 * Update Student Address with the given address by providing the student id
-	 *
-	 * @param studentId Student id that will be updated
-	 * @param address the new updated address
-	 * @return {@link ExecutionStatus}
-	 *
-	 */
-	ExecutionStatus updateStudentAddress(Long studentId, String address);
-
-	/**
-	 * Update Student Birthdate by providing the student id
-	 *
-	 * @param studentId student id that will be updated
-	 * @param birthDate the new birthdate of the student
-	 * @return {@link ExecutionStatus}
-	 */
-	ExecutionStatus updateStudentBirthDate(Long studentId, LocalDate birthDate);
+	ExecutionStatus updateStudentSection(Long studentId, int section);
 
 	/**
 	 * Get the student record by providing the student id
@@ -311,66 +262,5 @@ public interface StudentService {
 	 */
 	Long countStudentsInGradeLevelAndSection(int gradeLevelId, int sectionId);
 
-	/**
-	 * Counts the number of students in the specified grade level and section with the given first name.
-	 *
-	 * @param  firstName    the first name of the students to count
-	 * @param  gradeLevel   the grade level to count the students in
-	 * @param  section      the section to count the students in
-	 * @return              the number of students with the given first name in the specified grade level and section
-	 */
-	Long countStudentsByFirstNameInGradeLevelAndSection(String firstName, GradeLevel gradeLevel, Section section);
-
-	/**
-	 * Counts the number of students in the specified grade level and section with the given first name.
-	 *
-	 * @param  firstName    the first name of the students to count
-	 * @param  gradeLevelId the ID of the grade level to count the students in
-	 * @param  sectionId    the ID of the section to count the students in
-	 * @return              the number of students with the given first name in the specified grade level and section
-	 */
-	Long countStudentsByFirstNameInGradeLevelAndSection(String firstName, int gradeLevelId, int sectionId);
-
-	/**
-	 * Counts the number of students in the specified grade level and section with the given last name.
-	 *
-	 * @param  lastName     the last name of the students to count
-	 * @param  gradeLevel   the grade level to count the students in
-	 * @param  section      the section to count the students in
-	 * @return              the number of students with the given last name in the specified grade level and section
-	 */
-	Long countStudentsByLastNameInGradeLevelAndSection(String lastName, GradeLevel gradeLevel, Section section);
-
-	/**
-	 * Counts the number of students in the specified grade level and section with the given last name.
-	 *
-	 * @param  lastName     the last name of the students to count
-	 * @param  gradeLevelId the ID of the grade level to count the students in
-	 * @param  sectionId    the ID of the section to count the students in
-	 * @return              the number of students with the given last name in the specified grade level and section
-	 */
-	Long countStudentsByLastNameInGradeLevelAndSection(String lastName, int gradeLevelId, int sectionId);
-
-	/**
-	 * Counts the number of students in the specified grade level and section with the given first and last name.
-	 *
-	 * @param  firstName    the first name of the students to count
-	 * @param  lastName     the last name of the students to count
-	 * @param  gradeLevel   the grade level to count the students in
-	 * @param  section      the section to count the students in
-	 * @return              the number of students with the given first and last name in the specified grade level and section
-	 */
-	Long countStudentsByFirstAndLastNameInGradeLevelAndSection(String firstName, String lastName, GradeLevel gradeLevel, Section section);
-
-	/**
-	 * Counts the number of students in the specified grade level and section with the given first and last name.
-	 *
-	 * @param  firstName    the first name of the students to count
-	 * @param  lastName     the last name of the students to count
-	 * @param  gradeLevelId the ID of the grade level to count the students in
-	 * @param  sectionId    the ID of the section to count the students in
-	 * @return              the number of students with the given first and last name in the specified grade level and section
-	 */
-	Long countStudentsByFirstAndLastNameInGradeLevelAndSection(String firstName, String lastName, int gradeLevelId, int sectionId);
-	// End: Statistics
+	boolean isStudentExist(Long studentId);
 }

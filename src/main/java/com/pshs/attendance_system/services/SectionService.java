@@ -225,4 +225,7 @@ public interface SectionService {
 	 */
 	int countSections();
 	// End Region: Statistics
+
+	boolean isSectionExist(int sectionId);
+	boolean isSectionExist(Section section);
 }
