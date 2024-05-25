@@ -23,15 +23,12 @@
 
 package com.pshs.attendance_system.broker;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.pshs.attendance_system.dto.CardRFIDCredentialDTO;
-import com.pshs.attendance_system.dto.SuccessfulAttendanceDTO;
-import com.pshs.attendance_system.entities.Attendance;
+import com.pshs.attendance_system.dto.AttendanceResultDTO;
 import com.pshs.attendance_system.entities.RFIDCredential;
 import com.pshs.attendance_system.enums.Mode;
-import com.pshs.attendance_system.enums.Status;
 import com.pshs.attendance_system.services.AttendanceService;
 import com.pshs.attendance_system.services.RFIDCredentialService;
 import org.apache.logging.log4j.LogManager;
@@ -39,10 +36,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Optional;
 
 @Component
 public class AttendanceReceiver {
@@ -69,7 +62,7 @@ public class AttendanceReceiver {
 			// Check if the mode is for attendance
 			if (studentRFID.getMode() == Mode.ATTENDANCE) { // ! If the mode is for attendance
 				RFIDCredential rfidCredential = rfidCredentialService.getRFIDCredentialByHash(studentRFID.getHashedLrn());
-				SuccessfulAttendanceDTO successfulAttendance = attendanceService.attendanceIn(rfidCredential);
+				AttendanceResultDTO successfulAttendance = attendanceService.attendanceIn(rfidCredential);
 
 				if (successfulAttendance != null) {
 					rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", mapper.writeValueAsString(successfulAttendance));
@@ -78,7 +71,7 @@ public class AttendanceReceiver {
 				}
 			} else if (studentRFID.getMode() == Mode.ATTENDANCE_OUT) { // ! If the mode is for attendance out
 				RFIDCredential rfidCredential = rfidCredentialService.getRFIDCredentialByHash(studentRFID.getHashedLrn());
-				SuccessfulAttendanceDTO successfulAttendance = attendanceService.attendanceOut(rfidCredential);
+				AttendanceResultDTO successfulAttendance = attendanceService.attendanceOut(rfidCredential);
 
 				if (successfulAttendance != null) {
 					rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", mapper.writeValueAsString(successfulAttendance));

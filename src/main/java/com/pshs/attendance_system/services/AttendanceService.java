@@ -23,7 +23,8 @@
 
 package com.pshs.attendance_system.services;
 
-import com.pshs.attendance_system.dto.SuccessfulAttendanceDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.pshs.attendance_system.dto.AttendanceResultDTO;
 import com.pshs.attendance_system.entities.Attendance;
 import com.pshs.attendance_system.entities.RFIDCredential;
 import com.pshs.attendance_system.entities.range.DateRange;
@@ -84,7 +85,7 @@ public interface AttendanceService {
 	 * @param rfidCredential RFID Credential
 	 * @see RFIDCredential
 	 */
-	SuccessfulAttendanceDTO attendanceIn(RFIDCredential rfidCredential);
+	AttendanceResultDTO attendanceIn(RFIDCredential rfidCredential);
 
 	/**
 	 * Check OUT the student with their RFID credential (MIFARE Card containing the hash of their lrn with salt).
@@ -92,7 +93,7 @@ public interface AttendanceService {
 	 * @param rfidCredential RFID Credential
 	 * @see RFIDCredential
 	 */
-	SuccessfulAttendanceDTO attendanceOut(RFIDCredential rfidCredential) throws StudentAlreadySignedOutException, AttendanceNotFoundException;
+	AttendanceResultDTO attendanceOut(RFIDCredential rfidCredential) throws JsonProcessingException;
 	// End Region: CRUD Methods
 
 	// Region: Custom Queries

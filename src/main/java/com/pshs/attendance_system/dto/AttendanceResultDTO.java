@@ -29,7 +29,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class SuccessfulAttendanceDTO implements Serializable {
+public class AttendanceResultDTO implements Serializable {
 
 	private StudentDTO student;
 	private LocalDate date;
@@ -39,7 +39,7 @@ public class SuccessfulAttendanceDTO implements Serializable {
 	private String message;
 	private String hashedLrn;
 
-	public SuccessfulAttendanceDTO(StudentDTO student, LocalDate date, LocalTime time, LocalTime timeOut, Status status, String message, String hashedLrn) {
+	public AttendanceResultDTO(StudentDTO student, LocalDate date, LocalTime time, LocalTime timeOut, Status status, String message, String hashedLrn) {
 		this.student = student;
 		this.date = date;
 		this.time = time;
@@ -49,13 +49,13 @@ public class SuccessfulAttendanceDTO implements Serializable {
 		this.hashedLrn = hashedLrn;
 	}
 
-	public SuccessfulAttendanceDTO() {}
+	public AttendanceResultDTO() {}
 
 	public StudentDTO getStudent() {
 		return student;
 	}
 
-	public SuccessfulAttendanceDTO setStudent(StudentDTO student) {
+	public AttendanceResultDTO setStudent(StudentDTO student) {
 		this.student = student;
 		return this;
 	}
@@ -64,7 +64,7 @@ public class SuccessfulAttendanceDTO implements Serializable {
 		return date;
 	}
 
-	public SuccessfulAttendanceDTO setDate(LocalDate date) {
+	public AttendanceResultDTO setDate(LocalDate date) {
 		this.date = date;
 		return this;
 	}
@@ -73,7 +73,7 @@ public class SuccessfulAttendanceDTO implements Serializable {
 		return time;
 	}
 
-	public SuccessfulAttendanceDTO setTime(LocalTime time) {
+	public AttendanceResultDTO setTime(LocalTime time) {
 		this.time = time;
 		return this;
 	}
@@ -82,7 +82,7 @@ public class SuccessfulAttendanceDTO implements Serializable {
 		return timeOut;
 	}
 
-	public SuccessfulAttendanceDTO setTimeOut(LocalTime timeOut) {
+	public AttendanceResultDTO setTimeOut(LocalTime timeOut) {
 		this.timeOut = timeOut;
 		return this;
 	}
@@ -91,7 +91,7 @@ public class SuccessfulAttendanceDTO implements Serializable {
 		return status;
 	}
 
-	public SuccessfulAttendanceDTO setStatus(Status status) {
+	public AttendanceResultDTO setStatus(Status status) {
 		this.status = status;
 		return this;
 	}
@@ -100,7 +100,7 @@ public class SuccessfulAttendanceDTO implements Serializable {
 		return message;
 	}
 
-	public SuccessfulAttendanceDTO setMessage(String message) {
+	public AttendanceResultDTO setMessage(String message) {
 		this.message = message;
 		return this;
 	}
@@ -109,7 +109,7 @@ public class SuccessfulAttendanceDTO implements Serializable {
 		return hashedLrn;
 	}
 
-	public SuccessfulAttendanceDTO setHashedLrn(String hashedLrn) {
+	public AttendanceResultDTO setHashedLrn(String hashedLrn) {
 		this.hashedLrn = hashedLrn;
 		return this;
 	}
