@@ -23,10 +23,14 @@
 
 package com.pshs.attendance_system.services;
 
+import com.pshs.attendance_system.dto.SuccessfulAttendanceDTO;
 import com.pshs.attendance_system.entities.Attendance;
+import com.pshs.attendance_system.entities.RFIDCredential;
 import com.pshs.attendance_system.entities.range.DateRange;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.enums.ExecutionStatus;
+import com.pshs.attendance_system.exceptions.AttendanceNotFoundException;
+import com.pshs.attendance_system.exceptions.StudentAlreadySignedOutException;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
@@ -43,9 +47,9 @@ public interface AttendanceService {
 	 * @param attendance
 	 * @return
 	 */
-	ExecutionStatus createAttendance(Attendance attendance);
+	Attendance createAttendance(Attendance attendance);
 
-	ExecutionStatus createAttendance(Long studentId);
+	Attendance createAttendance(Long studentId);
 
 	/**
 	 * Update the attendance record with the student. Requires the attendance id, and a new attendance object with the updated values.
@@ -54,7 +58,17 @@ public interface AttendanceService {
 	 * @param attendance Updated Attendance Object
 	 * @return ExecutionStatus
 	 */
-	ExecutionStatus updateAttendance(Long id, Attendance attendance);
+	ExecutionStatus updateAttendance(int id, Attendance attendance);
+
+	/**
+	 * Update the attendance record with the student. Requires the attendance id, and a new attendance object with the updated values.
+	 *
+	 * @param id Attendance ID
+	 * @param timeOut Updated Time Out
+	 * @return ExecutionStatus {@link ExecutionStatus}
+	 * @see ExecutionStatus
+	 */
+	ExecutionStatus updateAttendanceTimeOut(int id, LocalTime timeOut);
 
 	/**
 	 * Delete the attendance record of a student, requires the attendance id.
@@ -62,7 +76,23 @@ public interface AttendanceService {
 	 * @param id Attendance ID
 	 * @return ExecutionStatus
 	 */
-	ExecutionStatus deleteAttendance(Long id);
+	ExecutionStatus deleteAttendance(int id);
+
+	/**
+	 * Check IN the student with their RFID credential (MIFARE Card containing the hash of their lrn with salt).
+	 *
+	 * @param rfidCredential RFID Credential
+	 * @see RFIDCredential
+	 */
+	SuccessfulAttendanceDTO attendanceIn(RFIDCredential rfidCredential);
+
+	/**
+	 * Check OUT the student with their RFID credential (MIFARE Card containing the hash of their lrn with salt).
+	 *
+	 * @param rfidCredential RFID Credential
+	 * @see RFIDCredential
+	 */
+	SuccessfulAttendanceDTO attendanceOut(RFIDCredential rfidCredential) throws StudentAlreadySignedOutException, AttendanceNotFoundException;
 	// End Region: CRUD Methods
 
 	// Region: Custom Queries
@@ -73,7 +103,7 @@ public interface AttendanceService {
 	 * @param id Attendance ID
 	 * @return Attendance of a student
 	 */
-	Attendance getAttendanceById(Long id);
+	Attendance getAttendanceById(int id);
 
 	Attendance getAttendanceByStudentDate(Long studentId, LocalDate date);
 
@@ -183,7 +213,9 @@ public interface AttendanceService {
 	// Region: Custom Queries
 	boolean isCheckedIn(Long lrn);
 
-	boolean isOut(Long lrn);
+	boolean isScanned(Long lrn);
 
+	boolean isAttendanceExist(Long studentId, LocalDate date);
 	boolean isAttendanceExist(int attendanceId, LocalDate date);
+	boolean isAttendanceExist(int attendanceId);
 }
