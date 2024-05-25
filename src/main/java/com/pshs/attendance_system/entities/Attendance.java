@@ -24,6 +24,7 @@
 package com.pshs.attendance_system.entities;
 
 import com.pshs.attendance_system.dto.AttendanceDTO;
+import com.pshs.attendance_system.enums.Status;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
@@ -41,13 +42,14 @@ public class Attendance {
 	@Column(name = "id", nullable = false)
 	private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@OnDelete(action = OnDeleteAction.SET_NULL)
 	@JoinColumn(name = "student_id", nullable = false)
 	private Student student;
 
 	@Column(name = "status", length = Integer.MAX_VALUE)
-	private String status;
+	@Enumerated(EnumType.STRING)
+	private Status status;
 
 	@ColumnDefault("CURRENT_DATE")
 	@Column(name = "date")
@@ -64,7 +66,7 @@ public class Attendance {
 	public Attendance() {
 	}
 
-	public Attendance(Integer id, Student student, String status, LocalDate date, LocalTime time, LocalTime timeOut) {
+	public Attendance(Integer id, Student student, Status status, LocalDate date, LocalTime time, LocalTime timeOut) {
 		this.id = id;
 		this.student = student;
 		this.status = status;
@@ -95,11 +97,11 @@ public class Attendance {
 		return this;
 	}
 
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public Attendance setStatus(String status) {
+	public Attendance setStatus(Status status) {
 		this.status = status;
 		return this;
 	}

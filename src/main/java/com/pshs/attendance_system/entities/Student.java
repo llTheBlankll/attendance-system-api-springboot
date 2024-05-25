@@ -49,7 +49,7 @@ public class Student {
 	@Column(name = "prefix", length = 4)
 	private String prefix;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.SET_NULL)
 	@JoinColumn(name = "grade_level")
 	private GradeLevel gradeLevel;
@@ -57,7 +57,7 @@ public class Student {
 	@Column(name = "sex", length = 6)
 	private String sex;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.SET_NULL)
 	@JoinColumn(name = "section_id")
 	private Section section;

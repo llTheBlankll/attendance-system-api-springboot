@@ -38,7 +38,7 @@ public class GradeLevel {
 	@Column(name = "name", nullable = false, length = 128)
 	private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "strand")
 	private Strand strand;
 

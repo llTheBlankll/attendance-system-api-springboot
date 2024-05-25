@@ -41,7 +41,7 @@ public class Section {
 	@Column(name = "id", nullable = false)
 	private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.SET_NULL)
 	@JoinColumn(name = "teacher")
 	private Teacher teacher;
@@ -49,12 +49,12 @@ public class Section {
 	@Column(name = "room", nullable = false)
 	private String room;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.SET_NULL)
 	@JoinColumn(name = "strand")
 	private Strand strand;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@OnDelete(action = OnDeleteAction.SET_NULL)
 	@JoinColumn(name = "grade_level", nullable = false)
 	private GradeLevel gradeLevel;
