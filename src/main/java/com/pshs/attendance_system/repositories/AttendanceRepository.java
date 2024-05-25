@@ -29,10 +29,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -80,4 +83,15 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Integer>
 
 	@Query("select a from Attendance a where a.student.id = :id and a.date = :date")
 	Optional<Attendance> getAttendanceByStudentDate(@Param("id") @NonNull Long id, @Param("date") @NonNull LocalDate date);
+
+	@Query("select (count(a) > 0) from Attendance a where a.student.id = :id and a.date = :date")
+	boolean isAttendanceExistByStudentAndDate(@Param("id") Long id, @Param("date") LocalDate date);
+
+	@Query("select a from Attendance a where a.student.id = :id and a.date = :date")
+	Optional<Attendance> isStudentAttendanceExist(@Param("id") Long id, @Param("date") LocalDate date);
+
+	@Transactional
+	@Modifying
+	@Query("update Attendance a set a.timeOut = :timeOut where a.id = :id")
+	int updateAttendanceTimeOut(@Nullable @Param("timeOut") LocalTime timeOut, @NonNull @Param("id") Integer id);
 }
