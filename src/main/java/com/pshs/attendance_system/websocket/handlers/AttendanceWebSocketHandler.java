@@ -39,6 +39,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+import reactor.util.annotation.NonNull;
 
 @Component
 public class AttendanceWebSocketHandler extends TextWebSocketHandler {
@@ -54,40 +55,40 @@ public class AttendanceWebSocketHandler extends TextWebSocketHandler {
 		mapper.registerModule(new JavaTimeModule());
 	}
 
-    	@Override
-    	public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-    		super.handleMessage(session, message);
-    		try {
-    			TextMessage textMessage = (TextMessage) message;
-    			CardRFIDCredentialDTO studentRFID = mapper.readValue(textMessage.getPayload(), CardRFIDCredentialDTO.class);
-    			if (Mode.ATTENDANCE == studentRFID.getMode()) {
-    				RFIDCredential rfidCredential = rfidCredentialService.getRFIDCredentialByHash(studentRFID.getHashedLrn());
-    				if (rfidCredential != null) {
-    					AttendanceResultDTO attendanceResultDTO = attendanceService.attendanceIn(rfidCredential);
-    					// Send the result of the attendance.
-    					session.sendMessage(new TextMessage(mapper.writeValueAsString(attendanceResultDTO)));
-    				} else {
-    					session.sendMessage(new TextMessage("RFID Credential not found."));
-    				}
-    			} else if (Mode.ATTENDANCE_OUT == studentRFID.getMode()) {
-    				RFIDCredential rfidCredential = rfidCredentialService.getRFIDCredentialByHash(studentRFID.getHashedLrn());
-    				if (rfidCredential != null) {
-    					AttendanceResultDTO attendanceResultDTO = attendanceService.attendanceOut(rfidCredential);
-    					// Send the result of the attendance.
-    					session.sendMessage(new TextMessage(mapper.writeValueAsString(attendanceResultDTO)));
-    				} else {
-    					session.sendMessage(new TextMessage("RFID Credential not found."));
-    				}
-    			} else {
-    				session.sendMessage(new TextMessage("Invalid mode."));
-    			}
-    		} catch (JsonProcessingException e) {
-    			logger.error("Error processing JSON message: " + e.getMessage(), e);
-    		}
-    	}
+	@Override
+	public void handleMessage(@NonNull WebSocketSession session, @NonNull WebSocketMessage<?> message) throws Exception {
+		super.handleMessage(session, message);
+		try {
+			TextMessage textMessage = (TextMessage) message;
+			CardRFIDCredentialDTO studentRFID = mapper.readValue(textMessage.getPayload(), CardRFIDCredentialDTO.class);
+			if (Mode.ATTENDANCE == studentRFID.getMode()) {
+				RFIDCredential rfidCredential = rfidCredentialService.getRFIDCredentialByHash(studentRFID.getHashedLrn());
+				if (rfidCredential != null) {
+					AttendanceResultDTO attendanceResultDTO = attendanceService.attendanceIn(rfidCredential);
+					// Send the result of the attendance.
+					session.sendMessage(new TextMessage(mapper.writeValueAsString(attendanceResultDTO)));
+				} else {
+					session.sendMessage(new TextMessage("RFID Credential not found."));
+				}
+			} else if (Mode.ATTENDANCE_OUT == studentRFID.getMode()) {
+				RFIDCredential rfidCredential = rfidCredentialService.getRFIDCredentialByHash(studentRFID.getHashedLrn());
+				if (rfidCredential != null) {
+					AttendanceResultDTO attendanceResultDTO = attendanceService.attendanceOut(rfidCredential);
+					// Send the result of the attendance.
+					session.sendMessage(new TextMessage(mapper.writeValueAsString(attendanceResultDTO)));
+				} else {
+					session.sendMessage(new TextMessage("RFID Credential not found."));
+				}
+			} else {
+				session.sendMessage(new TextMessage("Invalid mode."));
+			}
+		} catch (JsonProcessingException e) {
+			logger.error("Error processing JSON message: {}", e.getMessage());
+		}
+	}
 
 	@Override
-	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+	public void afterConnectionEstablished(@NonNull WebSocketSession session) throws Exception {
 		super.afterConnectionEstablished(session);
 		logger.info("WebSocket connection established for session: " + session.getId());
 	}
