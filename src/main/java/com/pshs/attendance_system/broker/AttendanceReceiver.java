@@ -23,10 +23,15 @@
 
 package com.pshs.attendance_system.broker;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pshs.attendance_system.dto.RFIDCredentialDTO;
-import com.pshs.attendance_system.dto.StudentRFID;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.pshs.attendance_system.dto.CardRFIDCredentialDTO;
+import com.pshs.attendance_system.dto.SuccessfulAttendanceDTO;
+import com.pshs.attendance_system.entities.Attendance;
 import com.pshs.attendance_system.entities.RFIDCredential;
+import com.pshs.attendance_system.enums.Mode;
+import com.pshs.attendance_system.enums.Status;
 import com.pshs.attendance_system.services.AttendanceService;
 import com.pshs.attendance_system.services.RFIDCredentialService;
 import org.apache.logging.log4j.LogManager;
@@ -35,6 +40,10 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Optional;
+
 @Component
 public class AttendanceReceiver {
 
@@ -42,33 +51,47 @@ public class AttendanceReceiver {
 	private final AttendanceService attendanceService;
 	private final RFIDCredentialService rfidCredentialService;
 	private static final Logger logger = LogManager.getLogger(AttendanceReceiver.class);
+	private final ObjectMapper mapper = new ObjectMapper();
 
 	public AttendanceReceiver(RabbitTemplate rabbitTemplate, AttendanceService attendanceService, RFIDCredentialService rfidCredentialService) {
 		this.rabbitTemplate = rabbitTemplate;
 		this.attendanceService = attendanceService;
 		this.rfidCredentialService = rfidCredentialService;
+		mapper.registerModule(new JavaTimeModule());
 	}
-
 
 
 	@RabbitListener(queues = "#{attendanceQueue.name}")
 	public void receive(String in) {
 		try {
-			ObjectMapper mapper = new ObjectMapper();
-			StudentRFID studentRFID = mapper.readValue(in, StudentRFID.class);
-			RFIDCredential rfidCredential = rfidCredentialService.getRFIDCredentialByStudentId(studentRFID.getLrn());
+			CardRFIDCredentialDTO studentRFID = mapper.readValue(in, CardRFIDCredentialDTO.class);
 
-			if (rfidCredential.getLrn() != null) {
-				// TODO: Implement method to create attendance
-				attendanceService.createAttendance(rfidCredential.getLrn().getId());
+			// Check if the mode is for attendance
+			if (studentRFID.getMode() == Mode.ATTENDANCE) { // ! If the mode is for attendance
+				RFIDCredential rfidCredential = rfidCredentialService.getRFIDCredentialByHash(studentRFID.getHashedLrn());
+				SuccessfulAttendanceDTO successfulAttendance = attendanceService.attendanceIn(rfidCredential);
+
+				if (successfulAttendance != null) {
+					rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", mapper.writeValueAsString(successfulAttendance));
+				} else {
+					rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", "Student might already signed in.");
+				}
+			} else if (studentRFID.getMode() == Mode.ATTENDANCE_OUT) { // ! If the mode is for attendance out
+				RFIDCredential rfidCredential = rfidCredentialService.getRFIDCredentialByHash(studentRFID.getHashedLrn());
+				SuccessfulAttendanceDTO successfulAttendance = attendanceService.attendanceOut(rfidCredential);
+
+				if (successfulAttendance != null) {
+					rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", mapper.writeValueAsString(successfulAttendance));
+				} else {
+					rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", "Student might already signed out.");
+				}
+			} else { // ! If the mode is invalid
+				logger.debug("Invalid mode.");
+				rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", "ERROR: Invalid mode received " + studentRFID.getMode());
 			}
-
-			// ! If success, send a message to the topic exchange in topic attendance-notifications
-			rabbitTemplate.convertAndSend("amq.topic", "attendance-notifications", "SUCCESS");
-			logger.info("Received message: {}", studentRFID.getLrn());
 		} catch (Exception e) {
+			logger.debug("Error receiving message: {}", e.getMessage());
 			rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", "ERROR: " + e.getMessage());
-			logger.info("Error receiving message: {}", e.getMessage());
 		}
 	}
 }
