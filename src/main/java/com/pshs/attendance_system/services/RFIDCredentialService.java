@@ -68,4 +68,12 @@ public interface RFIDCredentialService {
 	 * @return RFIDCredential
 	 */
 	RFIDCredential getRFIDCredentialByStudentId(Long studentId);
+
+	/**
+	 * Get an RFID Credential by RFID Hash
+	 *
+	 * @param hash RFID Hash to get the RFID Credential
+	 * @return RFIDCredential else null if not found
+	 */
+	RFIDCredential getRFIDCredentialByHash(String hash);
 }
