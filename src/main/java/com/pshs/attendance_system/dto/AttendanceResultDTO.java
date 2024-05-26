@@ -21,88 +21,42 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system.entities;
+package com.pshs.attendance_system.dto;
 
-import com.pshs.attendance_system.dto.AttendanceDTO;
 import com.pshs.attendance_system.enums.Status;
-import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Entity
-@Table(name = "attendances")
-public class Attendance {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "attendances_id_gen")
-	@SequenceGenerator(name = "attendances_id_gen", sequenceName = "attendances_id_seq", allocationSize = 1)
-	@Column(name = "id", nullable = false)
-	private Integer id;
+public class AttendanceResultDTO implements Serializable {
 
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-	@OnDelete(action = OnDeleteAction.SET_NULL)
-	@JoinColumn(name = "student_id", nullable = false)
-	private Student student;
-
-	@Column(name = "status", length = Integer.MAX_VALUE)
-	@Enumerated(EnumType.STRING)
-	private Status status;
-
-	@ColumnDefault("CURRENT_DATE")
-	@Column(name = "date")
+	private StudentDTO student;
 	private LocalDate date;
-
-	@ColumnDefault("LOCALTIME")
-	@Column(name = "time")
 	private LocalTime time;
-
-	@ColumnDefault("LOCALTIME")
-	@Column(name = "time_out")
 	private LocalTime timeOut;
+	private Status status;
+	private String message;
+	private String hashedLrn;
 
-	public Attendance() {
-	}
-
-	public Attendance(Integer id, Student student, Status status, LocalDate date, LocalTime time, LocalTime timeOut) {
-		this.id = id;
+	public AttendanceResultDTO(StudentDTO student, LocalDate date, LocalTime time, LocalTime timeOut, Status status, String message, String hashedLrn) {
 		this.student = student;
-		this.status = status;
 		this.date = date;
 		this.time = time;
 		this.timeOut = timeOut;
+		this.status = status;
+		this.message = message;
+		this.hashedLrn = hashedLrn;
 	}
 
-	public AttendanceDTO toDTO() {
-		return new AttendanceDTO(id, student.toDTO(), status, date, time, timeOut);
-	}
+	public AttendanceResultDTO() {}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public Attendance setId(Integer id) {
-		this.id = id;
-		return this;
-	}
-
-	public Student getStudent() {
+	public StudentDTO getStudent() {
 		return student;
 	}
 
-	public Attendance setStudent(Student student) {
+	public AttendanceResultDTO setStudent(StudentDTO student) {
 		this.student = student;
-		return this;
-	}
-
-	public Status getStatus() {
-		return status;
-	}
-
-	public Attendance setStatus(Status status) {
-		this.status = status;
 		return this;
 	}
 
@@ -110,7 +64,7 @@ public class Attendance {
 		return date;
 	}
 
-	public Attendance setDate(LocalDate date) {
+	public AttendanceResultDTO setDate(LocalDate date) {
 		this.date = date;
 		return this;
 	}
@@ -119,7 +73,7 @@ public class Attendance {
 		return time;
 	}
 
-	public Attendance setTime(LocalTime time) {
+	public AttendanceResultDTO setTime(LocalTime time) {
 		this.time = time;
 		return this;
 	}
@@ -128,8 +82,35 @@ public class Attendance {
 		return timeOut;
 	}
 
-	public Attendance setTimeOut(LocalTime timeOut) {
+	public AttendanceResultDTO setTimeOut(LocalTime timeOut) {
 		this.timeOut = timeOut;
+		return this;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public AttendanceResultDTO setStatus(Status status) {
+		this.status = status;
+		return this;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public AttendanceResultDTO setMessage(String message) {
+		this.message = message;
+		return this;
+	}
+
+	public String getHashedLrn() {
+		return hashedLrn;
+	}
+
+	public AttendanceResultDTO setHashedLrn(String hashedLrn) {
+		this.hashedLrn = hashedLrn;
 		return this;
 	}
 }

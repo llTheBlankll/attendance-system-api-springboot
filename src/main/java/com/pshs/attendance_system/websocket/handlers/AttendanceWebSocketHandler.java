@@ -21,8 +21,9 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system.broker;
+package com.pshs.attendance_system.websocket.handlers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.pshs.attendance_system.dto.CardRFIDCredentialDTO;
@@ -33,71 +34,62 @@ import com.pshs.attendance_system.services.AttendanceService;
 import com.pshs.attendance_system.services.RFIDCredentialService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketMessage;
+import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
+import reactor.util.annotation.NonNull;
 
 @Component
-public class AttendanceReceiver {
+public class AttendanceWebSocketHandler extends TextWebSocketHandler {
 
-	private final RabbitTemplate rabbitTemplate;
+	private static final Logger logger = LogManager.getLogger(AttendanceWebSocketHandler.class);
 	private final AttendanceService attendanceService;
 	private final RFIDCredentialService rfidCredentialService;
-	private static final Logger logger = LogManager.getLogger(AttendanceReceiver.class);
 	private final ObjectMapper mapper = new ObjectMapper();
 
-	public AttendanceReceiver(RabbitTemplate rabbitTemplate, AttendanceService attendanceService, RFIDCredentialService rfidCredentialService) {
-		this.rabbitTemplate = rabbitTemplate;
+	public AttendanceWebSocketHandler(AttendanceService attendanceService, RFIDCredentialService rfidCredentialService) {
 		this.attendanceService = attendanceService;
 		this.rfidCredentialService = rfidCredentialService;
 		mapper.registerModule(new JavaTimeModule());
 	}
 
-	public void sendMessageToLogs(String message) {
-		rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", message);
-	}
-
-	public void sendMessageToNotifications(String message) {
-		rabbitTemplate.convertAndSend("amq.topic", "attendance-notifications", message);
-	}
-
-	/**
-	 * This method is a RabbitMQ listener that listens to the attendance queue.
-	 * It receives a JSON string containing a student's RFID credential and mode of attendance.
-	 * It then processes the received data and sends the appropriate response to the logs queue.
-	 *
-	 * @param in the JSON string containing the student's RFID credential and mode of attendance
-	 */
-	@RabbitListener(queues = "#{attendanceQueue.name}")
-	public void receive(String in) {
+	@Override
+	public void handleMessage(@NonNull WebSocketSession session, @NonNull WebSocketMessage<?> message) throws Exception {
+		super.handleMessage(session, message);
 		try {
-			CardRFIDCredentialDTO studentRFID = mapper.readValue(in, CardRFIDCredentialDTO.class);
-
-			if (studentRFID.getMode() == Mode.ATTENDANCE) {
+			TextMessage textMessage = (TextMessage) message;
+			CardRFIDCredentialDTO studentRFID = mapper.readValue(textMessage.getPayload(), CardRFIDCredentialDTO.class);
+			if (Mode.ATTENDANCE == studentRFID.getMode()) {
 				RFIDCredential rfidCredential = rfidCredentialService.getRFIDCredentialByHash(studentRFID.getHashedLrn());
-				AttendanceResultDTO successfulAttendance = attendanceService.attendanceIn(rfidCredential);
-
-				if (successfulAttendance != null) {
-					sendMessageToLogs(mapper.writeValueAsString(successfulAttendance));
+				if (rfidCredential != null) {
+					AttendanceResultDTO attendanceResultDTO = attendanceService.attendanceIn(rfidCredential);
+					// Send the result of the attendance.
+					session.sendMessage(new TextMessage(mapper.writeValueAsString(attendanceResultDTO)));
 				} else {
-					sendMessageToLogs("Student might already signed in");
+					session.sendMessage(new TextMessage("RFID Credential not found."));
 				}
-			} else if (studentRFID.getMode() == Mode.ATTENDANCE_OUT) {
+			} else if (Mode.ATTENDANCE_OUT == studentRFID.getMode()) {
 				RFIDCredential rfidCredential = rfidCredentialService.getRFIDCredentialByHash(studentRFID.getHashedLrn());
-				AttendanceResultDTO successfulAttendance = attendanceService.attendanceOut(rfidCredential);
-
-				if (successfulAttendance != null) {
-					sendMessageToLogs(mapper.writeValueAsString(successfulAttendance));
+				if (rfidCredential != null) {
+					AttendanceResultDTO attendanceResultDTO = attendanceService.attendanceOut(rfidCredential);
+					// Send the result of the attendance.
+					session.sendMessage(new TextMessage(mapper.writeValueAsString(attendanceResultDTO)));
 				} else {
-					sendMessageToLogs("Student might already signed out");
+					session.sendMessage(new TextMessage("RFID Credential not found."));
 				}
 			} else {
-				logger.debug("Invalid mode.");
-				sendMessageToLogs("ERROR: Invalid mode" + studentRFID.getMode());
+				session.sendMessage(new TextMessage("Invalid mode."));
 			}
-		} catch (Exception e) {
-			logger.debug("Error receiving message: {}", e.getMessage());
-			sendMessageToLogs("ERROR: " + e.getMessage());
+		} catch (JsonProcessingException e) {
+			logger.error("Error processing JSON message: {}", e.getMessage());
 		}
+	}
+
+	@Override
+	public void afterConnectionEstablished(@NonNull WebSocketSession session) throws Exception {
+		super.afterConnectionEstablished(session);
+		logger.info("WebSocket connection established for session: " + session.getId());
 	}
 }

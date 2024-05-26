@@ -1,0 +1,483 @@
+/*
+ * COPYRIGHT (C) 2024 VINCE ANGELO BATECAN
+ *
+ * PERMISSION IS HEREBY GRANTED, FREE OF CHARGE, TO STUDENTS, FACULTY, AND STAFF OF PUNTURIN SENIOR HIGH SCHOOL TO USE THIS SOFTWARE FOR EDUCATIONAL PURPOSES ONLY.
+ *
+ * THE ABOVE COPYRIGHT NOTICE AND THIS PERMISSION NOTICE SHALL BE INCLUDED IN ALL COPIES OR SUBSTANTIAL PORTIONS OF THE SOFTWARE.
+ *
+ * MODIFICATIONS:
+ *
+ * ANY MODIFICATIONS OR DERIVATIVE WORKS OF THE SOFTWARE SHALL BE CONSIDERED PART OF THE SOFTWARE AND SHALL BE SUBJECT TO THE TERMS AND CONDITIONS OF THIS LICENSE.
+ * ANY PERSON OR ENTITY MAKING MODIFICATIONS TO THE SOFTWARE SHALL ASSIGN AND TRANSFER ALL RIGHT, TITLE, AND INTEREST IN AND TO SUCH MODIFICATIONS TO VINCE ANGELO BATECAN.
+ * VINCE ANGELO BATECAN SHALL OWN ALL INTELLECTUAL PROPERTY RIGHTS IN AND TO SUCH MODIFICATIONS.
+ *
+ * NO COMMERCIAL USE:
+ *
+ * THE SOFTWARE SHALL NOT BE SOLD, RENTED, LEASED, OR OTHERWISE COMMERCIALLY EXPLOITED. THE SOFTWARE IS INTENDED FOR PERSONAL, NON-COMMERCIAL USE ONLY WITHIN PUNTURIN SENIOR HIGH SCHOOL.
+ *
+ * NO WARRANTIES:
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+package com.pshs.attendance_system.impl;
+
+import com.pshs.attendance_system.entities.GradeLevel;
+import com.pshs.attendance_system.entities.Guardian;
+import com.pshs.attendance_system.entities.Section;
+import com.pshs.attendance_system.entities.Student;
+import com.pshs.attendance_system.enums.ExecutionStatus;
+import com.pshs.attendance_system.repositories.StudentRepository;
+import com.pshs.attendance_system.services.GradeLevelService;
+import com.pshs.attendance_system.services.GuardianService;
+import com.pshs.attendance_system.services.SectionService;
+import com.pshs.attendance_system.services.StudentService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+@Service
+public class StudentServiceImpl implements StudentService {
+
+	private static final Logger logger = LogManager.getLogger(StudentServiceImpl.class);
+	private final StudentRepository studentRepository;
+	private final GradeLevelService gradeLevelService;
+	private final SectionService sectionService;
+	private final GuardianService guardianService;
+
+	public StudentServiceImpl(StudentRepository studentRepository, GradeLevelService gradeLevelService, SectionService sectionService, GuardianService guardianService) {
+		this.studentRepository = studentRepository;
+		this.gradeLevelService = gradeLevelService;
+		this.sectionService = sectionService;
+		this.guardianService = guardianService;
+	}
+
+
+	/**
+	 * Create a new student record by providing a student object
+	 *
+	 * @param student Student Object
+	 * @return ExecutionStatus
+	 */
+	@Override
+	public ExecutionStatus createStudent(Student student) {
+		// Validate the Student and check if it exists.
+		if (!isStudentValid(student)) {
+			logger.debug("Student is not valid: {}", student);
+			return ExecutionStatus.VALIDATION_ERROR;
+		} else if (isStudentExist(student)) {
+			logger.debug("Student already exists: {}", student);
+			return ExecutionStatus.FAILURE;
+		}
+
+		studentRepository.save(student);
+		return ExecutionStatus.SUCCESS;
+	}
+
+	/**
+	 * Delete student record by providing a student object
+	 *
+	 * @param student Student Object that will be deleted
+	 * @return ExecutionStatus
+	 */
+	@Override
+	public ExecutionStatus deleteStudent(Student student) {
+		if (isStudentValid(student)) {
+			logger.debug("Student  is not valid: {}", student);
+			return ExecutionStatus.VALIDATION_ERROR;
+		}
+
+		if (!isStudentExist(student)) {
+			logger.debug("Student ID does not exist: {}", student.getId());
+			return ExecutionStatus.FAILURE;
+		}
+
+		studentRepository.delete(student);
+		logger.debug("Student deleted: {}", student);
+		return ExecutionStatus.SUCCESS;
+	}
+
+	/**
+	 * Delete student record by providing a student id
+	 *
+	 * @param id student ID that will be deleted
+	 * @return ExecutionStatus
+	 */
+	@Override
+	public ExecutionStatus deleteStudent(int id) {
+		if (isStudentExist((long) id)) {
+			logger.debug("Cannot delete Student ID because it does not exist: {}", id);
+			return ExecutionStatus.FAILURE;
+		}
+
+		studentRepository.deleteById((long) id);
+		logger.debug("Student ID deleted: {}", id);
+		return ExecutionStatus.SUCCESS;
+	}
+
+	/**
+	 * Update student record by providing a student object and student id
+	 *
+	 * @param studentId student id that will be updated
+	 * @param student   the newly updated information of a student.
+	 * @return ExecutionStatus
+	 */
+	@Override
+	public ExecutionStatus updateStudent(Long studentId, Student student) {
+		if (studentId <= 0) {
+			logger.debug("Student ID is invalid: {}", studentId);
+			return ExecutionStatus.VALIDATION_ERROR;
+		}
+
+		if (!isStudentExist(studentId)) {
+			logger.debug("Cannot update Student ID because it does not exist: {}", studentId);
+			return ExecutionStatus.FAILURE;
+		}
+
+		// Update the student ID
+		student.setId(studentId);
+		// Update the student record
+		studentRepository.save(student);
+		logger.debug("Student updated: {}", student);
+		return ExecutionStatus.SUCCESS;
+	}
+
+	/**
+	 * Update Student Grade Level
+	 *
+	 * @param studentId  student id that will be updated
+	 * @param gradeLevel the new grade level of the student
+	 * @return ExecutionStatus
+	 */
+	@Override
+	public ExecutionStatus updateStudentGradeLevel(Long studentId, int gradeLevel) {
+		if (studentId <= 0) {
+			logger.debug("Student ID is invalid: {}", studentId);
+			return ExecutionStatus.VALIDATION_ERROR;
+		}
+
+		if (!isStudentExist(studentId)) {
+			logger.debug("Cannot update Student ID because it does not exist: {}", studentId);
+			return ExecutionStatus.FAILURE;
+		}
+
+		Student student = studentRepository.findById(studentId).orElse(null);
+		if (student == null) {
+			logger.debug("Student ID does not exist: {}", studentId);
+			return ExecutionStatus.FAILURE;
+		}
+
+		// Check if Grade Level exists
+		if (gradeLevelService.isGradeLevelExist(gradeLevel)) {
+			logger.debug("Grade Level does not exist: {}", gradeLevel);
+			return ExecutionStatus.FAILURE;
+		} else {
+			student.setGradeLevel(gradeLevelService.getGradeLevel(gradeLevel));
+			studentRepository.save(student);
+			logger.debug("Student updated: {}", student);
+			return ExecutionStatus.SUCCESS;
+		}
+	}
+
+	/**
+	 * Update Student Section
+	 *
+	 * @param studentId student id that will be updated
+	 * @param section   the new section of the student
+	 * @return ExecutionStatus
+	 */
+	@Override
+	public ExecutionStatus updateStudentSection(Long studentId, int section) {
+		if (studentId <= 0 || section <= 0) {
+			logger.debug("Student ID or Section ID is invalid: {} {}", studentId, section);
+			return ExecutionStatus.VALIDATION_ERROR;
+		}
+
+		// Check if student exists
+		if (!isStudentExist(studentId)) {
+			logger.debug("Cannot update Student ID because it does not exist: {}", studentId);
+			return ExecutionStatus.FAILURE;
+		}
+
+		// Check if section exists
+		if (!sectionService.isSectionExist(section)) {
+			logger.debug("Section does not exist: {}", section);
+			return ExecutionStatus.FAILURE;
+		}
+
+		studentRepository.updateStudentSection(sectionService.getSection(section), studentId);
+		logger.debug("Student updated: {}", studentId);
+		return ExecutionStatus.SUCCESS;
+	}
+
+	/**
+	 * Get the student record by providing the student id
+	 *
+	 * @param id Student ID
+	 * @return {@link Student}
+	 */
+	@Override
+	public Student getStudentById(Long id) {
+		return studentRepository.findById(id).orElse(null);
+	}
+
+	/**
+	 * Get the student record by providing the student guardian.
+	 *
+	 * @param guardian Guardian of the student
+	 * @return {@link Student}
+	 */
+	@Override
+	public Student getStudentByGuardian(Guardian guardian) {
+		Guardian guardianStudent = guardianService.getGuardian(guardian.getId());
+		return (guardianStudent != null) ? guardianStudent.getStudentLrn() : null;
+	}
+
+	/**
+	 * Get the student record by providing the guardian id
+	 *
+	 * @param guardianId Guardian ID
+	 * @return {@link Student}
+	 */
+	@Override
+	public Student getStudentByGuardian(int guardianId) {
+		Guardian guardianStudent = guardianService.getGuardian(guardianId);
+		return (guardianStudent != null) ? guardianStudent.getStudentLrn() : null;
+	}
+
+	/**
+	 * Get all the students in the database
+	 *
+	 * @param page Page
+	 * @param size Shows how many student will it display.
+	 * @return return the page object
+	 */
+	@Override
+	public Page<Student> getAllStudents(int page, int size) {
+		return studentRepository.findAll(PageRequest.of(page, size));
+	}
+
+	/**
+	 * Search Students by their first name
+	 *
+	 * @param firstName First name that will be searched
+	 * @param page      Page
+	 * @param size      Shows how many student will it display.
+	 * @return return the page object
+	 */
+	@Override
+	public Page<Student> searchStudentsByFirstName(String firstName, int page, int size) {
+		return studentRepository.searchStudentsByFirstName(firstName, PageRequest.of(page, size));
+	}
+
+	/**
+	 * Search students by their last name
+	 *
+	 * @param lastName Last name that will be searched
+	 * @param page     Page
+	 * @param size     Shows how many student will it display.
+	 * @return return the page object
+	 */
+	@Override
+	public Page<Student> searchStudentsByLastName(String lastName, int page, int size) {
+		return studentRepository.searchStudentsByLastName(lastName, PageRequest.of(page, size));
+	}
+
+	/**
+	 * Search students by their first and last name
+	 *
+	 * @param firstName First name
+	 * @param lastName  Last name
+	 * @param page      Page
+	 * @param size      Shows how many student will it display.
+	 * @return return the page object
+	 */
+	@Override
+	public Page<Student> searchStudentsByFirstAndLastName(String firstName, String lastName, int page, int size) {
+		return studentRepository.searchStudentsByFirstNameAndLastName(firstName, lastName, PageRequest.of(page, size));
+	}
+
+	/**
+	 * Search students by their grade level.
+	 *
+	 * @param gradeLevel the grade level to search for
+	 * @param page       the page number of the results
+	 * @param size       the number of results per page
+	 * @return a page of Student objects that match the search criteria
+	 */
+	@Override
+	public Page<Student> searchStudentsByGradeLevel(int gradeLevel, int page, int size) {
+		return studentRepository.searchStudentsByGradeLevel(gradeLevel, PageRequest.of(page, size));
+	}
+
+	/**
+	 * Search students by their grade level.
+	 *
+	 * @param gradeLevel the grade level to search for
+	 * @param page       the page number of the results
+	 * @param size       the number of results per page
+	 * @return a page of Student objects that match the search criteria
+	 */
+	@Override
+	public Page<Student> searchStudentsByGradeLevel(GradeLevel gradeLevel, int page, int size) {
+		return studentRepository.searchStudentsByGradeLevel(gradeLevel, PageRequest.of(page, size));
+	}
+
+	/**
+	 * Search students by their section ID.
+	 *
+	 * @param sectionId the ID of the section to search for
+	 * @param page      the page number of the results
+	 * @param size      the number of results per page
+	 * @return a page of Student objects that match the search criteria
+	 */
+	@Override
+	public Page<Student> searchStudentsBySection(int sectionId, int page, int size) {
+		return studentRepository.searchStudentsBySection(sectionService.getSection(sectionId), PageRequest.of(page, size));
+	}
+
+	/**
+	 * Search students by their section.
+	 *
+	 * @param section the section to search for
+	 * @param page    the page number of the results
+	 * @param size    the number of results per page
+	 * @return a page of Student objects that match the search criteria
+	 */
+	@Override
+	public Page<Student> searchStudentsBySection(Section section, int page, int size) {
+		return studentRepository.searchStudentsBySection(section, PageRequest.of(page, size));
+	}
+
+	/**
+	 * Calculates the average age of all students in the system.
+	 * TODO: Implement student age column.
+	 *
+	 * @return the average age of all students
+	 */
+	@Override
+	public Double getAverageAge() {
+		return 0.0;
+	}
+
+	/**
+	 * Counts the total number of students in the system.
+	 *
+	 * @return the total number of students
+	 */
+	@Override
+	public Long countStudents() {
+		return studentRepository.count();
+	}
+
+	/**
+	 * Counts the number of students in the system with the specified sex.
+	 *
+	 * @param sex the sex of the students to count (either "M" for male or "F" for female)
+	 * @return the number of students with the specified sex
+	 */
+	@Override
+	public Long countStudentsBySex(String sex) {
+		return studentRepository.countStudentsBySex(sex);
+	}
+
+	/**
+	 * Counts the number of students in the specified section.
+	 *
+	 * @param section the section to count the students in
+	 * @return the number of students in the section
+	 */
+	@Override
+	public Long countStudentsInSection(Section section) {
+		return studentRepository.countStudentsInSection(section);
+	}
+
+	/**
+	 * Counts the number of students in the section with the specified section ID.
+	 *
+	 * @param sectionId the ID of the section to count the students in
+	 * @return the number of students in the section
+	 */
+	@Override
+	public Long countStudentsInSection(int sectionId) {
+		return studentRepository.countStudentsInSectionById(sectionId);
+	}
+
+	/**
+	 * Counts the number of students in the specified grade level.
+	 *
+	 * @param gradeLevel the grade level to count the students in
+	 * @return the number of students in the grade level
+	 */
+	@Override
+	public Long countStudentsInGradeLevel(GradeLevel gradeLevel) {
+		return studentRepository.countStudentsInGradeLevel(gradeLevel);
+	}
+
+	/**
+	 * Counts the number of students in the grade level with the specified grade level ID.
+	 *
+	 * @param gradeLevelId the ID of the grade level to count the students in
+	 * @return the number of students in the grade level
+	 */
+	@Override
+	public Long countStudentsInGradeLevel(int gradeLevelId) {
+		return studentRepository.countStudentsInGradeLevelById(gradeLevelId);
+	}
+
+	/**
+	 * Counts the number of students in the specified grade level and section.
+	 *
+	 * @param gradeLevel the grade level to count the students in
+	 * @param section    the section to count the students in
+	 * @return the number of students in the grade level and section
+	 */
+	@Override
+	public Long countStudentsInGradeLevelAndSection(GradeLevel gradeLevel, Section section) {
+		return studentRepository.countStudentsInGradeLevelAndSection(gradeLevel, section);
+	}
+
+	/**
+	 * Counts the number of students in the specified grade level and section.
+	 *
+	 * @param gradeLevelId the ID of the grade level to count the students in
+	 * @param sectionId    the ID of the section to count the students in
+	 * @return the number of students in the grade level and section
+	 */
+	@Override
+	public Long countStudentsInGradeLevelAndSection(int gradeLevelId, int sectionId) {
+		return studentRepository.countStudentsInGradeLevelAndSection(gradeLevelService.getGradeLevel(gradeLevelId), sectionService.getSection(sectionId));
+	}
+
+	private boolean isStudentExist(Student student) {
+		if (student.getId() == null) {
+			return false;
+		}
+
+		return studentRepository.existsById(student.getId());
+	}
+
+	@Override
+	public boolean isStudentExist(Long studentId) {
+		return studentRepository.existsById(studentId);
+	}
+
+	private boolean isStudentValid(Student student) {
+		if (student.getGradeLevel() == null) {
+			return false;
+		}
+
+		if (student.getSection() == null) {
+			return false;
+		}
+
+		if (student.getFirstName() == null) {
+			return false;
+		}
+
+		return student.getLastName() != null;
+	}
+}

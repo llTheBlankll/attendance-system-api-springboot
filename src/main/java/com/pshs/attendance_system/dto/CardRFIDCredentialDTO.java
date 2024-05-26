@@ -21,63 +21,37 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system.entities;
+package com.pshs.attendance_system.dto;
 
-import com.pshs.attendance_system.dto.GradeLevelDTO;
-import jakarta.persistence.*;
+import com.pshs.attendance_system.enums.Mode;
 
-@Entity
-@Table(name = "grade_levels")
-public class GradeLevel {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "grade_levels_id_gen")
-	@SequenceGenerator(name = "grade_levels_id_gen", sequenceName = "grade_levels_id_seq", allocationSize = 1)
-	@Column(name = "id", nullable = false)
-	private Integer id;
+public class CardRFIDCredentialDTO {
 
-	@Column(name = "name", nullable = false, length = 128)
-	private String name;
+	private String hashedLrn;
+	private Mode mode;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "strand")
-	private Strand strand;
-
-	public GradeLevel() {}
-
-	public GradeLevel(Integer id, String name, Strand strand) {
-		this.id = id;
-		this.name = name;
-		this.strand = strand;
+	public CardRFIDCredentialDTO() {
 	}
 
-	public GradeLevelDTO toDTO() {
-		return new GradeLevelDTO(id, name, strand.toDTO());
+	public CardRFIDCredentialDTO(String hashedLrn) {
+		this.hashedLrn = hashedLrn;
 	}
 
-	public Integer getId() {
-		return id;
+	public Mode getMode() {
+		return mode;
 	}
 
-	public GradeLevel setId(Integer id) {
-		this.id = id;
+	public CardRFIDCredentialDTO setMode(Mode mode) {
+		this.mode = mode;
 		return this;
 	}
 
-	public String getName() {
-		return name;
+	public String getHashedLrn() {
+		return hashedLrn;
 	}
 
-	public GradeLevel setName(String name) {
-		this.name = name;
-		return this;
-	}
-
-	public Strand getStrand() {
-		return strand;
-	}
-
-	public GradeLevel setStrand(Strand strand) {
-		this.strand = strand;
+	public CardRFIDCredentialDTO setHashedLrn(String hashedLrn) {
+		this.hashedLrn = hashedLrn;
 		return this;
 	}
 }

@@ -101,6 +101,17 @@ public class RFIDCredentialServiceImpl implements RFIDCredentialService {
 		return rfidCredentialRepository.getRFIDCredentialByStudentId(studentId).orElse(null);
 	}
 
+	/**
+	 * Get an RFID Credential by RFID Hash
+	 *
+	 * @param hash RFID Hash to get the RFID Credential
+	 * @return RFIDCredential else null if not found
+	 */
+	@Override
+	public RFIDCredential getRFIDCredentialByHash(String hash) {
+		return rfidCredentialRepository.getRFIDCredentialByHash(hash).orElse(null);
+	}
+
 	private boolean isExists(RFIDCredential credential) {
 		return rfidCredentialRepository.existsById(credential.getId());
 	}

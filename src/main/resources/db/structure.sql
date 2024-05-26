@@ -1,4 +1,4 @@
-CREATE TABLE Strand
+CREATE TABLE strands
 (
     id   SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS students
     last_name      VARCHAR(128) NOT NULL,
     prefix         CHAR(4)      NULL,
     grade_level    INT,
-    sex            VARCHAR(6),
+    sex            VARCHAR(16),
     section_id     INT,
     address        TEXT,
     birthdate      DATE         NOT NULL,

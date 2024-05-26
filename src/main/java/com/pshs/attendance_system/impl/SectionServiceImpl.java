@@ -491,6 +491,16 @@ public class SectionServiceImpl implements SectionService {
 		return sectionRepository.findAll().size();
 	}
 
+	@Override
+	public boolean isSectionExist(int sectionId) {
+		return sectionRepository.existsById(sectionId);
+	}
+
+	@Override
+	public boolean isSectionExist(Section section) {
+		return sectionRepository.existsById(section.getId());
+	}
+
 	private boolean isNotValid(Section section) {
 		return section.getSectionName().isEmpty() || section.getRoom().isEmpty() || section.getStrand() == null || section.getGradeLevel() == null;
 	}

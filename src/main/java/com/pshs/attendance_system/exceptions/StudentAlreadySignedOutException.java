@@ -21,63 +21,27 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system.entities;
+package com.pshs.attendance_system.exceptions;
 
-import com.pshs.attendance_system.dto.GradeLevelDTO;
-import jakarta.persistence.*;
+public class StudentAlreadySignedOutException extends Exception {
 
-@Entity
-@Table(name = "grade_levels")
-public class GradeLevel {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "grade_levels_id_gen")
-	@SequenceGenerator(name = "grade_levels_id_gen", sequenceName = "grade_levels_id_seq", allocationSize = 1)
-	@Column(name = "id", nullable = false)
-	private Integer id;
-
-	@Column(name = "name", nullable = false, length = 128)
-	private String name;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "strand")
-	private Strand strand;
-
-	public GradeLevel() {}
-
-	public GradeLevel(Integer id, String name, Strand strand) {
-		this.id = id;
-		this.name = name;
-		this.strand = strand;
+	/**
+	 * Constructs a new exception with {@code null} as its detail message.
+	 * The cause is not initialized, and may subsequently be initialized by a
+	 * call to {@link #initCause}.
+	 */
+	public StudentAlreadySignedOutException() {
 	}
 
-	public GradeLevelDTO toDTO() {
-		return new GradeLevelDTO(id, name, strand.toDTO());
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public GradeLevel setId(Integer id) {
-		this.id = id;
-		return this;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public GradeLevel setName(String name) {
-		this.name = name;
-		return this;
-	}
-
-	public Strand getStrand() {
-		return strand;
-	}
-
-	public GradeLevel setStrand(Strand strand) {
-		this.strand = strand;
-		return this;
+	/**
+	 * Constructs a new exception with the specified detail message.  The
+	 * cause is not initialized, and may subsequently be initialized by
+	 * a call to {@link #initCause}.
+	 *
+	 * @param message the detail message. The detail message is saved for
+	 *                later retrieval by the {@link #getMessage()} method.
+	 */
+	public StudentAlreadySignedOutException(String message) {
+		super(message);
 	}
 }

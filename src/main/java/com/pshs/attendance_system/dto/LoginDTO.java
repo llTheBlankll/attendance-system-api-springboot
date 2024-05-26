@@ -21,63 +21,41 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system.entities;
+package com.pshs.attendance_system.dto;
 
-import com.pshs.attendance_system.dto.GradeLevelDTO;
-import jakarta.persistence.*;
+public class LoginDTO {
 
-@Entity
-@Table(name = "grade_levels")
-public class GradeLevel {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "grade_levels_id_gen")
-	@SequenceGenerator(name = "grade_levels_id_gen", sequenceName = "grade_levels_id_seq", allocationSize = 1)
-	@Column(name = "id", nullable = false)
-	private Integer id;
+	private String username;
+	private String password;
 
-	@Column(name = "name", nullable = false, length = 128)
-	private String name;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "strand")
-	private Strand strand;
-
-	public GradeLevel() {}
-
-	public GradeLevel(Integer id, String name, Strand strand) {
-		this.id = id;
-		this.name = name;
-		this.strand = strand;
+	public LoginDTO() {
+		super();
 	}
 
-	public GradeLevelDTO toDTO() {
-		return new GradeLevelDTO(id, name, strand.toDTO());
+	public LoginDTO(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
 	}
 
-	public Integer getId() {
-		return id;
+	public String getUsername() {
+		return username;
 	}
 
-	public GradeLevel setId(Integer id) {
-		this.id = id;
-		return this;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public String getName() {
-		return name;
+	public String getPassword() {
+		return password;
 	}
 
-	public GradeLevel setName(String name) {
-		this.name = name;
-		return this;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public Strand getStrand() {
-		return strand;
-	}
-
-	public GradeLevel setStrand(Strand strand) {
-		this.strand = strand;
-		return this;
+	@Override
+	public String toString() {
+		return "LoginDTO [username=" + username + ", password=" + password + "]";
 	}
 }
