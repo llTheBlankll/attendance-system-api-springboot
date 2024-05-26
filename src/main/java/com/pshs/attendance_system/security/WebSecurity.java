@@ -25,6 +25,8 @@ package com.pshs.attendance_system.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -39,6 +41,14 @@ import org.springframework.web.cors.CorsConfiguration;
 @EnableMethodSecurity
 public class WebSecurity {
 
+	private final AuthenticationProvider authenticationProvider;
+	private final JWTAuthenticationFilter jwtAuthenticationFilter;
+
+	public WebSecurity(AuthenticationProvider authenticationProvider, JWTAuthenticationFilter jwtAuthenticationFilter) {
+		this.authenticationProvider = authenticationProvider;
+		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+	}
+
 	/**
 	 * Disable CSRF and CORS
 	 *
@@ -47,7 +57,7 @@ public class WebSecurity {
 	 * @throws Exception Exception
 	 */
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
+	public SecurityFilterChain securityFilterChain(HttpSecurity security, AuthenticationManager authenticationManager, AuthenticationProvider authenticationProvider) throws Exception {
 		return security
 			.csrf(
 				csrf ->
@@ -59,7 +69,10 @@ public class WebSecurity {
 				authorizeRequests
 					.requestMatchers("/public/**").permitAll()
 					.anyRequest().permitAll() // Temporarily allow all requests
-			).build();
+			)
+			.authenticationProvider(authenticationProvider)
+			.addFilterBefore(jwtAuthenticationFilter, JWTAuthenticationFilter.class)
+			.build();
 	}
 
 	/**
