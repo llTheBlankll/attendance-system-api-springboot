@@ -31,7 +31,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
@@ -41,12 +43,12 @@ import org.springframework.web.cors.CorsConfiguration;
 @EnableMethodSecurity
 public class WebSecurity {
 
-	private final AuthenticationProvider authenticationProvider;
 	private final JWTAuthenticationFilter jwtAuthenticationFilter;
+	private final AuthenticationProvider authenticationProvider;
 
-	public WebSecurity(AuthenticationProvider authenticationProvider, JWTAuthenticationFilter jwtAuthenticationFilter) {
-		this.authenticationProvider = authenticationProvider;
+	public WebSecurity(JWTAuthenticationFilter jwtAuthenticationFilter, AuthenticationProvider authenticationProvider) {
 		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+		this.authenticationProvider = authenticationProvider;
 	}
 
 	/**
@@ -57,7 +59,7 @@ public class WebSecurity {
 	 * @throws Exception Exception
 	 */
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity security, AuthenticationManager authenticationManager, AuthenticationProvider authenticationProvider) throws Exception {
+	public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
 		return security
 			.csrf(
 				csrf ->
@@ -71,7 +73,7 @@ public class WebSecurity {
 					.anyRequest().permitAll() // Temporarily allow all requests
 			)
 			.authenticationProvider(authenticationProvider)
-			.addFilterBefore(jwtAuthenticationFilter, JWTAuthenticationFilter.class)
+			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 			.build();
 	}
 
