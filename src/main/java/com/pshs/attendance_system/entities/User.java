@@ -86,6 +86,26 @@ public class User implements UserDetails {
 		this.createdAt = createdAt;
 	}
 
+	@Override
+	public String getPassword() {
+		return password;
+	}
+
+	@Override
+	public String getUsername() {
+		return username;
+	}
+
+	public User setUsername(String username) {
+		this.username = username;
+		return this;
+	}
+
+	public User setPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
 	public UserDTO toDTO() {
 		return new UserDTO(id, username, email, role, lastLogin, createdAt);
 	}
@@ -101,10 +121,6 @@ public class User implements UserDetails {
 	public User setId(Integer id) {
 		this.id = id;
 		return this;
-	}
-
-	public String getUsername() {
-		return username;
 	}
 
 	@Override
@@ -163,25 +179,11 @@ public class User implements UserDetails {
 		return this;
 	}
 
-	public User setUsername(String username) {
-		this.username = username;
-		return this;
-	}
-
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return List.of(
 			(GrantedAuthority) () -> role
 		);
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public User setPassword(String password) {
-		this.password = password;
-		return this;
 	}
 
 	public String getEmail() {

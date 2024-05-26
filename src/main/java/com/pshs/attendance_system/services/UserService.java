@@ -23,10 +23,11 @@
 
 package com.pshs.attendance_system.services;
 
-import com.pshs.attendance_system.dto.UserCreationDTO;
 import com.pshs.attendance_system.entities.User;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
+
+import java.time.Instant;
 
 public interface UserService {
 
@@ -36,7 +37,7 @@ public interface UserService {
 	 * @param user User Object
 	 * @return ExecutionStatus (SUCCESS, FAILURE, VALIDATION_ERROR)
 	 */
-	ExecutionStatus createUser(User user);
+	User createUser(User user);
 
 	/**
 	 * Delete a user with the given user id.
@@ -63,6 +64,15 @@ public interface UserService {
 	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND)
 	 */
 	ExecutionStatus updateUserPassword(int userId, String password);
+
+	/**
+	 * Update a user's last login time with the given user id and last login time.
+	 *
+	 * @param userId User ID that needs to be updated
+	 * @param lastLogin New last login time of the user.
+	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND) {@link ExecutionStatus}
+	 */
+	ExecutionStatus updateUserLastLogin(int userId, Instant lastLogin);
 
 	/**
 	 * Update the user's locked status with the given user id.
@@ -116,6 +126,14 @@ public interface UserService {
 	 * @return User Object
 	 */
 	User getUser(int userId);
+
+	/**
+	 * Get a user with the given username.
+	 *
+	 * @param username The username of the user.
+	 * @return User Object
+	 */
+	User getUserByUsername(String username);
 
 	/**
 	 * Get all the users in existence within the database.
