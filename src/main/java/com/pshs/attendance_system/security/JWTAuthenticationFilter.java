@@ -28,6 +28,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,7 +54,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 	}
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws IOException {
 		final String authHeader = request.getHeader("Authorization");
 
 		try {
@@ -82,10 +84,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 			}
 
 			filterChain.doFilter(request, response);
-		} catch (HttpRequestMethodNotSupportedException | HttpMediaTypeException exception) {
-			response.sendRedirect("/error/404");
 		} catch (Exception exception) {
-			logger.error("An error occurred while processing the request", exception);
+			logger.trace("An error occurred while processing the request", exception);
 		}
 	}
 }
