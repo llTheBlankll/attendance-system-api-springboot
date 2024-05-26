@@ -34,6 +34,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 	@Transactional
@@ -83,4 +86,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 		select u from User u
 		where u.username like concat('%', :username, '%') and u.email like concat('%', :email, '%')""")
 	Page<User> searchUsersByUsernameAndEmail(@Param("username") @NonNull String username, @Param("email") @NonNull String email, Pageable pageable);
+
+	@Query("select u from User u where u.username = :username")
+	Optional<User> findByUsername(@Param("username") @NonNull String username);
+
+	@Transactional
+	@Modifying
+	@Query("update User u set u.lastLogin = :lastLogin where u.id = :id")
+	void updateUserLastLoginTime(@NonNull @Param("lastLogin") Instant lastLogin, @NonNull @Param("id") Integer id);
 }
