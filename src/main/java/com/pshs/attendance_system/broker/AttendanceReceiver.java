@@ -53,38 +53,51 @@ public class AttendanceReceiver {
 		mapper.registerModule(new JavaTimeModule());
 	}
 
+	public void sendMessageToLogs(String message) {
+		rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", message);
+	}
 
+	public void sendMessageToNotifications(String message) {
+		rabbitTemplate.convertAndSend("amq.topic", "attendance-notifications", message);
+	}
+
+	/**
+	 * This method is a RabbitMQ listener that listens to the attendance queue.
+	 * It receives a JSON string containing a student's RFID credential and mode of attendance.
+	 * It then processes the received data and sends the appropriate response to the logs queue.
+	 *
+	 * @param in the JSON string containing the student's RFID credential and mode of attendance
+	 */
 	@RabbitListener(queues = "#{attendanceQueue.name}")
 	public void receive(String in) {
 		try {
 			CardRFIDCredentialDTO studentRFID = mapper.readValue(in, CardRFIDCredentialDTO.class);
 
-			// Check if the mode is for attendance
-			if (studentRFID.getMode() == Mode.ATTENDANCE) { // ! If the mode is for attendance
+			if (studentRFID.getMode() == Mode.ATTENDANCE) {
 				RFIDCredential rfidCredential = rfidCredentialService.getRFIDCredentialByHash(studentRFID.getHashedLrn());
 				AttendanceResultDTO successfulAttendance = attendanceService.attendanceIn(rfidCredential);
 
 				if (successfulAttendance != null) {
-					rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", mapper.writeValueAsString(successfulAttendance));
+					sendMessageToLogs(mapper.writeValueAsString(successfulAttendance));
 				} else {
-					rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", "Student might already signed in.");
+					sendMessageToLogs("Student might already signed in");
 				}
-			} else if (studentRFID.getMode() == Mode.ATTENDANCE_OUT) { // ! If the mode is for attendance out
+			} else if (studentRFID.getMode() == Mode.ATTENDANCE_OUT) {
 				RFIDCredential rfidCredential = rfidCredentialService.getRFIDCredentialByHash(studentRFID.getHashedLrn());
 				AttendanceResultDTO successfulAttendance = attendanceService.attendanceOut(rfidCredential);
 
 				if (successfulAttendance != null) {
-					rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", mapper.writeValueAsString(successfulAttendance));
+					sendMessageToLogs(mapper.writeValueAsString(successfulAttendance));
 				} else {
-					rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", "Student might already signed out.");
+					sendMessageToLogs("Student might already signed out");
 				}
-			} else { // ! If the mode is invalid
+			} else {
 				logger.debug("Invalid mode.");
-				rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", "ERROR: Invalid mode received " + studentRFID.getMode());
+				sendMessageToLogs("ERROR: Invalid mode" + studentRFID.getMode());
 			}
 		} catch (Exception e) {
 			logger.debug("Error receiving message: {}", e.getMessage());
-			rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", "ERROR: " + e.getMessage());
+			sendMessageToLogs("ERROR: " + e.getMessage());
 		}
 	}
 }
