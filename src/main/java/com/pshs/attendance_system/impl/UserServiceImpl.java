@@ -33,6 +33,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -52,15 +53,36 @@ public class UserServiceImpl implements UserService {
 	 * @return ExecutionStatus (SUCCESS, FAILURE, VALIDATION_ERROR)
 	 */
 	@Override
-	public ExecutionStatus createUser(User user) {
+	public User createUser(User user) {
 		if (validateUser(user) && isUserExists(user.getId())) {
-			logger.warn("User {} already exists.", user.getId());
-			return ExecutionStatus.VALIDATION_ERROR;
+			logger.debug("User {} already exists.", user.getId());
+			return user;
 		}
 
-		userRepository.save(user);
 		logger.debug("User {} has been created.", user.getId());
-		return ExecutionStatus.SUCCESS;
+		return userRepository.save(user);
+	}
+
+	/**
+	 * Update a user's last login time with the given user id and last login time.
+	 *
+	 * @param userId    User ID that needs to be updated
+	 * @param lastLogin New last login time of the user.
+	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND) {@link ExecutionStatus}
+	 */
+	@Override
+	public ExecutionStatus updateUserLastLogin(int userId, Instant lastLogin) {
+		if (!isUserExists(userId)) {
+			return userNotFoundLog(userId);
+		}
+
+		Optional<User> userOptional = userRepository.findById(userId);
+		if (userOptional.isPresent()) {
+			userRepository.updateUserLastLoginTime(lastLogin, userId);
+			return ExecutionStatus.SUCCESS;
+		}
+
+		return ExecutionStatus.FAILURE;
 	}
 
 	/**
@@ -71,7 +93,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public ExecutionStatus deleteUser(int userId) {
-		// Is user negative? nahh
+		// Is user negative? then nahh
 		if (userId <= 0) {
 			return userInvalidId(userId);
 		}
@@ -280,6 +302,17 @@ public class UserServiceImpl implements UserService {
 	public User getUser(int userId) {
 		Optional<User> userOptional = userRepository.findById(userId);
 		return userOptional.orElse(null);
+	}
+
+	/**
+	 * Get a user with the given username.
+	 *
+	 * @param username The username of the user.
+	 * @return User Object
+	 */
+	@Override
+	public User getUserByUsername(String username) {
+		return userRepository.findByUsername(username).orElse(null);
 	}
 
 	/**
