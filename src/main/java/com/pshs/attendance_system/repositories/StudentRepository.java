@@ -55,7 +55,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 	Page<Student> searchStudentsByFirstNameAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName, Pageable pageable);
 
 	@Query("select s from Student s where s.gradeLevel.id = :id")
-	Page<Student> searchStudentsByGradeLevel(@Param("id") Integer id, Pageable pageable);
+	Page<Student> searchStudentsByGradeLevelById(@Param("id") Integer id, Pageable pageable);
 
 	@Query("select s from Student s where s.gradeLevel = :gradeLevel")
 	Page<Student> searchStudentsByGradeLevel(@Param("gradeLevel") GradeLevel gradeLevel, Pageable pageable);

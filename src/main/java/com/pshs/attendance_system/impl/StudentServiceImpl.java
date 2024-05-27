@@ -310,7 +310,7 @@ public class StudentServiceImpl implements StudentService {
 	 */
 	@Override
 	public Page<Student> searchStudentsByGradeLevel(int gradeLevel, int page, int size) {
-		return studentRepository.searchStudentsByGradeLevel(gradeLevel, PageRequest.of(page, size));
+		return studentRepository.searchStudentsByGradeLevelById(gradeLevel, PageRequest.of(page, size));
 	}
 
 	/**
