@@ -21,7 +21,7 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system.controllers.secured;
+package com.pshs.attendance_system.controllers.v1.secured.user;
 
 import com.pshs.attendance_system.dto.UserCreationDTO;
 import com.pshs.attendance_system.dto.UserDTO;
@@ -36,6 +36,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@RestController
+@RequestMapping("/api/v1/user")
 public class UserController {
 
 	private static final Logger logger = LogManager.getLogger(UserController.class);

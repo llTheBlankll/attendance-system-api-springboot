@@ -21,9 +21,9 @@
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.pshs.attendance_system.controllers.exposed;
+package com.pshs.attendance_system.controllers.v1.exposed;
 
-import com.pshs.attendance_system.dto.ErrorResponse;
+import com.pshs.attendance_system.dto.MessageResponse;
 import com.pshs.attendance_system.dto.LoginDTO;
 import com.pshs.attendance_system.dto.LoginToken;
 import com.pshs.attendance_system.entities.User;
@@ -62,7 +62,7 @@ public class AuthenticationController {
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<?> handleHttpMessageNotReadableException() {
 		return ResponseEntity.badRequest().body(
-			new ErrorResponse("Request Body is required.")
+			new MessageResponse("Request Body is required.")
 		);
 	}
 
@@ -90,15 +90,15 @@ public class AuthenticationController {
 
 			// Return error response if the last login time was not updated which should not happen
 			return ResponseEntity.badRequest().body(
-				new ErrorResponse("An error occurred while processing your request.")
+				new MessageResponse("An error occurred while processing your request.")
 			);
 		} catch (BadCredentialsException e) { // Catch bad credentials exception
 			return ResponseEntity.badRequest().body(
-				new ErrorResponse("Invalid username or password.")
+				new MessageResponse("Invalid username or password.")
 			);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(
-				new ErrorResponse("ERR: " + e.getMessage())
+				new MessageResponse("ERR: " + e.getMessage())
 			);
 		}
 	}
