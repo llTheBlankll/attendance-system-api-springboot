@@ -30,6 +30,7 @@ import com.pshs.attendance_system.services.StrandService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -102,7 +103,7 @@ public class StrandServiceImpl implements StrandService {
 	 */
 	@Override
 	public Strand getStrand(int strandId) {
-		return null;
+		return strandRepository.findById(strandId).orElse(null);
 	}
 
 	/**
@@ -111,8 +112,8 @@ public class StrandServiceImpl implements StrandService {
 	 * @return The page of strand records
 	 */
 	@Override
-	public Page<Strand> getAllStrands(int page, int size) {
-		return null;
+	public Page<Strand> getAllStrands(Pageable pageable) {
+		return strandRepository.findAll(pageable);
 	}
 
 	/**

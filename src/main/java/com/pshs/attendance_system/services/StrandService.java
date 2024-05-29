@@ -26,6 +26,7 @@ package com.pshs.attendance_system.services;
 import com.pshs.attendance_system.entities.Strand;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface StrandService {
 
@@ -67,5 +68,5 @@ public interface StrandService {
 	 *
 	 * @return The page of strand records
 	 */
-	Page<Strand> getAllStrands(int page, int size);
+	Page<Strand> getAllStrands(Pageable pageable);
 }
