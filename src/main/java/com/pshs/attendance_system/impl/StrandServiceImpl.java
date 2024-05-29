@@ -81,7 +81,7 @@ public class StrandServiceImpl implements StrandService {
 	 * Update a strand record.
 	 *
 	 * @param strandId ID of the strand to be updated
-	 * @param strand Updated strand object
+	 * @param strand   Updated strand object
 	 * @return Execution Status (SUCCESS, FAILURE, NOT_FOUND, or VALIDATION_ERROR)
 	 */
 	@Override

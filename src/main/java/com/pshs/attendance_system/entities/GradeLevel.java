@@ -42,7 +42,8 @@ public class GradeLevel {
 	@JoinColumn(name = "strand")
 	private Strand strand;
 
-	public GradeLevel() {}
+	public GradeLevel() {
+	}
 
 	public GradeLevel(Integer id, String name, Strand strand) {
 		this.id = id;

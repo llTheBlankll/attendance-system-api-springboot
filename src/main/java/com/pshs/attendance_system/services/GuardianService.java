@@ -51,7 +51,7 @@ public interface GuardianService {
 	 * Update the guardian record. Requires the guardian id, and a new guardian object with the updated values.
 	 *
 	 * @param guardianId Guardian ID
-	 * @param guardian Updated Guardian Object
+	 * @param guardian   Updated Guardian Object
 	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND, VALIDATION_ERROR)
 	 */
 	ExecutionStatus updateGuardian(int guardianId, Guardian guardian);
@@ -85,8 +85,8 @@ public interface GuardianService {
 	 * Search guardian records by full name.
 	 *
 	 * @param fullName Full Name
-	 * @param page Page
-	 * @param size How many records per page it will show
+	 * @param page     Page
+	 * @param size     How many records per page it will show
 	 * @return Page containing guardian records
 	 */
 	Page<Guardian> searchGuardianByFullName(String fullName, Pageable page);
@@ -95,8 +95,8 @@ public interface GuardianService {
 	 * Search guardian records by contact number.
 	 *
 	 * @param contactNumber Contact Number
-	 * @param page Page
-	 * @param size How many records per page it will show
+	 * @param page          Page
+	 * @param size          How many records per page it will show
 	 * @return Page containing guardian records
 	 */
 	Page<Guardian> searchGuardianByContactNumber(String contactNumber, Pageable page);
@@ -104,9 +104,9 @@ public interface GuardianService {
 	/**
 	 * Search the guardian by full name and contact number.
 	 *
-	 * @param fullName The full name of the guardian
+	 * @param fullName      The full name of the guardian
 	 * @param contactNumber The contact number of the guardian
-	 * @param page The pageable object
+	 * @param page          The pageable object
 	 * @return Page containing guardian records
 	 */
 	Page<Guardian> searchGuardianByFullNameAndContactNumber(String fullName, String contactNumber, Pageable page);

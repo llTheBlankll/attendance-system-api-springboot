@@ -38,7 +38,8 @@ public class Strand {
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	public Strand() {}
+	public Strand() {
+	}
 
 	public Strand(Integer id, String name) {
 		this.id = id;

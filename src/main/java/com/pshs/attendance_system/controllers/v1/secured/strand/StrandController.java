@@ -16,8 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
-
 @RestController
 @Tag(name = "Strand", description = "Strand API")
 @RequestMapping("/api/v1/strands")

@@ -33,7 +33,6 @@ import com.pshs.attendance_system.services.SectionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -334,7 +333,7 @@ public class SectionServiceImpl implements SectionService {
 	 * Get all the sections associated with the teacher with the given teacher id.
 	 *
 	 * @param teacherId id of the teacher
-	 * @param page    The page number
+	 * @param page      The page number
 	 * @return Page object that contains the list of sections.
 	 */
 	@Override
@@ -352,7 +351,7 @@ public class SectionServiceImpl implements SectionService {
 	 * Get all the sections associated with the teacher object.
 	 *
 	 * @param teacher teacher object
-	 * @param page The page number
+	 * @param page    The page number
 	 * @return Page object that contains the list of sections.
 	 */
 	@Override

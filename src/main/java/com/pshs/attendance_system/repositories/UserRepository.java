@@ -72,6 +72,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	@Query("select u from User u where u.email like concat('%', :email, '%') and u.role like concat('%', :role, '%')")
 	Page<User> searchUsersByEmailAndRole(@Param("email") @NonNull String email, @Param("role") @NonNull String role, Pageable pageable);
+
 	int countByRole(@NonNull String role);
 
 	@Query("""

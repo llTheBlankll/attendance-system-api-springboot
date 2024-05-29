@@ -34,9 +34,6 @@ import com.pshs.attendance_system.entities.range.DateRange;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.enums.Status;
-import com.pshs.attendance_system.exceptions.AttendanceInvalidException;
-import com.pshs.attendance_system.exceptions.AttendanceNotFoundException;
-import com.pshs.attendance_system.exceptions.StudentAlreadySignedOutException;
 import com.pshs.attendance_system.repositories.AttendanceRepository;
 import com.pshs.attendance_system.services.AttendanceService;
 import com.pshs.attendance_system.services.StudentService;
@@ -54,7 +51,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service

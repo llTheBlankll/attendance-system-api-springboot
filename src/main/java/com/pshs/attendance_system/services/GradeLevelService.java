@@ -50,7 +50,7 @@ public interface GradeLevelService {
 	 * Update a grade level record
 	 *
 	 * @param gradeLevelId ID of the grade level to be updated
-	 * @param gradeLevel Updated grade level object
+	 * @param gradeLevel   Updated grade level object
 	 * @return Execution Status (SUCCESS, FAILURE, NOT_FOUND, or VALIDATION_ERROR)
 	 */
 	ExecutionStatus updateGradeLevel(int gradeLevelId, GradeLevel gradeLevel);
@@ -72,6 +72,7 @@ public interface GradeLevelService {
 
 	/**
 	 * Count all grade level records
+	 *
 	 * @return Number of grade level records, 0 if none
 	 */
 	int countAllGradeLevels();
@@ -107,7 +108,7 @@ public interface GradeLevelService {
 	 * Search grade levels by strand in the database, and return the results in pages.
 	 *
 	 * @param strandId ID of the strand to be searched
-	 * @param page Page number of the results
+	 * @param page     Page number of the results
 	 * @return Page of GradeLevel objects, none if not found
 	 */
 	Page<GradeLevel> searchGradeLevelsByStrand(int strandId, Pageable page);
@@ -117,9 +118,9 @@ public interface GradeLevelService {
 	 * ! Name Cannot be Empty. The page and size are optional and has already been set to 0 and 10 respectively.
 	 * ! Strand ID must be greater than 0 and valid. The page and size are optional and has already been set to 0 and 10 respectively.
 	 *
-	 * @param name Name of the grade level to be searched
+	 * @param name     Name of the grade level to be searched
 	 * @param strandId ID of the strand to be searched
-	 * @param page Page number of the results
+	 * @param page     Page number of the results
 	 * @return Page of GradeLevel objects, none if not found
 	 */
 	Page<GradeLevel> searchGradeLevelsByNameAndStrand(String name, int strandId, Pageable page);

@@ -48,7 +48,8 @@ public class Guardian {
 	@Column(name = "contact_number", length = 32)
 	private String contactNumber;
 
-	public Guardian() {}
+	public Guardian() {
+	}
 
 	public Guardian(Integer id, Student studentLrn, String fullName, String contactNumber) {
 		this.id = id;

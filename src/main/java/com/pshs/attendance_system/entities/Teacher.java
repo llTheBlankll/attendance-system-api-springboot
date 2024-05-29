@@ -44,7 +44,8 @@ public class Teacher {
 	@Column(name = "sex", length = 8)
 	private String sex;
 
-	public Teacher() {}
+	public Teacher() {
+	}
 
 	public Teacher(Integer id, String firstName, String lastName, String sex) {
 		this.id = id;

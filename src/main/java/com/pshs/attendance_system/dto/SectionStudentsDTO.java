@@ -38,7 +38,8 @@ public class SectionStudentsDTO extends SectionDTO implements Serializable {
 
 	private List<StudentDTO> students = new ArrayList<>();
 
-	public SectionStudentsDTO() {}
+	public SectionStudentsDTO() {
+	}
 
 	public SectionStudentsDTO(List<StudentDTO> students) {
 		this.students = students;

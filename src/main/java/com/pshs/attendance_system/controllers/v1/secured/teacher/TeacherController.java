@@ -198,8 +198,8 @@ public class TeacherController {
 	public ResponseEntity<?> searchTeachers(@RequestParam(required = false) String firstName,
 	                                        @RequestParam(required = false) String lastName,
 	                                        @RequestParam(required = false) String sex,
-																					@RequestParam(defaultValue = "lastName") String sort,
-																					@RequestParam(defaultValue = "asc") String order,
+	                                        @RequestParam(defaultValue = "lastName") String sort,
+	                                        @RequestParam(defaultValue = "asc") String order,
 	                                        @RequestParam int page,
 	                                        @RequestParam int size) {
 		Page<Teacher> teachers;

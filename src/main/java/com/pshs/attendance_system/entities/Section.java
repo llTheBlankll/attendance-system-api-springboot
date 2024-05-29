@@ -65,7 +65,8 @@ public class Section {
 	@OneToMany(mappedBy = "section")
 	private List<Student> students = new ArrayList<>();
 
-	public Section() {}
+	public Section() {
+	}
 
 	public Section(Integer id, Teacher teacher, String room, Strand strand, GradeLevel gradeLevel, String sectionName, List<Student> students) {
 		this.id = id;

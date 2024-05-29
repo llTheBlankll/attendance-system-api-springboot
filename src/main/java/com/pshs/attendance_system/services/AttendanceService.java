@@ -30,8 +30,6 @@ import com.pshs.attendance_system.entities.RFIDCredential;
 import com.pshs.attendance_system.entities.range.DateRange;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.enums.ExecutionStatus;
-import com.pshs.attendance_system.exceptions.AttendanceNotFoundException;
-import com.pshs.attendance_system.exceptions.StudentAlreadySignedOutException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -65,7 +63,7 @@ public interface AttendanceService {
 	/**
 	 * Update the attendance record with the student. Requires the attendance id, and a new attendance object with the updated values.
 	 *
-	 * @param id Attendance ID
+	 * @param id      Attendance ID
 	 * @param timeOut Updated Time Out
 	 * @return ExecutionStatus {@link ExecutionStatus}
 	 * @see ExecutionStatus
@@ -218,6 +216,8 @@ public interface AttendanceService {
 	boolean isScanned(Long lrn);
 
 	boolean isAttendanceExist(Long studentId, LocalDate date);
+
 	boolean isAttendanceExist(int attendanceId, LocalDate date);
+
 	boolean isAttendanceExist(int attendanceId);
 }
