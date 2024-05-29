@@ -26,6 +26,7 @@ package com.pshs.attendance_system.services;
 import com.pshs.attendance_system.entities.Teacher;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface TeacherService {
 
@@ -59,7 +60,7 @@ public interface TeacherService {
 	 *
 	 * @param teacherId Teacher ID that will represent the teacher record that will be updated.
 	 * @param firstName New first name of the teacher.
-	 * @return
+	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND, VALIDATION_ERROR) {@link ExecutionStatus}
 	 */
 	ExecutionStatus updateTeacherFirstName(int teacherId, String firstName);
 
@@ -87,7 +88,7 @@ public interface TeacherService {
 	 * @param size How many records per page it will show
 	 * @return Page containing teacher records
 	 */
-	Page<Teacher> getAllTeachers(int page, int size);
+	Page<Teacher> getAllTeachers(Pageable page);
 
 	/**
 	 * Search teacher records by first name.
@@ -97,7 +98,7 @@ public interface TeacherService {
 	 * @param size How many records per page it will show
 	 * @return Page containing teacher records
 	 */
-	Page<Teacher> searchTeacherByFirstName(String firstName, int page, int size);
+	Page<Teacher> searchTeacherByFirstName(String firstName, Pageable page);
 
 	/**
 	 * Search teacher records by last name.
@@ -107,7 +108,7 @@ public interface TeacherService {
 	 * @param size How many records per page it will show
 	 * @return Page containing teacher records
 	 */
-	Page<Teacher> searchTeacherByLastName(String lastName, int page, int size);
+	Page<Teacher> searchTeacherByLastName(String lastName, Pageable page);
 
 	/**
 	 * Search teacher by their first name and sexuality.
@@ -118,7 +119,7 @@ public interface TeacherService {
 	 * @param size How many records per page it will show
 	 * @return Page containing teacher records
 	 */
-	Page<Teacher> searchTeacherByFirstNameAndSex(String firstName, String sex, int page, int size);
+	Page<Teacher> searchTeacherByFirstNameAndSex(String firstName, String sex, Pageable page);
 
 	/**
 	 * Search teacher by their last name and sexuality.
@@ -129,7 +130,7 @@ public interface TeacherService {
 	 * @param size How many records per page it will show
 	 * @return Page containing teacher records
 	 */
-	Page<Teacher> searchTeacherByLastNameAndSex(String lastName, String sex, int page, int size);
+	Page<Teacher> searchTeacherByLastNameAndSex(String lastName, String sex, Pageable page);
 
 	/**
 	 * Search teacher by their first name and last name.
@@ -140,8 +141,28 @@ public interface TeacherService {
 	 * @param size How many records per page it will show
 	 * @return Page containing teacher records
 	 */
-	Page<Teacher> searchTeacherByFirstNameAndLastName(String firstName, String lastName, int page, int size);
+	Page<Teacher> searchTeacherByFirstNameAndLastName(String firstName, String lastName, Pageable page);
 
+	/**
+	 * Search teacher by their first name, last name, and sexuality.
+	 * @param firstName First name of the teacher that will be searched.
+	 * @param lastName Last name of the teacher that will be searched.
+	 * @param sex Sexuality of the teacher that will be searched.
+	 * @param page Page
+	 * @param size How many records per page it will show
+	 * @return Page containing teacher records
+	 */
+	Page<Teacher> searchTeacherByFirstNameAndLastNameAndSex(String firstName, String lastName, String sex, Pageable page);
+
+	/**
+	 * Search teacher by their sexuality.
+	 *
+	 * @param sex Sexuality of the teacher that will be searched.
+	 * @param page Page
+	 * @param size How many records per page it will show
+	 * @return Page containing teacher records
+	 */
+	Page<Teacher> searchTeacherBySex(String sex, Pageable page);
 	// Region: Statistics
 
 	/**

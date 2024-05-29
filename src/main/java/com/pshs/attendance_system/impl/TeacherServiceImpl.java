@@ -31,6 +31,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -55,8 +56,39 @@ public class TeacherServiceImpl implements TeacherService {
 			return teacherValidationLog(teacher);
 		}
 
+		if (!isTeacherNotExists(teacher.getId())) {
+			logger.debug("Teacher ID: {} already exists.", teacher.getId());
+			return ExecutionStatus.FAILURE;
+		}
 		teacherRepository.save(teacher);
 		return ExecutionStatus.SUCCESS;
+	}
+
+	/**
+	 * Search teacher by their first name, last name, and sexuality.
+	 *
+	 * @param firstName First name of the teacher that will be searched.
+	 * @param lastName  Last name of the teacher that will be searched.
+	 * @param sex       Sexuality of the teacher that will be searched.
+	 * @param page      Page
+	 * @param size     How many records per page it will show
+	 * @return Page containing teacher records
+	 */
+	@Override
+	public Page<Teacher> searchTeacherByFirstNameAndLastNameAndSex(String firstName, String lastName, String sex, Pageable page) {
+return teacherRepository.searchByFirstNameAndLastNameAndSex(firstName, lastName, sex, page);
+	}
+
+	/**
+	 * Search teacher by their sexuality.
+	 *
+	 * @param sex  Sexuality of the teacher that will be searched.
+	 * @param page Page
+	 * @return Page containing teacher records
+	 */
+	@Override
+	public Page<Teacher> searchTeacherBySex(String sex, Pageable page) {
+		return teacherRepository.searchBySex(sex, page);
 	}
 
 	/**
@@ -189,8 +221,8 @@ public class TeacherServiceImpl implements TeacherService {
 	 * @return Page containing teacher records
 	 */
 	@Override
-	public Page<Teacher> getAllTeachers(int page, int size) {
-		return teacherRepository.findAll(PageRequest.of(page, size));
+	public Page<Teacher> getAllTeachers(Pageable page) {
+		return teacherRepository.findAll(page);
 	}
 
 	/**
@@ -202,10 +234,10 @@ public class TeacherServiceImpl implements TeacherService {
 	 * @return Page containing teacher records
 	 */
 	@Override
-	public Page<Teacher> searchTeacherByFirstName(String firstName, int page, int size) {
+	public Page<Teacher> searchTeacherByFirstName(String firstName, Pageable page) {
 		if (firstName.isEmpty()) return Page.empty();
 
-		return teacherRepository.searchTeachersByFirstName(firstName, PageRequest.of(page, size));
+		return teacherRepository.searchTeachersByFirstName(firstName, page);
 	}
 
 	/**
@@ -217,10 +249,10 @@ public class TeacherServiceImpl implements TeacherService {
 	 * @return Page containing teacher records
 	 */
 	@Override
-	public Page<Teacher> searchTeacherByLastName(String lastName, int page, int size) {
+	public Page<Teacher> searchTeacherByLastName(String lastName, Pageable page) {
 		if (lastName.isEmpty()) return Page.empty();
 
-		return teacherRepository.searchTeachersByLastName(lastName, PageRequest.of(page, size));
+		return teacherRepository.searchTeachersByLastName(lastName, page);
 	}
 
 	/**
@@ -233,8 +265,8 @@ public class TeacherServiceImpl implements TeacherService {
 	 * @return Page containing teacher records
 	 */
 	@Override
-	public Page<Teacher> searchTeacherByFirstNameAndSex(String firstName, String sex, int page, int size) {
-		return teacherRepository.searchTeacherByFirstNameAndSex(firstName, sex, PageRequest.of(page, size));
+	public Page<Teacher> searchTeacherByFirstNameAndSex(String firstName, String sex, Pageable page) {
+		return teacherRepository.searchTeacherByFirstNameAndSex(firstName, sex, page);
 	}
 
 	/**
@@ -247,8 +279,8 @@ public class TeacherServiceImpl implements TeacherService {
 	 * @return Page containing teacher records
 	 */
 	@Override
-	public Page<Teacher> searchTeacherByLastNameAndSex(String lastName, String sex, int page, int size) {
-		return teacherRepository.searchTeachersByLastNameAndSex(lastName, sex, PageRequest.of(page, size));
+	public Page<Teacher> searchTeacherByLastNameAndSex(String lastName, String sex, Pageable page) {
+		return teacherRepository.searchTeachersByLastNameAndSex(lastName, sex, page);
 	}
 
 	/**
@@ -261,8 +293,8 @@ public class TeacherServiceImpl implements TeacherService {
 	 * @return Page containing teacher records
 	 */
 	@Override
-	public Page<Teacher> searchTeacherByFirstNameAndLastName(String firstName, String lastName, int page, int size) {
-		return teacherRepository.searchTeachersByFirstNameAndLastName(firstName, lastName, PageRequest.of(page, size));
+	public Page<Teacher> searchTeacherByFirstNameAndLastName(String firstName, String lastName, Pageable page) {
+		return teacherRepository.searchTeachersByFirstNameAndLastName(firstName, lastName, page);
 	}
 
 	/**

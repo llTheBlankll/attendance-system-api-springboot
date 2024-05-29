@@ -62,4 +62,12 @@ public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
 		select t from Teacher t
 		where t.firstName like concat('%', :firstName, '%') and t.lastName like concat('%', :lastName, '%')""")
 	Page<Teacher> searchTeachersByFirstNameAndLastName(@Param("firstName") @NonNull String firstName, @Param("lastName") @NonNull String lastName, Pageable pageable);
+
+	@Query("""
+		select t from Teacher t
+		where t.firstName like concat('%', :firstName, '%') and t.lastName like concat('%', :lastName, '%') and t.sex like concat('%', :sex, '%')""")
+	Page<Teacher> searchByFirstNameAndLastNameAndSex(@Param("firstName") String firstName, @Param("lastName") String lastName, @Param("sex") String sex, Pageable pageable);
+
+	@Query("select t from Teacher t where t.sex like concat('%', :sex, '%')")
+	Page<Teacher> searchBySex(@Param("sex") String sex, Pageable pageable);
 }

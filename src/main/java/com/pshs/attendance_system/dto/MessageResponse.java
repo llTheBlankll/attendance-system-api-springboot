@@ -23,10 +23,10 @@
 
 package com.pshs.attendance_system.dto;
 
-public class ErrorResponse {
+public class MessageResponse {
 	private String message;
 
-	public ErrorResponse(String message) {
+	public MessageResponse(String message) {
 		this.message = message;
 	}
 
@@ -34,7 +34,7 @@ public class ErrorResponse {
 		return message;
 	}
 
-	public ErrorResponse setMessage(String message) {
+	public MessageResponse setMessage(String message) {
 		this.message = message;
 		return this;
 	}

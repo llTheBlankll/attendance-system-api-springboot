@@ -61,11 +61,7 @@ public class WebSecurity {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
 		return security
-			.csrf(
-				csrf ->
-					csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-						.csrfTokenRequestHandler(new XorCsrfTokenRequestAttributeHandler())
-			)
+			.csrf(AbstractHttpConfigurer::disable)
 			.cors(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(authorizeRequests ->
 				authorizeRequests
