@@ -63,7 +63,7 @@ public class GuardianServiceImpl implements GuardianService {
 			// Check if guardian already exists
 			if (isGuardianExist(guardian.getId())) {
 				logger.debug("Guardian {} already exists.", guardian.getFullName());
-				return ExecutionStatus.FAILURE;
+				return ExecutionStatus.VALIDATION_ERROR;
 			}
 
 			// Save the guardian record
