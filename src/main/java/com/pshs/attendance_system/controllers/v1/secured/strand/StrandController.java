@@ -54,7 +54,7 @@ public class StrandController {
 		return ResponseEntity.status(500).body(new MessageResponse("Failed to create strand."));
 	}
 
-	@DeleteMapping("/")
+	@DeleteMapping("/{strandId}")
 	@Operation(summary = "Delete Strand", description = "Delete a strand")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "Strand deleted successfully"),
@@ -64,7 +64,7 @@ public class StrandController {
 	@Parameters({
 		@Parameter(name = "strandId", description = "ID of the strand to be deleted", required = true)
 	})
-	public ResponseEntity<?> deleteStrand(@RequestParam int strandId) {
+	public ResponseEntity<?> deleteStrand(@PathVariable int strandId) {
 		ExecutionStatus status = strandService.deleteStrand(strandId);
 		switch (status) {
 			case SUCCESS -> {
@@ -81,7 +81,7 @@ public class StrandController {
 		return ResponseEntity.status(500).body(new MessageResponse("Failed to delete strand."));
 	}
 
-	@PutMapping("/")
+	@PutMapping("/{strandId}")
 	@Operation(summary = "Update Strand", description = "Update a strand")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "Strand updated successfully"),
@@ -92,7 +92,7 @@ public class StrandController {
 		@Parameter(name = "strandId", description = "ID of the strand to be updated", required = true)
 	})
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Updated strand object", required = true)
-	public ResponseEntity<?> updateStrand(@RequestParam int strandId, @RequestBody StrandDTO strand) {
+	public ResponseEntity<?> updateStrand(@PathVariable int strandId, @RequestBody StrandDTO strand) {
 		ExecutionStatus status = strandService.updateStrand(strandId, strand.toEntity());
 		switch (status) {
 			case SUCCESS -> {
