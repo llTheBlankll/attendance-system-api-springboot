@@ -46,4 +46,7 @@ public interface GuardianRepository extends JpaRepository<Guardian, Integer> {
 
 	@Query("select g from Guardian g where upper(g.contactNumber) like upper(concat('%', :contactNumber, '%'))")
 	Page<Guardian> searchGuardianByContactNumber(@Param("contactNumber") @NonNull String contactNumber, Pageable pageable);
+
+	@Query("select g from Guardian g where g.fullName = :fullName and g.contactNumber = :contactNumber")
+	Page<Guardian> searchGuadianByFullNameAndContactNumber(@Param("fullName") String fullName, @Param("contactNumber") String contactNumber, Pageable pageable);
 }

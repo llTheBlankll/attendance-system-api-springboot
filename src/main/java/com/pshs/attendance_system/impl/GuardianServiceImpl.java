@@ -31,7 +31,7 @@ import com.pshs.attendance_system.services.GuardianService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -145,12 +145,11 @@ public class GuardianServiceImpl implements GuardianService {
 	 * Get all guardian records.
 	 *
 	 * @param page Page
-	 * @param size How many records per page it will show
 	 * @return Page containing guardian records
 	 */
 	@Override
-	public Page<Guardian> getAllGuardian(int page, int size) {
-		return guardianRepository.findAll(PageRequest.of(page, size));
+	public Page<Guardian> getAllGuardian(Pageable page) {
+		return guardianRepository.findAll(page);
 	}
 
 	/**
@@ -182,13 +181,12 @@ public class GuardianServiceImpl implements GuardianService {
 	 *
 	 * @param fullName Full Name
 	 * @param page     Page
-	 * @param size     How many records per page it will show
 	 * @return Page containing guardian records
 	 * @see Guardian
 	 */
 	@Override
-	public Page<Guardian> searchGuardianByFullName(String fullName, int page, int size) {
-		return guardianRepository.searchGuardianByFullName(fullName, PageRequest.of(page, size));
+	public Page<Guardian> searchGuardianByFullName(String fullName, Pageable page) {
+		return guardianRepository.searchGuardianByFullName(fullName, page);
 	}
 
 	/**
@@ -196,13 +194,25 @@ public class GuardianServiceImpl implements GuardianService {
 	 *
 	 * @param contactNumber Contact Number
 	 * @param page          Page
-	 * @param size          How many records per page it will show
 	 * @return Page containing guardian records
 	 * @see Guardian
 	 */
 	@Override
-	public Page<Guardian> searchGuardianByContactNumber(String contactNumber, int page, int size) {
-		return guardianRepository.searchGuardianByContactNumber(contactNumber, PageRequest.of(page, size));
+	public Page<Guardian> searchGuardianByContactNumber(String contactNumber, Pageable page) {
+		return guardianRepository.searchGuardianByContactNumber(contactNumber, page);
+	}
+
+	/**
+	 * Search the guardian by full name and contact number.
+	 *
+	 * @param fullName      The full name of the guardian
+	 * @param contactNumber The contact number of the guardian
+	 * @param page          The pageable object
+	 * @return Page containing guardian records
+	 */
+	@Override
+	public Page<Guardian> searchGuardianByFullNameAndContactNumber(String fullName, String contactNumber, Pageable page) {
+		return guardianRepository.searchGuadianByFullNameAndContactNumber(fullName, contactNumber, page);
 	}
 
 	/**
