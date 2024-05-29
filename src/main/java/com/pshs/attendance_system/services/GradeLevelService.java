@@ -26,6 +26,7 @@ package com.pshs.attendance_system.services;
 import com.pshs.attendance_system.entities.GradeLevel;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface GradeLevelService {
 
@@ -100,17 +101,16 @@ public interface GradeLevelService {
 	 * @param size Number of results per page
 	 * @return Page of GradeLevel objects, none if not found
 	 */
-	Page<GradeLevel> searchGradeLevelsByName(String name, int page, int size);
+	Page<GradeLevel> searchGradeLevelsByName(String name, Pageable page);
 
 	/**
 	 * Search grade levels by strand in the database, and return the results in pages.
 	 *
 	 * @param strandId ID of the strand to be searched
 	 * @param page Page number of the results
-	 * @param size Number of results per page
 	 * @return Page of GradeLevel objects, none if not found
 	 */
-	Page<GradeLevel> searchGradeLevelsByStrand(int strandId, int page, int size);
+	Page<GradeLevel> searchGradeLevelsByStrand(int strandId, Pageable page);
 
 	/**
 	 * Search grade levels by name and strand in the database, and return the results in pages.
@@ -120,8 +120,7 @@ public interface GradeLevelService {
 	 * @param name Name of the grade level to be searched
 	 * @param strandId ID of the strand to be searched
 	 * @param page Page number of the results
-	 * @param size Number of results per page
 	 * @return Page of GradeLevel objects, none if not found
 	 */
-	Page<GradeLevel> searchGradeLevelsByNameAndStrand(String name, int strandId, int page, int size);
+	Page<GradeLevel> searchGradeLevelsByNameAndStrand(String name, int strandId, Pageable page);
 }

@@ -29,6 +29,7 @@ import com.pshs.attendance_system.entities.Strand;
 import com.pshs.attendance_system.entities.Teacher;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface SectionService {
 
@@ -146,7 +147,7 @@ public interface SectionService {
 	 * @param teacherId id of the teacher
 	 * @return
 	 */
-	Page<Section> getSectionByTeacher(int teacherId, int page, int size);
+	Page<Section> getSectionByTeacher(int teacherId, Pageable page);
 
 	/**
 	 * Get all the sections associated with the teacher object.
@@ -154,67 +155,61 @@ public interface SectionService {
 	 * @param teacher teacher object
 	 * @return
 	 */
-	Page<Section> getSectionByTeacher(Teacher teacher, int page, int size);
+	Page<Section> getSectionByTeacher(Teacher teacher, Pageable page);
 
 	/**
 	 * Get all the sections associated with the strand with the given strand id.
 	 *
 	 * @param strandId id of the strand
 	 * @param page the page number
-	 * @param size the size of the page
 	 * @return Page object that contains the list of sections.
 	 */
-	Page<Section> getSectionByStrand(int strandId, int page, int size);
+	Page<Section> getSectionByStrand(int strandId, Pageable page);
 
 	/**
 	 * Get all the sections associated with the strand with the given strand id.
 	 *
 	 * @param strand the strand object that will be used to get the sections
 	 * @param page the page number
-	 * @param size the size of the page
 	 * @return
 	 */
-	Page<Section> getSectionByStrand(Strand strand, int page, int size);
+	Page<Section> getSectionByStrand(Strand strand, Pageable page);
 
 	/**
 	 * Get all the sections associated with the grade level with the given grade level id.
 	 *
 	 * @param gradeLevelId id of the grade level
 	 * @param page the page number
-	 * @param size the size of the page
 	 * @return Page object that contains the list of sections.
 	 */
-	Page<Section> getSectionByGradeLevel(int gradeLevelId, int page, int size);
+	Page<Section> getSectionByGradeLevel(int gradeLevelId, Pageable page);
 
 	/**
 	 * Get all the sections associated with the grade level with the given grade level object.
 	 *
 	 * @param gradeLevel id of the grade level
 	 * @param page the page number
-	 * @param size the size of the page
 	 * @return Page object that contains the list of sections.
 	 */
-	Page<Section> getSectionByGradeLevel(GradeLevel gradeLevel, int page, int size);
+	Page<Section> getSectionByGradeLevel(GradeLevel gradeLevel, Pageable page);
 
 	/**
 	 * Search sections with the given room.
 	 *
 	 * @param room the room name
 	 * @param page the page number
-	 * @param size the size of the page
 	 * @return Page object that contains the list of sections.
 	 */
-	Page<Section> searchSectionByRoom(String room, int page, int size);
+	Page<Section> searchSectionByRoom(String room, Pageable page);
 
 	/**
 	 * Search sections with the given section name.
 	 *
 	 * @param sectionName the section name
 	 * @param page the page number
-	 * @param size the size of the page
 	 * @return Page object that contains the list of sections.
 	 */
-	Page<Section> searchSectionBySectionName(String sectionName, int page, int size);
+	Page<Section> searchSectionBySectionName(String sectionName, Pageable page);
 
 	// Region: Statistics
 

@@ -45,6 +45,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -446,11 +447,8 @@ public class AttendanceServiceImpl implements AttendanceService {
 	 * @return return the page object
 	 */
 	@Override
-	public Page<Attendance> getAllAttendancesByStudentId(Long studentId, int page, int size) {
-		// Alphabetical order of students
-		Sort sort = Sort.by("lastName").ascending();
-
-		return attendanceRepository.findAllAttendancesByStudentId(studentId, PageRequest.of(page, size).withSort(sort));
+	public Page<Attendance> getAllAttendancesByStudentId(Long studentId, Pageable page) {
+		return attendanceRepository.findAllAttendancesByStudentId(studentId, page);
 	}
 
 	/**

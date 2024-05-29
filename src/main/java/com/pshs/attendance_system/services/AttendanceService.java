@@ -33,6 +33,7 @@ import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.exceptions.AttendanceNotFoundException;
 import com.pshs.attendance_system.exceptions.StudentAlreadySignedOutException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -131,7 +132,7 @@ public interface AttendanceService {
 	 * @param size      How many student it will display.
 	 * @return return the page object
 	 */
-	Page<Attendance> getAllAttendancesByStudentId(Long studentId, int page, int size);
+	Page<Attendance> getAllAttendancesByStudentId(Long studentId, Pageable page);
 	// End Region: Custom Queries
 
 	// Region: Statistics / Numbers

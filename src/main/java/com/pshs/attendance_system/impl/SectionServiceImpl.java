@@ -34,6 +34,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -334,18 +335,17 @@ public class SectionServiceImpl implements SectionService {
 	 *
 	 * @param teacherId id of the teacher
 	 * @param page    The page number
-	 * @param size    The size of the page
 	 * @return Page object that contains the list of sections.
 	 */
 	@Override
-	public Page<Section> getSectionByTeacher(int teacherId, int page, int size) {
+	public Page<Section> getSectionByTeacher(int teacherId, Pageable page) {
 		if (teacherId <= 0) {
 			logger.debug("Teacher id {} is invalid.", teacherId);
 			return null;
 		}
 
 		logger.debug("Retrieving sections with teacher id: {}.", teacherId);
-		return sectionRepository.getSectionByTeacher(teacherId, PageRequest.of(page, size));
+		return sectionRepository.getSectionByTeacher(teacherId, page);
 	}
 
 	/**
@@ -353,18 +353,17 @@ public class SectionServiceImpl implements SectionService {
 	 *
 	 * @param teacher teacher object
 	 * @param page The page number
-	 * @param size The size of the page
 	 * @return Page object that contains the list of sections.
 	 */
 	@Override
-	public Page<Section> getSectionByTeacher(Teacher teacher, int page, int size) {
+	public Page<Section> getSectionByTeacher(Teacher teacher, Pageable page) {
 		if (teacher == null) {
 			logger.debug("Teacher object is null.");
 			return null;
 		}
 
 		logTeacherRetrieval(teacher.getId());
-		return sectionRepository.getSectionByTeacher(teacher.getId(), PageRequest.of(page, size));
+		return sectionRepository.getSectionByTeacher(teacher.getId(), page);
 	}
 
 	/**
@@ -372,18 +371,17 @@ public class SectionServiceImpl implements SectionService {
 	 *
 	 * @param strandId id of the strand
 	 * @param page     the page number
-	 * @param size     the size of the page
 	 * @return Page object that contains the list of sections.
 	 */
 	@Override
-	public Page<Section> getSectionByStrand(int strandId, int page, int size) {
+	public Page<Section> getSectionByStrand(int strandId, Pageable page) {
 		if (strandId <= 0) {
 			logger.debug("Strand id {} is invalid.", strandId);
 			return Page.empty();
 		}
 
 		logSectionRetrievalWithStrandId(strandId);
-		return sectionRepository.getSectionByStrand(strandId, PageRequest.of(page, size));
+		return sectionRepository.getSectionByStrand(strandId, page);
 	}
 
 	/**
@@ -391,18 +389,17 @@ public class SectionServiceImpl implements SectionService {
 	 *
 	 * @param strand the strand object that will be used to get the sections
 	 * @param page   the page number
-	 * @param size   the size of the page
 	 * @return Page object that contains the list of sections.
 	 */
 	@Override
-	public Page<Section> getSectionByStrand(Strand strand, int page, int size) {
+	public Page<Section> getSectionByStrand(Strand strand, Pageable page) {
 		if (strand == null) {
 			logger.debug("Strand object is null.");
 			return Page.empty();
 		}
 
 		logSectionRetrievalWithStrandId(strand.getId());
-		return sectionRepository.getSectionByStrand(strand.getId(), PageRequest.of(page, size));
+		return sectionRepository.getSectionByStrand(strand.getId(), page);
 	}
 
 	/**
@@ -410,18 +407,17 @@ public class SectionServiceImpl implements SectionService {
 	 *
 	 * @param gradeLevelId id of the grade level
 	 * @param page         the page number
-	 * @param size         the size of the page
 	 * @return Page object that contains the list of sections.
 	 */
 	@Override
-	public Page<Section> getSectionByGradeLevel(int gradeLevelId, int page, int size) {
+	public Page<Section> getSectionByGradeLevel(int gradeLevelId, Pageable page) {
 		if (gradeLevelId <= 0) {
 			logger.debug("Grade level id {} is invalid.", gradeLevelId);
 			return Page.empty();
 		}
 
 		logSectionRetrievalWithGradeLevelId(gradeLevelId);
-		return sectionRepository.getSectionByGradeLevel(gradeLevelId, PageRequest.of(page, size));
+		return sectionRepository.getSectionByGradeLevel(gradeLevelId, page);
 	}
 
 	/**
@@ -429,18 +425,17 @@ public class SectionServiceImpl implements SectionService {
 	 *
 	 * @param gradeLevel id of the grade level
 	 * @param page       the page number
-	 * @param size       the size of the page
 	 * @return Page object that contains the list of sections.
 	 */
 	@Override
-	public Page<Section> getSectionByGradeLevel(GradeLevel gradeLevel, int page, int size) {
+	public Page<Section> getSectionByGradeLevel(GradeLevel gradeLevel, Pageable page) {
 		if (gradeLevel == null) {
 			logger.debug("Grade level object is null.");
 			return Page.empty();
 		}
 
 		logSectionRetrievalWithGradeLevelId(gradeLevel.getId());
-		return sectionRepository.getSectionByGradeLevel(gradeLevel.getId(), PageRequest.of(page, size));
+		return sectionRepository.getSectionByGradeLevel(gradeLevel.getId(), page);
 	}
 
 	/**
@@ -448,18 +443,17 @@ public class SectionServiceImpl implements SectionService {
 	 *
 	 * @param room the room name
 	 * @param page the page number
-	 * @param size the size of the page
 	 * @return Page object that contains the list of sections.
 	 */
 	@Override
-	public Page<Section> searchSectionByRoom(String room, int page, int size) {
+	public Page<Section> searchSectionByRoom(String room, Pageable page) {
 		if (room.isEmpty()) {
 			logger.debug("Room name is empty.");
 			return Page.empty();
 		}
 
 		logger.debug("Retrieving sections with room name: {}.", room);
-		return sectionRepository.searchSectionByRoom(room, PageRequest.of(page, size));
+		return sectionRepository.searchSectionByRoom(room, page);
 	}
 
 	/**
@@ -467,18 +461,17 @@ public class SectionServiceImpl implements SectionService {
 	 *
 	 * @param sectionName the section name
 	 * @param page        the page number
-	 * @param size        the size of the page
 	 * @return Page object that contains the list of sections.
 	 */
 	@Override
-	public Page<Section> searchSectionBySectionName(String sectionName, int page, int size) {
+	public Page<Section> searchSectionBySectionName(String sectionName, Pageable page) {
 		if (sectionName.isEmpty()) {
 			logger.debug("Section name is empty.");
 			return Page.empty();
 		}
 
 		logger.debug("Retrieving sections with section name: {}.", sectionName);
-		return sectionRepository.searchSectionBySectionName(sectionName, PageRequest.of(page, size));
+		return sectionRepository.searchSectionBySectionName(sectionName, page);
 	}
 
 	/**

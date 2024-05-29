@@ -29,6 +29,7 @@ import com.pshs.attendance_system.entities.Section;
 import com.pshs.attendance_system.entities.Student;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface StudentService {
 
@@ -111,30 +112,27 @@ public interface StudentService {
 	 * Get all the students in the database
 	 *
 	 * @param page Page
-	 * @param size Shows how many student will it display.
 	 * @return return the page object
 	 */
-	Page<Student> getAllStudents(int page, int size);
+	Page<Student> getAllStudents(Pageable page);
 
 	/**
 	 * Search Students by their first name
 	 *
 	 * @param firstName First name that will be searched
 	 * @param page Page
-	 * @param size Shows how many student will it display.
 	 * @return return the page object
 	 */
-	Page<Student> searchStudentsByFirstName(String firstName, int page, int size);
+	Page<Student> searchStudentsByFirstName(String firstName, Pageable page);
 
 	/**
 	 * Search students by their last name
 	 *
 	 * @param lastName Last name that will be searched
 	 * @param page Page
-	 * @param size Shows how many student will it display.
 	 * @return return the page object
 	 */
-	Page<Student> searchStudentsByLastName(String lastName, int page, int size);
+	Page<Student> searchStudentsByLastName(String lastName, Pageable page);
 
 	/**
 	 * Search students by their first and last name
@@ -142,50 +140,45 @@ public interface StudentService {
 	 * @param firstName First name
 	 * @param lastName Last name
 	 * @param page Page
-	 * @param size Shows how many student will it display.
 	 * @return return the page object
 	 */
-	Page<Student> searchStudentsByFirstAndLastName(String firstName, String lastName, int page, int size);
+	Page<Student> searchStudentsByFirstAndLastName(String firstName, String lastName, Pageable page);
 
 	/**
 	 * Search students by their grade level.
 	 *
 	 * @param  gradeLevel the grade level to search for
 	 * @param  page       the page number of the results
-	 * @param  size       the number of results per page
 	 * @return            a page of Student objects that match the search criteria
 	 */
-	Page<Student> searchStudentsByGradeLevel(int gradeLevel, int page, int size);
+	Page<Student> searchStudentsByGradeLevel(int gradeLevel, Pageable page);
 
 	/**
 	 * Search students by their grade level.
 	 *
 	 * @param  gradeLevel the grade level to search for
 	 * @param  page       the page number of the results
-	 * @param  size       the number of results per page
 	 * @return            a page of Student objects that match the search criteria
 	 */
-	Page<Student> searchStudentsByGradeLevel(GradeLevel gradeLevel, int page, int size);
+	Page<Student> searchStudentsByGradeLevel(GradeLevel gradeLevel, Pageable page);
 
 	/**
 	 * Search students by their section ID.
 	 *
 	 * @param  sectionId  the ID of the section to search for
 	 * @param  page       the page number of the results
-	 * @param  size       the number of results per page
 	 * @return            a page of Student objects that match the search criteria
 	 */
-	Page<Student> searchStudentsBySection(int sectionId, int page, int size);
+	Page<Student> searchStudentsBySection(int sectionId, Pageable page);
 
 	/**
 	 * Search students by their section.
 	 *
 	 * @param  section  the section to search for
 	 * @param  page     the page number of the results
-	 * @param  size     the number of results per page
 	 * @return          a page of Student objects that match the search criteria
 	 */
-	Page<Student> searchStudentsBySection(Section section, int page, int size);
+	Page<Student> searchStudentsBySection(Section section, Pageable page);
 	// End Region
 
 	// Region: Statistics: Statistics

@@ -36,7 +36,7 @@ import com.pshs.attendance_system.services.StudentService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -252,12 +252,11 @@ public class StudentServiceImpl implements StudentService {
 	 * Get all the students in the database
 	 *
 	 * @param page Page
-	 * @param size Shows how many student will it display.
 	 * @return return the page object
 	 */
 	@Override
-	public Page<Student> getAllStudents(int page, int size) {
-		return studentRepository.findAll(PageRequest.of(page, size));
+	public Page<Student> getAllStudents(Pageable page) {
+		return studentRepository.findAll(page);
 	}
 
 	/**
@@ -265,12 +264,11 @@ public class StudentServiceImpl implements StudentService {
 	 *
 	 * @param firstName First name that will be searched
 	 * @param page      Page
-	 * @param size      Shows how many student will it display.
 	 * @return return the page object
 	 */
 	@Override
-	public Page<Student> searchStudentsByFirstName(String firstName, int page, int size) {
-		return studentRepository.searchStudentsByFirstName(firstName, PageRequest.of(page, size));
+	public Page<Student> searchStudentsByFirstName(String firstName, Pageable page) {
+		return studentRepository.searchStudentsByFirstName(firstName, page);
 	}
 
 	/**
@@ -278,12 +276,11 @@ public class StudentServiceImpl implements StudentService {
 	 *
 	 * @param lastName Last name that will be searched
 	 * @param page     Page
-	 * @param size     Shows how many student will it display.
 	 * @return return the page object
 	 */
 	@Override
-	public Page<Student> searchStudentsByLastName(String lastName, int page, int size) {
-		return studentRepository.searchStudentsByLastName(lastName, PageRequest.of(page, size));
+	public Page<Student> searchStudentsByLastName(String lastName, Pageable page) {
+		return studentRepository.searchStudentsByLastName(lastName, page);
 	}
 
 	/**
@@ -292,12 +289,11 @@ public class StudentServiceImpl implements StudentService {
 	 * @param firstName First name
 	 * @param lastName  Last name
 	 * @param page      Page
-	 * @param size      Shows how many student will it display.
 	 * @return return the page object
 	 */
 	@Override
-	public Page<Student> searchStudentsByFirstAndLastName(String firstName, String lastName, int page, int size) {
-		return studentRepository.searchStudentsByFirstNameAndLastName(firstName, lastName, PageRequest.of(page, size));
+	public Page<Student> searchStudentsByFirstAndLastName(String firstName, String lastName, Pageable page) {
+		return studentRepository.searchStudentsByFirstNameAndLastName(firstName, lastName, page);
 	}
 
 	/**
@@ -305,12 +301,11 @@ public class StudentServiceImpl implements StudentService {
 	 *
 	 * @param gradeLevel the grade level to search for
 	 * @param page       the page number of the results
-	 * @param size       the number of results per page
 	 * @return a page of Student objects that match the search criteria
 	 */
 	@Override
-	public Page<Student> searchStudentsByGradeLevel(int gradeLevel, int page, int size) {
-		return studentRepository.searchStudentsByGradeLevelById(gradeLevel, PageRequest.of(page, size));
+	public Page<Student> searchStudentsByGradeLevel(int gradeLevel, Pageable page) {
+		return studentRepository.searchStudentsByGradeLevelById(gradeLevel, page);
 	}
 
 	/**
@@ -318,12 +313,11 @@ public class StudentServiceImpl implements StudentService {
 	 *
 	 * @param gradeLevel the grade level to search for
 	 * @param page       the page number of the results
-	 * @param size       the number of results per page
 	 * @return a page of Student objects that match the search criteria
 	 */
 	@Override
-	public Page<Student> searchStudentsByGradeLevel(GradeLevel gradeLevel, int page, int size) {
-		return studentRepository.searchStudentsByGradeLevel(gradeLevel, PageRequest.of(page, size));
+	public Page<Student> searchStudentsByGradeLevel(GradeLevel gradeLevel, Pageable page) {
+		return studentRepository.searchStudentsByGradeLevel(gradeLevel, page);
 	}
 
 	/**
@@ -331,12 +325,11 @@ public class StudentServiceImpl implements StudentService {
 	 *
 	 * @param sectionId the ID of the section to search for
 	 * @param page      the page number of the results
-	 * @param size      the number of results per page
 	 * @return a page of Student objects that match the search criteria
 	 */
 	@Override
-	public Page<Student> searchStudentsBySection(int sectionId, int page, int size) {
-		return studentRepository.searchStudentsBySection(sectionService.getSection(sectionId), PageRequest.of(page, size));
+	public Page<Student> searchStudentsBySection(int sectionId, Pageable page) {
+		return studentRepository.searchStudentsBySection(sectionService.getSection(sectionId), page);
 	}
 
 	/**
@@ -348,8 +341,8 @@ public class StudentServiceImpl implements StudentService {
 	 * @return a page of Student objects that match the search criteria
 	 */
 	@Override
-	public Page<Student> searchStudentsBySection(Section section, int page, int size) {
-		return studentRepository.searchStudentsBySection(section, PageRequest.of(page, size));
+	public Page<Student> searchStudentsBySection(Section section, Pageable page) {
+		return studentRepository.searchStudentsBySection(section, page);
 	}
 
 	/**
