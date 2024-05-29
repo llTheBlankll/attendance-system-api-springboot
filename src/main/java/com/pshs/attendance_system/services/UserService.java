@@ -81,7 +81,7 @@ public interface UserService {
 	 * @param isLocked New locked status of the user.
 	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND)
 	 * If the status of the isLocked is the same as the current status,
-	 * the method will return SUCCESS but nothing will queried.
+	 * the method will return SUCCESS but nothing will query.
 	 */
 	ExecutionStatus changeUserLockStatus(int userId, boolean isLocked);
 
@@ -92,7 +92,7 @@ public interface UserService {
 	 * @param isEnabled New enabled status of the user.
 	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND)
 	 * If the status of the isEnabled is the same as the current status,
-	 * the method will return SUCCESS but nothing will queried.
+	 * the method will return SUCCESS but nothing will query.
 	 */
 	ExecutionStatus changeUserEnabledStatus(int userId, boolean isEnabled);
 
@@ -103,7 +103,7 @@ public interface UserService {
 	 * @param isExpired New expired status of the user.
 	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND)
 	 * If the status of the isExpired is the same as the current status,
-	 * the method will return SUCCESS but nothing will queried.
+	 * the method will return SUCCESS but nothing will query.
 	 */
 	ExecutionStatus changeUserExpiredStatus(int userId, boolean isExpired);
 
@@ -114,7 +114,7 @@ public interface UserService {
 	 * @param isCredentialsExpired New credentials expired status of the user.
 	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND)
 	 * If the status of the isCredentialsExpired is the same as the current status,
-	 * the method will return SUCCESS but nothing will queried.
+	 * the method will return SUCCESS but nothing will query.
 	 */
 	ExecutionStatus changeUserCredentialsExpiredStatus(int userId, boolean isCredentialsExpired);
 

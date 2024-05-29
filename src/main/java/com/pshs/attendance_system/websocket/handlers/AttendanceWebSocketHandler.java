@@ -90,6 +90,6 @@ public class AttendanceWebSocketHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(@NonNull WebSocketSession session) throws Exception {
 		super.afterConnectionEstablished(session);
-		logger.info("WebSocket connection established for session: " + session.getId());
+		logger.info("WebSocket connection established for session: {}", session.getId());
 	}
 }

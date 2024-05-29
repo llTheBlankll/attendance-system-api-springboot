@@ -44,8 +44,8 @@ public interface AttendanceService {
 	/**
 	 * Create a new attendance record with the student.
 	 *
-	 * @param attendance
-	 * @return
+	 * @param attendance Attendance object that will be created.
+	 * @return Returns the attendance object created that symbolize that the operation is successful.
 	 */
 	Attendance createAttendance(Attendance attendance);
 
@@ -127,7 +127,6 @@ public interface AttendanceService {
 	/**
 	 * @param studentId Student ID
 	 * @param page      Page
-	 * @param size      How many student it will display.
 	 * @return return the page object
 	 */
 	Page<Attendance> getAllAttendancesByStudentId(Long studentId, Pageable page);

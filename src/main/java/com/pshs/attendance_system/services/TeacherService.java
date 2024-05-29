@@ -85,7 +85,6 @@ public interface TeacherService {
 	 * Get all teacher records.
 	 *
 	 * @param page Page
-	 * @param size How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	Page<Teacher> getAllTeachers(Pageable page);
@@ -95,7 +94,6 @@ public interface TeacherService {
 	 *
 	 * @param firstName First Name of the teacher.
 	 * @param page      Page
-	 * @param size      How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	Page<Teacher> searchTeacherByFirstName(String firstName, Pageable page);
@@ -105,7 +103,6 @@ public interface TeacherService {
 	 *
 	 * @param lastName Last Name of the teacher.
 	 * @param page     Page
-	 * @param size     How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	Page<Teacher> searchTeacherByLastName(String lastName, Pageable page);
@@ -116,7 +113,6 @@ public interface TeacherService {
 	 * @param firstName First name of the teacher that will be searched.
 	 * @param sex       Sexuality of the teacher that will be searched.
 	 * @param page      Page
-	 * @param size      How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	Page<Teacher> searchTeacherByFirstNameAndSex(String firstName, String sex, Pageable page);
@@ -127,7 +123,6 @@ public interface TeacherService {
 	 * @param lastName Last name of the teacher that will be searched.
 	 * @param sex      Sexuality of the teacher that will be searched.
 	 * @param page     Page
-	 * @param size     How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	Page<Teacher> searchTeacherByLastNameAndSex(String lastName, String sex, Pageable page);
@@ -138,7 +133,6 @@ public interface TeacherService {
 	 * @param firstName First name of the teacher that will be searched.
 	 * @param lastName  Last name of the teacher that will be searched.
 	 * @param page      Page
-	 * @param size      How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	Page<Teacher> searchTeacherByFirstNameAndLastName(String firstName, String lastName, Pageable page);
@@ -150,7 +144,6 @@ public interface TeacherService {
 	 * @param lastName  Last name of the teacher that will be searched.
 	 * @param sex       Sexuality of the teacher that will be searched.
 	 * @param page      Page
-	 * @param size      How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	Page<Teacher> searchTeacherByFirstNameAndLastNameAndSex(String firstName, String lastName, String sex, Pageable page);

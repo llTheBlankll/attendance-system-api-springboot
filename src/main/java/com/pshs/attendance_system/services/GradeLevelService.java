@@ -33,7 +33,7 @@ public interface GradeLevelService {
 	/**
 	 * Create a new grade level record
 	 *
-	 * @param gradeLevel
+	 * @param gradeLevel The grade level object that will be created.
 	 * @return Execution Status (SUCCESS or FAILURE)
 	 */
 	ExecutionStatus createGradeLevel(GradeLevel gradeLevel);
@@ -99,7 +99,6 @@ public interface GradeLevelService {
 	 *
 	 * @param name Name of the grade level to be searched
 	 * @param page Page number of the results
-	 * @param size Number of results per page
 	 * @return Page of GradeLevel objects, none if not found
 	 */
 	Page<GradeLevel> searchGradeLevelsByName(String name, Pageable page);

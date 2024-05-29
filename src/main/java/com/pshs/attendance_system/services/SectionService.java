@@ -145,7 +145,7 @@ public interface SectionService {
 	 * Get all the sections associated with the teacher with the given teacher id.
 	 *
 	 * @param teacherId id of the teacher
-	 * @return
+	 * @return return a page of sections.
 	 */
 	Page<Section> getSectionByTeacher(int teacherId, Pageable page);
 
@@ -153,7 +153,7 @@ public interface SectionService {
 	 * Get all the sections associated with the teacher object.
 	 *
 	 * @param teacher teacher object
-	 * @return
+	 * @return return a page of section
 	 */
 	Page<Section> getSectionByTeacher(Teacher teacher, Pageable page);
 
@@ -171,7 +171,7 @@ public interface SectionService {
 	 *
 	 * @param strand the strand object that will be used to get the sections
 	 * @param page   the page number
-	 * @return
+	 * @return return a page of sections
 	 */
 	Page<Section> getSectionByStrand(Strand strand, Pageable page);
 

@@ -439,7 +439,6 @@ public class AttendanceServiceImpl implements AttendanceService {
 	/**
 	 * @param studentId Student ID
 	 * @param page      Page
-	 * @param size      How many student it will display.
 	 * @return return the page object
 	 */
 	@Override

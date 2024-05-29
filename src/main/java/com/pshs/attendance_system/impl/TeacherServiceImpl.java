@@ -70,7 +70,6 @@ public class TeacherServiceImpl implements TeacherService {
 	 * @param lastName  Last name of the teacher that will be searched.
 	 * @param sex       Sexuality of the teacher that will be searched.
 	 * @param page      Page
-	 * @param size      How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	@Override
@@ -216,7 +215,6 @@ public class TeacherServiceImpl implements TeacherService {
 	 * Get all teacher records.
 	 *
 	 * @param page Page
-	 * @param size How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	@Override
@@ -229,7 +227,6 @@ public class TeacherServiceImpl implements TeacherService {
 	 *
 	 * @param firstName First Name of the teacher.
 	 * @param page      Page
-	 * @param size      How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	@Override
@@ -244,7 +241,6 @@ public class TeacherServiceImpl implements TeacherService {
 	 *
 	 * @param lastName Last Name of the teacher.
 	 * @param page     Page
-	 * @param size     How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	@Override
@@ -260,7 +256,6 @@ public class TeacherServiceImpl implements TeacherService {
 	 * @param firstName First name of the teacher that will be searched.
 	 * @param sex       Sexuality of the teacher that will be searched.
 	 * @param page      Page
-	 * @param size      How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	@Override
@@ -274,7 +269,6 @@ public class TeacherServiceImpl implements TeacherService {
 	 * @param lastName Last name of the teacher that will be searched.
 	 * @param sex      Sexuality of the teacher that will be searched.
 	 * @param page     Page
-	 * @param size     How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	@Override
@@ -288,7 +282,6 @@ public class TeacherServiceImpl implements TeacherService {
 	 * @param firstName First name of the teacher that will be searched.
 	 * @param lastName  Last name of the teacher that will be searched.
 	 * @param page      Page
-	 * @param size      How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	@Override

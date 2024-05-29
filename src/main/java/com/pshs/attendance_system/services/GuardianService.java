@@ -60,7 +60,6 @@ public interface GuardianService {
 	 * Get all guardian records.
 	 *
 	 * @param page Page
-	 * @param size How many records per page it will show
 	 * @return Page containing guardian records
 	 */
 	Page<Guardian> getAllGuardian(Pageable page);
@@ -86,7 +85,6 @@ public interface GuardianService {
 	 *
 	 * @param fullName Full Name
 	 * @param page     Page
-	 * @param size     How many records per page it will show
 	 * @return Page containing guardian records
 	 */
 	Page<Guardian> searchGuardianByFullName(String fullName, Pageable page);
@@ -96,7 +94,6 @@ public interface GuardianService {
 	 *
 	 * @param contactNumber Contact Number
 	 * @param page          Page
-	 * @param size          How many records per page it will show
 	 * @return Page containing guardian records
 	 */
 	Page<Guardian> searchGuardianByContactNumber(String contactNumber, Pageable page);

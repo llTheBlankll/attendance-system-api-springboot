@@ -337,7 +337,6 @@ public class StudentServiceImpl implements StudentService {
 	 *
 	 * @param section the section to search for
 	 * @param page    the page number of the results
-	 * @param size    the number of results per page
 	 * @return a page of Student objects that match the search criteria
 	 */
 	@Override
