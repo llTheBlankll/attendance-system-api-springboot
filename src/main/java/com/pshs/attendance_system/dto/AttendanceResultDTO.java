@@ -49,7 +49,8 @@ public class AttendanceResultDTO implements Serializable {
 		this.hashedLrn = hashedLrn;
 	}
 
-	public AttendanceResultDTO() {}
+	public AttendanceResultDTO() {
+	}
 
 	public StudentDTO getStudent() {
 		return student;

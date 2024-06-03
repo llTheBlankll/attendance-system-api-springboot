@@ -184,7 +184,7 @@ public class TeacherController {
 		return ResponseEntity.ok(teacher.toDTO());
 	}
 
-	@GetMapping("/search")
+	@GetMapping(value = "/search", produces = "application/json")
 	@Operation(summary = "Search Teachers", description = "Search for teacher records.")
 	@Parameters({
 		@Parameter(name = "firstName", description = "First Name of the teacher."),
@@ -198,8 +198,8 @@ public class TeacherController {
 	public ResponseEntity<?> searchTeachers(@RequestParam(required = false) String firstName,
 	                                        @RequestParam(required = false) String lastName,
 	                                        @RequestParam(required = false) String sex,
-																					@RequestParam(defaultValue = "lastName") String sort,
-																					@RequestParam(defaultValue = "asc") String order,
+	                                        @RequestParam(defaultValue = "lastName") String sort,
+	                                        @RequestParam(defaultValue = "asc") String order,
 	                                        @RequestParam int page,
 	                                        @RequestParam int size) {
 		Page<Teacher> teachers;
@@ -230,7 +230,7 @@ public class TeacherController {
 		return ResponseEntity.ok(teachers);
 	}
 
-	@GetMapping("/count/all")
+	@GetMapping(value = "/count/all", produces = "application/json")
 	@Operation(summary = "Count All Teachers", description = "Count all teacher records.")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "The count of all teachers in the database.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")})

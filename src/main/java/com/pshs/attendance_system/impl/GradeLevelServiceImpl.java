@@ -31,6 +31,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -177,8 +178,8 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 	 * @return Page of GradeLevel objects, none if not found
 	 */
 	@Override
-	public Page<GradeLevel> searchGradeLevelsByName(String name, int page, int size) {
-		return gradeLevelRepository.searchGradeLevelsByName(name, PageRequest.of(page, size));
+	public Page<GradeLevel> searchGradeLevelsByName(String name, Pageable page) {
+		return gradeLevelRepository.searchGradeLevelsByName(name, page);
 	}
 
 	/**
@@ -193,8 +194,8 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 	 * @return Page of GradeLevel objects, none if not found
 	 */
 	@Override
-	public Page<GradeLevel> searchGradeLevelsByNameAndStrand(String name, int strandId, int page, int size) {
-		return gradeLevelRepository.searchGradeLevelsByNameAndStrand(name, strandId, PageRequest.of(page, size));
+	public Page<GradeLevel> searchGradeLevelsByNameAndStrand(String name, int strandId, Pageable page) {
+		return gradeLevelRepository.searchGradeLevelsByNameAndStrand(name, strandId, page);
 	}
 
 	/**
@@ -206,8 +207,8 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 	 * @return Page of GradeLevel objects, none if not found
 	 */
 	@Override
-	public Page<GradeLevel> searchGradeLevelsByStrand(int strandId, int page, int size) {
-		return gradeLevelRepository.searchGradeLevelsByStrand(strandId, PageRequest.of(page, size));
+	public Page<GradeLevel> searchGradeLevelsByStrand(int strandId, Pageable page) {
+		return gradeLevelRepository.searchGradeLevelsByStrand(strandId, page);
 	}
 
 	private boolean isGradeLevelValid(GradeLevel gradeLevel) {

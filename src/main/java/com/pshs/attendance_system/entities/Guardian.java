@@ -23,6 +23,7 @@
 
 package com.pshs.attendance_system.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pshs.attendance_system.dto.GuardianDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -37,28 +38,37 @@ public class Guardian {
 	@Column(name = "id", nullable = false)
 	private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JoinColumn(name = "student_lrn")
-	private Student studentLrn;
-
 	@Column(name = "full_name", nullable = false)
 	private String fullName;
 
 	@Column(name = "contact_number", length = 32)
 	private String contactNumber;
 
-	public Guardian() {}
+	@OneToOne
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private Student student;
 
-	public Guardian(Integer id, Student studentLrn, String fullName, String contactNumber) {
+	public Guardian() {
+	}
+
+	public Guardian(Integer id,  String fullName, String contactNumber) {
 		this.id = id;
-		this.studentLrn = studentLrn;
 		this.fullName = fullName;
 		this.contactNumber = contactNumber;
 	}
 
+	public Student getStudent() {
+		return student;
+	}
+
+	public Guardian setStudent(Student student) {
+		this.student = student;
+		return this;
+	}
+
 	public GuardianDTO toDTO() {
-		return new GuardianDTO(id, studentLrn.toDTO(), fullName, contactNumber);
+		return new GuardianDTO(id, fullName, contactNumber);
 	}
 
 	public Integer getId() {
@@ -67,15 +77,6 @@ public class Guardian {
 
 	public Guardian setId(Integer id) {
 		this.id = id;
-		return this;
-	}
-
-	public Student getStudentLrn() {
-		return studentLrn;
-	}
-
-	public Guardian setStudentLrn(Student studentLrn) {
-		this.studentLrn = studentLrn;
 		return this;
 	}
 

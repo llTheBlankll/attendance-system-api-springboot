@@ -74,7 +74,8 @@ public class User implements UserDetails {
 	@Column(name = "created_at")
 	private Instant createdAt;
 
-	public User() {}
+	public User() {
+	}
 
 	public User(Integer id, String username, String password, String email, String role, Instant lastLogin, Instant createdAt) {
 		this.id = id;
@@ -91,6 +92,11 @@ public class User implements UserDetails {
 		return password;
 	}
 
+	public User setPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
 	@Override
 	public String getUsername() {
 		return username;
@@ -98,11 +104,6 @@ public class User implements UserDetails {
 
 	public User setUsername(String username) {
 		this.username = username;
-		return this;
-	}
-
-	public User setPassword(String password) {
-		this.password = password;
 		return this;
 	}
 

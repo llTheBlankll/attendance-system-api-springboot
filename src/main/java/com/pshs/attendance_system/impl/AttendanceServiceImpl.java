@@ -34,9 +34,6 @@ import com.pshs.attendance_system.entities.range.DateRange;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.enums.Status;
-import com.pshs.attendance_system.exceptions.AttendanceInvalidException;
-import com.pshs.attendance_system.exceptions.AttendanceNotFoundException;
-import com.pshs.attendance_system.exceptions.StudentAlreadySignedOutException;
 import com.pshs.attendance_system.repositories.AttendanceRepository;
 import com.pshs.attendance_system.services.AttendanceService;
 import com.pshs.attendance_system.services.StudentService;
@@ -45,6 +42,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +51,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -442,15 +439,11 @@ public class AttendanceServiceImpl implements AttendanceService {
 	/**
 	 * @param studentId Student ID
 	 * @param page      Page
-	 * @param size      How many student it will display.
 	 * @return return the page object
 	 */
 	@Override
-	public Page<Attendance> getAllAttendancesByStudentId(Long studentId, int page, int size) {
-		// Alphabetical order of students
-		Sort sort = Sort.by("lastName").ascending();
-
-		return attendanceRepository.findAllAttendancesByStudentId(studentId, PageRequest.of(page, size).withSort(sort));
+	public Page<Attendance> getAllAttendancesByStudentId(Long studentId, Pageable page) {
+		return attendanceRepository.findAllAttendancesByStudentId(studentId, page);
 	}
 
 	/**

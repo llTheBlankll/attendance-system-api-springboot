@@ -29,6 +29,7 @@ import com.pshs.attendance_system.entities.Strand;
 import com.pshs.attendance_system.entities.Teacher;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface SectionService {
 
@@ -54,7 +55,7 @@ public interface SectionService {
 	 * Update the section with a given id and the update it with the new section object.
 	 *
 	 * @param sectionId id of the section that will be updated
-	 * @param section the new updated information of the section
+	 * @param section   the new updated information of the section
 	 * @return The status of the operation that can be either SUCCESS, FAILED, VALIDATION_FAILED
 	 */
 	ExecutionStatus updateSection(int sectionId, Section section);
@@ -72,25 +73,16 @@ public interface SectionService {
 	 * The teacher object will be used to update the teacher of the section with the given section id.
 	 *
 	 * @param sectionId id of the section that will be updated
-	 * @param teacher the teacher object that will be assigned to the section
+	 * @param teacher   the teacher object that will be assigned to the section
 	 * @return The status of the operation that can be either SUCCESS, FAILED, VALIDATION_FAILED
 	 */
 	ExecutionStatus updateSectionTeacher(int sectionId, Teacher teacher);
 
 	/**
-	 * Update the room name of the section with the given section id.
-	 *
-	 * @param sectionId id of the section that will be updated
-	 * @param roomName the new room name of the section
-	 * @return The status of the operation that can be either SUCCESS, FAILED, VALIDATION_FAILED
-	 */
-	ExecutionStatus updateSectionRoomName(int sectionId, String roomName);
-
-	/**
 	 * Update the strand of the section with the given section id and strand id.
 	 *
 	 * @param sectionId id of the section that will be updated
-	 * @param strandId id of the strand that will be assigned to the section
+	 * @param strandId  id of the strand that will be assigned to the section
 	 * @return The status of the operation that can be either SUCCESS, FAILED, VALIDATION_FAILED
 	 */
 	ExecutionStatus updateSectionStrand(int sectionId, int strandId);
@@ -99,7 +91,7 @@ public interface SectionService {
 	 * Update the strand of the section with the given section id and strand object.
 	 *
 	 * @param sectionId id of the section that will be updated
-	 * @param strand the strand object that will be assigned to the section
+	 * @param strand    the strand object that will be assigned to the section
 	 * @return The status of the operation that can be either SUCCESS, FAILED, VALIDATION_FAILED
 	 */
 	ExecutionStatus updateSectionStrand(int sectionId, Strand strand);
@@ -107,7 +99,7 @@ public interface SectionService {
 	/**
 	 * Update the section name of the section with the given section id.
 	 *
-	 * @param sectionId id of the section that will be updated
+	 * @param sectionId   id of the section that will be updated
 	 * @param sectionName the new section name of the section
 	 * @return The status of the operation that can be either SUCCESS, FAILED, VALIDATION_FAILED
 	 */
@@ -116,7 +108,7 @@ public interface SectionService {
 	/**
 	 * Update the grade level of the section with the given section id and grade level id.
 	 *
-	 * @param sectionId id of the section that will be updated
+	 * @param sectionId    id of the section that will be updated
 	 * @param gradeLevelId id of the grade level that will be assigned to the section
 	 * @return The status of the operation that can be either SUCCESS, FAILED, VALIDATION_FAILED
 	 */
@@ -125,12 +117,20 @@ public interface SectionService {
 	/**
 	 * Update the grade level of the section with the given section id and grade level object.
 	 *
-	 * @param sectionId id of the section that will be updated
+	 * @param sectionId  id of the section that will be updated
 	 * @param gradeLevel the grade level object that will be assigned to the section
 	 * @return The status of the operation that can be either SUCCESS, FAILED, VALIDATION_FAILED
 	 */
 	ExecutionStatus updateSectionGradeLevel(int sectionId, GradeLevel gradeLevel);
 	// End Region Update Section
+
+	/**
+	 * Get all sections existing in the database.
+	 *
+	 * @param page A Page Request Object
+	 * @return The page containing all the sections
+	 */
+	Page<Section> getAllSections(Pageable page);
 
 	/**
 	 * Get the section information with the given section id.
@@ -144,77 +144,71 @@ public interface SectionService {
 	 * Get all the sections associated with the teacher with the given teacher id.
 	 *
 	 * @param teacherId id of the teacher
-	 * @return
+	 * @return return a page of sections.
 	 */
-	Page<Section> getSectionByTeacher(int teacherId, int page, int size);
+	Page<Section> getSectionByTeacher(int teacherId, Pageable page);
 
 	/**
 	 * Get all the sections associated with the teacher object.
 	 *
 	 * @param teacher teacher object
-	 * @return
+	 * @return return a page of section
 	 */
-	Page<Section> getSectionByTeacher(Teacher teacher, int page, int size);
+	Page<Section> getSectionByTeacher(Teacher teacher, Pageable page);
 
 	/**
 	 * Get all the sections associated with the strand with the given strand id.
 	 *
 	 * @param strandId id of the strand
-	 * @param page the page number
-	 * @param size the size of the page
+	 * @param page     the page number
 	 * @return Page object that contains the list of sections.
 	 */
-	Page<Section> getSectionByStrand(int strandId, int page, int size);
+	Page<Section> getSectionByStrand(int strandId, Pageable page);
 
 	/**
 	 * Get all the sections associated with the strand with the given strand id.
 	 *
 	 * @param strand the strand object that will be used to get the sections
-	 * @param page the page number
-	 * @param size the size of the page
-	 * @return
+	 * @param page   the page number
+	 * @return return a page of sections
 	 */
-	Page<Section> getSectionByStrand(Strand strand, int page, int size);
+	Page<Section> getSectionByStrand(Strand strand, Pageable page);
 
 	/**
 	 * Get all the sections associated with the grade level with the given grade level id.
 	 *
 	 * @param gradeLevelId id of the grade level
-	 * @param page the page number
-	 * @param size the size of the page
+	 * @param page         the page number
 	 * @return Page object that contains the list of sections.
 	 */
-	Page<Section> getSectionByGradeLevel(int gradeLevelId, int page, int size);
+	Page<Section> getSectionByGradeLevel(int gradeLevelId, Pageable page);
 
 	/**
 	 * Get all the sections associated with the grade level with the given grade level object.
 	 *
 	 * @param gradeLevel id of the grade level
-	 * @param page the page number
-	 * @param size the size of the page
+	 * @param page       the page number
 	 * @return Page object that contains the list of sections.
 	 */
-	Page<Section> getSectionByGradeLevel(GradeLevel gradeLevel, int page, int size);
+	Page<Section> getSectionByGradeLevel(GradeLevel gradeLevel, Pageable page);
 
 	/**
 	 * Search sections with the given room.
 	 *
 	 * @param room the room name
 	 * @param page the page number
-	 * @param size the size of the page
 	 * @return Page object that contains the list of sections.
 	 */
-	Page<Section> searchSectionByRoom(String room, int page, int size);
+	Page<Section> searchSectionByRoom(String room, Pageable page);
 
 	/**
 	 * Search sections with the given section name.
 	 *
 	 * @param sectionName the section name
-	 * @param page the page number
-	 * @param size the size of the page
+	 * @param page        the page number
 	 * @return Page object that contains the list of sections.
 	 */
-	Page<Section> searchSectionBySectionName(String sectionName, int page, int size);
+	Page<Section> searchSectionBySectionName(String sectionName, Pageable page);
 
 	// Region: Statistics
 
@@ -227,5 +221,6 @@ public interface SectionService {
 	// End Region: Statistics
 
 	boolean isSectionExist(int sectionId);
+
 	boolean isSectionExist(Section section);
 }

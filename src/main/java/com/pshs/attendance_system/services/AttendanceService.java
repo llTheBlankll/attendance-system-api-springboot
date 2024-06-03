@@ -30,9 +30,8 @@ import com.pshs.attendance_system.entities.RFIDCredential;
 import com.pshs.attendance_system.entities.range.DateRange;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.enums.ExecutionStatus;
-import com.pshs.attendance_system.exceptions.AttendanceNotFoundException;
-import com.pshs.attendance_system.exceptions.StudentAlreadySignedOutException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -45,8 +44,8 @@ public interface AttendanceService {
 	/**
 	 * Create a new attendance record with the student.
 	 *
-	 * @param attendance
-	 * @return
+	 * @param attendance Attendance object that will be created.
+	 * @return Returns the attendance object created that symbolize that the operation is successful.
 	 */
 	Attendance createAttendance(Attendance attendance);
 
@@ -64,7 +63,7 @@ public interface AttendanceService {
 	/**
 	 * Update the attendance record with the student. Requires the attendance id, and a new attendance object with the updated values.
 	 *
-	 * @param id Attendance ID
+	 * @param id      Attendance ID
 	 * @param timeOut Updated Time Out
 	 * @return ExecutionStatus {@link ExecutionStatus}
 	 * @see ExecutionStatus
@@ -128,10 +127,19 @@ public interface AttendanceService {
 	/**
 	 * @param studentId Student ID
 	 * @param page      Page
-	 * @param size      How many student it will display.
 	 * @return return the page object
 	 */
-	Page<Attendance> getAllAttendancesByStudentId(Long studentId, int page, int size);
+	Page<Attendance> getAllAttendancesByStudentId(Long studentId, Pageable page);
+
+	/**
+	 * Get all attendances by date
+	 *
+	 * @param date Date of the attendance
+	 * @param page paging object
+	 * @return return the page object
+	 */
+	Page<Attendance> getAllAttendancesByDate(LocalDate date, Pageable page);
+
 	// End Region: Custom Queries
 
 	// Region: Statistics / Numbers
@@ -217,6 +225,8 @@ public interface AttendanceService {
 	boolean isScanned(Long lrn);
 
 	boolean isAttendanceExist(Long studentId, LocalDate date);
+
 	boolean isAttendanceExist(int attendanceId, LocalDate date);
+
 	boolean isAttendanceExist(int attendanceId);
 }

@@ -25,8 +25,8 @@ package com.pshs.attendance_system.broker;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.pshs.attendance_system.dto.CardRFIDCredentialDTO;
 import com.pshs.attendance_system.dto.AttendanceResultDTO;
+import com.pshs.attendance_system.dto.CardRFIDCredentialDTO;
 import com.pshs.attendance_system.entities.RFIDCredential;
 import com.pshs.attendance_system.enums.Mode;
 import com.pshs.attendance_system.services.AttendanceService;
@@ -40,10 +40,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class AttendanceReceiver {
 
+	private static final Logger logger = LogManager.getLogger(AttendanceReceiver.class);
 	private final RabbitTemplate rabbitTemplate;
 	private final AttendanceService attendanceService;
 	private final RFIDCredentialService rfidCredentialService;
-	private static final Logger logger = LogManager.getLogger(AttendanceReceiver.class);
 	private final ObjectMapper mapper = new ObjectMapper();
 
 	public AttendanceReceiver(RabbitTemplate rabbitTemplate, AttendanceService attendanceService, RFIDCredentialService rfidCredentialService) {

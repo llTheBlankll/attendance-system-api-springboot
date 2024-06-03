@@ -24,9 +24,9 @@
 package com.pshs.attendance_system.services;
 
 import com.pshs.attendance_system.entities.Guardian;
-import com.pshs.attendance_system.entities.Student;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface GuardianService {
 
@@ -50,7 +50,7 @@ public interface GuardianService {
 	 * Update the guardian record. Requires the guardian id, and a new guardian object with the updated values.
 	 *
 	 * @param guardianId Guardian ID
-	 * @param guardian Updated Guardian Object
+	 * @param guardian   Updated Guardian Object
 	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND, VALIDATION_ERROR)
 	 */
 	ExecutionStatus updateGuardian(int guardianId, Guardian guardian);
@@ -59,10 +59,9 @@ public interface GuardianService {
 	 * Get all guardian records.
 	 *
 	 * @param page Page
-	 * @param size How many records per page it will show
 	 * @return Page containing guardian records
 	 */
-	Page<Guardian> getAllGuardian(int page, int size);
+	Page<Guardian> getAllGuardian(Pageable page);
 
 	/**
 	 * Get the guardian record by the guardian id.
@@ -73,30 +72,30 @@ public interface GuardianService {
 	Guardian getGuardian(int guardianId);
 
 	/**
-	 * Get the guardian record of a student.
-	 *
-	 * @param student Student Object
-	 * @return Guardian Object, null if not found
-	 */
-	Guardian getGuardianOfStudent(Student student);
-
-	/**
 	 * Search guardian records by full name.
 	 *
 	 * @param fullName Full Name
-	 * @param page Page
-	 * @param size How many records per page it will show
+	 * @param page     Page
 	 * @return Page containing guardian records
 	 */
-	Page<Guardian> searchGuardianByFullName(String fullName, int page, int size);
+	Page<Guardian> searchGuardianByFullName(String fullName, Pageable page);
 
 	/**
 	 * Search guardian records by contact number.
 	 *
 	 * @param contactNumber Contact Number
-	 * @param page Page
-	 * @param size How many records per page it will show
+	 * @param page          Page
 	 * @return Page containing guardian records
 	 */
-	Page<Guardian> searchGuardianByContactNumber(String contactNumber, int page, int size);
+	Page<Guardian> searchGuardianByContactNumber(String contactNumber, Pageable page);
+
+	/**
+	 * Search the guardian by full name and contact number.
+	 *
+	 * @param fullName      The full name of the guardian
+	 * @param contactNumber The contact number of the guardian
+	 * @param page          The pageable object
+	 * @return Page containing guardian records
+	 */
+	Page<Guardian> searchGuardianByFullNameAndContactNumber(String fullName, String contactNumber, Pageable page);
 }

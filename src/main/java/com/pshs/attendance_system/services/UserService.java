@@ -51,7 +51,7 @@ public interface UserService {
 	 * Update a user with the given user id and user object.
 	 *
 	 * @param userId User ID
-	 * @param user User Object
+	 * @param user   User Object
 	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND)
 	 */
 	ExecutionStatus updateUser(int userId, User user);
@@ -59,7 +59,7 @@ public interface UserService {
 	/**
 	 * Update a user's password with the given user id and password.
 	 *
-	 * @param userId User ID that needs to be updated
+	 * @param userId   User ID that needs to be updated
 	 * @param password New password of the user.
 	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND)
 	 */
@@ -68,7 +68,7 @@ public interface UserService {
 	/**
 	 * Update a user's last login time with the given user id and last login time.
 	 *
-	 * @param userId User ID that needs to be updated
+	 * @param userId    User ID that needs to be updated
 	 * @param lastLogin New last login time of the user.
 	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND) {@link ExecutionStatus}
 	 */
@@ -77,44 +77,44 @@ public interface UserService {
 	/**
 	 * Update the user's locked status with the given user id.
 	 *
-	 * @param userId User ID that needs to be updated
+	 * @param userId   User ID that needs to be updated
 	 * @param isLocked New locked status of the user.
 	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND)
 	 * If the status of the isLocked is the same as the current status,
-	 * the method will return SUCCESS but nothing will queried.
+	 * the method will return SUCCESS but nothing will query.
 	 */
 	ExecutionStatus changeUserLockStatus(int userId, boolean isLocked);
 
 	/**
 	 * Update the user's enabled status with the given user id.
 	 *
-	 * @param userId User ID that needs to be updated
+	 * @param userId    User ID that needs to be updated
 	 * @param isEnabled New enabled status of the user.
 	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND)
 	 * If the status of the isEnabled is the same as the current status,
-	 * the method will return SUCCESS but nothing will queried.
+	 * the method will return SUCCESS but nothing will query.
 	 */
 	ExecutionStatus changeUserEnabledStatus(int userId, boolean isEnabled);
 
 	/**
 	 * Update the user's expired status with the given user id.
 	 *
-	 * @param userId User ID that needs to be updated
+	 * @param userId    User ID that needs to be updated
 	 * @param isExpired New expired status of the user.
 	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND)
 	 * If the status of the isExpired is the same as the current status,
-	 * the method will return SUCCESS but nothing will queried.
+	 * the method will return SUCCESS but nothing will query.
 	 */
 	ExecutionStatus changeUserExpiredStatus(int userId, boolean isExpired);
 
 	/**
 	 * Update the user's credentials expired status with the given user id.
 	 *
-	 * @param userId User ID that needs to be updated
+	 * @param userId               User ID that needs to be updated
 	 * @param isCredentialsExpired New credentials expired status of the user.
 	 * @return ExecutionStatus (SUCCESS, FAILURE, NOT_FOUND)
 	 * If the status of the isCredentialsExpired is the same as the current status,
-	 * the method will return SUCCESS but nothing will queried.
+	 * the method will return SUCCESS but nothing will query.
 	 */
 	ExecutionStatus changeUserCredentialsExpiredStatus(int userId, boolean isCredentialsExpired);
 
@@ -148,8 +148,8 @@ public interface UserService {
 	 * Search all users with the given username.
 	 *
 	 * @param username The username that will be searched.
-	 * @param page Page
-	 * @param size Shows how many users will it display.
+	 * @param page     Page
+	 * @param size     Shows how many users will it display.
 	 * @return return the page object
 	 */
 	Page<User> searchUsersByUsername(String username, int page, int size);
@@ -158,8 +158,8 @@ public interface UserService {
 	 * Search all users with the given email.
 	 *
 	 * @param email The email that will be searched.
-	 * @param page Page
-	 * @param size Shows how many users will it display.
+	 * @param page  Page
+	 * @param size  Shows how many users will it display.
 	 * @return return the page object
 	 */
 	Page<User> searchUsersByEmail(String email, int page, int size);
@@ -178,9 +178,9 @@ public interface UserService {
 	 * Search all users with the given username and email.
 	 *
 	 * @param username The username that will be searched.
-	 * @param email The email that will be searched.
-	 * @param page Page
-	 * @param size Shows how many users will it display.
+	 * @param email    The email that will be searched.
+	 * @param page     Page
+	 * @param size     Shows how many users will it display.
 	 * @return return the page object
 	 */
 	Page<User> searchUsersByUsernameAndEmail(String username, String email, int page, int size);
@@ -189,9 +189,9 @@ public interface UserService {
 	 * Search all users with the given role and username.
 	 *
 	 * @param username The username that will be searched.
-	 * @param role The user with the given role.
-	 * @param page Page
-	 * @param size Shows how many users will it display.
+	 * @param role     The user with the given role.
+	 * @param page     Page
+	 * @param size     Shows how many users will it display.
 	 * @return return the page object
 	 */
 	Page<User> searchUsersByUsernameAndRole(String username, String role, int page, int size);
@@ -200,9 +200,9 @@ public interface UserService {
 	 * Search all users with the given role and email.
 	 *
 	 * @param email The email that will be searched.
-	 * @param role The user with the given role.
-	 * @param page Page
-	 * @param size Shows how many users will it display.
+	 * @param role  The user with the given role.
+	 * @param page  Page
+	 * @param size  Shows how many users will it display.
 	 * @return return the page object
 	 */
 	Page<User> searchUsersByEmailAndRole(String email, String role, int page, int size);
@@ -211,10 +211,10 @@ public interface UserService {
 	 * Search users by their username, email, and role.
 	 *
 	 * @param username The username of the user that will be searched
-	 * @param email The email of the user that will be searched.
-	 * @param role The role of the user that will be searced.
-	 * @param page The page
-	 * @param size The maximum size of a page.
+	 * @param email    The email of the user that will be searched.
+	 * @param role     The role of the user that will be searced.
+	 * @param page     The page
+	 * @param size     The maximum size of a page.
 	 * @return return the page of users.
 	 */
 	Page<User> searchUsersByUsernameAndEmailAndRole(String username, String email, String role, int page, int size);

@@ -30,7 +30,6 @@ import com.pshs.attendance_system.services.TeacherService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -71,12 +70,11 @@ public class TeacherServiceImpl implements TeacherService {
 	 * @param lastName  Last name of the teacher that will be searched.
 	 * @param sex       Sexuality of the teacher that will be searched.
 	 * @param page      Page
-	 * @param size     How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	@Override
 	public Page<Teacher> searchTeacherByFirstNameAndLastNameAndSex(String firstName, String lastName, String sex, Pageable page) {
-return teacherRepository.searchByFirstNameAndLastNameAndSex(firstName, lastName, sex, page);
+		return teacherRepository.searchByFirstNameAndLastNameAndSex(firstName, lastName, sex, page);
 	}
 
 	/**
@@ -217,7 +215,6 @@ return teacherRepository.searchByFirstNameAndLastNameAndSex(firstName, lastName,
 	 * Get all teacher records.
 	 *
 	 * @param page Page
-	 * @param size How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	@Override
@@ -230,7 +227,6 @@ return teacherRepository.searchByFirstNameAndLastNameAndSex(firstName, lastName,
 	 *
 	 * @param firstName First Name of the teacher.
 	 * @param page      Page
-	 * @param size      How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	@Override
@@ -245,7 +241,6 @@ return teacherRepository.searchByFirstNameAndLastNameAndSex(firstName, lastName,
 	 *
 	 * @param lastName Last Name of the teacher.
 	 * @param page     Page
-	 * @param size     How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	@Override
@@ -261,7 +256,6 @@ return teacherRepository.searchByFirstNameAndLastNameAndSex(firstName, lastName,
 	 * @param firstName First name of the teacher that will be searched.
 	 * @param sex       Sexuality of the teacher that will be searched.
 	 * @param page      Page
-	 * @param size      How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	@Override
@@ -275,7 +269,6 @@ return teacherRepository.searchByFirstNameAndLastNameAndSex(firstName, lastName,
 	 * @param lastName Last name of the teacher that will be searched.
 	 * @param sex      Sexuality of the teacher that will be searched.
 	 * @param page     Page
-	 * @param size     How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	@Override
@@ -289,7 +282,6 @@ return teacherRepository.searchByFirstNameAndLastNameAndSex(firstName, lastName,
 	 * @param firstName First name of the teacher that will be searched.
 	 * @param lastName  Last name of the teacher that will be searched.
 	 * @param page      Page
-	 * @param size      How many records per page it will show
 	 * @return Page containing teacher records
 	 */
 	@Override

@@ -26,8 +26,8 @@ package com.pshs.attendance_system.websocket.handlers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.pshs.attendance_system.dto.CardRFIDCredentialDTO;
 import com.pshs.attendance_system.dto.AttendanceResultDTO;
+import com.pshs.attendance_system.dto.CardRFIDCredentialDTO;
 import com.pshs.attendance_system.entities.RFIDCredential;
 import com.pshs.attendance_system.enums.Mode;
 import com.pshs.attendance_system.services.AttendanceService;
@@ -90,6 +90,6 @@ public class AttendanceWebSocketHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(@NonNull WebSocketSession session) throws Exception {
 		super.afterConnectionEstablished(session);
-		logger.info("WebSocket connection established for session: " + session.getId());
+		logger.info("WebSocket connection established for session: {}", session.getId());
 	}
 }

@@ -39,6 +39,7 @@ public class StudentDTO implements Serializable {
 	private String lastName;
 	private String prefix;
 	private GradeLevelDTO gradeLevel;
+	private GuardianDTO guardian;
 	private String sex;
 	private SectionDTO section;
 	private String address;
@@ -47,7 +48,7 @@ public class StudentDTO implements Serializable {
 	public StudentDTO() {
 	}
 
-	public StudentDTO(Long id, String firstName, String middleInitial, String lastName, String prefix, GradeLevelDTO gradeLevel, String sex, SectionDTO section, String address, LocalDate birthdate) {
+	public StudentDTO(Long id, String firstName, String middleInitial, String lastName, String prefix, GradeLevelDTO gradeLevel, String sex, SectionDTO section, String address, LocalDate birthdate, GuardianDTO guardian) {
 		this.id = id;
 		this.firstName = firstName;
 		this.middleInitial = middleInitial;
@@ -58,6 +59,7 @@ public class StudentDTO implements Serializable {
 		this.section = section;
 		this.address = address;
 		this.birthdate = birthdate;
+		this.guardian = guardian;
 	}
 
 	public Student toEntity() {
@@ -69,7 +71,8 @@ public class StudentDTO implements Serializable {
 			.setGradeLevel(gradeLevel.toEntity())
 			.setSex(sex)
 			.setAddress(address)
-			.setBirthdate(birthdate);
+			.setBirthdate(birthdate)
+			.setGuardian(guardian.toEntity());
 	}
 
 	public Long getId() {
@@ -105,6 +108,20 @@ public class StudentDTO implements Serializable {
 
 	public StudentDTO setLastName(String lastName) {
 		this.lastName = lastName;
+		return this;
+	}
+
+	public GuardianDTO getGuardian() {
+		return guardian;
+	}
+
+	public StudentDTO setSection(SectionDTO section) {
+		this.section = section;
+		return this;
+	}
+
+	public StudentDTO setGuardian(GuardianDTO guardian) {
+		this.guardian = guardian;
 		return this;
 	}
 
