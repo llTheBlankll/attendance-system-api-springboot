@@ -209,9 +209,9 @@ public class SectionController {
 		@ApiResponse(responseCode = "200", description = "Sections retrieved successfully"),
 	})
 	public ResponseEntity<?> getSections(@RequestParam int page, @RequestParam int size) {
-		return ResponseEntity.ok(sectionService.getAllSections(PageRequest.of(page ,size)));
+		return ResponseEntity.ok(sectionService.getAllSections(PageRequest.of(page, size)));
 	}
-	
+
 	@GetMapping("/{id}")
 	@Operation(summary = "Get section by its id", description = "Get section by id, will return Section object")
 	@ApiResponses({
@@ -263,7 +263,7 @@ public class SectionController {
 	}
 
 	@GetMapping("/gradelevel")
-	@Operation(summary = "Get all sections handled by a grade level", description = "Get all sections")
+	@Operation(summary = "Get all sections by grade level", description = "Get all sections by grade level, if the request parameter and request body is filled. The request parameter grade level id will be used instead.")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Returns a page of section"),
 		@ApiResponse(responseCode = "400", description = "No request parameter and request body provided.")
@@ -282,5 +282,32 @@ public class SectionController {
 		return ResponseEntity.badRequest().body(new MessageResponse("No request parameter and request body provided."));
 	}
 
+	@GetMapping("/search")
+	@Operation(summary = "Search sections", description = "Search sections by room or name")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "Returns a page of section"),
+		@ApiResponse(responseCode = "400", description = "No request parameter provided.")
+	})
+	@Parameters({
+		@Parameter(name = "room", description = "Room name"),
+		@Parameter(name = "name", description = "Section name")
+	})
+	public ResponseEntity<?> searchSections(@RequestParam(required = false) String room, @RequestParam(required = false) String name, @RequestParam int page, @RequestParam int size) {
+		if (room != null) {
+			return ResponseEntity.ok(sectionService.searchSectionByRoom(room, PageRequest.of(page, size)));
+		} else if (name != null) {
+			return ResponseEntity.ok(sectionService.searchSectionBySectionName(name, PageRequest.of(page, size)));
+		}
 
+		return ResponseEntity.badRequest().body(new MessageResponse("No request parameter provided."));
+	}
+
+	@GetMapping("/count")
+	@Operation(summary = "Count all sections", description = "Count all sections")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "Returns the number of sections")
+	})
+	public ResponseEntity<?> countAllSections() {
+		return ResponseEntity.ok(sectionService.countSections());
+	}
 }
