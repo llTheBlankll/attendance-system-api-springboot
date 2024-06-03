@@ -74,7 +74,8 @@ public class DTOAndEntitiesTest {
 		"Male",
 		section,
 		"1234 Punturin St. Punturin, Valenzuela City",
-		LocalDate.parse("2004-07-07")
+		LocalDate.parse("2004-07-07"),
+		new Guardian()
 	);
 
 	private final RFIDCredential rfidCredential = new RFIDCredential(
@@ -86,7 +87,6 @@ public class DTOAndEntitiesTest {
 
 	private final Guardian guardian = new Guardian(
 		1,
-		student,
 		"Juan Dela Cruz",
 		"09123456789"
 	);
@@ -123,7 +123,6 @@ public class DTOAndEntitiesTest {
 	public void testGuardian() {
 		// Entities Test
 		assert guardian.getId() == 1;
-		assert guardian.getStudentLrn().equals(student);
 		assert guardian.getFullName().equals("Juan Dela Cruz");
 		assert guardian.getContactNumber().equals("09123456789");
 		System.out.println("Entity Test is successful");
@@ -131,7 +130,6 @@ public class DTOAndEntitiesTest {
 		// DTO Test
 		GuardianDTO guardianDTO = guardian.toDTO();
 		assert guardianDTO.getId() == 1;
-		assert guardianDTO.getStudentLrn().equals(student.toDTO());
 		assert guardianDTO.getFullName().equals("Juan Dela Cruz");
 		assert guardianDTO.getContactNumber().equals("09123456789");
 		System.out.println("DTO Test is successful");
