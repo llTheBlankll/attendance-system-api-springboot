@@ -35,6 +35,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -179,15 +180,15 @@ public class GradeLevelController {
 		// If name is not empty and strand is provided, then search grade levels by name and strand
 		if (!name.isEmpty() && strand != null) {
 			return ResponseEntity.ok(
-				gradeLevelService.searchGradeLevelsByNameAndStrand(name, strand.getId(), page, size)
+				gradeLevelService.searchGradeLevelsByNameAndStrand(name, strand.getId(), PageRequest.of(page, size))
 			);
 		} else if (strand != null) { // If strand iso only provided, then search grade levels by strand
 			return ResponseEntity.ok(
-				gradeLevelService.searchGradeLevelsByStrand(strand.getId(), page, size)
+				gradeLevelService.searchGradeLevelsByStrand(strand.getId(), PageRequest.of(page, size))
 			);
 		} else if (!name.isEmpty()) { // If name is only provided, then search grade levels by name
 			return ResponseEntity.ok(
-				gradeLevelService.searchGradeLevelsByName(name, page, size)
+				gradeLevelService.searchGradeLevelsByName(name, PageRequest.of(page, size))
 			);
 		} else {
 			return ResponseEntity.badRequest()
