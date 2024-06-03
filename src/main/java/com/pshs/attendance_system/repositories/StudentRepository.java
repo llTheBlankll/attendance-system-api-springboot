@@ -24,6 +24,7 @@
 package com.pshs.attendance_system.repositories;
 
 import com.pshs.attendance_system.entities.GradeLevel;
+import com.pshs.attendance_system.entities.Guardian;
 import com.pshs.attendance_system.entities.Section;
 import com.pshs.attendance_system.entities.Student;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
@@ -80,4 +83,11 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
 	@Query("select count(s) from Student s where s.gradeLevel = :gradeLevel and s.section = :section")
 	long countStudentsInGradeLevelAndSection(@Param("gradeLevel") GradeLevel gradeLevel, @Param("section") Section section);
+
+	@Query("select s from Student s where s.guardian = ?1")
+	@NonNull
+	Optional<Student> getStudentByGuardian(@NonNull Guardian guardian);
+
+	@Query("select s from Student s where s.guardian.id = ?1")
+	Optional<Student> getStudentByGuardianId(@NonNull Integer id);
 }

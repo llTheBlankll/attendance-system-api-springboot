@@ -127,23 +127,6 @@ public class GuardianController {
 		return ResponseEntity.ok(guardian);
 	}
 
-	@GetMapping(value = "/student", produces = "application/json")
-	@Operation(summary = "Get guardian of student")
-	@ApiResponses({
-		@ApiResponse(responseCode = "200", description = "Guardian found"),
-		@ApiResponse(responseCode = "404", description = "Guardian not found")
-	})
-	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Student object", required = true)
-	public ResponseEntity<?> getGuardianOfStudent(@RequestBody StudentDTO student) {
-		Guardian guardian = guardianService.getGuardianOfStudent(student.toEntity());
-
-		if (guardian == null) {
-			return ResponseEntity.status(404).body(new MessageResponse("Guardian of student with ID " + student.getFirstName().concat(" " + student.getLastName()) + " not found."));
-		}
-
-		return ResponseEntity.ok(guardian);
-	}
-
 	@GetMapping(value = "/search", produces = "application/json")
 	@Operation(summary = "Search guardian")
 	@ApiResponses({

@@ -164,19 +164,6 @@ public class GuardianServiceImpl implements GuardianService {
 	}
 
 	/**
-	 * Get the guardian record of a student.
-	 *
-	 * @param student Student Object
-	 * @return Guardian Object, null if not found
-	 * @see Guardian
-	 * @see Student
-	 */
-	@Override
-	public Guardian getGuardianOfStudent(Student student) {
-		return guardianRepository.findGuardianOfStudent(student).orElse(null);
-	}
-
-	/**
 	 * Search guardian records by full name.
 	 *
 	 * @param fullName Full Name

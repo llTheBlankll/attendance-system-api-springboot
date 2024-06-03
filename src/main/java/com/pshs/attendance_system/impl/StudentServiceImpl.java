@@ -46,13 +46,11 @@ public class StudentServiceImpl implements StudentService {
 	private final StudentRepository studentRepository;
 	private final GradeLevelService gradeLevelService;
 	private final SectionService sectionService;
-	private final GuardianService guardianService;
 
-	public StudentServiceImpl(StudentRepository studentRepository, GradeLevelService gradeLevelService, SectionService sectionService, GuardianService guardianService) {
+	public StudentServiceImpl(StudentRepository studentRepository, GradeLevelService gradeLevelService, SectionService sectionService) {
 		this.studentRepository = studentRepository;
 		this.gradeLevelService = gradeLevelService;
 		this.sectionService = sectionService;
-		this.guardianService = guardianService;
 	}
 
 
@@ -196,13 +194,13 @@ public class StudentServiceImpl implements StudentService {
 			return ExecutionStatus.VALIDATION_ERROR;
 		}
 
-		// Check if student exists
+		// Check if a student exists
 		if (!isStudentExist(studentId)) {
 			logger.debug("Cannot update Student ID because it does not exist: {}", studentId);
 			return ExecutionStatus.FAILURE;
 		}
 
-		// Check if section exists
+		// Check if a section exists
 		if (!sectionService.isSectionExist(section)) {
 			logger.debug("Section does not exist: {}", section);
 			return ExecutionStatus.FAILURE;
@@ -232,8 +230,7 @@ public class StudentServiceImpl implements StudentService {
 	 */
 	@Override
 	public Student getStudentByGuardian(Guardian guardian) {
-		Guardian guardianStudent = guardianService.getGuardian(guardian.getId());
-		return (guardianStudent != null) ? guardianStudent.getStudentLrn() : null;
+		return studentRepository.getStudentByGuardian(guardian).orElse(null);
 	}
 
 	/**
@@ -244,8 +241,7 @@ public class StudentServiceImpl implements StudentService {
 	 */
 	@Override
 	public Student getStudentByGuardian(int guardianId) {
-		Guardian guardianStudent = guardianService.getGuardian(guardianId);
-		return (guardianStudent != null) ? guardianStudent.getStudentLrn() : null;
+		return studentRepository.getStudentByGuardianId(guardianId).orElse(null);
 	}
 
 	/**

@@ -73,14 +73,6 @@ public interface GuardianService {
 	Guardian getGuardian(int guardianId);
 
 	/**
-	 * Get the guardian record of a student.
-	 *
-	 * @param student Student Object
-	 * @return Guardian Object, null if not found
-	 */
-	Guardian getGuardianOfStudent(Student student);
-
-	/**
 	 * Search guardian records by full name.
 	 *
 	 * @param fullName Full Name
