@@ -23,6 +23,8 @@
 
 package com.pshs.attendance_system.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.pshs.attendance_system.dto.StudentDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -32,6 +34,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "students")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Student {
 	@Id
 	@Column(name = "lrn", nullable = false)
@@ -62,6 +65,11 @@ public class Student {
 	@JoinColumn(name = "section_id")
 	private Section section;
 
+	@JoinColumn(referencedColumnName = "student_lrn", name = "lrn")
+	@OneToOne(fetch = FetchType.EAGER)
+	@OnDelete(action = OnDeleteAction.SET_NULL)
+	private Guardian guardian;
+
 	@Column(name = "address", length = Integer.MAX_VALUE)
 	private String address;
 
@@ -71,7 +79,7 @@ public class Student {
 	public Student() {
 	}
 
-	public Student(Long id, String firstName, String middleInitial, String lastName, String prefix, GradeLevel gradeLevel, String sex, Section section, String address, LocalDate birthdate) {
+	public Student(Long id, String firstName, String middleInitial, String lastName, String prefix, GradeLevel gradeLevel, String sex, Section section, String address, LocalDate birthdate, Guardian guardian) {
 		this.id = id;
 		this.firstName = firstName;
 		this.middleInitial = middleInitial;
@@ -82,10 +90,11 @@ public class Student {
 		this.section = section;
 		this.address = address;
 		this.birthdate = birthdate;
+		this.guardian = guardian;
 	}
 
 	public StudentDTO toDTO() {
-		return new StudentDTO(id, firstName, middleInitial, lastName, prefix, gradeLevel.toDTO(), sex, section.toDTO(), address, birthdate);
+		return new StudentDTO(id, firstName, middleInitial, lastName, prefix, gradeLevel.toDTO(), sex, section.toDTO(), address, birthdate, (guardian != null) ? guardian.toDTO() : null);
 	}
 
 	public Long getId() {
@@ -94,6 +103,15 @@ public class Student {
 
 	public Student setId(Long id) {
 		this.id = id;
+		return this;
+	}
+
+	public Guardian getGuardian() {
+		return guardian;
+	}
+
+	public Student setGuardian(Guardian guardian) {
+		this.guardian = guardian;
 		return this;
 	}
 

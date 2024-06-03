@@ -27,7 +27,7 @@ import com.pshs.attendance_system.dto.StrandDTO;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "strand")
+@Table(name = "strands")
 public class Strand {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "strand_id_gen")

@@ -33,16 +33,14 @@ import java.util.Objects;
  */
 public class GuardianDTO implements Serializable {
 	private Integer id;
-	private StudentDTO studentLrn;
 	private String fullName;
 	private String contactNumber;
 
 	public GuardianDTO() {
 	}
 
-	public GuardianDTO(Integer id, StudentDTO studentLrn, String fullName, String contactNumber) {
+	public GuardianDTO(Integer id, String fullName, String contactNumber) {
 		this.id = id;
-		this.studentLrn = studentLrn;
 		this.fullName = fullName;
 		this.contactNumber = contactNumber;
 	}
@@ -50,7 +48,6 @@ public class GuardianDTO implements Serializable {
 	public Guardian toEntity() {
 		return new Guardian()
 			.setId(id)
-			.setStudentLrn(studentLrn.toEntity())
 			.setFullName(fullName)
 			.setContactNumber(contactNumber);
 	}
@@ -61,15 +58,6 @@ public class GuardianDTO implements Serializable {
 
 	public GuardianDTO setId(Integer id) {
 		this.id = id;
-		return this;
-	}
-
-	public StudentDTO getStudentLrn() {
-		return studentLrn;
-	}
-
-	public GuardianDTO setStudentLrn(StudentDTO studentLrn) {
-		this.studentLrn = studentLrn;
 		return this;
 	}
 
@@ -95,24 +83,26 @@ public class GuardianDTO implements Serializable {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		GuardianDTO entity = (GuardianDTO) o;
-		return Objects.equals(this.id, entity.id) &&
-			Objects.equals(this.studentLrn, entity.studentLrn) &&
-			Objects.equals(this.fullName, entity.fullName) &&
-			Objects.equals(this.contactNumber, entity.contactNumber);
+		GuardianDTO that = (GuardianDTO) o;
+		return Objects.equals(id, that.id) && Objects.equals(fullName, that.fullName) && Objects.equals(contactNumber, that.contactNumber);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, studentLrn, fullName, contactNumber);
+		return Objects.hash(id, fullName, contactNumber);
+	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + "(" +
-			"id = " + id + ", " +
-			"studentLrn = " + studentLrn + ", " +
-			"fullName = " + fullName + ", " +
-			"contactNumber = " + contactNumber + ")";
+		return "GuardianDTO{" +
+			"id=" + id +
+			", fullName='" + fullName + '\'' +
+			", contactNumber='" + contactNumber + '\'' +
+			'}';
 	}
 }

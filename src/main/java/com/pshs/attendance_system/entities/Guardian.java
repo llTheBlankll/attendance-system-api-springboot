@@ -37,11 +37,6 @@ public class Guardian {
 	@Column(name = "id", nullable = false)
 	private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JoinColumn(name = "student_lrn")
-	private Student studentLrn;
-
 	@Column(name = "full_name", nullable = false)
 	private String fullName;
 
@@ -51,15 +46,14 @@ public class Guardian {
 	public Guardian() {
 	}
 
-	public Guardian(Integer id, Student studentLrn, String fullName, String contactNumber) {
+	public Guardian(Integer id,  String fullName, String contactNumber) {
 		this.id = id;
-		this.studentLrn = studentLrn;
 		this.fullName = fullName;
 		this.contactNumber = contactNumber;
 	}
 
 	public GuardianDTO toDTO() {
-		return new GuardianDTO(id, studentLrn.toDTO(), fullName, contactNumber);
+		return new GuardianDTO(id, fullName, contactNumber);
 	}
 
 	public Integer getId() {
@@ -68,15 +62,6 @@ public class Guardian {
 
 	public Guardian setId(Integer id) {
 		this.id = id;
-		return this;
-	}
-
-	public Student getStudentLrn() {
-		return studentLrn;
-	}
-
-	public Guardian setStudentLrn(Student studentLrn) {
-		this.studentLrn = studentLrn;
 		return this;
 	}
 

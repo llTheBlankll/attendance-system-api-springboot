@@ -23,6 +23,8 @@
 
 package com.pshs.attendance_system.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.pshs.attendance_system.dto.SectionDTO;
 import com.pshs.attendance_system.dto.SectionStudentsDTO;
 import jakarta.persistence.*;
@@ -34,6 +36,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "sections")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Section {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sections_id_gen")
@@ -62,7 +65,7 @@ public class Section {
 	@Column(name = "section_name", nullable = false)
 	private String sectionName;
 
-	@OneToMany(mappedBy = "section")
+	@OneToMany(mappedBy = "section", fetch = FetchType.EAGER)
 	private List<Student> students = new ArrayList<>();
 
 	public Section() {

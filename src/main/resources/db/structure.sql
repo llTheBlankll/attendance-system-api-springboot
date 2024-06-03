@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS grade_levels
     strand INT,
     -- The length of a name should be at least 3 characters.
     CONSTRAINT name_length CHECK (LENGTH(name) >= 3),
-    FOREIGN KEY (strand) REFERENCES Strand (id)
+    FOREIGN KEY (strand) REFERENCES strands (id)
 );
 
 -- * Create enum types for each table.
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS sections
     section_name VARCHAR(255) NOT NULL,
     FOREIGN KEY (grade_level) REFERENCES grade_levels (id) ON DELETE SET NULL,
     FOREIGN KEY (teacher) REFERENCES teachers (id) ON DELETE SET NULL,
-    FOREIGN KEY (strand) REFERENCES Strand (id) ON DELETE SET NULL
+    FOREIGN KEY (strand) REFERENCES strands (id) ON DELETE SET NULL
 );
 
 -- * STUDENTS TABLE
