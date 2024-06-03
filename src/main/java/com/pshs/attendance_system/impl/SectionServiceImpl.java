@@ -165,28 +165,6 @@ public class SectionServiceImpl implements SectionService {
 	}
 
 	/**
-	 * Update the room name of the section with the given section id.
-	 *
-	 * @param sectionId id of the section that will be updated
-	 * @param roomName  the new room name of the section
-	 * @return The status of the operation that can be either SUCCESS, FAILED, VALIDATION_FAILED
-	 */
-	@Override
-	public ExecutionStatus updateSectionRoomName(int sectionId, String roomName) {
-		if (sectionId <= 0 || roomName.isEmpty()) {
-			return logFailedValidation(sectionId);
-		}
-
-		if (!isExists(sectionId)) {
-			return logNotFound(sectionId);
-		}
-
-		int rowsAffected = sectionRepository.updateSectionRoomName(roomName, sectionId);
-		logger.debug("Section with id: {} has been updated with new room name: {}.", sectionId, roomName);
-		return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILURE;
-	}
-
-	/**
 	 * Update the strand of the section with the given section id and strand id.
 	 *
 	 * @param sectionId id of the section that will be updated
@@ -233,6 +211,17 @@ public class SectionServiceImpl implements SectionService {
 		int rowsAffected = sectionRepository.updateSectionStrand(strand, sectionId);
 		logger.debug("Section with id: {} has been updated with new strand: {}.", sectionId, strand.getId());
 		return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILURE;
+	}
+
+	/**
+	 * Get all sections existing in the database.
+	 *
+	 * @param page A Page Request Object
+	 * @return The page containing all the sections
+	 */
+	@Override
+	public Page<Section> getAllSections(Pageable page) {
+		return sectionRepository.findAll(page);
 	}
 
 	/**

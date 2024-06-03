@@ -79,15 +79,6 @@ public interface SectionService {
 	ExecutionStatus updateSectionTeacher(int sectionId, Teacher teacher);
 
 	/**
-	 * Update the room name of the section with the given section id.
-	 *
-	 * @param sectionId id of the section that will be updated
-	 * @param roomName  the new room name of the section
-	 * @return The status of the operation that can be either SUCCESS, FAILED, VALIDATION_FAILED
-	 */
-	ExecutionStatus updateSectionRoomName(int sectionId, String roomName);
-
-	/**
 	 * Update the strand of the section with the given section id and strand id.
 	 *
 	 * @param sectionId id of the section that will be updated
@@ -132,6 +123,14 @@ public interface SectionService {
 	 */
 	ExecutionStatus updateSectionGradeLevel(int sectionId, GradeLevel gradeLevel);
 	// End Region Update Section
+
+	/**
+	 * Get all sections existing in the database.
+	 *
+	 * @param page A Page Request Object
+	 * @return The page containing all the sections
+	 */
+	Page<Section> getAllSections(Pageable page);
 
 	/**
 	 * Get the section information with the given section id.
