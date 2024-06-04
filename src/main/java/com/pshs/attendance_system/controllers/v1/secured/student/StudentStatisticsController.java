@@ -63,7 +63,7 @@ public class StudentStatisticsController {
 		return ResponseEntity.ok(studentService.countStudentsInSection(section.toEntity()));
 	}
 
-	@GetMapping("/gradelevel")
+	@GetMapping("/gradelevelId")
 	@Operation(summary = "Count all students by their grade level", description = "Count all students by their grade level")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "The count of all student by their grade level.")
@@ -71,7 +71,7 @@ public class StudentStatisticsController {
 	@Parameters({
 		@Parameter(name = "id", description = "The grade level id", required = true)
 	})
-	public ResponseEntity<?> countAllStudentsByGradeLevel(@RequestParam int id) {
+	public ResponseEntity<?> countAllStudentsByGradeLevelById(@RequestParam int id) {
 		return ResponseEntity.ok(studentService.countStudentsInGradeLevel(id));
 	}
 

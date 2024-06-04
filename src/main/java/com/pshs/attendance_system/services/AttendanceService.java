@@ -130,6 +130,16 @@ public interface AttendanceService {
 	 * @return return the page object
 	 */
 	Page<Attendance> getAllAttendancesByStudentId(Long studentId, Pageable page);
+
+	/**
+	 * Get all attendances by date
+	 *
+	 * @param date Date of the attendance
+	 * @param page paging object
+	 * @return return the page object
+	 */
+	Page<Attendance> getAllAttendancesByDate(LocalDate date, Pageable page);
+
 	// End Region: Custom Queries
 
 	// Region: Statistics / Numbers

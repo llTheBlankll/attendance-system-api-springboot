@@ -65,8 +65,7 @@ public class Student {
 	@JoinColumn(name = "section_id")
 	private Section section;
 
-	@JoinColumn(referencedColumnName = "student_lrn", name = "lrn")
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(mappedBy = "student")
 	@OnDelete(action = OnDeleteAction.SET_NULL)
 	private Guardian guardian;
 
