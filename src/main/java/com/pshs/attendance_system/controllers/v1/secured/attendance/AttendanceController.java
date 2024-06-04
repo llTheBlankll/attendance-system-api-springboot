@@ -2,7 +2,6 @@ package com.pshs.attendance_system.controllers.v1.secured.attendance;
 
 import com.pshs.attendance_system.dto.AttendanceDTO;
 import com.pshs.attendance_system.enums.AttendanceStatus;
-import com.pshs.attendance_system.enums.Status;
 import com.pshs.attendance_system.services.AttendanceService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;

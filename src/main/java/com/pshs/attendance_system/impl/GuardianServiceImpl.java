@@ -24,7 +24,6 @@
 package com.pshs.attendance_system.impl;
 
 import com.pshs.attendance_system.entities.Guardian;
-import com.pshs.attendance_system.entities.Student;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.repositories.GuardianRepository;
 import com.pshs.attendance_system.services.GuardianService;
