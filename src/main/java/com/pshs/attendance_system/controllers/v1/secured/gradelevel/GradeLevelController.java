@@ -46,8 +46,7 @@ import java.util.Map;
 	name = "Grade Level",
 	description = "API Endpoints for Grade Level"
 )
-@RequestMapping("/api/v1/grade-level")
-@Profile("secured")
+@RequestMapping("/api/v1/grade-levels")
 public class GradeLevelController {
 
 	private static final Logger logger = LogManager.getLogger(GradeLevelController.class);
@@ -67,7 +66,7 @@ public class GradeLevelController {
 			)
 		}
 	)
-	@GetMapping("/")
+	@GetMapping("/grade-level")
 	public ResponseEntity<Page<GradeLevelDTO>> getAllGradeLevels(
 		@RequestParam(defaultValue = "0") Integer page,
 		@RequestParam(defaultValue = "10") Integer size
@@ -90,7 +89,7 @@ public class GradeLevelController {
 			)
 		}
 	)
-	@PostMapping("/")
+	@PostMapping("/grade-level")
 	public ResponseEntity<Map<String, ExecutionStatus>> createGradeLevel(@RequestBody GradeLevelDTO gradeLevelDTO) {
 		logger.info("Creating grade level: {}", gradeLevelDTO);
 		ExecutionStatus status = gradeLevelService.createGradeLevel(gradeLevelDTO.toEntity());

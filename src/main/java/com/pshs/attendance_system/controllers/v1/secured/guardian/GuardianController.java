@@ -19,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/guardian")
+@RequestMapping("/api/v1/guardians")
 @Tag(
 	name = "Guardian",
 	description = "Guardian related operations"
@@ -32,7 +32,7 @@ public class GuardianController {
 		this.guardianService = guardianService;
 	}
 
-	@PostMapping(name = "/", consumes = "application/json", produces = "application/json")
+	@PostMapping(name = "/guardian", consumes = "application/json", produces = "application/json")
 	@Operation(summary = "Create guardian record")
 	@ApiResponses({
 		@ApiResponse(responseCode = "201", description = "Guardian created successfully"),
@@ -110,7 +110,7 @@ public class GuardianController {
 		return ResponseEntity.status(500).body(new MessageResponse("Failed to update guardian."));
 	}
 
-	@GetMapping(value = "/", produces = "application/json")
+	@GetMapping(value = "/guardian", produces = "application/json")
 	public ResponseEntity<?> getAllGuardian(@RequestParam int page, @RequestParam int size) {
 		return ResponseEntity.ok(guardianService.getAllGuardian(PageRequest.of(page, size)));
 	}

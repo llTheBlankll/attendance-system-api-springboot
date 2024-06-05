@@ -105,24 +105,22 @@ public interface AttendanceService {
 	 */
 	Attendance getAttendanceById(int id);
 
-	Attendance getAttendanceByStudentDate(Long studentId, LocalDate date);
-
 	/**
-	 * Get the attendance record of a student by the student id.
+	 * get the attendance record of a student by the student id and the date.
 	 *
 	 * @param studentId Student ID
-	 * @return The list of attendance of a student
+	 * @param date      Date of the attendance
+	 * @return Attendance of a student {@link Attendance}
 	 */
-	List<Attendance> getAttendancesByStudentId(Long studentId);
+	Attendance getAttendanceByStudentDate(Long studentId, LocalDate date);
 
 	/**
 	 * Get all the attendance of every student in existence within the database.
 	 *
 	 * @param page Page
-	 * @param size Shows how many student will it display.
 	 * @return return the page object
 	 */
-	Page<Attendance> getAllAttendances(int page, int size);
+	Page<Attendance> getAllAttendances(Pageable page);
 
 	/**
 	 * @param studentId Student ID
@@ -158,7 +156,7 @@ public interface AttendanceService {
 	 *
 	 * @param attendanceStatus Attendance Status (LATE, ON_TIME, ...)
 	 * @param date             Specific Date
-	 * @return the number of attendance of all the student with the specific status with the specific date
+	 * @return the number of students who have attendance with the specific status with the specific date
 	 */
 	int countStudentsByStatusAndDate(AttendanceStatus attendanceStatus, LocalDate date);
 
@@ -180,43 +178,6 @@ public interface AttendanceService {
 	 */
 	int countStudentAttendancesByStatusBetweenDate(Long studentId, AttendanceStatus attendanceStatus, DateRange dateRange);
 
-	/**
-	 * Count the total number of students who checked in at a specific time and have a specific attendance status on a specific date.
-	 *
-	 * @param timeIn           The specific time the students checked in
-	 * @param date             The specific date
-	 * @param attendanceStatus The attendance status (LATE, ON_TIME, ...)
-	 * @return the number of attendances of all the students with time in, date, and status.
-	 */
-	int countStudentsAttendancesTimeInByDateAndStatus(LocalTime timeIn, LocalDate date, AttendanceStatus attendanceStatus);
-
-	/**
-	 * Count the total number of students who checked in at a specific time on a specific date.
-	 *
-	 * @param timeIn The specific time the students checked in
-	 * @param date   The specific date
-	 * @return the number of attendances of all the students with time in and date only.
-	 */
-	int countStudentsAttendancesTimeInByDate(LocalTime timeIn, LocalDate date);
-
-	/**
-	 * Count the total number of students who checked out at a specific time and have a specific attendance status on a specific date.
-	 *
-	 * @param timeOut          The specific time the students checked out
-	 * @param date             The specific date
-	 * @param attendanceStatus The attendance status (LATE, ON_TIME, ...)
-	 * @return the number of students
-	 */
-	int countStudentsAttendancesTimeOutByDateAndStatus(LocalTime timeOut, LocalDate date, AttendanceStatus attendanceStatus);
-
-	/**
-	 * Count the total number of students who checked out at a specific time on a specific date.
-	 *
-	 * @param timeOut The specific time the students checked out
-	 * @param date    The specific date
-	 * @return the number of students attendances where when they went out of the school and with the date.
-	 */
-	int countStudentsAttendancesTimeOutByDate(LocalTime timeOut, LocalDate date);
 	// End: Statistics / Numbers
 
 	// Region: Custom Queries

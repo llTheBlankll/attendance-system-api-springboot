@@ -312,7 +312,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 					logger.debug("Student successfully signed out.");
 					rabbitTemplate.convertAndSend("amq.topic", "attendance-notifications", mapper.writeValueAsString(attendanceResultDTO));
 				} else {
-					// ! If student has already signed out, send a message to the topic exchange in topic attendance-logs
+					// ! If a student has already signed out, send a message to the topic exchange in topic attendance-logs
 					logger.debug("Student already signed out.");
 
 					attendanceResultDTO.setDate(attendance.getDate())
@@ -411,29 +411,14 @@ public class AttendanceServiceImpl implements AttendanceService {
 	}
 
 	/**
-	 * Get the attendance record of a student by the student id.
-	 *
-	 * @param studentId Student ID
-	 * @return The list of attendance of a student
-	 */
-	@Override
-	public List<Attendance> getAttendancesByStudentId(Long studentId) {
-		// Alphabetical order
-		Sort sortBy = Sort.by("lastName").ascending();
-
-		return attendanceRepository.getAttendancesByStudentId(studentId, sortBy);
-	}
-
-	/**
 	 * Get all the attendance of every student in existence within the database.
 	 *
 	 * @param page Page
-	 * @param size Shows how many student will it display.
 	 * @return return the page object
 	 */
 	@Override
-	public Page<Attendance> getAllAttendances(int page, int size) {
-		return attendanceRepository.findAll(PageRequest.of(page, size));
+	public Page<Attendance> getAllAttendances(Pageable page) {
+		return attendanceRepository.findAll(page);
 	}
 
 	/**
@@ -446,12 +431,17 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return attendanceRepository.findAllAttendancesByStudentId(studentId, page);
 	}
 
+	@Override
+	public Page<Attendance> getAllAttendancesByDate(LocalDate date, Pageable page) {
+		return attendanceRepository.getAllAttendancesByDate(date, page);
+	}
+
 	/**
-	 * Count the total number of students with the attendance status between two date.
+	 * Count the total number of students with the attendance status between two dates.
 	 *
 	 * @param attendanceStatus Attendance Status (LATE, ON_TIME, ...)
 	 * @param dateRange        from 2024-10-1 to 2024-12-1
-	 * @return the number of attendance of all student.
+	 * @return the number of attendances from all students.
 	 */
 	@Override
 	public int countStudentsByStatusAndDateRange(AttendanceStatus attendanceStatus, DateRange dateRange) {
@@ -494,56 +484,6 @@ public class AttendanceServiceImpl implements AttendanceService {
 	@Override
 	public int countStudentAttendancesByStatusBetweenDate(Long studentId, AttendanceStatus attendanceStatus, DateRange dateRange) {
 		return (int) attendanceRepository.countStudentAttendancesByStatusBetweenDate(studentId, attendanceStatus.name(), dateRange.getStartDate(), dateRange.getEndDate());
-	}
-
-	/**
-	 * Count the total number of students who checked in at a specific time and have a specific attendance status on a specific date.
-	 *
-	 * @param timeIn           The specific time the students checked in
-	 * @param date             The specific date
-	 * @param attendanceStatus The attendance status (LATE, ON_TIME, ...)
-	 * @return the number of attendances of all the students with time in, date, and status.
-	 */
-	@Override
-	public int countStudentsAttendancesTimeInByDateAndStatus(LocalTime timeIn, LocalDate date, AttendanceStatus attendanceStatus) {
-		return (int) attendanceRepository.countStudentsAttendancesTimeInByDateAndStatus(timeIn, date, attendanceStatus.name());
-	}
-
-	/**
-	 * Count the total number of students who checked in at a specific time on a specific date.
-	 *
-	 * @param timeIn The specific time the students checked in
-	 * @param date   The specific date
-	 * @return the number of attendances of all the students with time in and date only.
-	 */
-	@Override
-	public int countStudentsAttendancesTimeInByDate(LocalTime timeIn, LocalDate date) {
-		return (int) attendanceRepository.countByTimeAndDate(timeIn, date);
-	}
-
-	/**
-	 * Count the total number of students who checked out at a specific time and have a specific attendance status on a specific date.
-	 *
-	 * @param timeOut          The specific time the students checked out
-	 * @param date             The specific date
-	 * @param attendanceStatus The attendance status (LATE, ON_TIME, ...)
-	 * @return the number of students
-	 */
-	@Override
-	public int countStudentsAttendancesTimeOutByDateAndStatus(LocalTime timeOut, LocalDate date, AttendanceStatus attendanceStatus) {
-		return (int) attendanceRepository.countStudentsAttendancesTimeOutBydateAndStatus(timeOut, date, attendanceStatus.name());
-	}
-
-	/**
-	 * Count the total number of students who checked out at a specific time on a specific date.
-	 *
-	 * @param timeOut The specific time the students checked out
-	 * @param date    The specific date
-	 * @return the number of students attendances where when they went out of the school and with the date.
-	 */
-	@Override
-	public int countStudentsAttendancesTimeOutByDate(LocalTime timeOut, LocalDate date) {
-		return (int) attendanceRepository.count();
 	}
 
 	@Override

@@ -7,6 +7,8 @@ import com.pshs.attendance_system.services.SectionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/section")
+@RequestMapping("/api/v1/sections")
 @Tag(
 	name = "Section",
 	description = "Section API"
@@ -28,7 +30,7 @@ public class SectionController {
 		this.sectionService = sectionService;
 	}
 
-	@PostMapping("/")
+	@PostMapping("/section")
 	@Operation(summary = "Create a new section", description = "Create a new section")
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Section to create", required = true)
 	@ApiResponses({
@@ -112,7 +114,7 @@ public class SectionController {
 		return ResponseEntity.badRequest().body(new MessageResponse("Section teacher not updated"));
 	}
 
-	@PatchMapping("/{id}/gradelevel/id")
+	@PatchMapping("/{id}/grade-level/id")
 	@Operation(summary = "Update a section grade level", description = "Update a section with an existing grade level, requires section id and grade level id")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Section grade level updated successfully"),
@@ -142,7 +144,7 @@ public class SectionController {
 		return ResponseEntity.badRequest().body(new MessageResponse("Section grade level not updated"));
 	}
 
-	@PatchMapping("/{id}/gradelevel")
+	@PatchMapping("/{id}/grade-level")
 	@Operation(summary = "Update a section grade level", description = "Update a section with an existing grade level, requires section id and grade level object")
 	public ResponseEntity<?> updateSectionGradeLevel(@PathVariable("id") int id, @RequestBody GradeLevelDTO gradeLevel) {
 		ExecutionStatus status = sectionService.updateSectionGradeLevel(id, gradeLevel.toEntity());
@@ -203,10 +205,14 @@ public class SectionController {
 		return ResponseEntity.badRequest().body(new MessageResponse("Section not deleted"));
 	}
 
-	@GetMapping("/")
+	@GetMapping(value = {"/section", "/sections"})
 	@Operation(summary = "Get all sections", description = "Get all sections")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Sections retrieved successfully"),
+	})
+	@Parameters({
+		@Parameter(name = "page", description = "Page number"),
+		@Parameter(name = "size", description = "Number of items per page")
 	})
 	public ResponseEntity<?> getSections(@RequestParam int page, @RequestParam int size) {
 		return ResponseEntity.ok(sectionService.getAllSections(PageRequest.of(page, size)));
@@ -217,6 +223,9 @@ public class SectionController {
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Returns Section object"),
 		@ApiResponse(responseCode = "404", description = "Section is not found")
+	})
+	@Parameters({
+		@Parameter(name = "id", description = "Section id", required = true)
 	})
 	public ResponseEntity<?> getSection(@PathVariable int id) {
 		Section section = sectionService.getSection(id);
@@ -232,6 +241,12 @@ public class SectionController {
 		@ApiResponse(responseCode = "200", description = "Returns a page of section"),
 		@ApiResponse(responseCode = "400", description = "No request parameter and request body provided.")
 	})
+	@Parameters({
+		@Parameter(name = "teacherId", description = "Teacher id"),
+		@Parameter(name = "page", description = "Page number"),
+		@Parameter(name = "size", description = "Number of items per page")
+	})
+	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Teacher object", content = @Content(schema = @Schema(implementation = TeacherDTO.class)))
 	public ResponseEntity<?> getSectionByTeacher(@RequestParam(required = false) Integer teacherId, @RequestBody(required = false) TeacherDTO teacher, @RequestParam int page, @RequestParam int size) {
 		if (teacherId != null && teacher == null) {
 			return ResponseEntity.ok(sectionService.getSectionByTeacher(teacherId, PageRequest.of(page, size)));
@@ -262,7 +277,7 @@ public class SectionController {
 		return ResponseEntity.badRequest().body(new MessageResponse("No request parameter and request body provided."));
 	}
 
-	@GetMapping("/gradelevel")
+	@GetMapping("/grade-level")
 	@Operation(summary = "Get all sections by grade level", description = "Get all sections by grade level, if the request parameter and request body is filled. The request parameter grade level id will be used instead.")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Returns a page of section"),

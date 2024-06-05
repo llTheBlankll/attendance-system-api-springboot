@@ -94,4 +94,7 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Integer>
 	@Modifying
 	@Query("update Attendance a set a.timeOut = :timeOut where a.id = :id")
 	int updateAttendanceTimeOut(@Nullable @Param("timeOut") LocalTime timeOut, @NonNull @Param("id") Integer id);
+
+	@Query("select a from Attendance a where a.date = ?1")
+	Page<Attendance> getAllAttendancesByDate(@NonNull LocalDate date, Pageable pageable);
 }
