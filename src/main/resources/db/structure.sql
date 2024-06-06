@@ -106,9 +106,10 @@ CREATE TABLE IF NOT EXISTS Attendances
     id         SERIAL PRIMARY KEY,
     student_id BIGINT NOT NULL,
     status     Status,
-    date       DATE DEFAULT CURRENT_DATE,
+    date       DATE UNIQUE DEFAULT CURRENT_DATE,
     time       TIME DEFAULT LOCALTIME,
     time_out   TIME DEFAULT LOCALTIME,
+    UNIQUE (student_id, date),
     CONSTRAINT fk_student_lrn FOREIGN KEY (student_id) REFERENCES students (lrn) ON DELETE SET NULL ON UPDATE CASCADE
 );
 CREATE INDEX attendance_date_idx on Attendances (date);
