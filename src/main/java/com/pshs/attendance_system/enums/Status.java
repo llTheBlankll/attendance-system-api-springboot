@@ -25,10 +25,14 @@ package com.pshs.attendance_system.enums;
 
 public enum Status {
 
-	ON_TIME,
 	LATE,
+	EXCUSED,
+	OUT,
 	EARLY,
-	ABSENT,
 	EXISTS,
-	SIGNED_OUT
+	SIGNED_OUT,
+	ON_TIME,
+	OTHERS,
+	ALL,
+	ABSENT
 }

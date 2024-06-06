@@ -25,6 +25,7 @@ package com.pshs.attendance_system.repositories;
 
 import com.pshs.attendance_system.entities.Attendance;
 import com.pshs.attendance_system.entities.Student;
+import com.pshs.attendance_system.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -97,4 +98,7 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Integer>
 
 	@Query("select a from Attendance a where a.date = ?1")
 	Page<Attendance> getAllAttendancesByDate(@NonNull LocalDate date, Pageable pageable);
+
+	@Query("select count(distinct a) from Attendance a where a.date = :date and a.status = :status")
+	long getAttendanceCountByDateAndStatus(@Param("date") @NonNull LocalDate date, @Param("status") @NonNull Status status);
 }

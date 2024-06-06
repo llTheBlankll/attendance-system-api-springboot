@@ -28,14 +28,13 @@ import com.pshs.attendance_system.dto.AttendanceResultDTO;
 import com.pshs.attendance_system.entities.Attendance;
 import com.pshs.attendance_system.entities.RFIDCredential;
 import com.pshs.attendance_system.entities.range.DateRange;
-import com.pshs.attendance_system.enums.AttendanceStatus;
+import com.pshs.attendance_system.enums.Status;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 public interface AttendanceService {
 
@@ -145,38 +144,56 @@ public interface AttendanceService {
 	/**
 	 * Count the total number of students with the attendance status between two date.
 	 *
-	 * @param attendanceStatus Attendance Status (LATE, ON_TIME, ...)
+	 * @param status Attendance Status (LATE, ON_TIME, ...)
 	 * @param dateRange        from 2024-10-1 to 2024-12-1
 	 * @return the number of attendance of all student.
 	 */
-	int countStudentsByStatusAndDateRange(AttendanceStatus attendanceStatus, DateRange dateRange);
+	int countStudentsByStatusAndDateRange(Status status, DateRange dateRange);
 
 	/**
 	 * Count the total number of students with the attendance status on a specific date.
 	 *
-	 * @param attendanceStatus Attendance Status (LATE, ON_TIME, ...)
+	 * @param status Attendance Status (LATE, ON_TIME, ...)
 	 * @param date             Specific Date
 	 * @return the number of students who have attendance with the specific status with the specific date
 	 */
-	int countStudentsByStatusAndDate(AttendanceStatus attendanceStatus, LocalDate date);
+	int countStudentsByStatusAndDate(Status status, LocalDate date);
 
 	/**
 	 * Count the total number of students with the attendance status on a specific date.
 	 *
-	 * @param attendanceStatus Attendance Status (LATE, ON_TIME, ...)
+	 * @param status Attendance Status (LATE, ON_TIME, ...)
 	 * @param date             Specific Date
 	 * @return the number of attendance of all the student with the specific status with the specific date
 	 */
-	int countStudentAttendancesByStatusBetweenDate(Long studentId, AttendanceStatus attendanceStatus, LocalDate date);
+	int countStudentAttendanceByStatusAndDate(Long studentId, Status status, LocalDate date);
 
 	/**
 	 * Count the total number of students with the attendance status between two date.
 	 *
-	 * @param attendanceStatus Attendance Status (LATE, ON_TIME, ...)
+	 * @param status Attendance Status (LATE, ON_TIME, ...)
 	 * @param dateRange        from 2024-10-1 to 2024-12-1
 	 * @return the number of attendance of all student with the specific status between the date range
 	 */
-	int countStudentAttendancesByStatusBetweenDate(Long studentId, AttendanceStatus attendanceStatus, DateRange dateRange);
+	int countStudentAttendanceByStatusAndDate(Long studentId, Status status, DateRange dateRange);
+
+	/**
+	 * Returns the total number of attendances of a student with the specific status.
+	 *
+	 * @param date   Date
+	 * @param status Status
+	 * @return the number of attendances of a student with the specific status
+	 */
+	int getAttendanceCountByDateAndStatus(LocalDate date, Status status);
+
+	int countAttendanceInSection(Integer sectionId, LocalDate date, Status status);
+
+	int countAttendanceInSection(Integer sectionId, DateRange dateRange, Status status);
+
+	int averageAttendanceInSection(Integer sectionId, LocalDate date, Status status);
+
+	int averageAttendanceInSection(Integer sectionId, DateRange dateRange, Status status);
+
 
 	// End: Statistics / Numbers
 

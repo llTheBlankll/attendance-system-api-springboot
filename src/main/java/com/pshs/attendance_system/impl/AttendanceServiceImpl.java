@@ -31,9 +31,8 @@ import com.pshs.attendance_system.entities.Attendance;
 import com.pshs.attendance_system.entities.RFIDCredential;
 import com.pshs.attendance_system.entities.Student;
 import com.pshs.attendance_system.entities.range.DateRange;
-import com.pshs.attendance_system.enums.AttendanceStatus;
-import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.enums.Status;
+import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.repositories.AttendanceRepository;
 import com.pshs.attendance_system.services.AttendanceService;
 import com.pshs.attendance_system.services.StudentService;
@@ -41,16 +40,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -69,6 +65,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 		mapper.registerModule(new JavaTimeModule());
 	}
 
+	// Region: AttendanceService Implementation
 	/**
 	 * Create a new attendance record with the student.
 	 *
@@ -183,54 +180,6 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 		int rowAffected = attendanceRepository.updateAttendanceTimeOut(timeOut, id);
 		return (rowAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILURE;
-	}
-
-	/**
-	 * Get the attendance status of the student. The status can be one of the following:
-	 * <p>
-	 * * On Time
-	 * <p>
-	 * * Late
-	 * <p>
-	 * * On Time
-	 * <p>
-	 * The current time is after onTimeArrival and before lateArrivalTime.
-	 * The onTimeArrival is set to 5:30. The lateArrivalTime is set to 6:30 if it's Monday, otherwise it's set to 7:00.
-	 * So, the range for being on time is from 5:30 to 6:30 on Mondays and from 5:30 to 7:00 on other days.
-	 * <p>
-	 * *Late
-	 * The current time is after lateArrivalTime.
-	 * As mentioned above, lateArrivalTime is set to 6:30 if it's Monday, otherwise it's set to 7:00.
-	 * So, if the current time is after these times, the status is set to
-	 * late.
-	 * <p>
-	 * * On Time (default):
-	 * If the current time doesn't fall into the above two conditions,
-	 * the status is set to on time by default.
-	 * This would be the case if the current time is before onTimeArrival (5:30).
-	 *
-	 * @return {@link Status}
-	 * @see Status
-	 */
-	public Status getAttendanceStatus() {
-		LocalTime lateArrivalTime;
-		LocalTime onTimeArrival = LocalTime.of(5, 30);
-
-		LocalTime currentLocalTime = new Time(System.currentTimeMillis()).toLocalTime();
-
-		// Flag Ceremony Time
-		if (isTodayMonday()) { // * Which also mean flag ceremony day
-			lateArrivalTime = LocalTime.of(6, 30);
-		} else {
-			lateArrivalTime = LocalTime.of(7, 0); // * Regular day
-		}
-		if (currentLocalTime.isBefore(lateArrivalTime) && currentLocalTime.isAfter(onTimeArrival)) {
-			return Status.ON_TIME;
-		} else if (currentLocalTime.isAfter(lateArrivalTime)) {
-			return Status.LATE;
-		} else {
-			return Status.ON_TIME;
-		}
 	}
 
 	@Override
@@ -386,6 +335,57 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return ExecutionStatus.SUCCESS;
 	}
 
+	// End: AttendanceService Implementation
+
+	// Region: Retrieval Region
+	/**
+	 * Get the attendance status of the student. The status can be one of the following:
+	 * <p>
+	 * * On Time
+	 * <p>
+	 * * Late
+	 * <p>
+	 * * On Time
+	 * <p>
+	 * The current time is after onTimeArrival and before lateArrivalTime.
+	 * The onTimeArrival is set to 5:30. The lateArrivalTime is set to 6:30 if it's Monday, otherwise it's set to 7:00.
+	 * So, the range for being on time is from 5:30 to 6:30 on Mondays and from 5:30 to 7:00 on other days.
+	 * <p>
+	 * *Late
+	 * The current time is after lateArrivalTime.
+	 * As mentioned above, lateArrivalTime is set to 6:30 if it's Monday, otherwise it's set to 7:00.
+	 * So, if the current time is after these times, the status is set to
+	 * late.
+	 * <p>
+	 * * On Time (default):
+	 * If the current time doesn't fall into the above two conditions,
+	 * the status is set to on time by default.
+	 * This would be the case if the current time is before onTimeArrival (5:30).
+	 *
+	 * @return {@link Status}
+	 * @see Status
+	 */
+	public Status getAttendanceStatus() {
+		LocalTime lateArrivalTime;
+		LocalTime onTimeArrival = LocalTime.of(5, 30);
+
+		LocalTime currentLocalTime = new Time(System.currentTimeMillis()).toLocalTime();
+
+		// Flag Ceremony Time
+		if (isTodayMonday()) { // * Which also mean flag ceremony day
+			lateArrivalTime = LocalTime.of(6, 30);
+		} else {
+			lateArrivalTime = LocalTime.of(7, 0); // * Regular day
+		}
+		if (currentLocalTime.isBefore(lateArrivalTime) && currentLocalTime.isAfter(onTimeArrival)) {
+			return Status.ON_TIME;
+		} else if (currentLocalTime.isAfter(lateArrivalTime)) {
+			return Status.LATE;
+		} else {
+			return Status.ON_TIME;
+		}
+	}
+
 	/**
 	 * Get the attendance record of a student by the attendance id.
 	 *
@@ -405,6 +405,13 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return attendanceRepository.findById(id).orElse(null);
 	}
 
+	/**
+	 * Get the attendance record of a student by the student id and the date.
+	 *
+	 * @param studentId Student ID
+	 * @param date      Date of the attendance
+	 * @return Attendance of a student
+	 */
 	@Override
 	public Attendance getAttendanceByStudentDate(Long studentId, LocalDate date) {
 		return attendanceRepository.getAttendanceByStudentDate(studentId, date).orElse(null);
@@ -436,55 +443,93 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return attendanceRepository.getAllAttendancesByDate(date, page);
 	}
 
+	// End: Retrieval Region
+
+	// Region: Statistics Region
+
 	/**
 	 * Count the total number of students with the attendance status between two dates.
 	 *
-	 * @param attendanceStatus Attendance Status (LATE, ON_TIME, ...)
+	 * @param status Attendance Status (LATE, ON_TIME, ...)
 	 * @param dateRange        from 2024-10-1 to 2024-12-1
 	 * @return the number of attendances from all students.
 	 */
 	@Override
-	public int countStudentsByStatusAndDateRange(AttendanceStatus attendanceStatus, DateRange dateRange) {
-		return (int) attendanceRepository.countStudentsByStatusAndDateRange(attendanceStatus.name(), dateRange.getStartDate(), dateRange.getEndDate());
+	public int countStudentsByStatusAndDateRange(Status status, DateRange dateRange) {
+		return (int) attendanceRepository.countStudentsByStatusAndDateRange(status.name(), dateRange.getStartDate(), dateRange.getEndDate());
 	}
 
 	/**
 	 * Count the total number of students with the attendance status on a specific date.
 	 *
-	 * @param attendanceStatus Attendance Status (LATE, ON_TIME, ...)
+	 * @param status Attendance Status (LATE, ON_TIME, ...)
 	 * @param date             Specific Date
 	 * @return the number of attendance of all the student with the specific status with the specific date
 	 */
 	@Override
-	public int countStudentsByStatusAndDate(AttendanceStatus attendanceStatus, LocalDate date) {
-		return (int) attendanceRepository.countStudentsByStatusAndDate(attendanceStatus.name(), date);
+	public int countStudentsByStatusAndDate(Status status, LocalDate date) {
+		return (int) attendanceRepository.countStudentsByStatusAndDate(status.name(), date);
 	}
 
 	/**
 	 * Count the total number of students with the attendance status on a specific date.
 	 *
 	 * @param studentId        Student ID
-	 * @param attendanceStatus Attendance Status (LATE, ON_TIME, ...)
+	 * @param status Attendance Status (LATE, ON_TIME, ...)
 	 * @param date             Specific Date
 	 * @return the number of attendance of all the student with the specific status with the specific date
 	 */
 	@Override
-	public int countStudentAttendancesByStatusBetweenDate(Long studentId, AttendanceStatus attendanceStatus, LocalDate date) {
-		return (int) attendanceRepository.countStudentAttendancesByStatusAndDate(studentId, attendanceStatus.name(), date);
+	public int countStudentAttendanceByStatusAndDate(Long studentId, Status status, LocalDate date) {
+		return (int) attendanceRepository.countStudentAttendancesByStatusAndDate(studentId, status.name(), date);
 	}
 
 	/**
 	 * Count the total number of students with the attendance status between two date.
 	 *
 	 * @param studentId        Student ID
-	 * @param attendanceStatus Attendance Status (LATE, ON_TIME, ...)
+	 * @param status Attendance Status (LATE, ON_TIME, ...)
 	 * @param dateRange        from 2024-10-1 to 2024-12-1
 	 * @return the number of attendance of all student with the specific status between the date range
 	 */
 	@Override
-	public int countStudentAttendancesByStatusBetweenDate(Long studentId, AttendanceStatus attendanceStatus, DateRange dateRange) {
-		return (int) attendanceRepository.countStudentAttendancesByStatusBetweenDate(studentId, attendanceStatus.name(), dateRange.getStartDate(), dateRange.getEndDate());
+	public int countStudentAttendanceByStatusAndDate(Long studentId, Status status, DateRange dateRange) {
+		return (int) attendanceRepository.countStudentAttendancesByStatusBetweenDate(studentId, status.name(), dateRange.getStartDate(), dateRange.getEndDate());
 	}
+
+	/**
+	 * Returns the total number of attendances of a student with the specific status.
+	 *
+	 * @param date   Date
+	 * @param status Status
+	 * @return the number of attendances of a student with the specific status
+	 */
+	@Override
+	public int getAttendanceCountByDateAndStatus(LocalDate date, Status status) {
+		return (int) attendanceRepository.getAttendanceCountByDateAndStatus(date, status);
+	}
+
+	@Override
+	public int countAttendanceInSection(Integer sectionId, LocalDate date, Status status) {
+		return 0;
+	}
+
+	@Override
+	public int countAttendanceInSection(Integer sectionId, DateRange dateRange, Status status) {
+		return 0;
+	}
+
+	@Override
+	public int averageAttendanceInSection(Integer sectionId, LocalDate date, Status status) {
+		return 0;
+	}
+
+	@Override
+	public int averageAttendanceInSection(Integer sectionId, DateRange dateRange, Status status) {
+		return 0;
+	}
+
+	// End: Statistics Region
 
 	@Override
 	public boolean isCheckedIn(Long lrn) {

@@ -111,20 +111,6 @@ public class StudentDTO implements Serializable {
 		return this;
 	}
 
-	public GuardianDTO getGuardian() {
-		return guardian;
-	}
-
-	public StudentDTO setSection(SectionDTO section) {
-		this.section = section;
-		return this;
-	}
-
-	public StudentDTO setGuardian(GuardianDTO guardian) {
-		this.guardian = guardian;
-		return this;
-	}
-
 	public String getPrefix() {
 		return prefix;
 	}
@@ -143,6 +129,15 @@ public class StudentDTO implements Serializable {
 		return this;
 	}
 
+	public GuardianDTO getGuardian() {
+		return guardian;
+	}
+
+	public StudentDTO setGuardian(GuardianDTO guardian) {
+		this.guardian = guardian;
+		return this;
+	}
+
 	public String getSex() {
 		return sex;
 	}
@@ -156,7 +151,7 @@ public class StudentDTO implements Serializable {
 		return section;
 	}
 
-	public StudentDTO setSection(SectionStudentsDTO section) {
+	public StudentDTO setSection(SectionDTO section) {
 		this.section = section;
 		return this;
 	}
@@ -177,38 +172,5 @@ public class StudentDTO implements Serializable {
 	public StudentDTO setBirthdate(LocalDate birthdate) {
 		this.birthdate = birthdate;
 		return this;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		StudentDTO entity = (StudentDTO) o;
-		return Objects.equals(this.id, entity.id) &&
-			Objects.equals(this.firstName, entity.firstName) &&
-			Objects.equals(this.middleInitial, entity.middleInitial) &&
-			Objects.equals(this.lastName, entity.lastName) &&
-			Objects.equals(this.gradeLevel, entity.gradeLevel) &&
-			Objects.equals(this.sex, entity.sex) &&
-			Objects.equals(this.address, entity.address) &&
-			Objects.equals(this.birthdate, entity.birthdate);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, firstName, middleInitial, lastName, gradeLevel, sex, address, birthdate);
-	}
-
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + "(" +
-			"id = " + id + ", " +
-			"firstName = " + firstName + ", " +
-			"middleInitial = " + middleInitial + ", " +
-			"lastName = " + lastName + ", " +
-			"gradeLevel = " + gradeLevel + ", " +
-			"sex = " + sex + ", " +
-			"address = " + address + ", " +
-			"birthdate = " + birthdate + ")";
 	}
 }
