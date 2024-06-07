@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS Users
 (
     id                     SERIAL PRIMARY KEY,
     username               VARCHAR(64),
-    password               CHAR(64),
+    password               CHAR(60),
     email                  VARCHAR(128),
     role                   VARCHAR(48) DEFAULT 'GUEST',
     is_expired             BOOLEAN     DEFAULT FALSE,

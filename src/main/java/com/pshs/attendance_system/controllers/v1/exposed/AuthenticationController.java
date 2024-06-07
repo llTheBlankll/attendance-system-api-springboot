@@ -41,7 +41,7 @@ import java.time.Instant;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthenticationController {
 
 	private final AuthenticationService authenticationService;
