@@ -14,6 +14,13 @@ java {
     sourceCompatibility = '21'
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.pshs.attendance_system.AttendanceSystemApplication'
+    }
+}
+
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -47,6 +54,8 @@ dependencies {
     implementation 'org.springframework.session:spring-session-core'
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation 'org.springframework.amqp:spring-rabbit-stream'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     testImplementation 'org.springframework.amqp:spring-rabbit-test'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'

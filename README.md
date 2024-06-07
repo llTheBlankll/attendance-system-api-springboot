@@ -21,7 +21,7 @@ This project is an Attendance System API built using Spring Boot, WebSocket, and
 
     - **Config:** Allows dynamic configuration changes to the server, enabling administrators to modify system settings on-the-fly.
 
-    - **Gradelevel:** Facilitates CRUD operations for grade levels. Additionally, provides search functionalities for grade levels based on criteria such as name, academic year, and more.
+    - **Grade-level:** Facilitates CRUD operations for grade levels. Additionally, provides search functionalities for grade levels based on criteria such as name, academic year, and more.
 
     - **Guardian:** Manages information about students' guardians. Supports CRUD operations for creating, updating, and retrieving guardian details. Enables searching for guardians based on names, contact information, and relationships.
 
@@ -45,51 +45,18 @@ This project is an Attendance System API built using Spring Boot, WebSocket, and
 
 - Spring Boot
 - WebSocket
+- RabbitMQ
 - JWT Authentication
 
 ## Getting Started
 
 ### Prerequisites
 
-- Java Development Kit (JDK) 17 or later
-- Maven
+- Java Development Kit (JDK) 21 or later
+- Gradle
 
-### Setup
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-username/attendance-system-api.git
-2. Navigate to the project directory:
-   ```
-   cd attendance-system-api
-   ```
-3. Import the database configuration at **src > main > resources > database.sql**
-4. **Optionally**, you can import mock data at **src > main > resources > dummy data**
-5. Edit spring boot configuration (application.properties) at **src > main > resources > application.properties**
-    - Edit connection string, username, password to yours.
-    - **Recommended:** Edit jwt.secret with secure SHA512 hash and the JWT Secret should not be less than 512 random characters and/or symbols.
-    - Edit server.port if you want to listen it to another port. (Change when there's already an application listening on that port)
-    - **NOTE**: If you change the api.root, also change springdoc.paths-to-match to be the same as the root.
-    - You can edit the time for being late and flag ceremony.
-6. Now build the application with this command:
-   ```
-   mvn clean package -DskipTests
-   ```
-7. Navigate to the folder where the jar file is created
-   ```
-   cd target
-   ```
-8. Run the application with:
-   ```
-   java -jar attendace-system-api-VERSION.jar
-   ```
-   Replace a version with the version of the application you have cloned or downloaded.
-9. Access the API at
-   ```
-   http://localhost:8080
-   ```
-   in my case, it was listening on Port 8080
+## Installation
+Open INSTALL.md for installation instructions.
 
 ### Authentication
 Secure your API endpoints using JWT authentication. Include the JWT token in the request header:
@@ -99,7 +66,3 @@ Authorization: Bearer your_jwt_token
 
 ### Contributors
 - [Vince Angelo Batecan](https://github.com/llTheBlankll/llTheBlankll)
-
-### License
-This repository is licensed to:
-https://creativecommons.org/licenses/by-nc-sa/4.0/
