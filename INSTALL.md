@@ -14,8 +14,8 @@
    ```
    cd attendance-system-api
    ```
-3. Import the database configuration at `src > main > resources > database.sql`
-4. **Optionally**, you can import mock data at `src > main > resources > mock_data`
+3. Import the database configuration at `src > main > resources > db > structure.sql`
+4. **Optionally**, you can import mock data at `src > main > resources > db > mock_data`
 5. Edit spring boot configuration (application.properties) at **src > main > resources > application.properties**
     - Edit connection string, username, password to yours.
     - **Recommended:** Edit jwt.secret with a secure SHA512 hash and the JWT Secret should not be less than 512 random characters and/or symbols.
