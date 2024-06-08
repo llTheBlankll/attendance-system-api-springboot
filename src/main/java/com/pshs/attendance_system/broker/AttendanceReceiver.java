@@ -52,7 +52,7 @@ public class AttendanceReceiver {
 		try {
 			CardRFIDCredentialDTO studentRFID = mapper.readValue(in, CardRFIDCredentialDTO.class);
 
-			if (studentRFID.getMode() == Mode.ATTENDANCE) {
+			if (studentRFID.getMode() == Mode.ATTENDANCE_IN) {
 				RFIDCredential rfidCredential = rfidCredentialService.getRFIDCredentialByHash(studentRFID.getHashedLrn());
 				AttendanceResultDTO successfulAttendance = attendanceService.attendanceIn(rfidCredential);
 
