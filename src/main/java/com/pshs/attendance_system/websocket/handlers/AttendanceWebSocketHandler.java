@@ -45,6 +45,7 @@ public class AttendanceWebSocketHandler extends TextWebSocketHandler {
 	}
 
 	private void notifySubscribers(AttendanceResultDTO attendanceResultDTO, String toCompare) throws JsonProcessingException {
+		// The message will not send if those messages are something like they already has been recorded.
 		if (!Objects.equals(attendanceResultDTO.getMessage(), toCompare)) {
 			realTimeNotificationSubscribers.notifySubscribers(
 				mapper.writeValueAsString(attendanceResultDTO)
