@@ -28,7 +28,7 @@ public class WebSocketHandler implements WebSocketConfigurer {
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(new AttendanceWebSocketHandler(attendanceService, rfidCredentialService, realTimeNotificationSubscribers), "/wsocket/attendance").setAllowedOrigins("*");
+		registry.addHandler(new AttendanceWebSocketHandler(attendanceService, rfidCredentialService, realTimeNotificationSubscribers), "/wsocket/attendance");
 		registry.addHandler(new RealTimeNotificationsHandler(realTimeNotificationSubscribers), "/wsocket/notification-subscribers");
 	}
 }
