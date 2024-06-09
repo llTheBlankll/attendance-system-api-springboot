@@ -2,10 +2,7 @@
 
 package com.pshs.attendance_system.controllers.v1.exposed;
 
-import com.pshs.attendance_system.dto.LoginDTO;
-import com.pshs.attendance_system.dto.LoginToken;
-import com.pshs.attendance_system.dto.MessageResponse;
-import com.pshs.attendance_system.dto.ResponseMessageV2;
+import com.pshs.attendance_system.dto.*;
 import com.pshs.attendance_system.entities.User;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.enums.ResponseStatus;
@@ -88,19 +85,19 @@ public class AuthenticationController {
 	public ResponseEntity<?> isTokenValid(@RequestParam String token, @RequestParam String username) {
 		boolean isValid = jwtService.isTokenValidAndNotExpired(token, username);
 		if (!isValid) {
-			return ResponseEntity.badRequest().body(new ResponseMessageV2("INVALID", ResponseStatus.INVALID));
+			return ResponseEntity.badRequest().body(new StatusMessageResponse("INVALID", ExecutionStatus.INVALID));
 		}
 
-		return ResponseEntity.ok(new ResponseMessageV2("VALID", ResponseStatus.VALID));
+		return ResponseEntity.ok(new StatusMessageResponse("VALID", ExecutionStatus.VALID));
 	}
 
 	@PostMapping("/is-expired")
 	public ResponseEntity<?> isTokenExpired(@RequestParam String token) {
 		boolean isExpired = jwtService.isTokenExpired(token);
 		if (isExpired) {
-			return ResponseEntity.badRequest().body(new ResponseMessageV2("EXPIRED", ResponseStatus.INVALID));
+			return ResponseEntity.badRequest().body(new StatusMessageResponse("EXPIRED", ExecutionStatus.INVALID));
 		}
 
-		return ResponseEntity.ok(new ResponseMessageV2("NOT EXPIRED", ResponseStatus.VALID));
+		return ResponseEntity.ok(new StatusMessageResponse("NOT EXPIRED", ExecutionStatus.VALID));
 	}
 }
