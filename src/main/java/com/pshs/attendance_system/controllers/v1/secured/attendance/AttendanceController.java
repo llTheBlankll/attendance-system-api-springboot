@@ -56,7 +56,7 @@ public class AttendanceController {
 	@Parameters({
 		@Parameter(name = "id", description = "Student ID", required = true)
 	})
-	public ResponseEntity<?> getAttendanceByStudentId(@PathVariable Long id, @RequestParam Integer page, @RequestParam Integer size, @RequestParam(defaultValue = "ASC") String sortBy, @RequestParam(defaultValue = "date") String order) {
+	public ResponseEntity<?> getAttendanceByStudentId(@PathVariable Long id, @RequestParam Integer page, @RequestParam Integer size, @RequestParam(defaultValue = "date") String sortBy, @RequestParam(defaultValue = "ASC") String order) {
 		Sort sort = Sort.by(Sort.Direction.fromString(order), sortBy);
 		return ResponseEntity.ok(attendanceService.getAllAttendancesByStudentId(id, PageRequest.of(page, size).withSort(sort)));
 	}
@@ -66,7 +66,7 @@ public class AttendanceController {
 	@Parameters({
 		@Parameter(name = "date", description = "Date", required = true)
 	})
-	public ResponseEntity<?> getAttendanceByDate(@PathVariable LocalDate date, @RequestParam Integer page, @RequestParam Integer size, @RequestParam(defaultValue = "ASC") String sortBy, @RequestParam(defaultValue = "date") String order) {
+	public ResponseEntity<?> getAttendanceByDate(@PathVariable LocalDate date, @RequestParam Integer page, @RequestParam Integer size, @RequestParam(defaultValue = "date") String sortBy, @RequestParam(defaultValue = "ASC") String order) {
 		Sort sort = Sort.by(Sort.Direction.fromString(order), sortBy);
 		return ResponseEntity.ok(attendanceService.getAllAttendancesByDate(date, PageRequest.of(page, size).withSort(sort)));
 	}
@@ -90,5 +90,4 @@ public class AttendanceController {
 	public ResponseEntity<?> getAttendanceByStatusAndDate(@PathVariable Status status, @RequestParam LocalDate date) {
 		return ResponseEntity.ok(attendanceService.countStudentsByStatusAndDateRange(status, new DateRange(date, date)));
 	}
-
 }

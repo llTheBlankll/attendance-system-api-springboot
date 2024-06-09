@@ -46,10 +46,11 @@ public class StrandController {
 				// return 400 Bad Request
 				return ResponseEntity.badRequest().body(new MessageResponse("Strand already exists."));
 			}
+			default -> {
+				// return 500 Internal Server Error
+				return ResponseEntity.status(500).body(new MessageResponse("Failed to create strand."));
+			}
 		}
-
-		// return 500 Internal Server Error
-		return ResponseEntity.status(500).body(new MessageResponse("Failed to create strand."));
 	}
 
 	@DeleteMapping("/{strandId}")
@@ -73,10 +74,11 @@ public class StrandController {
 				// return 404 Not Found
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Strand not found."));
 			}
+			default -> {
+				// return 500 Internal Server Error
+				return ResponseEntity.status(500).body(new MessageResponse("Failed to delete strand."));
+			}
 		}
-
-		// return 500 Internal Server Error
-		return ResponseEntity.status(500).body(new MessageResponse("Failed to delete strand."));
 	}
 
 	@PutMapping("/{strandId}")
@@ -101,10 +103,11 @@ public class StrandController {
 				// return 404 Not Found
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Strand not found."));
 			}
+			default -> {
+				// return 500 Internal Server Error
+				return ResponseEntity.status(500).body(new MessageResponse("Failed to update strand."));
+			}
 		}
-
-		// return 500 Internal Server Error
-		return ResponseEntity.status(500).body(new MessageResponse("Failed to update strand."));
 	}
 
 	@GetMapping("/{id}")

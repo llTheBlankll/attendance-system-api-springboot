@@ -15,7 +15,7 @@ import java.util.List;
 public class RealTimeNotificationSubscribers {
 
 	private static final Logger logger = LogManager.getLogger(RealTimeNotificationSubscribers.class);
-	private List<WebSocketSession> subscribers = new ArrayList<>();
+	private final List<WebSocketSession> subscribers = new ArrayList<>();
 
 	public void addSubscriber(WebSocketSession session) {
 		subscribers.add(session);

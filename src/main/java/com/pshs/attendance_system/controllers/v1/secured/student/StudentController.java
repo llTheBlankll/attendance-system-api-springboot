@@ -7,6 +7,7 @@ import com.pshs.attendance_system.services.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -113,8 +115,9 @@ public class StudentController {
 		@ApiResponse(responseCode = "200", description = "Student updated successfully"),
 		@ApiResponse(responseCode = "400", description = "Student update failed")
 	})
-	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Student to update", required = true)
+	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Student to update", required = true, content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
 	public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO) {
+		// Validation
 		if (id == null) {
 			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student ID is required", ExecutionStatus.FAILURE));
 		}
@@ -127,7 +130,7 @@ public class StudentController {
 		}
 	}
 
-	@PatchMapping("/{id}/gradelevel")
+	@PatchMapping("/{id}/grade-level")
 	@Operation(summary = "Update student grade level", description = "Update student grade level")
 	@Parameters({
 		@Parameter(name = "id", description = "Student ID", required = true)
@@ -190,7 +193,7 @@ public class StudentController {
 		return ResponseEntity.ok(student.toDTO());
 	}
 
-	@GetMapping("/by_guardian")
+	@GetMapping("/by-guardian")
 	@Operation(summary = "Get students by guardian", description = "Get students by guardian")
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Guardian ID", required = true)
 	@ApiResponses({
@@ -201,7 +204,7 @@ public class StudentController {
 		return ResponseEntity.ok(studentService.getStudentByGuardian(guardian.toEntity()));
 	}
 
-	@GetMapping("/by_guardian_id")
+	@GetMapping("/by-guardian-id")
 	@Operation(summary = "Get students by guardian", description = "Get student by guardian id")
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Guardian ID", required = true)
 	@ApiResponses({

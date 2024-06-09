@@ -52,9 +52,10 @@ public class SectionController {
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(new MessageResponse("Section " + section.getSectionName() + " validation error."));
 			}
+			default -> {
+				return ResponseEntity.badRequest().body(new MessageResponse("Section " + section.getSectionName() + " was not created."));
+			}
 		}
-
-		return ResponseEntity.badRequest().body(new MessageResponse("Section " + section.getSectionName() + " was not created."));
 	}
 
 	@PutMapping("/{id}")
@@ -79,9 +80,10 @@ public class SectionController {
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(new MessageResponse("Section " + section.getSectionName() + " validation error."));
 			}
+			default -> {
+				return ResponseEntity.badRequest().body(new MessageResponse("Section " + section.getSectionName() + " was not updated."));
+			}
 		}
-
-		return ResponseEntity.badRequest().body(new MessageResponse("Section " + section.getSectionName() + " was not updated."));
 	}
 
 	@PatchMapping("/{id}/teacher")
@@ -109,9 +111,10 @@ public class SectionController {
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(new MessageResponse("Invalid Section/Teacher ID provided."));
 			}
+			default -> {
+				return ResponseEntity.badRequest().body(new MessageResponse("Section teacher not updated"));
+			}
 		}
-
-		return ResponseEntity.badRequest().body(new MessageResponse("Section teacher not updated"));
 	}
 
 	@PatchMapping("/{id}/grade-level/id")
@@ -139,9 +142,10 @@ public class SectionController {
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(new MessageResponse("Invalid Section/Grade Level ID provided."));
 			}
+			default -> {
+				return ResponseEntity.badRequest().body(new MessageResponse("Section grade level not updated"));
+			}
 		}
-
-		return ResponseEntity.badRequest().body(new MessageResponse("Section grade level not updated"));
 	}
 
 	@PatchMapping("/{id}/grade-level")
@@ -159,9 +163,10 @@ public class SectionController {
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(new MessageResponse("Invalid Section/Grade Level provided."));
 			}
+			default -> {
+				return ResponseEntity.badRequest().body(new MessageResponse("Section grade level not updated"));
+			}
 		}
-
-		return ResponseEntity.badRequest().body(new MessageResponse("Section grade level not updated"));
 	}
 
 	@PatchMapping("/{id}/name")
@@ -178,9 +183,10 @@ public class SectionController {
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(new MessageResponse("Invalid Section ID provided."));
 			}
+			default -> {
+				return ResponseEntity.badRequest().body(new MessageResponse("Section name not updated"));
+			}
 		}
-
-		return ResponseEntity.badRequest().body(new MessageResponse("Section name not updated"));
 	}
 
 	@DeleteMapping("/{id}")
@@ -200,9 +206,10 @@ public class SectionController {
 			case FAILURE -> {
 				return ResponseEntity.status(404).body(new MessageResponse("Section not found"));
 			}
+			default -> {
+				return ResponseEntity.badRequest().body(new MessageResponse("Section not deleted"));
+			}
 		}
-
-		return ResponseEntity.badRequest().body(new MessageResponse("Section not deleted"));
 	}
 
 	@GetMapping(value = {"/section", "/sections"})
@@ -232,6 +239,7 @@ public class SectionController {
 		if (section != null) {
 			return ResponseEntity.ok(section);
 		}
+
 		return ResponseEntity.status(404).body(new MessageResponse("No section with id " + id + " found"));
 	}
 
@@ -248,6 +256,8 @@ public class SectionController {
 	})
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Teacher object", content = @Content(schema = @Schema(implementation = TeacherDTO.class)))
 	public ResponseEntity<?> getSectionByTeacher(@RequestParam(required = false) Integer teacherId, @RequestBody(required = false) TeacherDTO teacher, @RequestParam int page, @RequestParam int size) {
+
+		// If teacherId is not null and teacher is null, return the section by teacherId
 		if (teacherId != null && teacher == null) {
 			return ResponseEntity.ok(sectionService.getSectionByTeacher(teacherId, PageRequest.of(page, size)));
 		} else if (teacherId == null && teacher != null) {
@@ -268,6 +278,7 @@ public class SectionController {
 	})
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Strand object")
 	public ResponseEntity<?> getSectionByStrand(@RequestParam(required = false) Integer strandId, @RequestBody(required = false) StrandDTO strand, @RequestParam int page, @RequestParam int size) {
+		// If strandId is not null and strand is null, return the section by strandId
 		if (strandId != null && strand == null) {
 			return ResponseEntity.ok(sectionService.getSectionByStrand(strandId, PageRequest.of(page, size)));
 		} else if (strandId == null && strand != null) {

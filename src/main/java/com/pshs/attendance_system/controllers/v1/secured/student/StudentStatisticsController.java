@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/student/statistics")
+@RequestMapping("/api/v1/students/statistics")
 @Tag(name = "Student Statistics", description = "Student Statistics API")
 public class StudentStatisticsController {
 

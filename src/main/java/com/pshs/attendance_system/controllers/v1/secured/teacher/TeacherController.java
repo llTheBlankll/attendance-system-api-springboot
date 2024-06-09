@@ -1,6 +1,7 @@
 package com.pshs.attendance_system.controllers.v1.secured.teacher;
 
 import com.pshs.attendance_system.dto.MessageResponse;
+import com.pshs.attendance_system.dto.StatusMessageResponse;
 import com.pshs.attendance_system.dto.TeacherDTO;
 import com.pshs.attendance_system.entities.Teacher;
 import com.pshs.attendance_system.enums.ExecutionStatus;
@@ -20,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/teacher")
+@RequestMapping("/api/v1/teachers")
 @Tag(
 	name = "Teacher Endpoints",
 	description = "API Endpoints for Teacher"
@@ -37,7 +38,7 @@ public class TeacherController {
 	@Operation(summary = "Create Teacher", description = "Create a new teacher record.")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Teacher record created successfully.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")}),
-		@ApiResponse(responseCode = "409", description = "Failed to create teacher record.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")}),
+		@ApiResponse(responseCode = "400", description = "Failed to create teacher record.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")}),
 		@ApiResponse(responseCode = "400", description = "Validation error occurred.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")})
 	})
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Teacher Object that will be required to create a new teacher record.", required = true)
@@ -53,9 +54,10 @@ public class TeacherController {
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(new MessageResponse("Validation error occurred."));
 			}
+			default -> {
+				return ResponseEntity.badRequest().body(new MessageResponse("Failed to create teacher record."));
+			}
 		}
-
-		return ResponseEntity.badRequest().body(new MessageResponse("Failed to create teacher record."));
 	}
 
 	@DeleteMapping(name = "/", consumes = "application/json", produces = "application/json")
@@ -77,9 +79,10 @@ public class TeacherController {
 			case NOT_FOUND -> {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Teacher record not found."));
 			}
+			default -> {
+				return ResponseEntity.badRequest().body(new MessageResponse("Failed to delete teacher record."));
+			}
 		}
-
-		return ResponseEntity.badRequest().body(new MessageResponse("Failed to delete teacher record."));
 	}
 
 	@PutMapping(value = "/", consumes = "application/json", produces = "application/json")
@@ -105,12 +108,13 @@ public class TeacherController {
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(new MessageResponse("Validation error occurred."));
 			}
+			default -> {
+				return ResponseEntity.badRequest().body(new MessageResponse("Failed to update teacher record."));
+			}
 		}
-
-		return ResponseEntity.badRequest().body(new MessageResponse("Failed to update teacher record."));
 	}
 
-	@PatchMapping(value = "/firstname", consumes = "application/json", produces = "application/json")
+	@PatchMapping(value = "/first-name", consumes = "application/json", produces = "application/json")
 	@Operation(summary = "Update Teacher First Name", description = "Update a teacher's first name.")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Teacher record updated successfully.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")}),
@@ -133,12 +137,13 @@ public class TeacherController {
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(new MessageResponse("Validation error occurred."));
 			}
+			default -> {
+				return ResponseEntity.badRequest().body(new MessageResponse("Failed to update teacher record."));
+			}
 		}
-
-		return ResponseEntity.badRequest().body(new MessageResponse("Failed to update teacher record."));
 	}
 
-	@PatchMapping(value = "/lastname", consumes = "application/json", produces = "application/json")
+	@PatchMapping(value = "/last-name", consumes = "application/json", produces = "application/json")
 	@Operation(summary = "Update Teacher Last Name", description = "Update a teacher's last name.")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Teacher record updated successfully.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")}),
@@ -177,6 +182,8 @@ public class TeacherController {
 	})
 	public ResponseEntity<?> getTeacher(@RequestParam int id) {
 		Teacher teacher = teacherService.getTeacher(id);
+
+		// Check if teacher is null.
 		if (teacher == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Teacher record not found."));
 		}
@@ -241,6 +248,6 @@ public class TeacherController {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new MessageResponse("No teacher records found."));
 		}
 
-		return ResponseEntity.ok(new MessageResponse(String.valueOf(count)));
+		return ResponseEntity.status(HttpStatus.OK).body(new StatusMessageResponse(String.valueOf(count), ExecutionStatus.SUCCESS));
 	}
 }

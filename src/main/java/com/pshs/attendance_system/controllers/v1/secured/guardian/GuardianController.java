@@ -50,9 +50,10 @@ public class GuardianController {
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(new MessageResponse("Guardian already exists."));
 			}
+			default -> {
+				return ResponseEntity.status(500).body(new MessageResponse("Failed to create guardian."));
+			}
 		}
-
-		return ResponseEntity.status(500).body(new MessageResponse("Failed to create guardian."));
 	}
 
 	@DeleteMapping(value = "/{guardianId}", produces = "application/json")
@@ -75,9 +76,10 @@ public class GuardianController {
 			case NOT_FOUND -> {
 				return ResponseEntity.notFound().build();
 			}
+			default -> {
+				return ResponseEntity.status(500).body(new MessageResponse("Failed to delete guardian."));
+			}
 		}
-
-		return ResponseEntity.status(500).body(new MessageResponse("Failed to delete guardian."));
 	}
 
 	@PutMapping(value = "/{guardianId}", consumes = "application/json", produces = "application/json")
@@ -105,9 +107,10 @@ public class GuardianController {
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(new MessageResponse("Guardian already exists."));
 			}
+			default -> {
+				return ResponseEntity.status(500).body(new MessageResponse("Failed to update guardian."));
+			}
 		}
-
-		return ResponseEntity.status(500).body(new MessageResponse("Failed to update guardian."));
 	}
 
 	@GetMapping(value = "/guardian", produces = "application/json")
@@ -152,6 +155,4 @@ public class GuardianController {
 
 		return ResponseEntity.ok(guardians);
 	}
-
-
 }
