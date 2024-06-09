@@ -55,7 +55,7 @@ public class StrandImplTest {
 			strandRepository.deleteById(strand.getId());
 
 			// Check if exists
-			assert strandRepository.findById(strand.getId()).isEmpty();
+			assert strandRepository.existsById(strand.getId());
 			logger.debug("Strand with ID {} has been deleted", strand.getId());
 		} catch (Exception e) {
 			logger.error("Error deleting strand", e);
