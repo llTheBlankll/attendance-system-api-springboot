@@ -166,9 +166,10 @@ public class TeacherController {
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(new MessageResponse("Validation error occurred."));
 			}
+			default -> {
+				return ResponseEntity.badRequest().body(new MessageResponse("Failed to update teacher record."));
+			}
 		}
-
-		return ResponseEntity.badRequest().body(new MessageResponse("Failed to update teacher record."));
 	}
 
 	@GetMapping(value = "/", produces = "application/json")
