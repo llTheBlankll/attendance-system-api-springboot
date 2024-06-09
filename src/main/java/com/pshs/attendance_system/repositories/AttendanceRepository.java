@@ -25,7 +25,7 @@ import java.util.Optional;
 @Repository
 public interface AttendanceRepository extends JpaRepository<Attendance, Integer> {
 	@Query("select distinct a from Attendance a where a.student = :student order by a.date DESC LIMIT :limit")
-	List<Attendance> findAttendancesByStudentOrderByDateDesc(@Param("student") @NonNull Student student, @Param("limit") @NonNull int limit, Sort sort);
+	List<Attendance> findAttendancesByStudentOrderByDateDesc(@Param("student") @NonNull Student student, @Param("limit") int limit, Sort sort);
 
 	@Query("select a from Attendance a where a.student.id = :id")
 	List<Attendance> getAttendancesByStudentId(@Param("id") @NonNull Long id, Sort sort);
