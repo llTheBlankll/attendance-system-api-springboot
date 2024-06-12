@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SpringBootTest
-public class UserImplTest {
+class UserImplTest {
 
 
 	private static final Logger logger = LogManager.getLogger(UserImplTest.class);

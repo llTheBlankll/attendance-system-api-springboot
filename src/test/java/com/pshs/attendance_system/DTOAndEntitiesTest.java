@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Test class for testing the DTOs and Entities if they are correctly implemented.
  */
-public class DTOAndEntitiesTest {
+class DTOAndEntitiesTest {
 
 	private final Strand strand = new Strand(
 		1,
@@ -81,7 +81,7 @@ public class DTOAndEntitiesTest {
 	);
 
 	@Test
-	public void testRFIDCredential() {
+	void testRFIDCredential() {
 		// Entities Test
 		assert rfidCredential.getId() == 1;
 		assert rfidCredential.getLrn().equals(student);
@@ -99,7 +99,7 @@ public class DTOAndEntitiesTest {
 	}
 
 	@Test
-	public void testGuardian() {
+	void testGuardian() {
 		// Entities Test
 		assert guardian.getId() == 1;
 		assert guardian.getFullName().equals("Juan Dela Cruz");
@@ -115,7 +115,7 @@ public class DTOAndEntitiesTest {
 	}
 
 	@Test
-	public void testUser() {
+	void testUser() {
 		// Entities Test
 		assert user.getId() == 1;
 		assert user.getUsername().equals("vince");
@@ -138,7 +138,7 @@ public class DTOAndEntitiesTest {
 	}
 
 	@Test
-	public void testStudent() {
+	void testStudent() {
 		// Entities Test
 		assert student.getId() == 1;
 		assert student.getFirstName().equals("Vince Angelo");
@@ -168,7 +168,7 @@ public class DTOAndEntitiesTest {
 	}
 
 	@Test
-	public void testSection() {
+	void testSection() {
 		// Entities Test
 		assert section.getId() == 1;
 		assert section.getTeacher().equals(teacher);
@@ -197,7 +197,7 @@ public class DTOAndEntitiesTest {
 	}
 
 	@Test
-	public void testStrand() {
+	void testStrand() {
 		// Entities Test
 		assert strand.getId() == 1;
 		assert strand.getName().equals("STEM");
@@ -211,7 +211,7 @@ public class DTOAndEntitiesTest {
 	}
 
 	@Test
-	public void testGradeLevel() {
+	void testGradeLevel() {
 		// Entities Test
 		assert gradeLevel.getId() == 1;
 		assert gradeLevel.getName().equals("Grade 11");
@@ -227,7 +227,7 @@ public class DTOAndEntitiesTest {
 	}
 
 	@Test
-	public void testTeacher() {
+	void testTeacher() {
 		// Entities Test
 		assert teacher.getId() == 1;
 		assert teacher.getFirstName().equals("Juan");
@@ -245,7 +245,7 @@ public class DTOAndEntitiesTest {
 	}
 
 	@Test
-public void testStudentSectionDTO() {
+void testStudentSectionDTO() {
 		// DTO Test
 		SectionStudentsDTO sectionStudentsDTO = new SectionStudentsDTO(
 			1,

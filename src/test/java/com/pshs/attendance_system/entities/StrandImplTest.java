@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
 @SpringBootTest
-public class StrandImplTest {
+class StrandImplTest {
 
 
 	private static final Logger logger = LogManager.getLogger(StrandImplTest.class);
