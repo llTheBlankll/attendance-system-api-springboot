@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -255,16 +256,12 @@ public class SectionController {
 		@Parameter(name = "size", description = "Number of items per page")
 	})
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Teacher object", content = @Content(schema = @Schema(implementation = TeacherDTO.class)))
-	public ResponseEntity<?> getSectionByTeacher(@RequestParam(required = false) Integer teacherId, @RequestBody(required = false) TeacherDTO teacher, @RequestParam int page, @RequestParam int size) {
-
-		// If teacherId is not null and teacher is null, return the section by teacherId
-		if (teacherId != null && teacher == null) {
-			return ResponseEntity.ok(sectionService.getSectionByTeacher(teacherId, PageRequest.of(page, size)));
-		} else if (teacherId == null && teacher != null) {
-			return ResponseEntity.ok(sectionService.getSectionByTeacher(teacher.toEntity(), PageRequest.of(page, size)));
+	public ResponseEntity<?> getSectionsByTeacher(@RequestParam Integer teacherId, @RequestParam int page, @RequestParam int size, @RequestParam(defaultValue = "ASC") Sort.Direction orderBy, @RequestParam(defaultValue = "sectionName") String sortBy) {
+		if (teacherId == null) {
+			return ResponseEntity.badRequest().body(new MessageResponse("No request parameter provided."));
 		}
-
-		return ResponseEntity.badRequest().body(new MessageResponse("No request parameter and request body provided."));
+		Sort sort = Sort.by(orderBy, sortBy);
+		return ResponseEntity.ok(sectionService.getSectionByTeacher(teacherId, PageRequest.of(page, size).withSort(sort)));
 	}
 
 	@GetMapping("/strand")

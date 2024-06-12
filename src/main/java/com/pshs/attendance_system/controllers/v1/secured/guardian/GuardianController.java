@@ -135,7 +135,7 @@ public class GuardianController {
 		@ApiResponse(responseCode = "200", description = "Guardian found"),
 		@ApiResponse(responseCode = "404", description = "Guardian not found")
 	})
-	public ResponseEntity<?> searchGuardian(@RequestParam String fullName, @RequestParam String contactNumber, String sort, String order, @RequestParam int page, @RequestParam int size) {
+	public ResponseEntity<?> searchGuardian(@RequestParam String fullName, @RequestParam String contactNumber, @RequestParam(defaultValue = "fullName") String sort, @RequestParam("ASC") String order, @RequestParam int page, @RequestParam int size) {
 		Page<Guardian> guardians;
 		Pageable pageRequest = PageRequest.of(page, size).withSort(Sort.by(sort).ascending());
 

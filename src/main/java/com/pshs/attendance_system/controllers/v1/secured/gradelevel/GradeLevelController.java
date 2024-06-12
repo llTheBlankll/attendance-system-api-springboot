@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,11 +49,17 @@ public class GradeLevelController {
 	@GetMapping("/grade-level")
 	public ResponseEntity<Page<GradeLevelDTO>> getAllGradeLevels(
 		@RequestParam(defaultValue = "0") Integer page,
-		@RequestParam(defaultValue = "10") Integer size
+		@RequestParam(defaultValue = "10") Integer size,
+		@RequestParam(defaultValue = "name") String sortBy,
+		@RequestParam(defaultValue = "ASC") String order
 	) {
 		logger.info("Fetching all grade levels");
+		Sort sort = Sort.by(Sort.Direction.fromString(order), sortBy);
+
 		return ResponseEntity.ok(
-			gradeLevelService.getAllGradeLevels(page, size).map(
+			gradeLevelService.getAllGradeLevels(
+				PageRequest.of(page, size, sort)
+			).map(
 				GradeLevel::toDTO
 			)
 		);
@@ -153,20 +160,29 @@ public class GradeLevelController {
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<Page<GradeLevel>> searchGradeLevels(@RequestParam(required = false) String name, @RequestBody(required = false) StrandDTO strand, @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size) {
+	public ResponseEntity<Page<GradeLevel>> searchGradeLevels(
+		@RequestParam(required = false) String name,
+		@RequestBody(required = false) StrandDTO strand,
+		@RequestParam(defaultValue = "0") Integer page,
+		@RequestParam(defaultValue = "10") Integer size,
+		@RequestParam(defaultValue = "name") String sortBy,
+		@RequestParam(defaultValue = "ASC") String order) {
+
+		logger.info("Searching grade levels by name: {} and strand: {}", name, strand);
+		Sort sort = Sort.by(Sort.Direction.fromString(order), sortBy);
 
 		// If name is not empty and strand is provided, then search grade levels by name and strand
 		if (!name.isEmpty() && strand != null) {
 			return ResponseEntity.ok(
-				gradeLevelService.searchGradeLevelsByNameAndStrand(name, strand.getId(), PageRequest.of(page, size))
+				gradeLevelService.searchGradeLevelsByNameAndStrand(name, strand.getId(), PageRequest.of(page, size, sort))
 			);
 		} else if (strand != null) { // If strand iso only provided, then search grade levels by strand
 			return ResponseEntity.ok(
-				gradeLevelService.searchGradeLevelsByStrand(strand.getId(), PageRequest.of(page, size))
+				gradeLevelService.searchGradeLevelsByStrand(strand.getId(), PageRequest.of(page, size, sort))
 			);
 		} else if (!name.isEmpty()) { // If name is only provided, then search grade levels by name
 			return ResponseEntity.ok(
-				gradeLevelService.searchGradeLevelsByName(name, PageRequest.of(page, size))
+				gradeLevelService.searchGradeLevelsByName(name, PageRequest.of(page, size, sort))
 			);
 		} else {
 			return ResponseEntity.badRequest()

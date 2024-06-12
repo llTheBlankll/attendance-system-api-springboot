@@ -24,7 +24,7 @@ public class StudentStatisticsController {
 		this.studentService = studentService;
 	}
 
-	@GetMapping("/")
+	@GetMapping("/all")
 	@Operation(summary = "Count all students", description = "Count all students")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "The count of all student.")

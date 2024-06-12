@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +30,9 @@ public class AttendanceController {
 	}
 
 	@GetMapping("/all")
-	public ResponseEntity<?> getAllRecentAttendance(@RequestParam Integer page, @RequestParam Integer size, @RequestParam(defaultValue = "ASC")  String sortBy, @RequestParam(defaultValue = "date") String order) {
-		Sort sort = Sort.by(Sort.Direction.fromString(order), sortBy);
+	public ResponseEntity<?> getAllRecentAttendance(@RequestParam Integer page, @RequestParam Integer size, @RequestParam(defaultValue = "date") String sortBy, @RequestParam(defaultValue = "ASC") Sort.Direction order) {
+		Sort sort = Sort.by(order, sortBy);
+
 		return ResponseEntity.ok(attendanceService.getAllAttendances(PageRequest.of(page, size).withSort(sort)));
 	}
 
@@ -78,6 +80,8 @@ public class AttendanceController {
 	})
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Date Range", required = true, content = {@Content(schema = @Schema(implementation = DateRange.class))})
 	public ResponseEntity<?> getAttendanceByStatusAndDateRange(@PathVariable Status status, @RequestBody DateRange dateRange) {
+		int test = attendanceService.countStudentsByStatusAndDateRange(status, dateRange);
+		System.out.println(test);
 		return ResponseEntity.ok(attendanceService.countStudentsByStatusAndDateRange(status, dateRange));
 	}
 

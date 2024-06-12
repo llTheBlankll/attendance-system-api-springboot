@@ -34,7 +34,7 @@ public class StudentController {
 		this.studentService = studentService;
 	}
 
-	@GetMapping("/")
+	@GetMapping("/all")
 	@Operation(summary = "Get all students", description = "Get all students")
 	@Parameters({
 		@Parameter(name = "page", description = "Page number", required = true),
