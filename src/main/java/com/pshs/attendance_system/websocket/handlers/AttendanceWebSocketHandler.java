@@ -74,8 +74,9 @@ public class AttendanceWebSocketHandler extends TextWebSocketHandler {
 			);
 			return;
 		}
-
+		
 		if (Mode.ATTENDANCE_IN == studentRFID.getMode()) {
+			logger.debug("Attendance In Mode");
 			AttendanceResultDTO attendanceResultDTO = attendanceService.attendanceIn(rfidCredential);
 
 			// Send the result of the attendance.
@@ -83,18 +84,21 @@ public class AttendanceWebSocketHandler extends TextWebSocketHandler {
 
 			// ! Notify the subscribers in real time notification
 			String STUDENT_ALREADY_RECORDED = "Student already recorded.";
-			notifySubscribers(attendanceResultDTO, STUDENT_ALREADY_RECORDED);
+//			notifySubscribers(attendanceResultDTO, STUDENT_ALREADY_RECORDED);
+			notifySubscribers(attendanceResultDTO, "");
 			return;
 		}
 
 		if (Mode.ATTENDANCE_OUT == studentRFID.getMode()) {
+			logger.debug("Attendance Out Mode");
 			AttendanceResultDTO attendanceResultDTO = attendanceService.attendanceOut(rfidCredential);
 
 			// Send the result of the attendance.
 			session.sendMessage(new TextMessage(mapper.writeValueAsString(attendanceResultDTO)));
 
 			// ! Notify the subscribers in real time notification
-			notifySubscribers(attendanceResultDTO, STUDENT_ALREADY_SIGNED_OUT);
+//			notifySubscribers(attendanceResultDTO, STUDENT_ALREADY_SIGNED_OUT);
+			notifySubscribers(attendanceResultDTO, "");
 		}
 	}
 

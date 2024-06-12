@@ -166,7 +166,8 @@ public class AttendanceServiceImpl implements AttendanceService {
 		AttendanceResultDTO attendanceResultDTO = new AttendanceResultDTO();
 		Attendance attendance = this.createAttendance(rfidCredential.getLrn().getId());
 		if (rfidCredential.getLrn() != null) {
-			if (attendance == null) { // attendance being null has many meaning, but usually it means that the student is already recorded
+			if (attendance == null) { // attendance being null has many meanings,
+				// but usually it means that the student is already recorded
 				attendance = getAttendanceByStudentDate(rfidCredential.getLrn().getId(), LocalDate.now());
 				if (attendance != null) {
 					// If the existing attendance is not null, it means that the student is already recorded.
@@ -435,7 +436,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 	 */
 	@Override
 	public int countStudentsByStatusAndDateRange(Status status, DateRange dateRange) {
-		return (int) attendanceRepository.countStudentsByStatusAndDateRange(status.name(), dateRange.getStartDate(), dateRange.getEndDate());
+		return (int) attendanceRepository.countStudentsByStatusAndDateRange(status, dateRange.getStartDate(), dateRange.getEndDate());
 	}
 
 	/**
@@ -447,7 +448,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 	 */
 	@Override
 	public int countStudentsByStatusAndDate(Status status, LocalDate date) {
-		return (int) attendanceRepository.countStudentsByStatusAndDate(status.name(), date);
+		return (int) attendanceRepository.countStudentsByStatusAndDate(status, date);
 	}
 
 	/**
@@ -460,7 +461,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 	 */
 	@Override
 	public int countStudentAttendanceByStatusAndDate(Long studentId, Status status, LocalDate date) {
-		return (int) attendanceRepository.countStudentAttendancesByStatusAndDate(studentId, status.name(), date);
+		return (int) attendanceRepository.countStudentAttendancesByStatusAndDate(studentId, status, date);
 	}
 
 	/**
@@ -473,7 +474,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 	 */
 	@Override
 	public int countStudentAttendanceByStatusAndDate(Long studentId, Status status, DateRange dateRange) {
-		return (int) attendanceRepository.countStudentAttendancesByStatusBetweenDate(studentId, status.name(), dateRange.getStartDate(), dateRange.getEndDate());
+		return (int) attendanceRepository.countStudentAttendancesByStatusBetweenDate(studentId, status, dateRange.getStartDate(), dateRange.getEndDate());
 	}
 
 	/**

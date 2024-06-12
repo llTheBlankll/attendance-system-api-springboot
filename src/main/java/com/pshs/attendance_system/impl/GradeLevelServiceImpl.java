@@ -111,8 +111,8 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 	 * @return List of GradeLevel objects
 	 */
 	@Override
-	public Page<GradeLevel> getAllGradeLevels(int page, int size) {
-		return gradeLevelRepository.findAll(PageRequest.of(page, size));
+	public Page<GradeLevel> getAllGradeLevels(Pageable page) {
+		return gradeLevelRepository.findAll(page);
 	}
 
 	/**

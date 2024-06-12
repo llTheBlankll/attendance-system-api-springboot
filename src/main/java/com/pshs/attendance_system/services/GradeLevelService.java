@@ -47,7 +47,7 @@ public interface GradeLevelService {
 	 *
 	 * @return List of GradeLevel objects
 	 */
-	Page<GradeLevel> getAllGradeLevels(int page, int size);
+	Page<GradeLevel> getAllGradeLevels(Pageable page);
 
 	/**
 	 * Count all grade level records
