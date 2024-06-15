@@ -1,6 +1,6 @@
 package com.pshs.attendance_system.controllers.v1.secured.strand;
 
-import com.pshs.attendance_system.dto.MessageResponse;
+import com.pshs.attendance_system.dto.StatusMessageResponse;
 import com.pshs.attendance_system.dto.StrandDTO;
 import com.pshs.attendance_system.entities.Strand;
 import com.pshs.attendance_system.enums.ExecutionStatus;
@@ -40,15 +40,30 @@ public class StrandController {
 		switch (status) {
 			case SUCCESS -> {
 				// return 201 Created
-				return ResponseEntity.status(201).body(new MessageResponse("Strand created successfully."));
+				return ResponseEntity.status(201).body(
+					new StatusMessageResponse(
+						"Strand created successfully.",
+						ExecutionStatus.SUCCESS
+					)
+				);
 			}
 			case VALIDATION_ERROR -> {
 				// return 400 Bad Request
-				return ResponseEntity.badRequest().body(new MessageResponse("Strand already exists."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Strand already exists.",
+						ExecutionStatus.INVALID
+					)
+				);
 			}
 			default -> {
 				// return 500 Internal Server Error
-				return ResponseEntity.status(500).body(new MessageResponse("Failed to create strand."));
+				return ResponseEntity.status(500).body(
+					new StatusMessageResponse(
+						"Failed to create strand.",
+						ExecutionStatus.FAILURE
+					)
+				);
 			}
 		}
 	}
@@ -68,15 +83,30 @@ public class StrandController {
 		switch (status) {
 			case SUCCESS -> {
 				// return 200 OK
-				return ResponseEntity.ok(new MessageResponse("Strand deleted successfully."));
+				return ResponseEntity.ok(
+					new StatusMessageResponse(
+						"Strand deleted successfully.",
+						ExecutionStatus.SUCCESS
+						)
+				);
 			}
 			case NOT_FOUND -> {
 				// return 404 Not Found
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Strand not found."));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					new StatusMessageResponse(
+						"Strand not found.",
+						ExecutionStatus.NOT_FOUND
+						)
+				);
 			}
 			default -> {
 				// return 500 Internal Server Error
-				return ResponseEntity.status(500).body(new MessageResponse("Failed to delete strand."));
+				return ResponseEntity.status(500).body(
+					new StatusMessageResponse(
+						"Failed to delete strand.",
+						ExecutionStatus.FAILURE
+						)
+				);
 			}
 		}
 	}
@@ -97,15 +127,30 @@ public class StrandController {
 		switch (status) {
 			case SUCCESS -> {
 				// return 200 OK
-				return ResponseEntity.ok(new MessageResponse("Strand updated successfully."));
+				return ResponseEntity.ok(
+					new StatusMessageResponse(
+						"Strand updated successfully.",
+						ExecutionStatus.SUCCESS
+					)
+				);
 			}
 			case NOT_FOUND -> {
 				// return 404 Not Found
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Strand not found."));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					new StatusMessageResponse(
+						"Strand not found.",
+						ExecutionStatus.NOT_FOUND
+					)
+				);
 			}
 			default -> {
 				// return 500 Internal Server Error
-				return ResponseEntity.status(500).body(new MessageResponse("Failed to update strand."));
+				return ResponseEntity.status(500).body(
+					new StatusMessageResponse(
+						"Failed to update strand.",
+						ExecutionStatus.FAILURE
+					)
+				);
 			}
 		}
 	}
@@ -120,7 +165,12 @@ public class StrandController {
 		Strand strand = strandService.getStrand(id);
 		if (strand == null) {
 			// return 404 Not Found
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Strand not found."));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+				new StatusMessageResponse(
+					"Strand not found.",
+					ExecutionStatus.NOT_FOUND
+				)
+			);
 		}
 
 		// return 200 OK

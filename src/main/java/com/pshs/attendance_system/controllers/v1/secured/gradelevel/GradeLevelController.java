@@ -3,6 +3,7 @@
 package com.pshs.attendance_system.controllers.v1.secured.gradelevel;
 
 import com.pshs.attendance_system.dto.GradeLevelDTO;
+import com.pshs.attendance_system.dto.StatusMessageResponse;
 import com.pshs.attendance_system.dto.StrandDTO;
 import com.pshs.attendance_system.entities.GradeLevel;
 import com.pshs.attendance_system.enums.ExecutionStatus;
@@ -20,12 +21,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
-@Tag(
-	name = "Grade Level",
-	description = "API Endpoints for Grade Level"
-)
+@Tag(name = "Grade Level", description = "API Endpoints for Grade Level")
 @RequestMapping("/api/v1/grade-levels")
 public class GradeLevelController {
 
@@ -36,157 +35,63 @@ public class GradeLevelController {
 		this.gradeLevelService = gradeLevelService;
 	}
 
-	@Operation(
-		summary = "Get All Grade Levels",
-		description = "Get all grade levels paginated",
-		responses = {
-			@ApiResponse(
-				responseCode = "200",
-				description = "List of grade levels"
-			)
-		}
-	)
-	@GetMapping("/grade-level")
-	public ResponseEntity<Page<GradeLevelDTO>> getAllGradeLevels(
-		@RequestParam(defaultValue = "0") Integer page,
-		@RequestParam(defaultValue = "10") Integer size,
-		@RequestParam(defaultValue = "name") String sortBy,
-		@RequestParam(defaultValue = "ASC") String order
-	) {
-		logger.info("Fetching all grade levels");
+	@Operation(summary = "Get All Grade Levels", description = "Get all grade levels paginated", responses = {@ApiResponse(responseCode = "200", description = "List of grade levels")})
+	@GetMapping("/all")
+	public ResponseEntity<Page<GradeLevelDTO>> getAllGradeLevels(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size, @RequestParam(defaultValue = "name") String sortBy, @RequestParam(defaultValue = "ASC") String order) {
+		logger.debug("Fetching all grade levels");
 		Sort sort = Sort.by(Sort.Direction.fromString(order), sortBy);
 
-		return ResponseEntity.ok(
-			gradeLevelService.getAllGradeLevels(
-				PageRequest.of(page, size, sort)
-			).map(
-				GradeLevel::toDTO
-			)
-		);
+		return ResponseEntity.ok(gradeLevelService.getAllGradeLevels(PageRequest.of(page, size, sort)).map(GradeLevel::toDTO));
 	}
 
-	@Operation(
-		summary = "Create Grade Level",
-		description = "Create a new grade level",
-		responses = {
-			@ApiResponse(
-				responseCode = "200",
-				description = "Shows the status of the operation"
-			)
-		}
-	)
-	@PostMapping("/grade-level")
-	public ResponseEntity<Map<String, ExecutionStatus>> createGradeLevel(@RequestBody GradeLevelDTO gradeLevelDTO) {
-		logger.info("Creating grade level: {}", gradeLevelDTO);
+	@Operation(summary = "Create Grade Level", description = "Create a new grade level", responses = {@ApiResponse(responseCode = "200", description = "Shows the status of the operation")})
+	@PostMapping("/create")
+	public ResponseEntity<?> createGradeLevel(@RequestBody GradeLevelDTO gradeLevelDTO) {
+		logger.debug("Creating grade level: {}", gradeLevelDTO);
 		ExecutionStatus status = gradeLevelService.createGradeLevel(gradeLevelDTO.toEntity());
-		return ResponseEntity.ok(
-			Map.of(
-				"status",
-				status
-			)
-		);
+		if (Objects.requireNonNull(status) == ExecutionStatus.SUCCESS) {
+			return ResponseEntity.ok(new StatusMessageResponse("Grade Level created successfully", status));
+		}
+
+		return ResponseEntity.badRequest().body(new StatusMessageResponse("Grade Level creation failed", status));
 	}
 
-	@Operation(
-		summary = "Delete Grade Level",
-		description = "Delete a grade level by ID",
-		responses = {
-			@ApiResponse(
-				responseCode = "200",
-				description = "Shows the status of the operation"
-			)
-		}
-	)
+	@Operation(summary = "Delete Grade Level", description = "Delete a grade level by ID", responses = {@ApiResponse(responseCode = "200", description = "Shows the status of the operation")})
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, ExecutionStatus>> deleteGradeLevel(@PathVariable Integer id) {
-		logger.info("Deleting grade level by id: {}", id);
-		return ResponseEntity.ok(
-			Map.of(
-				"status",
-				gradeLevelService.deleteGradeLevel(id)
-			)
-		);
+		logger.debug("Deleting grade level by id: {}", id);
+		return ResponseEntity.ok(Map.of("status", gradeLevelService.deleteGradeLevel(id)));
 	}
 
-	@Operation(
-		summary = "Get Grade Level by ID",
-		description = "Get a grade level by ID",
-		responses = {
-			@ApiResponse(
-				responseCode = "200",
-				description = "Grade Level object"
-			)
-		}
-	)
+	@Operation(summary = "Get Grade Level by ID", description = "Get a grade level by ID", responses = {@ApiResponse(responseCode = "200", description = "Grade Level object")})
 	@GetMapping("/{id}")
 	public ResponseEntity<GradeLevelDTO> getGradeLevelById(@PathVariable Integer id) {
-		logger.info("Fetching grade level by id: {}", id);
-		return ResponseEntity.ok(
-			gradeLevelService.getGradeLevel(id).toDTO()
-		);
+		logger.debug("Fetching grade level by id: {}", id);
+		return ResponseEntity.ok(gradeLevelService.getGradeLevel(id).toDTO());
 	}
 
 
-	@Operation(
-		summary = "Update Grade Level",
-		description = "Update a grade level by ID",
-		responses = {
-			@ApiResponse(
-				responseCode = "200",
-				description = "Shows the status of the operation"
-			)
-		}
-	)
+	@Operation(summary = "Update Grade Level", description = "Update a grade level by ID", responses = {@ApiResponse(responseCode = "200", description = "Shows the status of the operation")})
 	@PutMapping("/{id}")
 	public ResponseEntity<Map<String, ExecutionStatus>> updateGradeLevel(@PathVariable Integer id, @RequestBody GradeLevelDTO gradeLevelDTO) {
-		logger.info("Updating grade level by id: {}", id);
-		return ResponseEntity.ok(
-			Map.of(
-				"status",
-				gradeLevelService.updateGradeLevel(id, gradeLevelDTO.toEntity())
-			)
-		);
+		logger.debug("Updating grade level by id: {}", id);
+		return ResponseEntity.ok(Map.of("status", gradeLevelService.updateGradeLevel(id, gradeLevelDTO.toEntity())));
 	}
 
 	@GetMapping("/count")
 	public ResponseEntity<Map<String, Integer>> countAllGradeLevels() {
-		logger.info("Counting all grade levels");
-		return ResponseEntity.ok(
-			Map.of(
-				"count",
-				gradeLevelService.countAllGradeLevels()
-			)
-		);
+		logger.debug("Counting all grade levels");
+		return ResponseEntity.ok(Map.of("count", gradeLevelService.countAllGradeLevels()));
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<Page<GradeLevel>> searchGradeLevels(
-		@RequestParam(required = false) String name,
-		@RequestBody(required = false) StrandDTO strand,
-		@RequestParam(defaultValue = "0") Integer page,
-		@RequestParam(defaultValue = "10") Integer size,
-		@RequestParam(defaultValue = "name") String sortBy,
-		@RequestParam(defaultValue = "ASC") String order) {
-
-		logger.info("Searching grade levels by name: {} and strand: {}", name, strand);
+	public ResponseEntity<Page<GradeLevel>> searchGradeLevels(@RequestParam(required = false) String name, @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size, @RequestParam(defaultValue = "name") String sortBy, @RequestParam(defaultValue = "ASC") String order) {
+		logger.debug("Searching grade levels by name: {}", name);
 		Sort sort = Sort.by(Sort.Direction.fromString(order), sortBy);
-
-		// If name is not empty and strand is provided, then search grade levels by name and strand
-		if (!name.isEmpty() && strand != null) {
-			return ResponseEntity.ok(
-				gradeLevelService.searchGradeLevelsByNameAndStrand(name, strand.getId(), PageRequest.of(page, size, sort))
-			);
-		} else if (strand != null) { // If strand iso only provided, then search grade levels by strand
-			return ResponseEntity.ok(
-				gradeLevelService.searchGradeLevelsByStrand(strand.getId(), PageRequest.of(page, size, sort))
-			);
-		} else if (!name.isEmpty()) { // If name is only provided, then search grade levels by name
-			return ResponseEntity.ok(
-				gradeLevelService.searchGradeLevelsByName(name, PageRequest.of(page, size, sort))
-			);
+		if (!name.isEmpty()) {
+			return ResponseEntity.ok(gradeLevelService.searchGradeLevelsByName(name, PageRequest.of(page, size, sort)));
 		} else {
-			return ResponseEntity.badRequest()
-				.body(Page.empty());
+			return ResponseEntity.badRequest().body(Page.empty());
 		}
 	}
 }

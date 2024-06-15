@@ -31,7 +31,7 @@ public class SectionController {
 		this.sectionService = sectionService;
 	}
 
-	@PostMapping("/section")
+	@PostMapping("/create")
 	@Operation(summary = "Create a new section", description = "Create a new section")
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Section to create", required = true)
 	@ApiResponses({
@@ -45,16 +45,36 @@ public class SectionController {
 
 		switch (status) {
 			case SUCCESS -> {
-				return ResponseEntity.ok(new MessageResponse("Section " + section.getSectionName() + " was created successfully"));
+				return ResponseEntity.ok(
+					new StatusMessageResponse(
+						"Section " + section.getSectionName() + " was created successfully",
+						ExecutionStatus.SUCCESS
+					)
+				);
 			}
 			case FAILURE -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Section " + section.getSectionName() + " already exists."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Section " + section.getSectionName() + " already exists",
+						ExecutionStatus.INVALID
+					)
+				);
 			}
 			case VALIDATION_ERROR -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Section " + section.getSectionName() + " validation error."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Section " + section.getSectionName() + " validation error",
+						ExecutionStatus.VALIDATION_ERROR
+					)
+				);
 			}
 			default -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Section " + section.getSectionName() + " was not created."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Section " + section.getSectionName() + " was not created",
+						ExecutionStatus.FAILURE
+					)
+				);
 			}
 		}
 	}
@@ -73,21 +93,40 @@ public class SectionController {
 
 		switch (status) {
 			case SUCCESS -> {
-				return ResponseEntity.ok(new MessageResponse("Section " + section.getSectionName() + " was updated successfully"));
+				return ResponseEntity.ok(
+					new StatusMessageResponse(
+						"Section " + section.getSectionName() + " was updated successfully",
+						ExecutionStatus.SUCCESS
+					)
+				);
 			}
 			case FAILURE -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Section " + section.getSectionName() + " not found."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Section " + section.getSectionName() + " not found",
+						ExecutionStatus.FAILURE
+					)
+				);
 			}
 			case VALIDATION_ERROR -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Section " + section.getSectionName() + " validation error."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Section " + section.getSectionName() + " validation error",
+						ExecutionStatus.VALIDATION_ERROR
+					)
+				);
 			}
 			default -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Section " + section.getSectionName() + " was not updated."));
+				return ResponseEntity.badRequest().body(new StatusMessageResponse(
+						"Section " + section.getSectionName() + " not updated",
+						ExecutionStatus.FAILURE
+					)
+				);
 			}
 		}
 	}
 
-	@PatchMapping("/{id}/teacher")
+	@PatchMapping("/{sectionId}/teacher")
 	@Operation(summary = "Update a section teacher", description = "Update a section with an existing teacher, requires section id and teacher id")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Section teacher updated successfully"),
@@ -99,26 +138,47 @@ public class SectionController {
 		@Parameter(name = "id", description = "Section id", required = true),
 		@Parameter(name = "teacherId", description = "Teacher id", required = true)
 	})
-	public ResponseEntity<?> updateSectionTeacher(@PathVariable int id, @RequestParam int strandId) {
-		ExecutionStatus status = sectionService.updateSectionTeacher(id, strandId);
+	public ResponseEntity<?> updateSectionTeacher(@PathVariable Integer sectionId, @RequestParam Integer teacherId) {
+		if (sectionId == null || teacherId == null) {
+			return ResponseEntity.badRequest().body(new StatusMessageResponse(
+				"Invalid Section/Teacher ID provided.",
+				ExecutionStatus.VALIDATION_ERROR
+			));
+		}
+
+		ExecutionStatus status = sectionService.updateSectionTeacher(sectionId, teacherId);
 
 		switch (status) {
 			case SUCCESS -> {
-				return ResponseEntity.ok(new MessageResponse("Section teacher updated successfully"));
+				return ResponseEntity.ok(new StatusMessageResponse("Section teacher updated successfully", ExecutionStatus.SUCCESS));
 			}
 			case FAILURE -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Teacher is not found"));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Teacher is not found",
+						ExecutionStatus.FAILURE
+					)
+				);
 			}
 			case VALIDATION_ERROR -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Invalid Section/Teacher ID provided."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Invalid Section/Teacher ID provided.",
+						ExecutionStatus.VALIDATION_ERROR
+					)
+				);
 			}
 			default -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Section teacher not updated"));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Section teacher not updated",
+						ExecutionStatus.FAILURE)
+				);
 			}
 		}
 	}
 
-	@PatchMapping("/{id}/grade-level/id")
+	@PatchMapping("/{id}/grade-level")
 	@Operation(summary = "Update a section grade level", description = "Update a section with an existing grade level, requires section id and grade level id")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Section grade level updated successfully"),
@@ -130,62 +190,81 @@ public class SectionController {
 		@Parameter(name = "id", description = "Section id", required = true),
 		@Parameter(name = "gradeLevelId", description = "Grade level id", required = true)
 	})
-	public ResponseEntity<?> updateSectionGradeLevel(@PathVariable("id") int id, @RequestParam("q") int gradeLevelId) {
+	public ResponseEntity<?> updateSectionGradeLevel(@PathVariable("id") int id, @RequestParam int gradeLevelId) {
 		ExecutionStatus status = sectionService.updateSectionGradeLevel(id, gradeLevelId);
 
 		switch (status) {
 			case SUCCESS -> {
-				return ResponseEntity.ok(new MessageResponse("Section grade level updated successfully"));
+				return ResponseEntity.ok(
+					new StatusMessageResponse(
+						"Section grade level updated successfully",
+						ExecutionStatus.SUCCESS
+					)
+				);
 			}
 			case FAILURE -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Grade level is not found"));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Grade level is not found",
+						ExecutionStatus.FAILURE
+					)
+				);
 			}
 			case VALIDATION_ERROR -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Invalid Section/Grade Level ID provided."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Invalid Section/Grade Level ID provided.",
+						ExecutionStatus.VALIDATION_ERROR
+					)
+				);
 			}
 			default -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Section grade level not updated"));
-			}
-		}
-	}
-
-	@PatchMapping("/{id}/grade-level")
-	@Operation(summary = "Update a section grade level", description = "Update a section with an existing grade level, requires section id and grade level object")
-	public ResponseEntity<?> updateSectionGradeLevel(@PathVariable("id") int id, @RequestBody GradeLevelDTO gradeLevel) {
-		ExecutionStatus status = sectionService.updateSectionGradeLevel(id, gradeLevel.toEntity());
-
-		switch (status) {
-			case SUCCESS -> {
-				return ResponseEntity.ok(new MessageResponse("Section grade level updated successfully"));
-			}
-			case FAILURE -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Grade level is not found"));
-			}
-			case VALIDATION_ERROR -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Invalid Section/Grade Level provided."));
-			}
-			default -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Section grade level not updated"));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Section grade level not updated",
+						ExecutionStatus.FAILURE
+					)
+				);
 			}
 		}
 	}
 
 	@PatchMapping("/{id}/name")
-	public ResponseEntity<?> updateSectionName(@PathVariable int id, @RequestParam("q") String name) {
+	public ResponseEntity<?> updateSectionName(@PathVariable Integer id, @RequestParam String name) {
 		ExecutionStatus status = sectionService.updateSectionName(id, name);
 
 		switch (status) {
 			case SUCCESS -> {
-				return ResponseEntity.ok(new MessageResponse("Section name updated successfully"));
+				return ResponseEntity.ok(
+					new StatusMessageResponse(
+						"Section name updated successfully",
+						ExecutionStatus.SUCCESS
+					)
+				);
 			}
 			case FAILURE -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Section is not found"));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Section is not found",
+						ExecutionStatus.INVALID
+					)
+				);
 			}
 			case VALIDATION_ERROR -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Invalid Section ID provided."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Invalid Section ID provided.",
+						ExecutionStatus.VALIDATION_ERROR
+					)
+				);
 			}
 			default -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Section name not updated"));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Section name not updated",
+						ExecutionStatus.FAILURE
+					)
+				);
 			}
 		}
 	}
@@ -197,23 +276,38 @@ public class SectionController {
 		@ApiResponse(responseCode = "404", description = "Section not found"),
 		@ApiResponse(responseCode = "400", description = "Section not deleted")
 	})
-	public ResponseEntity<?> deleteSection(@PathVariable int id) {
+	public ResponseEntity<?> deleteSection(@PathVariable Integer id) {
 		ExecutionStatus status = sectionService.deleteSection(id);
 
 		switch (status) {
 			case SUCCESS -> {
-				return ResponseEntity.ok(new MessageResponse("Section deleted successfully"));
+				return ResponseEntity.ok(
+					new StatusMessageResponse(
+						"Section deleted successfully",
+						ExecutionStatus.SUCCESS
+					)
+				);
 			}
-			case FAILURE -> {
-				return ResponseEntity.status(404).body(new MessageResponse("Section not found"));
+			case NOT_FOUND -> {
+				return ResponseEntity.status(404).body(
+					new StatusMessageResponse(
+						"Section not found",
+						ExecutionStatus.NOT_FOUND
+					)
+				);
 			}
 			default -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Section not deleted"));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Section not deleted",
+						ExecutionStatus.FAILURE
+					)
+				);
 			}
 		}
 	}
 
-	@GetMapping(value = {"/section", "/sections"})
+	@GetMapping(value = {"/section", "/all"})
 	@Operation(summary = "Get all sections", description = "Get all sections")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Sections retrieved successfully"),
@@ -222,7 +316,15 @@ public class SectionController {
 		@Parameter(name = "page", description = "Page number"),
 		@Parameter(name = "size", description = "Number of items per page")
 	})
-	public ResponseEntity<?> getSections(@RequestParam int page, @RequestParam int size) {
+	public ResponseEntity<?> getSections(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(defaultValue = "false") Boolean noPaging) {
+		if (noPaging) {
+			return ResponseEntity.ok(sectionService.getAllSections().stream().map(Section::toDTO).toList());
+		}
+
+		if (page == null || size == null) {
+			return ResponseEntity.ok(sectionService.getAllSections());
+		}
+
 		return ResponseEntity.ok(sectionService.getAllSections(PageRequest.of(page, size)));
 	}
 
@@ -238,10 +340,15 @@ public class SectionController {
 	public ResponseEntity<?> getSection(@PathVariable int id) {
 		Section section = sectionService.getSection(id);
 		if (section != null) {
-			return ResponseEntity.ok(section);
+			return ResponseEntity.ok(section.toStudentSectionDTO());
 		}
 
-		return ResponseEntity.status(404).body(new MessageResponse("No section with id " + id + " found"));
+		return ResponseEntity.status(404).body(
+			new StatusMessageResponse(
+				"No section with id " + id + " found",
+				ExecutionStatus.NOT_FOUND
+			)
+		);
 	}
 
 	@GetMapping("/teacher")
@@ -258,7 +365,12 @@ public class SectionController {
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Teacher object", content = @Content(schema = @Schema(implementation = TeacherDTO.class)))
 	public ResponseEntity<?> getSectionsByTeacher(@RequestParam Integer teacherId, @RequestParam int page, @RequestParam int size, @RequestParam(defaultValue = "ASC") Sort.Direction orderBy, @RequestParam(defaultValue = "sectionName") String sortBy) {
 		if (teacherId == null) {
-			return ResponseEntity.badRequest().body(new MessageResponse("No request parameter provided."));
+			return ResponseEntity.badRequest().body(
+				new StatusMessageResponse(
+					"No request parameter provided.",
+					ExecutionStatus.VALIDATION_ERROR
+				)
+			);
 		}
 		Sort sort = Sort.by(orderBy, sortBy);
 		return ResponseEntity.ok(sectionService.getSectionByTeacher(teacherId, PageRequest.of(page, size).withSort(sort)));
@@ -274,15 +386,18 @@ public class SectionController {
 		@Parameter(name = "strandId", description = "Strand id"),
 	})
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Strand object")
-	public ResponseEntity<?> getSectionByStrand(@RequestParam(required = false) Integer strandId, @RequestBody(required = false) StrandDTO strand, @RequestParam int page, @RequestParam int size) {
+	public ResponseEntity<?> getSectionByStrand(@RequestParam(required = false) Integer strandId, @RequestParam int page, @RequestParam int size) {
 		// If strandId is not null and strand is null, return the section by strandId
-		if (strandId != null && strand == null) {
+		if (strandId != null) {
 			return ResponseEntity.ok(sectionService.getSectionByStrand(strandId, PageRequest.of(page, size)));
-		} else if (strandId == null && strand != null) {
-			return ResponseEntity.ok(sectionService.getSectionByStrand(strand.toEntity(), PageRequest.of(page, size)));
 		}
 
-		return ResponseEntity.badRequest().body(new MessageResponse("No request parameter and request body provided."));
+		return ResponseEntity.badRequest().body(
+			new StatusMessageResponse(
+				"No request parameter and request body provided.",
+				ExecutionStatus.VALIDATION_ERROR
+			)
+		);
 	}
 
 	@GetMapping("/grade-level")
@@ -295,14 +410,17 @@ public class SectionController {
 		@Parameter(name = "gradeLevelId", description = "Grade level id"),
 	})
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Grade level object")
-	public ResponseEntity<?> getSectionByGradeLevel(@RequestParam(required = false) Integer gradeLevelId, @RequestBody(required = false) GradeLevelDTO gradeLevel, @RequestParam int page, @RequestParam int size) {
-		if (gradeLevelId != null && gradeLevel == null) {
+	public ResponseEntity<?> getSectionByGradeLevel(@RequestParam(required = false) Integer gradeLevelId, @RequestParam int page, @RequestParam int size) {
+		if (gradeLevelId != null) {
 			return ResponseEntity.ok(sectionService.getSectionByGradeLevel(gradeLevelId, PageRequest.of(page, size)));
-		} else if (gradeLevelId == null && gradeLevel != null) {
-			return ResponseEntity.ok(sectionService.getSectionByGradeLevel(gradeLevel.toEntity(), PageRequest.of(page, size)));
 		}
 
-		return ResponseEntity.badRequest().body(new MessageResponse("No request parameter and request body provided."));
+		return ResponseEntity.badRequest().body(
+			new StatusMessageResponse(
+				"No request parameter and request body provided.",
+				ExecutionStatus.VALIDATION_ERROR
+			)
+		);
 	}
 
 	@GetMapping("/search")
@@ -315,14 +433,20 @@ public class SectionController {
 		@Parameter(name = "room", description = "Room name"),
 		@Parameter(name = "name", description = "Section name")
 	})
-	public ResponseEntity<?> searchSections(@RequestParam(required = false) String room, @RequestParam(required = false) String name, @RequestParam int page, @RequestParam int size) {
+	public ResponseEntity<?> searchSections(@RequestParam(required = false) String room, @RequestParam(required = false) String name, @RequestParam int page, @RequestParam int size, @RequestParam(defaultValue = "ASC") Sort.Direction orderBy, @RequestParam(defaultValue = "sectionName") String sortBy) {
+		Sort sort = Sort.by(orderBy, sortBy);
 		if (room != null) {
-			return ResponseEntity.ok(sectionService.searchSectionByRoom(room, PageRequest.of(page, size)));
+			return ResponseEntity.ok(sectionService.searchSectionByRoom(room, PageRequest.of(page, size).withSort(sort)));
 		} else if (name != null) {
-			return ResponseEntity.ok(sectionService.searchSectionBySectionName(name, PageRequest.of(page, size)));
+			return ResponseEntity.ok(sectionService.searchSectionBySectionName(name, PageRequest.of(page, size).withSort(sort)));
 		}
 
-		return ResponseEntity.badRequest().body(new MessageResponse("No request parameter provided."));
+		return ResponseEntity.badRequest().body(
+			new StatusMessageResponse(
+				"No request parameter provided.",
+				ExecutionStatus.VALIDATION_ERROR
+			)
+		);
 	}
 
 	@GetMapping("/count")

@@ -1,10 +1,16 @@
 package com.pshs.attendance_system.controllers.v1.secured.attendance;
 
-import com.pshs.attendance_system.dto.LineChartDTO;
+import com.pshs.attendance_system.dto.StatusMessageResponse;
+import com.pshs.attendance_system.dto.charts.LineChartDTO;
+import com.pshs.attendance_system.dto.charts.LineChartDataDTO;
+import com.pshs.attendance_system.dto.charts.RealTimeLineChartDTO;
+import com.pshs.attendance_system.entities.Attendance;
 import com.pshs.attendance_system.entities.range.DateRange;
+import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.enums.Status;
 import com.pshs.attendance_system.services.AttendanceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -75,5 +81,122 @@ public class AttendanceGraphicOrganizerController {
 		}
 
 		return new LineChartDTO(labels, data);
+	}
+
+	@PostMapping("/real-time/line-chart")
+	public ResponseEntity<?> realTimeLineChartData(@RequestParam LocalDate date) {
+		if (date == null) {
+			return ResponseEntity.badRequest().body(new StatusMessageResponse(
+				"Date is required.",
+				ExecutionStatus.INVALID
+			));
+		}
+
+		List<String> labels = new ArrayList<>();
+		List<LineChartDataDTO> lineChartDataDTOs = new ArrayList<>();
+
+		// Get all attendances on that date first.
+		List<Attendance> attendances = attendanceService.getAllAttendancesByDate(date);
+
+		// Loop the attendance and get the time
+		for (Attendance attendance : attendances) {
+			// Get the time-in
+			// Get the attendance counts to the labels and data
+			// Check for absenting first
+			if (attendance.getTimeOut() == null && attendance.getTime() == null) {
+				continue;
+			}
+
+			lineChartDataDTOs.add(new LineChartDataDTO(
+				Status.ON_TIME.name(),
+				attendance.getTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
+			);
+			labels.add(attendance.getTime().toString());
+
+			lineChartDataDTOs.add(new LineChartDataDTO(
+				Status.SIGNED_OUT.name(),
+				attendance.getTimeOut().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
+			);
+			labels.add(attendance.getTimeOut().toString());
+		}
+
+		return ResponseEntity.ok(
+			new RealTimeLineChartDTO(
+				labels, lineChartDataDTOs
+			)
+		);
+	}
+
+	@PostMapping("/real-time/sections/{sectionId}/line-chart")
+	public ResponseEntity<?> realTimeLineChartDataBySection(@RequestParam LocalDate date, @PathVariable Integer sectionId) {
+		if (sectionId == null) {
+			return ResponseEntity.badRequest().body(new StatusMessageResponse(
+				"Section ID is required.",
+				ExecutionStatus.INVALID
+			));
+		} else if (date == null) {
+			return ResponseEntity.badRequest().body(new StatusMessageResponse(
+				"Date is required.",
+				ExecutionStatus.INVALID
+			));
+		}
+
+		List<String> labels = new ArrayList<>();
+		List<LineChartDataDTO> lineChartDataDTOs = new ArrayList<>();
+
+		// Get all attendances on that date first.
+		List<Attendance> attendances = attendanceService.getAllAttendancesByDateAndSection(date, sectionId);
+
+		// Sort attendances by time and timeOut first
+		List<Attendance> sortedAttendance = attendances.stream().sorted((a, b) -> {
+			if (a.getTime() == null || b.getTime() == null) {
+				return 0;
+			}
+
+			return a.getTime().compareTo(b.getTime());
+		}).sorted((a, b) -> {
+			if (a.getTimeOut() == null || b.getTimeOut() == null) {
+				return 0;
+			}
+
+			return a.getTimeOut().compareTo(b.getTimeOut());
+		}).toList();
+
+		// Loop the attendance and get the time
+		for (Attendance attendance : sortedAttendance) {
+			// Get the time-in
+			// Get the attendance counts to the labels and data
+			// Check for absenting first
+			if (attendance.getTimeOut() == null && attendance.getTime() == null) {
+				continue;
+			}
+
+			lineChartDataDTOs.add(new LineChartDataDTO(
+				attendance.getStatus().name(),
+				attendance.getTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
+			);
+			labels.add(attendance.getTime().toString());
+		}
+
+		for (Attendance attendance : sortedAttendance) {
+			// Get the time-in
+			// Get the attendance counts to the labels and data
+			// Check for absenting first
+			if (attendance.getTimeOut() == null && attendance.getTime() == null) {
+				continue;
+			}
+
+			lineChartDataDTOs.add(new LineChartDataDTO(
+				Status.SIGNED_OUT.name(),
+				attendance.getTimeOut().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
+			);
+			labels.add(attendance.getTimeOut().toString());
+		}
+
+		return ResponseEntity.ok(
+			new RealTimeLineChartDTO(
+				labels, lineChartDataDTOs
+			)
+		);
 	}
 }
