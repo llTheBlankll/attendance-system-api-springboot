@@ -78,4 +78,20 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Integer>
 
 	@Query("select count(distinct a) from Attendance a where a.date = :date and a.status = :status")
 	long getAttendanceCountByDateAndStatus(@Param("date") @NonNull LocalDate date, @Param("status") @NonNull Status status);
+
+	@Query("""
+		select count(a) from Attendance a
+		where a.student.section.id = :id and a.date between :dateStart and :dateEnd or (a.date = :dateStart and a.date = :dateEnd) and a.status = :status""")
+	long countAttendanceInSection(@Param("id") @NonNull Integer id, @Param("dateStart") @NonNull LocalDate dateStart, @Param("dateEnd") @NonNull LocalDate dateEnd, @Param("status") @NonNull Status status);
+
+	@Query("""
+		select count(distinct a) from Attendance a
+		where a.student.section.id = :id and a.date = :date and a.status = :status""")
+	long countAttendanceInSectionByDate(@Param("id") Integer id, @Param("date") LocalDate date, @Param("status") Status status);
+
+	@Query("select a from Attendance a where a.date = :date order by a.time, a.timeOut")
+	List<Attendance> listAllAttendancesByDate(@Param("date") LocalDate date, Sort sort);
+
+	@Query("select a from Attendance a where a.date = :date and a.student.section.id = :id")
+	List<Attendance> getAttendanceByDateAndSection(@Param("date") @NonNull LocalDate date, @Param("id") @NonNull Integer id);
 }

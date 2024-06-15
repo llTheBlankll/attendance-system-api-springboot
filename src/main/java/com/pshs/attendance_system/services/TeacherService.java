@@ -61,6 +61,14 @@ public interface TeacherService {
 	Teacher getTeacher(int teacherId);
 
 	/**
+	 * Get a teacher record by user ID.
+	 *
+	 * @param userId User ID that will represent the teacher record that will be retrieved.
+	 * @return Teacher Object, return null if not found
+	 */
+	Teacher getTeacherByUser(int userId);
+
+	/**
 	 * Get all teacher records.
 	 *
 	 * @param page Page

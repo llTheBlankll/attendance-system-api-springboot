@@ -13,6 +13,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
 	@Transactional
@@ -49,4 +51,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
 
 	@Query("select t from Teacher t where t.sex like concat('%', :sex, '%')")
 	Page<Teacher> searchBySex(@Param("sex") String sex, Pageable pageable);
+
+	@Query("select t from Teacher t where t.user.id = :id")
+	Optional<Teacher> findByUserId(@Param("id") Integer id);
 }
