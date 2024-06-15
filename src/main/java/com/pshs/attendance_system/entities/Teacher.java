@@ -3,6 +3,7 @@
 package com.pshs.attendance_system.entities;
 
 import com.pshs.attendance_system.dto.TeacherDTO;
+import com.pshs.attendance_system.dto.UserDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -23,18 +24,32 @@ public class Teacher {
 	@Column(name = "sex", length = 8)
 	private String sex;
 
-	public Teacher() {
-	}
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	@OneToOne(fetch = FetchType.EAGER)
+	private User user;
 
-	public Teacher(Integer id, String firstName, String lastName, String sex) {
+	public Teacher(Integer id, String firstName, String lastName, String sex, User user) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.sex = sex;
+		this.user = user;
+	}
+
+	public Teacher() {
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public Teacher setUser(User user) {
+		this.user = user;
+		return this;
 	}
 
 	public TeacherDTO toDTO() {
-		return new TeacherDTO(id, firstName, lastName, sex);
+		return new TeacherDTO(id, firstName, lastName, sex, (user != null) ? user.toDTO() : new UserDTO());
 	}
 
 	public Integer getId() {

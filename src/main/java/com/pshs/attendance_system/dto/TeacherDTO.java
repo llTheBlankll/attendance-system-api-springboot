@@ -15,15 +15,15 @@ public class TeacherDTO implements Serializable {
 	private String firstName;
 	private String lastName;
 	private String sex;
+	private UserDTO user;
 
-	public TeacherDTO() {
-	}
 
-	public TeacherDTO(Integer id, String firstName, String lastName, String sex) {
+	public TeacherDTO(Integer id, String firstName, String lastName, String sex, UserDTO user) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.sex = sex;
+		this.user = user;
 	}
 
 	public Teacher toEntity() {
@@ -31,7 +31,17 @@ public class TeacherDTO implements Serializable {
 			.setId(id)
 			.setFirstName(firstName)
 			.setLastName(lastName)
-			.setSex(sex);
+			.setSex(sex)
+			.setUser(user.toEntity());
+	}
+
+	public UserDTO getUser() {
+		return user;
+	}
+
+	public TeacherDTO setUser(UserDTO user) {
+		this.user = user;
+		return this;
 	}
 
 	public Integer getId() {

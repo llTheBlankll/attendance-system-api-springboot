@@ -20,12 +20,14 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -227,7 +229,12 @@ public class AttendanceServiceImpl implements AttendanceService {
 					LocalTime timeSignOut = LocalTime.now();
 
 					// Update the attendance record with the student. Requires the attendance id.
-					this.updateAttendanceTimeOut(attendance.getId(), timeSignOut);
+					ExecutionStatus status = this.updateAttendanceTimeOut(attendance.getId(), timeSignOut);
+					if (status == ExecutionStatus.FAILURE) {
+						logger.debug("Failed to update the attendance record.");
+						attendanceResultDTO.setMessage("Failed to update the attendance record.");
+						return attendanceResultDTO;
+					}
 
 					// Successful attendance dto is used for sending a message to the topic exchange in topic attendance-notifications
 					attendanceResultDTO.setDate(attendance.getDate())
@@ -400,12 +407,35 @@ public class AttendanceServiceImpl implements AttendanceService {
 	/**
 	 * Get all the attendance of every student in existence within the database.
 	 *
+	 * @param date      Date of the attendance
+	 * @param sectionId Section ID
+	 * @return return the list of attendance
+	 */
+	@Override
+	public List<Attendance> getAllAttendancesByDateAndSection(LocalDate date, Integer sectionId) {
+		return attendanceRepository.getAttendanceByDateAndSection(date, sectionId);
+	}
+
+	/**
+	 * Get all the attendance of every student in existence within the database.
+	 *
 	 * @param page Page
 	 * @return return the page object
 	 */
 	@Override
 	public Page<Attendance> getAllAttendances(Pageable page) {
 		return attendanceRepository.findAll(page);
+	}
+
+	/**
+	 * Get all the attendance of every student in existence within the database.
+	 *
+	 * @param date Date of the attendance
+	 * @return return the list of attendance
+	 */
+	@Override
+	public List<Attendance> getAllAttendancesByDate(LocalDate date) {
+		return attendanceRepository.listAllAttendancesByDate(date, Sort.by(Sort.Direction.ASC, "time", "timeOut"));
 	}
 
 	/**
@@ -491,12 +521,12 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 	@Override
 	public int countAttendanceInSection(Integer sectionId, LocalDate date, Status status) {
-		return 0;
+		return (int) attendanceRepository.countAttendanceInSectionByDate(sectionId, date, status);
 	}
 
 	@Override
 	public int countAttendanceInSection(Integer sectionId, DateRange dateRange, Status status) {
-		return 0;
+		return (int) attendanceRepository.countAttendanceInSection(sectionId, dateRange.getStartDate(), dateRange.getEndDate(), status);
 	}
 
 	@Override

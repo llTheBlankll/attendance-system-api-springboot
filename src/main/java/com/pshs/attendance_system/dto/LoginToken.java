@@ -11,12 +11,14 @@ public class LoginToken implements Serializable {
 	private String token;
 	private String role;
 	private Date expiration;
+	private UserDTO user;
 
-	public LoginToken(String username, String token, String role, Date expiration) {
+	public LoginToken(String username, String token, String role, Date expiration, UserDTO user) {
 		this.username = username;
 		this.token = token;
 		this.role = role;
 		this.expiration = expiration;
+		this.user = user;
 	}
 
 	public Date getExpiration() {
@@ -25,6 +27,15 @@ public class LoginToken implements Serializable {
 
 	public LoginToken setExpiration(Date expiration) {
 		this.expiration = expiration;
+		return this;
+	}
+
+	public UserDTO getUser() {
+		return user;
+	}
+
+	public LoginToken setUser(UserDTO user) {
+		this.user = user;
 		return this;
 	}
 

@@ -191,6 +191,17 @@ public class TeacherServiceImpl implements TeacherService {
 	}
 
 	/**
+	 * Get a teacher record by user ID.
+	 *
+	 * @param userId User ID that will represent the teacher record that will be retrieved.
+	 * @return Teacher Object, return null if not found
+	 */
+	@Override
+	public Teacher getTeacherByUser(int userId) {
+		return teacherRepository.findByUserId(userId).orElse(null);
+	}
+
+	/**
 	 * Get all teacher records.
 	 *
 	 * @param page Page

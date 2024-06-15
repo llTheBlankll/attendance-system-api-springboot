@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SectionServiceImpl implements SectionService {
 
@@ -201,6 +203,16 @@ public class SectionServiceImpl implements SectionService {
 	@Override
 	public Page<Section> getAllSections(Pageable page) {
 		return sectionRepository.findAll(page);
+	}
+
+	/**
+	 * Get all sections existing in the database.
+	 *
+	 * @return The list of sections.
+	 */
+	@Override
+	public List<Section> getAllSections() {
+		return sectionRepository.findAll();
 	}
 
 	/**

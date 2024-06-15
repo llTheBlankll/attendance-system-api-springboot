@@ -1,4 +1,4 @@
-package com.pshs.attendance_system.dto;
+package com.pshs.attendance_system.dto.charts;
 
 import java.util.List;
 
