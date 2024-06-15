@@ -1,8 +1,9 @@
 package com.pshs.attendance_system.controllers.v1.secured.student;
 
-import com.pshs.attendance_system.dto.GradeLevelDTO;
+import com.pshs.attendance_system.dto.StatusMessageResponse;
+import com.pshs.attendance_system.dto.charts.CountDTO;
 import com.pshs.attendance_system.dto.MessageResponse;
-import com.pshs.attendance_system.dto.SectionDTO;
+import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -43,10 +44,18 @@ public class StudentStatisticsController {
 	})
 	public ResponseEntity<?> countAllStudentsBySexuality(@RequestParam String sex) {
 		if (sex.isEmpty()) {
-			return ResponseEntity.badRequest().body(new MessageResponse("Sexuality is required"));
+			return ResponseEntity.badRequest().body(
+				new StatusMessageResponse(
+					"Sexuality is required",
+					ExecutionStatus.VALIDATION_ERROR
+				)
+			);
 		}
 
-		return ResponseEntity.ok(studentService.countStudentsBySex(sex));
+		return ResponseEntity.ok(new CountDTO(
+			Math.toIntExact(studentService.countStudentsBySex(sex)),
+			"students"
+		));
 	}
 
 	@GetMapping("/section")
@@ -54,16 +63,23 @@ public class StudentStatisticsController {
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "The count of all student by their section.")
 	})
-	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The section of the student", required = true)
-	public ResponseEntity<?> countAllStudentsBySection(@RequestBody SectionDTO section) {
+	public ResponseEntity<?> countAllStudentsBySection(@RequestParam Integer section) {
 		if (section == null) {
-			return ResponseEntity.badRequest().body(new MessageResponse("Section object is required"));
+			return ResponseEntity.badRequest().body(
+				new StatusMessageResponse(
+					"Section object is required",
+					ExecutionStatus.VALIDATION_ERROR
+					)
+			);
 		}
 
-		return ResponseEntity.ok(studentService.countStudentsInSection(section.toEntity()));
+		return ResponseEntity.ok(new CountDTO(
+			Math.toIntExact(studentService.countStudentsInSection(section)),
+			"students"
+		));
 	}
 
-	@GetMapping("/gradelevelId")
+	@GetMapping("/grade-level")
 	@Operation(summary = "Count all students by their grade level", description = "Count all students by their grade level")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "The count of all student by their grade level.")
@@ -72,20 +88,13 @@ public class StudentStatisticsController {
 		@Parameter(name = "id", description = "The grade level id", required = true)
 	})
 	public ResponseEntity<?> countAllStudentsByGradeLevelById(@RequestParam int id) {
-		return ResponseEntity.ok(studentService.countStudentsInGradeLevel(id));
+		return ResponseEntity.ok(new CountDTO(
+			Math.toIntExact(studentService.countStudentsInGradeLevel(id)),
+			"students"
+		));
 	}
 
-	@GetMapping("/gradelevel")
-	@Operation(summary = "Count all students by their grade level", description = "Count all students by their grade level")
-	@ApiResponses({
-		@ApiResponse(responseCode = "200", description = "The count of all student by their grade level.")
-	})
-	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The grade level of the student", required = true)
-	public ResponseEntity<?> countAllStudentsByGradeLevel(@RequestBody GradeLevelDTO gradeLevelDTO) {
-		return ResponseEntity.ok(studentService.countStudentsInGradeLevel(gradeLevelDTO.toEntity()));
-	}
-
-	@GetMapping("/gradelevel/section")
+	@GetMapping("/grade-level/section")
 	@Operation(summary = "Count all students by their grade level and section", description = "Count all students by their grade level and section")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "The count of all student by their grade level and section.")
@@ -95,6 +104,9 @@ public class StudentStatisticsController {
 		@Parameter(name = "section", description = "The section of the student", required = true)
 	})
 	public ResponseEntity<?> countAllStudentsByGradeLevelAndSection(@RequestParam Integer gradeLevelId, @RequestParam Integer section) {
-		return ResponseEntity.ok(studentService.countStudentsInGradeLevelAndSection(gradeLevelId, section));
+		return ResponseEntity.ok(new CountDTO(
+			Math.toIntExact(studentService.countStudentsInGradeLevelAndSection(gradeLevelId, section)),
+			"students"
+		));
 	}
 }

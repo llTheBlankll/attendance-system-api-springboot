@@ -1,10 +1,12 @@
 package com.pshs.attendance_system.controllers.v1.secured.teacher;
 
-import com.pshs.attendance_system.dto.MessageResponse;
+import com.pshs.attendance_system.dto.StatusMessageResponse;
 import com.pshs.attendance_system.dto.StatusMessageResponse;
 import com.pshs.attendance_system.dto.TeacherDTO;
 import com.pshs.attendance_system.entities.Teacher;
 import com.pshs.attendance_system.enums.ExecutionStatus;
+import com.pshs.attendance_system.enums.ResponseStatus;
+import com.pshs.attendance_system.enums.Status;
 import com.pshs.attendance_system.services.TeacherService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -46,16 +48,36 @@ public class TeacherController {
 		ExecutionStatus status = teacherService.createTeacher(teacherDTO.toEntity());
 		switch (status) {
 			case SUCCESS -> {
-				return ResponseEntity.ok(new MessageResponse("Teacher record created successfully."));
+				return ResponseEntity.ok(
+					new StatusMessageResponse(
+						"Teacher record created successfully.",
+						ExecutionStatus.SUCCESS
+					)
+				);
 			}
 			case FAILURE -> {
-				return ResponseEntity.status(HttpStatus.CONFLICT).body(new MessageResponse("Failed to create teacher record."));
+				return ResponseEntity.status(HttpStatus.CONFLICT).body(
+					new StatusMessageResponse(
+						"Failed to create teacher record.",
+						ExecutionStatus.FAILURE
+					)
+				);
 			}
 			case VALIDATION_ERROR -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Validation error occurred."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Validation error occurred.",
+						ExecutionStatus.VALIDATION_ERROR
+					)
+				);
 			}
 			default -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Failed to create teacher record."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Failed to create teacher record.",
+						ExecutionStatus.FAILURE
+					)
+				);
 			}
 		}
 	}
@@ -74,13 +96,28 @@ public class TeacherController {
 		ExecutionStatus status = teacherService.deleteTeacher(id);
 		switch (status) {
 			case SUCCESS -> {
-				return ResponseEntity.ok(new MessageResponse("Teacher record deleted successfully."));
+				return ResponseEntity.ok(
+					new StatusMessageResponse(
+						"Teacher record deleted successfully.",
+						ExecutionStatus.SUCCESS
+					)
+				);
 			}
 			case NOT_FOUND -> {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Teacher record not found."));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					new StatusMessageResponse(
+						"Teacher record not found.",
+						ExecutionStatus.NOT_FOUND
+					)
+				);
 			}
 			default -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Failed to delete teacher record."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Failed to delete teacher record.",
+						ExecutionStatus.FAILURE
+					)
+				);
 			}
 		}
 	}
@@ -100,18 +137,66 @@ public class TeacherController {
 		ExecutionStatus status = teacherService.updateTeacher(id, teacherDTO.toEntity());
 		switch (status) {
 			case SUCCESS -> {
-				return ResponseEntity.ok(new MessageResponse("Teacher record updated successfully."));
+				return ResponseEntity.ok(
+					new StatusMessageResponse(
+						"Teacher record updated successfully.",
+						ExecutionStatus.SUCCESS
+					)
+				);
 			}
 			case NOT_FOUND -> {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Teacher record not found."));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					new StatusMessageResponse(
+						"Teacher record not found.",
+						ExecutionStatus.NOT_FOUND
+					)
+				);
 			}
 			case VALIDATION_ERROR -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Validation error occurred."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Validation error occurred.",
+						ExecutionStatus.VALIDATION_ERROR
+					)
+				);
 			}
 			default -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Failed to update teacher record."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Failed to update teacher record.",
+						ExecutionStatus.FAILURE
+					)
+				);
 			}
 		}
+	}
+
+	@GetMapping("/user")
+	@Operation(summary = "Get Teacher by User ID", description = "Get a teacher record by user ID.")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "Teacher record retrieved successfully.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")}),
+		@ApiResponse(responseCode = "404", description = "Teacher record not found.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")})
+	})
+	@Parameters({
+		@Parameter(name = "id", description = "The ID of the user.")
+	})
+	public ResponseEntity<?> getTeacherByUserId(@RequestParam Integer id) {
+		if (id == null) {
+			return ResponseEntity.badRequest().body(new StatusMessageResponse("User ID is required.", ExecutionStatus.INVALID));
+		}
+		Teacher teacher = teacherService.getTeacherByUser(id);
+
+		// Check if teacher is null.
+		if (teacher == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+				new StatusMessageResponse(
+					"Teacher record not found.",
+					ExecutionStatus.NOT_FOUND
+				)
+			);
+		}
+
+		return ResponseEntity.ok(teacher.toDTO());
 	}
 
 	@PatchMapping(value = "/first-name", consumes = "application/json", produces = "application/json")
@@ -129,16 +214,36 @@ public class TeacherController {
 		ExecutionStatus status = teacherService.updateTeacherFirstName(id, firstName);
 		switch (status) {
 			case SUCCESS -> {
-				return ResponseEntity.ok(new MessageResponse("Teacher first name was updated successfully."));
+				return ResponseEntity.ok(
+					new StatusMessageResponse(
+						"Teacher first name was updated successfully.",
+						ExecutionStatus.SUCCESS
+					)
+				);
 			}
 			case NOT_FOUND -> {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Teacher record not found."));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					new StatusMessageResponse(
+						"Teacher record not found.",
+						ExecutionStatus.NOT_FOUND
+					)
+				);
 			}
 			case VALIDATION_ERROR -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Validation error occurred."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Validation error occurred.",
+						ExecutionStatus.VALIDATION_ERROR
+					)
+				);
 			}
 			default -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Failed to update teacher record."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Failed to update teacher record.",
+						ExecutionStatus.FAILURE
+					)
+				);
 			}
 		}
 	}
@@ -158,16 +263,36 @@ public class TeacherController {
 		ExecutionStatus status = teacherService.updateTeacherLastName(id, lastName);
 		switch (status) {
 			case SUCCESS -> {
-				return ResponseEntity.ok(new MessageResponse("Teacher last name was updated successfully."));
+				return ResponseEntity.ok(
+					new StatusMessageResponse(
+						"Teacher last name was updated successfully.",
+						ExecutionStatus.SUCCESS
+					)
+				);
 			}
 			case NOT_FOUND -> {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Teacher record not found."));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					new StatusMessageResponse(
+						"Teacher record not found.",
+						ExecutionStatus.NOT_FOUND
+					)
+				);
 			}
 			case VALIDATION_ERROR -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Validation error occurred."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Validation error occurred.",
+						ExecutionStatus.VALIDATION_ERROR
+					)
+				);
 			}
 			default -> {
-				return ResponseEntity.badRequest().body(new MessageResponse("Failed to update teacher record."));
+				return ResponseEntity.badRequest().body(
+					new StatusMessageResponse(
+						"Failed to update teacher record.",
+						ExecutionStatus.FAILURE
+					)
+				);
 			}
 		}
 	}
@@ -186,7 +311,12 @@ public class TeacherController {
 
 		// Check if teacher is null.
 		if (teacher == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Teacher record not found."));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+				new StatusMessageResponse(
+					"Teacher record not found.",
+					ExecutionStatus.NOT_FOUND
+				)
+			);
 		}
 
 		return ResponseEntity.ok(teacher.toDTO());
@@ -246,7 +376,12 @@ public class TeacherController {
 	public ResponseEntity<?> countAllTeachers() {
 		int count = teacherService.getTeacherCount();
 		if (count <= 0) {
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new MessageResponse("No teacher records found."));
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
+				new StatusMessageResponse(
+					"No teacher records found.",
+					ExecutionStatus.NOT_FOUND
+				)
+			);
 		}
 
 		return ResponseEntity.status(HttpStatus.OK).body(new StatusMessageResponse(String.valueOf(count), ExecutionStatus.SUCCESS));
