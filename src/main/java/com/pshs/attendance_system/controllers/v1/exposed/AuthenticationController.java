@@ -40,7 +40,10 @@ public class AuthenticationController {
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<?> handleHttpMessageNotReadableException() {
 		return ResponseEntity.badRequest().body(
-			new MessageResponse("Request Body is required.")
+			new StatusMessageResponse(
+				"Request body is missing.",
+				ExecutionStatus.INVALID
+			)
 		);
 	}
 
@@ -55,7 +58,8 @@ public class AuthenticationController {
 				user.getUsername(),
 				jwtService.generateToken(user),
 				user.getRole(),
-				new Date(System.currentTimeMillis() + jwtService.getExpirationTime())
+				new Date(System.currentTimeMillis() + jwtService.getExpirationTime()),
+				user.toDTO()
 			);
 
 			// Update user last login time
@@ -68,15 +72,24 @@ public class AuthenticationController {
 
 			// Return error response if the last login time was not updated which should not happen
 			return ResponseEntity.badRequest().body(
-				new MessageResponse("An error occurred while processing your request.")
+				new StatusMessageResponse(
+					"Failed to update last login time.",
+					ExecutionStatus.FAILURE
+				)
 			);
 		} catch (BadCredentialsException e) { // Catch bad credentials exception
 			return ResponseEntity.badRequest().body(
-				new MessageResponse("Invalid username or password.")
+				new StatusMessageResponse(
+					"Invalid username or password.",
+					ExecutionStatus.INVALID
+				)
 			);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(
-				new MessageResponse("ERR: " + e.getMessage())
+				new StatusMessageResponse(
+					"An error occurred.",
+					ExecutionStatus.FAILURE
+				)
 			);
 		}
 	}
