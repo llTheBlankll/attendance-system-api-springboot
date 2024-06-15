@@ -28,10 +28,12 @@ CREATE CAST (CHARACTER VARYING as Status) WITH INOUT AS IMPLICIT;
 CREATE TABLE IF NOT EXISTS teachers
 (
     id         SERIAL,
+    user_id    INT,
     first_name VARCHAR(32),
     last_name  VARCHAR(32),
     sex        VARCHAR(16),
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE SET NULL
 );
 
 -- * SECTIONS TABLE
@@ -107,9 +109,9 @@ CREATE TABLE IF NOT EXISTS Attendances
     student_id BIGINT NOT NULL,
     status     Status,
     date       DATE UNIQUE DEFAULT CURRENT_DATE,
-    time       TIME DEFAULT LOCALTIME,
-    time_out   TIME DEFAULT LOCALTIME,
-    UNIQUE (student_id, date),
+    time       TIME        DEFAULT LOCALTIME,
+    time_out   TIME        DEFAULT LOCALTIME,
+    UNIQUE (student_id, date, status),
     CONSTRAINT fk_student_lrn FOREIGN KEY (student_id) REFERENCES students (lrn) ON DELETE SET NULL ON UPDATE CASCADE
 );
 CREATE INDEX attendance_date_idx on Attendances (date);
@@ -125,9 +127,9 @@ CREATE INDEX attendance_student_id_idx ON Attendances (student_id);
 CREATE TABLE IF NOT EXISTS Users
 (
     id                     SERIAL PRIMARY KEY,
-    username               VARCHAR(64),
+    username               VARCHAR(64) UNIQUE,
     password               CHAR(60),
-    email                  VARCHAR(128),
+    email                  VARCHAR(128) UNIQUE,
     role                   VARCHAR(48) DEFAULT 'GUEST',
     is_expired             BOOLEAN     DEFAULT FALSE,
     is_locked              BOOLEAN     DEFAULT FALSE,
