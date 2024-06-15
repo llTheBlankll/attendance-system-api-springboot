@@ -191,7 +191,7 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 	}
 
 	private boolean isGradeLevelValid(GradeLevel gradeLevel) {
-		return gradeLevel.getName() != null || !gradeLevel.getName().isEmpty();
+		return gradeLevel.getName().isEmpty();
 	}
 
 	private ExecutionStatus gradeLevelNotFound(int gradeLevelId) {
