@@ -133,6 +133,17 @@ public interface AttendanceService {
 	 */
 	Page<Attendance> getAllAttendancesByDate(LocalDate date, Pageable page);
 
+	/**
+	 * Get all the attendance of every student in existence within the database.
+	 *
+	 * @param date Date of the attendance
+	 * @param sectionId Section ID
+	 * @param gradeLevelId Grade Level ID
+	 * @param page Page
+	 * @return return the page object
+	 */
+	Page<Attendance> getAllSectionAndGradeLevelAttendanceByDate(LocalDate date, Integer sectionId, Integer gradeLevelId, Pageable page);
+
 	// End Region: Custom Queries
 
 	// Region: Statistics / Numbers

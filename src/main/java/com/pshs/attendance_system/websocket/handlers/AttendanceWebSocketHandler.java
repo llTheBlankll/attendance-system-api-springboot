@@ -70,7 +70,7 @@ public class AttendanceWebSocketHandler extends TextWebSocketHandler {
 		// Checks if rfid credential doesn't exist and don't continue execution.
 		if (rfidCredential == null) {
 			session.sendMessage(
-				new TextMessage(mapper.writeValueAsString(new StatusMessageResponse("FAILURE", ExecutionStatus.FAILURE)))
+				new TextMessage(mapper.writeValueAsString(new StatusMessageResponse("FAILURE", ExecutionStatus.FAILED)))
 			);
 			return;
 		}

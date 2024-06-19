@@ -94,4 +94,9 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Integer>
 
 	@Query("select a from Attendance a where a.date = :date and a.student.section.id = :id")
 	List<Attendance> getAttendanceByDateAndSection(@Param("date") @NonNull LocalDate date, @Param("id") @NonNull Integer id);
+
+	@Query("""
+		select a from Attendance a
+		where a.student.section.id = :id and a.student.gradeLevel.id = :id1 and a.date = :date""")
+	Page<Attendance> getAllSectionAndGradeLevelAttendanceByDate(@Param("id") @NonNull Integer id, @Param("id1") @NonNull Integer id1, @Param("date") @NonNull LocalDate date, Pageable pageable);
 }
