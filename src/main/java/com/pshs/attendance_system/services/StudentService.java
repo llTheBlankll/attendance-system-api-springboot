@@ -3,7 +3,6 @@
 package com.pshs.attendance_system.services;
 
 import com.pshs.attendance_system.entities.GradeLevel;
-import com.pshs.attendance_system.entities.Guardian;
 import com.pshs.attendance_system.entities.Section;
 import com.pshs.attendance_system.entities.Student;
 import com.pshs.attendance_system.enums.ExecutionStatus;
@@ -72,14 +71,6 @@ public interface StudentService {
 	Student getStudentById(Long id);
 
 	/**
-	 * Get the student record by providing the student guardian.
-	 *
-	 * @param guardian Guardian of the student
-	 * @return {@link Student}
-	 */
-	Student getStudentByGuardian(Guardian guardian);
-
-	/**
 	 * Get the student record by providing the guardian id
 	 *
 	 * @param guardianId Guardian ID
@@ -132,16 +123,7 @@ public interface StudentService {
 	 * @param page       the page number of the results
 	 * @return a page of Student objects that match the search criteria
 	 */
-	Page<Student> searchStudentsByGradeLevel(int gradeLevel, Pageable page);
-
-	/**
-	 * Search students by their grade level.
-	 *
-	 * @param gradeLevel the grade level to search for
-	 * @param page       the page number of the results
-	 * @return a page of Student objects that match the search criteria
-	 */
-	Page<Student> searchStudentsByGradeLevel(GradeLevel gradeLevel, Pageable page);
+	Page<Student> getStudentsInGradeLevel(int gradeLevel, Pageable page);
 
 	/**
 	 * Search students by their section ID.
@@ -150,16 +132,8 @@ public interface StudentService {
 	 * @param page      the page number of the results
 	 * @return a page of Student objects that match the search criteria
 	 */
-	Page<Student> searchStudentsBySection(int sectionId, Pageable page);
+	Page<Student> getStudentsInSection(int sectionId, Pageable page);
 
-	/**
-	 * Search students by their section.
-	 *
-	 * @param section the section to search for
-	 * @param page    the page number of the results
-	 * @return a page of Student objects that match the search criteria
-	 */
-	Page<Student> searchStudentsBySection(Section section, Pageable page);
 	// End Region
 
 	// Region: Statistics: Statistics
@@ -238,4 +212,6 @@ public interface StudentService {
 	Long countStudentsInGradeLevelAndSection(int gradeLevelId, int sectionId);
 
 	boolean isStudentExist(Long studentId);
+
+	// End Region
 }

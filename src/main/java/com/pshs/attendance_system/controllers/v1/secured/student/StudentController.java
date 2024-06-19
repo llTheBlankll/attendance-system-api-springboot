@@ -13,9 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +50,7 @@ public class StudentController {
 		return ResponseEntity.ok(dtoPage);
 	}
 
-	@PostMapping("/")
+	@PostMapping("/create")
 	@Operation(summary = "Create student", description = "Create student")
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Student to create", required = true)
 	@ApiResponses({
@@ -75,30 +73,10 @@ public class StudentController {
 	})
 	public ResponseEntity<?> deleteStudent(@PathVariable Integer id) {
 		if (id == null) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student ID is required", ExecutionStatus.FAILURE));
+			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student ID is required", ExecutionStatus.FAILED));
 		}
 
 		ExecutionStatus status = studentService.deleteStudent(id);
-		if (status == ExecutionStatus.SUCCESS) {
-			return ResponseEntity.ok(new StatusMessageResponse("Student deleted successfully", status));
-		} else {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student deletion failed", status));
-		}
-	}
-
-	@DeleteMapping("/student")
-	@Operation(summary = "Delete student", description = "Delete student")
-	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Student to delete", required = true)
-	@ApiResponses({
-		@ApiResponse(responseCode = "200", description = "Student deleted successfully"),
-		@ApiResponse(responseCode = "400", description = "Student deletion failed")
-	})
-	public ResponseEntity<?> deleteStudent(@RequestBody StudentDTO student) {
-		if (student == null) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student ID is required", ExecutionStatus.FAILURE));
-		}
-
-		ExecutionStatus status = studentService.deleteStudent(student.toEntity());
 		if (status == ExecutionStatus.SUCCESS) {
 			return ResponseEntity.ok(new StatusMessageResponse("Student deleted successfully", status));
 		} else {
@@ -119,7 +97,7 @@ public class StudentController {
 	public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO) {
 		// Validation
 		if (id == null) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student ID is required", ExecutionStatus.FAILURE));
+			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student ID is required", ExecutionStatus.FAILED));
 		}
 
 		ExecutionStatus status = studentService.updateStudent(id, studentDTO.toEntity());
@@ -140,12 +118,12 @@ public class StudentController {
 		@ApiResponse(responseCode = "400", description = "Student grade level update failed")
 	})
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Student grade level to update", required = true)
-	public ResponseEntity<?> updateStudentGradeLevel(@PathVariable Long id, @RequestBody GradeLevelDTO gradeLevel) {
+	public ResponseEntity<?> updateStudentGradeLevel(@PathVariable Long id, @RequestParam Integer gradeLevelId) {
 		if (id == null) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student ID is required", ExecutionStatus.FAILURE));
+			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student ID is required", ExecutionStatus.FAILED));
 		}
 
-		ExecutionStatus status = studentService.updateStudentGradeLevel(id, gradeLevel.getId());
+		ExecutionStatus status = studentService.updateStudentGradeLevel(id, gradeLevelId);
 		if (status == ExecutionStatus.SUCCESS) {
 			return ResponseEntity.ok(new StatusMessageResponse("Student grade level updated successfully", status));
 		} else {
@@ -162,13 +140,12 @@ public class StudentController {
 		@ApiResponse(responseCode = "200", description = "Student section updated successfully"),
 		@ApiResponse(responseCode = "400", description = "Student section update failed")
 	})
-	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Student section to update", required = true)
-	public ResponseEntity<?> updateStudentSection(@PathVariable Long id, @RequestBody SectionDTO section) {
+	public ResponseEntity<?> updateStudentSection(@PathVariable Long id, @RequestParam Integer sectionId) {
 		if (id == null) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student ID is required", ExecutionStatus.FAILURE));
+			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student ID is required", ExecutionStatus.FAILED));
 		}
 
-		ExecutionStatus status = studentService.updateStudentSection(id, section.getId());
+		ExecutionStatus status = studentService.updateStudentSection(id, sectionId);
 		if (status == ExecutionStatus.SUCCESS) {
 			return ResponseEntity.ok(new StatusMessageResponse("Student section updated successfully", status));
 		} else {
@@ -188,23 +165,13 @@ public class StudentController {
 	public ResponseEntity<?> getStudentById(@PathVariable Long id) {
 		Student student = studentService.getStudentById(id);
 		if (student == null) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student not found", ExecutionStatus.FAILURE));
+			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student not found", ExecutionStatus.FAILED));
 		}
+
 		return ResponseEntity.ok(student.toDTO());
 	}
 
 	@GetMapping("/by-guardian")
-	@Operation(summary = "Get students by guardian", description = "Get students by guardian")
-	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Guardian ID", required = true)
-	@ApiResponses({
-		@ApiResponse(responseCode = "200", description = "Students returned successfully"),
-		@ApiResponse(responseCode = "400", description = "Students not found")
-	})
-	public ResponseEntity<?> getStudentsByGuardian(@RequestBody GuardianDTO guardian) {
-		return ResponseEntity.ok(studentService.getStudentByGuardian(guardian.toEntity()));
-	}
-
-	@GetMapping("/by-guardian-id")
 	@Operation(summary = "Get students by guardian", description = "Get student by guardian id")
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Guardian ID", required = true)
 	@ApiResponses({
@@ -212,7 +179,7 @@ public class StudentController {
 		@ApiResponse(responseCode = "400", description = "Students not found")
 	})
 	public ResponseEntity<?> getStudentsByGuardian(@RequestParam Integer guardianId) {
-		return ResponseEntity.ok(studentService.getStudentByGuardian(guardianId));
+		return ResponseEntity.ok(studentService.getStudentByGuardian(guardianId).toDTO());
 	}
 
 	@GetMapping("/search")
@@ -225,13 +192,115 @@ public class StudentController {
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Students returned successfully")
 	})
-	public ResponseEntity<?> searchStudents(@RequestParam String firstName, @RequestParam String lastName, @RequestParam int page, @RequestParam int size) {
-		if (firstName != null && lastName == null) {
-			return ResponseEntity.ok(studentService.searchStudentsByFirstName(firstName, PageRequest.of(page, size)));
-		} else if (firstName == null && lastName != null) {
-			return ResponseEntity.ok(studentService.searchStudentsByLastName(lastName, PageRequest.of(page, size)));
-		} else {
-			return ResponseEntity.ok(studentService.searchStudentsByFirstAndLastName(firstName, lastName, PageRequest.of(page, size)));
+	public ResponseEntity<?> searchStudents(@RequestParam String firstName, @RequestParam String lastName, @RequestParam int page, @RequestParam int size,
+	                                        @RequestParam(required = false, defaultValue = "false") Boolean noPaging,
+	                                        @RequestParam(required = false, defaultValue = "ASC") Sort.Direction orderBy,
+	                                        @RequestParam(required = false, defaultValue = "lastName") String sortBy) {
+		Sort sort = Sort.by(orderBy, sortBy);
+		if (noPaging) {
+			return ResponseEntity.ok(
+				convertStudentPageToDTO(
+					studentService.searchStudentsByFirstAndLastName(
+						firstName, lastName, Pageable.unpaged(sort)
+					),
+					sort
+				)
+			);
 		}
+
+		if (firstName != null && lastName == null) {
+			return ResponseEntity.ok(
+				convertStudentPageToDTO(
+					studentService.searchStudentsByFirstName(firstName, PageRequest.of(page, size, sort)),
+					sort
+				)
+			);
+		} else if (firstName == null && lastName != null) {
+			return ResponseEntity.ok(
+				convertStudentPageToDTO(
+					studentService.searchStudentsByLastName(lastName, PageRequest.of(page, size, sort)),
+					sort
+				)
+			);
+		} else {
+			return ResponseEntity.ok(
+				convertStudentPageToDTO(
+					studentService.searchStudentsByFirstAndLastName(firstName, lastName, PageRequest.of(page, size, sort)),
+					sort
+				)
+			);
+		}
+	}
+
+	@GetMapping("/all/grade-level/{id}")
+	@Operation(summary = "Get all students by grade level", description = "Get all students by grade level")
+	@Parameters({
+		@Parameter(name = "id", description = "Grade level ID", required = true)
+	})
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "Students returned successfully")
+	})
+	public ResponseEntity<?> getStudentsByGradeLevel(@PathVariable Integer id,
+	                                                 @RequestParam int page, @RequestParam int size,
+	                                                 @RequestParam(required = false, defaultValue = "false") Boolean noPaging,
+	                                                 @RequestParam(required = false, defaultValue = "ASC") Sort.Direction orderBy,
+	                                                 @RequestParam(required = false, defaultValue = "lastName") String sortBy) {
+		Sort sort = Sort.by(orderBy, sortBy);
+		if (noPaging) {
+			// Convert Page<Student> to Page<StudentDTO> and return
+			Page<Student> students = studentService.getStudentsInGradeLevel(id, Pageable.unpaged(sort));
+			return ResponseEntity.ok(
+				convertStudentPageToDTO(students, sort)
+			);
+		}
+
+		// Convert Page<Student> to Page<StudentDTO> and return
+		Page<Student> students = studentService.getStudentsInGradeLevel(id, PageRequest.of(page, size, sort));
+		return ResponseEntity.ok(
+			new PageImpl<>(students.getContent().stream().map(Student::toDTO).collect(Collectors.toList()), PageRequest.of(page, size, sort), students.getTotalElements())
+		);
+	}
+
+	@GetMapping("/all/section/{id}")
+	@Operation(summary = "Get all students by section", description = "Get all students by section")
+	@Parameters({
+		@Parameter(name = "id", description = "Section ID", required = true)
+	})
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "Students returned successfully")
+	})
+	public ResponseEntity<?> getStudentsBySection(@PathVariable Integer id,
+	                                              @RequestParam int page, @RequestParam int size,
+	                                              @RequestParam(required = false, defaultValue = "false") Boolean noPaging,
+	                                              @RequestParam(required = false, defaultValue = "ASC") Sort.Direction orderBy,
+	                                              @RequestParam(required = false, defaultValue = "lastName") String sortBy) {
+		Sort sort = Sort.by(orderBy, sortBy);
+		if (noPaging) {
+			// Convert Page<Student> to Page<StudentDTO>
+			Page<Student> students = studentService.getStudentsInSection(id, Pageable.unpaged(sort));
+
+			if (students != null) {
+				return ResponseEntity.ok(
+					convertStudentPageToDTO(students, sort)
+				);
+			}
+		}
+
+		Page<Student> students = studentService.getStudentsInSection(id, PageRequest.of(page, size, sort));
+		return ResponseEntity.ok(
+			convertStudentPageToDTO(students, sort)
+		);
+	}
+
+	private Page<StudentDTO> convertStudentPageToDTO(Page<Student> studentPage, Sort sort) {
+		return new PageImpl<>(studentPage.getContent().stream()
+			.map(Student::toDTO)
+			.collect(Collectors.toList()), PageRequest.of(studentPage.getNumber(), studentPage.getSize(), sort), studentPage.getTotalElements());
+	}
+
+	private Page<StudentDTO> convertStudentPageToDTO(Page<Student> studentPage) {
+		return new PageImpl<>(studentPage.getContent().stream()
+			.map(Student::toDTO)
+			.collect(Collectors.toList()), PageRequest.of(studentPage.getNumber(), studentPage.getSize()), studentPage.getTotalElements());
 	}
 }
