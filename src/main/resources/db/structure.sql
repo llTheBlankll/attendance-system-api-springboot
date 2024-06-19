@@ -4,7 +4,6 @@ CREATE TABLE strands
     name VARCHAR(255) NOT NULL
 );
 
-
 -- * GRADE LEVELS TABLE
 CREATE TABLE IF NOT EXISTS grade_levels
 (
@@ -14,6 +13,24 @@ CREATE TABLE IF NOT EXISTS grade_levels
     -- The length of a name should be at least 3 characters.
     CONSTRAINT name_length CHECK (LENGTH(name) >= 3),
     FOREIGN KEY (strand) REFERENCES strands (id)
+);
+
+-- * CREATE USERS TABLE
+CREATE TABLE IF NOT EXISTS users
+(
+    id                     SERIAL PRIMARY KEY,
+    username               VARCHAR(64) UNIQUE,
+    password               CHAR(60),
+    email                  VARCHAR(128) UNIQUE,
+    role                   VARCHAR(48) DEFAULT 'GUEST',
+    is_expired             BOOLEAN     DEFAULT FALSE,
+    is_locked              BOOLEAN     DEFAULT FALSE,
+    is_credentials_expired BOOLEAN     DEFAULT FALSE,
+    is_enabled             BOOLEAN     DEFAULT TRUE,
+    last_login             TIMESTAMP,
+    created_at             TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
+    CHECK ( LENGTH(username) >= 3 ),
+    CHECK ( LENGTH(email) >= 3 )
 );
 
 -- * Create enum types for each table.
@@ -33,7 +50,7 @@ CREATE TABLE IF NOT EXISTS teachers
     last_name  VARCHAR(32),
     sex        VARCHAR(16),
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE SET NULL
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL
 );
 
 -- * SECTIONS TABLE
@@ -103,43 +120,26 @@ CREATE INDEX guardian_student_id_idx ON guardians (student_lrn);
 CREATE INDEX guardian_full_name_idx ON guardians (full_name);
 
 -- * ATTENDANCE TABLE
-CREATE TABLE IF NOT EXISTS Attendances
+CREATE TABLE IF NOT EXISTS attendances
 (
     id         SERIAL PRIMARY KEY,
     student_id BIGINT NOT NULL,
     status     Status,
-    date       DATE UNIQUE DEFAULT CURRENT_DATE,
-    time       TIME        DEFAULT LOCALTIME,
-    time_out   TIME        DEFAULT LOCALTIME,
+    date       DATE DEFAULT CURRENT_DATE,
+    time       TIME DEFAULT LOCALTIME,
+    time_out   TIME DEFAULT LOCALTIME,
     UNIQUE (student_id, date, status),
     CONSTRAINT fk_student_lrn FOREIGN KEY (student_id) REFERENCES students (lrn) ON DELETE SET NULL ON UPDATE CASCADE
 );
-CREATE INDEX attendance_date_idx on Attendances (date);
+CREATE INDEX attendance_date_idx on attendances (date);
 
 -- * MAKE ATTENDANCE ENUM TYPE CHARACTER VARYING
-ALTER TABLE Attendances
+ALTER TABLE attendances
     ALTER COLUMN status TYPE CHARACTER VARYING;
 
 -- * CREATE STUDENT ID INDEX
-CREATE INDEX attendance_student_id_idx ON Attendances (student_id);
+CREATE INDEX attendance_student_id_idx ON attendances (student_id);
 
--- * CREATE USERS TABLE
-CREATE TABLE IF NOT EXISTS Users
-(
-    id                     SERIAL PRIMARY KEY,
-    username               VARCHAR(64) UNIQUE,
-    password               CHAR(60),
-    email                  VARCHAR(128) UNIQUE,
-    role                   VARCHAR(48) DEFAULT 'GUEST',
-    is_expired             BOOLEAN     DEFAULT FALSE,
-    is_locked              BOOLEAN     DEFAULT FALSE,
-    is_credentials_expired BOOLEAN     DEFAULT FALSE,
-    is_enabled             BOOLEAN     DEFAULT TRUE,
-    last_login             TIMESTAMP,
-    created_at             TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
-    CHECK ( LENGTH(username) >= 3 ),
-    CHECK ( LENGTH(email) >= 3 )
-);
 
 -- CREATE TRIGGER AND NOTIFY --
 CREATE OR REPLACE FUNCTION notify_changes_attendance() RETURNS TRIGGER AS
@@ -163,7 +163,7 @@ $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER on_event_attendance
     AFTER INSERT OR UPDATE
-    ON Attendances
+    ON attendances
     FOR EACH ROW
 EXECUTE FUNCTION notify_changes_attendance();
 
