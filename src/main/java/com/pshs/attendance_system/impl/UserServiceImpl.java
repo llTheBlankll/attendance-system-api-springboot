@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 			return ExecutionStatus.SUCCESS;
 		}
 
-		return ExecutionStatus.FAILURE;
+		return ExecutionStatus.FAILED;
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
 
 		// If null, return FAILURE.
 		if (user == null) {
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 
 		// Set the password and save it.
@@ -164,7 +164,7 @@ public class UserServiceImpl implements UserService {
 
 		if (status <= 0) {
 			logger.debug("Failed to update user {} lock status.", userId);
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 
 		logger.debug("User {} lock status has been updated.", userId);
@@ -197,7 +197,7 @@ public class UserServiceImpl implements UserService {
 
 		if (status <= 0) {
 			logger.debug("Failed to update user {} enabled status.", userId);
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 
 		logger.debug("User {} enabled status has been updated.", userId);
@@ -230,7 +230,7 @@ public class UserServiceImpl implements UserService {
 
 		if (status <= 0) {
 			logger.debug("Failed to update user {} expired status.", userId);
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 
 		logger.debug("User {} expired status has been updated.", userId);
@@ -264,7 +264,7 @@ public class UserServiceImpl implements UserService {
 
 		if (status <= 0) {
 			logger.debug("Failed to update user {} credentials is expired status", userId);
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 
 		logger.debug("User {} credentials expired status", userId);
@@ -436,6 +436,6 @@ public class UserServiceImpl implements UserService {
 	 */
 	private ExecutionStatus userInvalidId(int userId) {
 		logger.warn("Invalid user id {}.", userId);
-		return ExecutionStatus.FAILURE;
+		return ExecutionStatus.FAILED;
 	}
 }

@@ -160,7 +160,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 		}
 
 		int rowAffected = attendanceRepository.updateAttendanceTimeOut(timeOut, id);
-		return (rowAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILURE;
+		return (rowAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILED;
 	}
 
 	@Override
@@ -230,7 +230,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 					// Update the attendance record with the student. Requires the attendance id.
 					ExecutionStatus status = this.updateAttendanceTimeOut(attendance.getId(), timeSignOut);
-					if (status == ExecutionStatus.FAILURE) {
+					if (status == ExecutionStatus.FAILED) {
 						logger.debug("Failed to update the attendance record.");
 						attendanceResultDTO.setMessage("Failed to update the attendance record.");
 						return attendanceResultDTO;
@@ -453,6 +453,20 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return attendanceRepository.getAllAttendancesByDate(date, page);
 	}
 
+	/**
+	 * Get all the attendance of every student in existence within the database.
+	 *
+	 * @param date         Date of the attendance
+	 * @param sectionId    Section ID
+	 * @param gradeLevelId Grade Level ID
+	 * @param page         Page
+	 * @return return the page object
+	 */
+	@Override
+	public Page<Attendance> getAllSectionAndGradeLevelAttendanceByDate(LocalDate date, Integer sectionId, Integer gradeLevelId, Pageable page) {
+		return attendanceRepository.getAllSectionAndGradeLevelAttendanceByDate(sectionId, gradeLevelId, date, page);
+	}
+
 	// End: Retrieval Region
 
 	// Region: Statistics Region
@@ -625,6 +639,6 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 	private ExecutionStatus attendanceInvalidIdLog(int id) {
 		logger.debug("Attendance ID: {} is invalid.", id);
-		return ExecutionStatus.FAILURE;
+		return ExecutionStatus.FAILED;
 	}
 }

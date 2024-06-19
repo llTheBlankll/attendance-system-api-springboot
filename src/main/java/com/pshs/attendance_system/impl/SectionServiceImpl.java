@@ -42,7 +42,7 @@ public class SectionServiceImpl implements SectionService {
 
 		if (isExists(section)) {
 			logger.debug("Can't create section {}, Section already exists.", section.getSectionName());
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 
 		sectionRepository.save(section);
@@ -116,11 +116,11 @@ public class SectionServiceImpl implements SectionService {
 		if (teacher != null) {
 			int rowsAffected = sectionRepository.updateSectionTeacher(teacher, sectionId);
 			logTeacherAssigned(sectionId, teacher.getId());
-			return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILURE;
+			return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILED;
 		}
 
 		logger.debug("Failed to update section with id: {} Teacher not found.", sectionId);
-		return ExecutionStatus.FAILURE;
+		return ExecutionStatus.FAILED;
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class SectionServiceImpl implements SectionService {
 
 		int rowsAffected = sectionRepository.updateSectionTeacher(teacher, sectionId);
 		logTeacherAssigned(sectionId, teacher.getId());
-		return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILURE;
+		return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILED;
 	}
 
 	/**
@@ -166,10 +166,10 @@ public class SectionServiceImpl implements SectionService {
 
 		if (strand != null) {
 			int rowsAffected = sectionRepository.updateSectionStrand(strand, sectionId);
-			return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILURE;
+			return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILED;
 		}
 
-		return ExecutionStatus.FAILURE;
+		return ExecutionStatus.FAILED;
 	}
 
 	/**
@@ -191,7 +191,7 @@ public class SectionServiceImpl implements SectionService {
 
 		int rowsAffected = sectionRepository.updateSectionStrand(strand, sectionId);
 		logger.debug("Section with id: {} has been updated with new strand: {}.", sectionId, strand.getId());
-		return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILURE;
+		return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILED;
 	}
 
 	/**
@@ -230,7 +230,7 @@ public class SectionServiceImpl implements SectionService {
 
 		int rowsAffected = sectionRepository.updateSectionName(sectionName, sectionId);
 		logger.debug("Section with id: {} has been updated with new section name: {}.", sectionId, sectionName);
-		return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILURE;
+		return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILED;
 	}
 
 	/**
@@ -256,11 +256,11 @@ public class SectionServiceImpl implements SectionService {
 		if (gradeLevel != null) {
 			int rowsAffected = sectionRepository.updateSectionGradeLevel(gradeLevel, sectionId);
 			logger.debug("Section with id: {} has been updated with new grade level: {}.", sectionId, gradeLevel.getId());
-			return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILURE;
+			return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILED;
 		}
 
 		logger.debug("Failed to update section with id: {} Grade level not found.", sectionId);
-		return ExecutionStatus.FAILURE;
+		return ExecutionStatus.FAILED;
 	}
 
 	/**
@@ -279,7 +279,7 @@ public class SectionServiceImpl implements SectionService {
 		if (isExists(sectionId)) {
 			int rowsAffected = sectionRepository.updateSectionGradeLevel(gradeLevel, sectionId);
 			logger.debug("Section with id: {} has been assigned with new grade level: {}.", sectionId, gradeLevel.getId());
-			return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILURE;
+			return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILED;
 		}
 
 		return logNotFound(sectionId);

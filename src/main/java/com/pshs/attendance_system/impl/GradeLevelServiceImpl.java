@@ -9,7 +9,6 @@ import com.pshs.attendance_system.services.GradeLevelService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +53,7 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 	@Override
 	public ExecutionStatus deleteGradeLevel(int gradeLevelId) {
 		if (gradeLevelId <= 0) {
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 
 		if (!isGradeLevelExist(gradeLevelId)) {
@@ -76,7 +75,7 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 	@Override
 	public ExecutionStatus updateGradeLevel(int gradeLevelId, GradeLevel gradeLevel) {
 		if (gradeLevelId <= 0) {
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 
 		if (!isGradeLevelExist(gradeLevelId)) {
@@ -107,7 +106,6 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 	 * Retrieve all grade level records
 	 *
 	 * @param page Page number
-	 * @param size Number of records per page
 	 * @return List of GradeLevel objects
 	 */
 	@Override
@@ -201,7 +199,7 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 
 	private ExecutionStatus gradeLevelExists(int gradeLevelId) {
 		logger.debug("Grade Level with ID {} already exists", gradeLevelId);
-		return ExecutionStatus.FAILURE;
+		return ExecutionStatus.FAILED;
 	}
 
 	private ExecutionStatus gradeLevelValidationFailed(GradeLevel gradeLevel) {

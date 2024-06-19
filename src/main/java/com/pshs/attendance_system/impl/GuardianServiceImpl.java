@@ -50,7 +50,7 @@ public class GuardianServiceImpl implements GuardianService {
 		} catch (Exception e) {
 			// Log the error
 			logger.debug("Failed to create guardian record.", e);
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 	}
 
@@ -79,7 +79,7 @@ public class GuardianServiceImpl implements GuardianService {
 		} catch (Exception e) {
 			// Log the error
 			logger.debug("Failed to delete guardian record.", e);
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 	}
 
@@ -115,7 +115,7 @@ public class GuardianServiceImpl implements GuardianService {
 		} catch (Exception e) {
 			// Log the error
 			logger.debug("Failed to update guardian record.", e);
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 	}
 
@@ -237,6 +237,6 @@ public class GuardianServiceImpl implements GuardianService {
 	 */
 	private ExecutionStatus guardianInvalidIdLog(int guardianId) {
 		logger.debug("Invalid guardian id {}.", guardianId);
-		return ExecutionStatus.FAILURE;
+		return ExecutionStatus.FAILED;
 	}
 }

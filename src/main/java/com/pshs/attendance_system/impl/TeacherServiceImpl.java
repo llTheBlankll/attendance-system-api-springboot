@@ -36,7 +36,7 @@ public class TeacherServiceImpl implements TeacherService {
 
 		if (!isTeacherNotExists(teacher.getId())) {
 			logger.debug("Teacher ID: {} already exists.", teacher.getId());
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 		teacherRepository.save(teacher);
 		return ExecutionStatus.SUCCESS;
@@ -144,7 +144,7 @@ public class TeacherServiceImpl implements TeacherService {
 		}
 
 		logger.debug("Failed to update teacher ID: {} first name.", teacherId);
-		return ExecutionStatus.FAILURE;
+		return ExecutionStatus.FAILED;
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class TeacherServiceImpl implements TeacherService {
 		}
 
 		logger.debug("Failed to update teacher ID: {} last name.", teacherId);
-		return ExecutionStatus.FAILURE;
+		return ExecutionStatus.FAILED;
 	}
 
 	/**
@@ -299,7 +299,7 @@ public class TeacherServiceImpl implements TeacherService {
 
 	private ExecutionStatus teacherInvalidIdLog(int teacherId) {
 		logger.debug("Teacher ID: {} is invalid.", teacherId);
-		return ExecutionStatus.FAILURE;
+		return ExecutionStatus.FAILED;
 	}
 
 	private ExecutionStatus teacherNotFoundLog(int teacherId) {
