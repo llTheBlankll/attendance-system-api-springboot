@@ -1,7 +1,6 @@
 package com.pshs.attendance_system.controllers.v1.secured.guardian;
 
 import com.pshs.attendance_system.dto.GuardianDTO;
-import com.pshs.attendance_system.dto.MessageResponse;
 import com.pshs.attendance_system.dto.StatusMessageResponse;
 import com.pshs.attendance_system.entities.Guardian;
 import com.pshs.attendance_system.enums.ExecutionStatus;
@@ -60,7 +59,7 @@ public class GuardianController {
 				return ResponseEntity.status(500).body(
 					new StatusMessageResponse(
 						"Failed to create guardian.",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}
@@ -101,7 +100,7 @@ public class GuardianController {
 				return ResponseEntity.status(500).body(
 					new StatusMessageResponse(
 						"Failed to delete guardian.",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}
@@ -152,7 +151,7 @@ public class GuardianController {
 				return ResponseEntity.status(500).body(
 					new StatusMessageResponse(
 						"Failed to update guardian.",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}

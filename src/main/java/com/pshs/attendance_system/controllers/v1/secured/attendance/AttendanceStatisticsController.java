@@ -1,9 +1,14 @@
 package com.pshs.attendance_system.controllers.v1.secured.attendance;
 
+import com.pshs.attendance_system.entities.Attendance;
 import com.pshs.attendance_system.services.AttendanceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/v1/attendances/statistics")
@@ -16,4 +21,13 @@ public class AttendanceStatisticsController {
 		this.attendanceService = attendanceService;
 	}
 
+	@GetMapping("/section/{sectionId}/grade-level/{gradeLevelId}/date")
+	public ResponseEntity<?> getAllSectionAndGradeLevelAttendanceByDate(@PathVariable int sectionId, @PathVariable int gradeLevelId, @RequestParam LocalDate date, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "date") String sortBy, @RequestParam(defaultValue = "ASC") Sort.Direction orderBy, @RequestParam boolean noPaging) {
+		Sort sort = Sort.by(orderBy, sortBy);
+		if (noPaging) {
+			return ResponseEntity.ok(attendanceService.getAllSectionAndGradeLevelAttendanceByDate(date, sectionId, gradeLevelId, PageRequest.of(page, size, sort)).getContent().stream().map(Attendance::toDTO).toList());
+		}
+
+		return ResponseEntity.ok(attendanceService.getAllSectionAndGradeLevelAttendanceByDate(date, sectionId, gradeLevelId, PageRequest.of(page, size, sort)).map(Attendance::toDTO));
+	}
 }

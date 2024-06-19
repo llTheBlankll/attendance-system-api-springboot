@@ -16,12 +16,14 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @Tag(name = "Grade Level", description = "API Endpoints for Grade Level")
@@ -37,9 +39,13 @@ public class GradeLevelController {
 
 	@Operation(summary = "Get All Grade Levels", description = "Get all grade levels paginated", responses = {@ApiResponse(responseCode = "200", description = "List of grade levels")})
 	@GetMapping("/all")
-	public ResponseEntity<Page<GradeLevelDTO>> getAllGradeLevels(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size, @RequestParam(defaultValue = "name") String sortBy, @RequestParam(defaultValue = "ASC") String order) {
+	public ResponseEntity<?> getAllGradeLevels(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size, @RequestParam(defaultValue = "name") String sortBy, @RequestParam(defaultValue = "ASC") String order, @RequestParam Boolean noPaging) {
 		logger.debug("Fetching all grade levels");
 		Sort sort = Sort.by(Sort.Direction.fromString(order), sortBy);
+		if (noPaging) {
+			return ResponseEntity.ok(gradeLevelService.getAllGradeLevels(Pageable.unpaged(sort)).getContent().stream()
+				.map(GradeLevel::toDTO).toList());
+		}
 
 		return ResponseEntity.ok(gradeLevelService.getAllGradeLevels(PageRequest.of(page, size, sort)).map(GradeLevel::toDTO));
 	}

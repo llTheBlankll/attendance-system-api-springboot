@@ -61,7 +61,7 @@ public class StrandController {
 				return ResponseEntity.status(500).body(
 					new StatusMessageResponse(
 						"Failed to create strand.",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}
@@ -104,7 +104,7 @@ public class StrandController {
 				return ResponseEntity.status(500).body(
 					new StatusMessageResponse(
 						"Failed to delete strand.",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 						)
 				);
 			}
@@ -148,7 +148,7 @@ public class StrandController {
 				return ResponseEntity.status(500).body(
 					new StatusMessageResponse(
 						"Failed to update strand.",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}

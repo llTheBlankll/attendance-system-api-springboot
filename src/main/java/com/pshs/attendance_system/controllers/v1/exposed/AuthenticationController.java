@@ -5,7 +5,6 @@ package com.pshs.attendance_system.controllers.v1.exposed;
 import com.pshs.attendance_system.dto.*;
 import com.pshs.attendance_system.entities.User;
 import com.pshs.attendance_system.enums.ExecutionStatus;
-import com.pshs.attendance_system.enums.ResponseStatus;
 import com.pshs.attendance_system.security.JWTService;
 import com.pshs.attendance_system.services.AuthenticationService;
 import com.pshs.attendance_system.services.UserService;
@@ -74,7 +73,7 @@ public class AuthenticationController {
 			return ResponseEntity.badRequest().body(
 				new StatusMessageResponse(
 					"Failed to update last login time.",
-					ExecutionStatus.FAILURE
+					ExecutionStatus.FAILED
 				)
 			);
 		} catch (BadCredentialsException e) { // Catch bad credentials exception
@@ -88,7 +87,7 @@ public class AuthenticationController {
 			return ResponseEntity.badRequest().body(
 				new StatusMessageResponse(
 					"An error occurred.",
-					ExecutionStatus.FAILURE
+					ExecutionStatus.FAILED
 				)
 			);
 		}

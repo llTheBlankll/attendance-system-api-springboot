@@ -52,7 +52,7 @@ public class SectionController {
 					)
 				);
 			}
-			case FAILURE -> {
+			case FAILED -> {
 				return ResponseEntity.badRequest().body(
 					new StatusMessageResponse(
 						"Section " + section.getSectionName() + " already exists",
@@ -72,7 +72,7 @@ public class SectionController {
 				return ResponseEntity.badRequest().body(
 					new StatusMessageResponse(
 						"Section " + section.getSectionName() + " was not created",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}
@@ -100,11 +100,11 @@ public class SectionController {
 					)
 				);
 			}
-			case FAILURE -> {
+			case FAILED -> {
 				return ResponseEntity.badRequest().body(
 					new StatusMessageResponse(
 						"Section " + section.getSectionName() + " not found",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}
@@ -119,7 +119,7 @@ public class SectionController {
 			default -> {
 				return ResponseEntity.badRequest().body(new StatusMessageResponse(
 						"Section " + section.getSectionName() + " not updated",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}
@@ -152,11 +152,11 @@ public class SectionController {
 			case SUCCESS -> {
 				return ResponseEntity.ok(new StatusMessageResponse("Section teacher updated successfully", ExecutionStatus.SUCCESS));
 			}
-			case FAILURE -> {
+			case FAILED -> {
 				return ResponseEntity.badRequest().body(
 					new StatusMessageResponse(
 						"Teacher is not found",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}
@@ -172,7 +172,7 @@ public class SectionController {
 				return ResponseEntity.badRequest().body(
 					new StatusMessageResponse(
 						"Section teacher not updated",
-						ExecutionStatus.FAILURE)
+						ExecutionStatus.FAILED)
 				);
 			}
 		}
@@ -202,11 +202,11 @@ public class SectionController {
 					)
 				);
 			}
-			case FAILURE -> {
+			case FAILED -> {
 				return ResponseEntity.badRequest().body(
 					new StatusMessageResponse(
 						"Grade level is not found",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}
@@ -222,7 +222,7 @@ public class SectionController {
 				return ResponseEntity.badRequest().body(
 					new StatusMessageResponse(
 						"Section grade level not updated",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}
@@ -242,7 +242,7 @@ public class SectionController {
 					)
 				);
 			}
-			case FAILURE -> {
+			case FAILED -> {
 				return ResponseEntity.badRequest().body(
 					new StatusMessageResponse(
 						"Section is not found",
@@ -262,7 +262,7 @@ public class SectionController {
 				return ResponseEntity.badRequest().body(
 					new StatusMessageResponse(
 						"Section name not updated",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}
@@ -300,7 +300,7 @@ public class SectionController {
 				return ResponseEntity.badRequest().body(
 					new StatusMessageResponse(
 						"Section not deleted",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}

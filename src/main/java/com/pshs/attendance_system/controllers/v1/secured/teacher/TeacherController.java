@@ -1,12 +1,9 @@
 package com.pshs.attendance_system.controllers.v1.secured.teacher;
 
 import com.pshs.attendance_system.dto.StatusMessageResponse;
-import com.pshs.attendance_system.dto.StatusMessageResponse;
 import com.pshs.attendance_system.dto.TeacherDTO;
 import com.pshs.attendance_system.entities.Teacher;
 import com.pshs.attendance_system.enums.ExecutionStatus;
-import com.pshs.attendance_system.enums.ResponseStatus;
-import com.pshs.attendance_system.enums.Status;
 import com.pshs.attendance_system.services.TeacherService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -55,11 +52,11 @@ public class TeacherController {
 					)
 				);
 			}
-			case FAILURE -> {
+			case FAILED -> {
 				return ResponseEntity.status(HttpStatus.CONFLICT).body(
 					new StatusMessageResponse(
 						"Failed to create teacher record.",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}
@@ -75,7 +72,7 @@ public class TeacherController {
 				return ResponseEntity.badRequest().body(
 					new StatusMessageResponse(
 						"Failed to create teacher record.",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}
@@ -115,7 +112,7 @@ public class TeacherController {
 				return ResponseEntity.badRequest().body(
 					new StatusMessageResponse(
 						"Failed to delete teacher record.",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}
@@ -164,7 +161,7 @@ public class TeacherController {
 				return ResponseEntity.badRequest().body(
 					new StatusMessageResponse(
 						"Failed to update teacher record.",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}
@@ -241,7 +238,7 @@ public class TeacherController {
 				return ResponseEntity.badRequest().body(
 					new StatusMessageResponse(
 						"Failed to update teacher record.",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}
@@ -290,7 +287,7 @@ public class TeacherController {
 				return ResponseEntity.badRequest().body(
 					new StatusMessageResponse(
 						"Failed to update teacher record.",
-						ExecutionStatus.FAILURE
+						ExecutionStatus.FAILED
 					)
 				);
 			}
