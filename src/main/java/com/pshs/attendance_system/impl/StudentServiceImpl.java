@@ -3,7 +3,6 @@
 package com.pshs.attendance_system.impl;
 
 import com.pshs.attendance_system.entities.GradeLevel;
-import com.pshs.attendance_system.entities.Guardian;
 import com.pshs.attendance_system.entities.Section;
 import com.pshs.attendance_system.entities.Student;
 import com.pshs.attendance_system.enums.ExecutionStatus;
@@ -46,7 +45,7 @@ public class StudentServiceImpl implements StudentService {
 			return ExecutionStatus.VALIDATION_ERROR;
 		} else if (isStudentExist(student)) {
 			logger.debug("Student already exists: {}", student);
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 
 		studentRepository.save(student);
@@ -68,7 +67,7 @@ public class StudentServiceImpl implements StudentService {
 
 		if (!isStudentExist(student)) {
 			logger.debug("Student ID does not exist: {}", student.getId());
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 
 		studentRepository.delete(student);
@@ -86,7 +85,7 @@ public class StudentServiceImpl implements StudentService {
 	public ExecutionStatus deleteStudent(int id) {
 		if (isStudentExist((long) id)) {
 			logger.debug("Cannot delete Student ID because it does not exist: {}", id);
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 
 		studentRepository.deleteById((long) id);
@@ -110,7 +109,7 @@ public class StudentServiceImpl implements StudentService {
 
 		if (!isStudentExist(studentId)) {
 			logger.debug("Cannot update Student ID because it does not exist: {}", studentId);
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 
 		// Update the student ID
@@ -137,19 +136,19 @@ public class StudentServiceImpl implements StudentService {
 
 		if (!isStudentExist(studentId)) {
 			logger.debug("Cannot update Student ID because it does not exist: {}", studentId);
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 
 		Student student = studentRepository.findById(studentId).orElse(null);
 		if (student == null) {
 			logger.debug("Student ID does not exist: {}", studentId);
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 
 		// Check if Grade Level exists
 		if (gradeLevelService.isGradeLevelExist(gradeLevel)) {
 			logger.debug("Grade Level does not exist: {}", gradeLevel);
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		} else {
 			student.setGradeLevel(gradeLevelService.getGradeLevel(gradeLevel));
 			studentRepository.save(student);
@@ -175,13 +174,13 @@ public class StudentServiceImpl implements StudentService {
 		// Check if a student exists
 		if (!isStudentExist(studentId)) {
 			logger.debug("Cannot update Student ID because it does not exist: {}", studentId);
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 
 		// Check if a section exists
 		if (!sectionService.isSectionExist(section)) {
 			logger.debug("Section does not exist: {}", section);
-			return ExecutionStatus.FAILURE;
+			return ExecutionStatus.FAILED;
 		}
 
 		studentRepository.updateStudentSection(sectionService.getSection(section), studentId);
@@ -198,17 +197,6 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public Student getStudentById(Long id) {
 		return studentRepository.findById(id).orElse(null);
-	}
-
-	/**
-	 * Get the student record by providing the student guardian.
-	 *
-	 * @param guardian Guardian of the student
-	 * @return {@link Student}
-	 */
-	@Override
-	public Student getStudentByGuardian(Guardian guardian) {
-		return studentRepository.getStudentByGuardian(guardian).orElse(null);
 	}
 
 	/**
@@ -278,20 +266,8 @@ public class StudentServiceImpl implements StudentService {
 	 * @return a page of Student objects that match the search criteria
 	 */
 	@Override
-	public Page<Student> searchStudentsByGradeLevel(int gradeLevel, Pageable page) {
+	public Page<Student> getStudentsInGradeLevel(int gradeLevel, Pageable page) {
 		return studentRepository.searchStudentsByGradeLevelById(gradeLevel, page);
-	}
-
-	/**
-	 * Search students by their grade level.
-	 *
-	 * @param gradeLevel the grade level to search for
-	 * @param page       the page number of the results
-	 * @return a page of Student objects that match the search criteria
-	 */
-	@Override
-	public Page<Student> searchStudentsByGradeLevel(GradeLevel gradeLevel, Pageable page) {
-		return studentRepository.searchStudentsByGradeLevel(gradeLevel, page);
 	}
 
 	/**
@@ -302,20 +278,8 @@ public class StudentServiceImpl implements StudentService {
 	 * @return a page of Student objects that match the search criteria
 	 */
 	@Override
-	public Page<Student> searchStudentsBySection(int sectionId, Pageable page) {
+	public Page<Student> getStudentsInSection(int sectionId, Pageable page) {
 		return studentRepository.searchStudentsBySection(sectionService.getSection(sectionId), page);
-	}
-
-	/**
-	 * Search students by their section.
-	 *
-	 * @param section the section to search for
-	 * @param page    the page number of the results
-	 * @return a page of Student objects that match the search criteria
-	 */
-	@Override
-	public Page<Student> searchStudentsBySection(Section section, Pageable page) {
-		return studentRepository.searchStudentsBySection(section, page);
 	}
 
 	/**
