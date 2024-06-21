@@ -40,6 +40,10 @@ public class GradeLevelController {
 	@Operation(summary = "Get All Grade Levels", description = "Get all grade levels paginated", responses = {@ApiResponse(responseCode = "200", description = "List of grade levels")})
 	@GetMapping("/all")
 	public ResponseEntity<?> getAllGradeLevels(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size, @RequestParam(defaultValue = "name") String sortBy, @RequestParam(defaultValue = "ASC") String order, @RequestParam Boolean noPaging) {
+		if (noPaging == null) {
+			noPaging = false;
+		}
+
 		logger.debug("Fetching all grade levels");
 		Sort sort = Sort.by(Sort.Direction.fromString(order), sortBy);
 		if (noPaging) {

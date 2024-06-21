@@ -41,13 +41,16 @@ public class StudentController {
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Students returned successfully")
 	})
-	public ResponseEntity<?> getAllStudents(@RequestParam int page, @RequestParam int size) {
-		Page<Student> studentPage = studentService.getAllStudents(PageRequest.of(page, size));
-		Page<StudentDTO> dtoPage = new PageImpl<>(studentPage.getContent().stream()
-			.map(Student::toDTO)
-			.collect(Collectors.toList()), PageRequest.of(page, size), studentPage.getTotalElements());
-		logger.info("Returning {} students", dtoPage.getTotalElements());
-		return ResponseEntity.ok(dtoPage);
+	public ResponseEntity<?> getAllStudents(@RequestParam Integer page, @RequestParam Integer size,
+	                                        @RequestParam(defaultValue = "lastName") String sortBy, @RequestParam(defaultValue = "ASC") Sort.Direction orderBy) {
+		// Create a sort object
+		Sort sort = Sort.by(orderBy, sortBy);
+
+		// Get all students
+		Page<Student> studentPage = studentService.getAllStudents(PageRequest.of(page, size, sort));
+		return ResponseEntity.ok(
+			convertStudentPageToDTO(studentPage, sort)
+		);
 	}
 
 	@PostMapping("/create")
