@@ -316,7 +316,7 @@ public class SectionController {
 		@Parameter(name = "page", description = "Page number"),
 		@Parameter(name = "size", description = "Number of items per page")
 	})
-	public ResponseEntity<?> getSections(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(defaultValue = "false") Boolean noPaging) {
+	public ResponseEntity<?> getSections(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(defaultValue = "false") boolean noPaging) {
 		if (noPaging) {
 			return ResponseEntity.ok(sectionService.getAllSections().stream().map(Section::toDTO).toList());
 		}

@@ -196,6 +196,11 @@ public class StudentController {
 	                                        @RequestParam(required = false, defaultValue = "false") Boolean noPaging,
 	                                        @RequestParam(required = false, defaultValue = "ASC") Sort.Direction orderBy,
 	                                        @RequestParam(required = false, defaultValue = "lastName") String sortBy) {
+		// Check if noPaging is null
+		if (noPaging == null) {
+			noPaging = false;
+		}
+
 		Sort sort = Sort.by(orderBy, sortBy);
 		if (noPaging) {
 			return ResponseEntity.ok(
@@ -245,6 +250,10 @@ public class StudentController {
 	                                                 @RequestParam(required = false, defaultValue = "false") Boolean noPaging,
 	                                                 @RequestParam(required = false, defaultValue = "ASC") Sort.Direction orderBy,
 	                                                 @RequestParam(required = false, defaultValue = "lastName") String sortBy) {
+		if (noPaging == null) {
+			noPaging = false;
+		}
+
 		Sort sort = Sort.by(orderBy, sortBy);
 		if (noPaging) {
 			// Convert Page<Student> to Page<StudentDTO> and return
@@ -274,6 +283,10 @@ public class StudentController {
 	                                              @RequestParam(required = false, defaultValue = "false") Boolean noPaging,
 	                                              @RequestParam(required = false, defaultValue = "ASC") Sort.Direction orderBy,
 	                                              @RequestParam(required = false, defaultValue = "lastName") String sortBy) {
+		if (noPaging == null) {
+			noPaging = false;
+		}
+
 		Sort sort = Sort.by(orderBy, sortBy);
 		if (noPaging) {
 			// Convert Page<Student> to Page<StudentDTO>
