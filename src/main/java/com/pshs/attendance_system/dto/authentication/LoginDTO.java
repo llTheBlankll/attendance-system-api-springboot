@@ -1,6 +1,6 @@
 
 
-package com.pshs.attendance_system.dto;
+package com.pshs.attendance_system.dto.authentication;
 
 public class LoginDTO {
 

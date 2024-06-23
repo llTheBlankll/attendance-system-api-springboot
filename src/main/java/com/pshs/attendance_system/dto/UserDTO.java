@@ -3,6 +3,7 @@
 package com.pshs.attendance_system.dto;
 
 import com.pshs.attendance_system.entities.User;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -13,6 +14,8 @@ import java.util.Objects;
  */
 public class UserDTO implements Serializable {
 	private Integer id;
+
+	@NotBlank(message = "Username is required")
 	private String username;
 	private String email;
 	private String role;
