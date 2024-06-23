@@ -48,7 +48,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<StatusMessageResponse> deleteUser(@PathVariable int id) {
+	public ResponseEntity<StatusMessageResponse> deleteUser(@PathVariable Integer id) {
 		logger.info("Deleting user with ID: {}", id);
 		ExecutionStatus status = userService.deleteUser(id);
 
@@ -75,7 +75,7 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<StatusMessageResponse> updateUser(@PathVariable int id, @RequestBody UserCreationDTO userCreationDTO) {
+	public ResponseEntity<StatusMessageResponse> updateUser(@PathVariable Integer id, @RequestBody UserCreationDTO userCreationDTO) {
 		logger.info("Updating user with ID: {}", id);
 		ExecutionStatus status = userService.updateUser(id, userCreationDTO.toEntity());
 
@@ -104,7 +104,7 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getUser(@PathVariable int id) {
+	public ResponseEntity<?> getUser(@PathVariable Integer id) {
 		logger.info("Retrieving user with ID: {}", id);
 		User user = userService.getUser(id);
 
@@ -143,7 +143,7 @@ public class UserController {
 	}
 
 	@PatchMapping("/{id}/password")
-	public ResponseEntity<StatusMessageResponse> updatePassword(@PathVariable int id, @RequestBody ChangePasswordDTO changePasswordDTO) {
+	public ResponseEntity<StatusMessageResponse> updatePassword(@PathVariable Integer id, @RequestBody ChangePasswordDTO changePasswordDTO) {
 		logger.info("Updating password for user with ID: {}", id);
 
 		// Checks if the old password is correct
@@ -183,8 +183,8 @@ public class UserController {
 		};
 	}
 
-	@PutMapping("/{id}/is-locked")
-	public ResponseEntity<StatusMessageResponse> updateIsLocked(@PathVariable int id, @RequestParam boolean isLocked) {
+	@PatchMapping("/{id}/is-locked")
+	public ResponseEntity<StatusMessageResponse> updateIsLocked(@PathVariable Integer id, @RequestParam boolean isLocked) {
 		logger.info("Updating isLocked for user with ID: {}", id);
 		ExecutionStatus status = userService.changeUserLockStatus(id, isLocked);
 
@@ -219,9 +219,8 @@ public class UserController {
 		};
 	}
 
-
-	@PutMapping("/{id}/is-enabled")
-	public ResponseEntity<StatusMessageResponse> updateIsActive(@PathVariable int id, @RequestParam boolean enabled) {
+	@PatchMapping("/{id}/is-enabled")
+	public ResponseEntity<StatusMessageResponse> updateIsActive(@PathVariable Integer id, @RequestParam boolean enabled) {
 		logger.info("Updating isActive for user with ID: {}", id);
 		ExecutionStatus status = userService.changeUserEnabledStatus(id, enabled);
 
@@ -256,8 +255,8 @@ public class UserController {
 		};
 	}
 
-	@GetMapping("/{id}/is-expired")
-	public ResponseEntity<StatusMessageResponse> isUserExpired(@PathVariable int id, @RequestParam boolean expired) {
+	@PatchMapping("/{id}/is-expired")
+	public ResponseEntity<StatusMessageResponse> isUserExpired(@PathVariable Integer id, @RequestParam boolean expired) {
 		logger.info("Checking if user with ID: {} is expired", id);
 		ExecutionStatus status = userService.changeUserExpiredStatus(id, expired);
 		return switch (status) {
@@ -291,8 +290,8 @@ public class UserController {
 		};
 	}
 
-	@GetMapping("/{id}/is-credentials-expired")
-	public ResponseEntity<StatusMessageResponse> isUserCredentialsExpired(@PathVariable int id, @RequestParam boolean credentialsExpired) {
+	@PatchMapping("/{id}/is-credentials-expired")
+	public ResponseEntity<StatusMessageResponse> isUserCredentialsExpired(@PathVariable Integer id, @RequestParam boolean credentialsExpired) {
 		logger.info("Checking if user with ID: {} has expired credentials", id);
 		ExecutionStatus status = userService.changeUserCredentialsExpiredStatus(id, credentialsExpired);
 
