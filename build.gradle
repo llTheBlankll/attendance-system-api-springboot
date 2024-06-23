@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.2.4'
+    id 'org.springframework.boot' version '3.3.0'
     id 'io.spring.dependency-management' version '1.1.4'
     id 'org.hibernate.orm' version '6.4.4.Final'
     id 'org.graalvm.buildtools.native' version '0.9.28'
@@ -55,6 +55,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation 'org.springframework.amqp:spring-rabbit-stream'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.mockito:mockito-core'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     testImplementation 'org.springframework.amqp:spring-rabbit-test'
