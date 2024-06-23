@@ -2,18 +2,18 @@
 
 package com.pshs.attendance_system.controllers.v1.secured.user;
 
-import com.pshs.attendance_system.dto.UserCreationDTO;
-import com.pshs.attendance_system.dto.UserDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.pshs.attendance_system.dto.*;
+import com.pshs.attendance_system.dto.authentication.ChangePasswordDTO;
 import com.pshs.attendance_system.entities.User;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -21,54 +21,110 @@ public class UserController {
 
 	private static final Logger logger = LogManager.getLogger(UserController.class);
 	private final UserService userService;
-	private final String STATUS = "status";
 
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
 
-	@PostMapping("/")
-	public ResponseEntity<Map<String, User>> createUser(@RequestBody UserCreationDTO userCreationDTO) {
-		logger.info("Creating user: {}", userCreationDTO);
+	@PostMapping(value = "/create")
+	public ResponseEntity<StatusMessageResponse> createUser(@RequestBody UserCreationDTO userCreationDTO) throws JsonProcessingException {
 		User status = userService.createUser(userCreationDTO.toEntity());
-		Map<String, User> statusMap = Map.of(STATUS, status);
+
+		if (status == null) {
+			return ResponseEntity.badRequest().body(
+				new StatusMessageResponse(
+					"User already exists or invalid data",
+					ExecutionStatus.VALIDATION_ERROR
+				)
+			);
+		}
 
 		return ResponseEntity.ok(
-			statusMap
+			new StatusMessageResponse(
+				"User created successfully",
+				ExecutionStatus.SUCCESS
+			)
 		);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Map<String, ExecutionStatus>> deleteUser(@PathVariable int id) {
+	public ResponseEntity<StatusMessageResponse> deleteUser(@PathVariable int id) {
 		logger.info("Deleting user with ID: {}", id);
 		ExecutionStatus status = userService.deleteUser(id);
-		Map<String, ExecutionStatus> statusMap = Map.of("status", status);
 
-		return ResponseEntity.ok(
-			statusMap
-		);
+		return switch (status) {
+			case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+				new StatusMessageResponse(
+					"User does not exist",
+					status
+				)
+			);
+			case SUCCESS -> ResponseEntity.ok(
+				new StatusMessageResponse(
+					"User deleted successfully",
+					status
+				)
+			);
+			default -> ResponseEntity.badRequest().body(
+				new StatusMessageResponse(
+					"Failed to delete user",
+					status
+				)
+			);
+		};
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Map<String, ExecutionStatus>> updateUser(@PathVariable int id, @RequestBody UserCreationDTO userCreationDTO) {
+	public ResponseEntity<StatusMessageResponse> updateUser(@PathVariable int id, @RequestBody UserCreationDTO userCreationDTO) {
 		logger.info("Updating user with ID: {}", id);
 		ExecutionStatus status = userService.updateUser(id, userCreationDTO.toEntity());
-		Map<String, ExecutionStatus> statusMap = Map.of(STATUS, status);
 
-		return ResponseEntity.ok(
-			statusMap
-		);
+		return switch (status) {
+			case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+				new StatusMessageResponse(
+					"User does not exist",
+					ExecutionStatus.NOT_FOUND
+				)
+			);
+
+			case SUCCESS -> ResponseEntity.ok(
+				new StatusMessageResponse(
+					"User updated successfully",
+					ExecutionStatus.SUCCESS
+				)
+			);
+
+			default -> ResponseEntity.internalServerError().body(
+				new StatusMessageResponse(
+					"Failed to update user",
+					status
+				)
+			);
+		};
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<UserDTO> getUser(@PathVariable int id) {
+	public ResponseEntity<?> getUser(@PathVariable int id) {
 		logger.info("Retrieving user with ID: {}", id);
+		User user = userService.getUser(id);
+
+		// User does not exist
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+				new StatusMessageResponse(
+					"User does not exist",
+					ExecutionStatus.NOT_FOUND
+				)
+			);
+		}
+
+		// Success
 		return ResponseEntity.ok(
-			userService.getUser(id).toDTO()
+			user.toDTO()
 		);
 	}
 
-	@GetMapping("/")
+	@GetMapping("")
 	public ResponseEntity<Page<UserDTO>> getAllUsers(@RequestParam int page, @RequestParam int size) {
 		logger.info("Retrieving all users");
 		return ResponseEntity.ok(
@@ -77,60 +133,198 @@ public class UserController {
 	}
 
 	@GetMapping("/count")
-	public ResponseEntity<Map<String, Integer>> countAllUsers() {
+	public ResponseEntity<CountDTO> countAllUsers() {
 		logger.info("Counting all users");
 		return ResponseEntity.ok(
-			Map.of("count", userService.countAllUsers())
+			new CountDTO(
+				userService.countAllUsers()
+			)
 		);
 	}
 
-	@PutMapping("/{id}/password")
-	public ResponseEntity<Map<String, ExecutionStatus>> updatePassword(@PathVariable int id, @RequestParam String password) {
+	@PatchMapping("/{id}/password")
+	public ResponseEntity<StatusMessageResponse> updatePassword(@PathVariable int id, @RequestBody ChangePasswordDTO changePasswordDTO) {
 		logger.info("Updating password for user with ID: {}", id);
-		ExecutionStatus status = userService.updateUserPassword(id, password);
-		Map<String, ExecutionStatus> statusMap = Map.of("status", status);
 
-		return ResponseEntity.ok(
-			statusMap
-		);
+		// Checks if the old password is correct
+		Boolean isPasswordCorrect = userService.isUserPasswordMatch(id, changePasswordDTO.getOldPassword());
+		if (!isPasswordCorrect) {
+			return ResponseEntity.badRequest().body(
+				new StatusMessageResponse(
+					"Password is incorrect",
+					ExecutionStatus.VALIDATION_ERROR
+				)
+			);
+		}
+
+		// Updates the password
+		ExecutionStatus status = userService.updateUserPassword(id, changePasswordDTO.getNewPassword());
+		return switch (status) {
+			case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+				new StatusMessageResponse(
+					"User does not exist",
+					ExecutionStatus.NOT_FOUND
+				)
+			);
+
+			case SUCCESS -> ResponseEntity.ok(
+				new StatusMessageResponse(
+					"Password updated successfully",
+					ExecutionStatus.SUCCESS
+				)
+			);
+
+			default -> ResponseEntity.badRequest().body(
+				new StatusMessageResponse(
+					"Failed to update password",
+					status
+				)
+			);
+		};
 	}
 
 	@PutMapping("/{id}/is-locked")
-	public ResponseEntity<Map<String, ExecutionStatus>> updateIsLocked(@PathVariable int id, @RequestParam boolean isLocked) {
+	public ResponseEntity<StatusMessageResponse> updateIsLocked(@PathVariable int id, @RequestParam boolean isLocked) {
 		logger.info("Updating isLocked for user with ID: {}", id);
 		ExecutionStatus status = userService.changeUserLockStatus(id, isLocked);
-		Map<String, ExecutionStatus> statusMap = Map.of("status", status);
 
-		return ResponseEntity.ok(
-			statusMap
-		);
+		return switch (status) {
+			case VALIDATION_ERROR -> ResponseEntity.badRequest().body(
+				new StatusMessageResponse(
+					"User id might be invalid",
+					ExecutionStatus.VALIDATION_ERROR
+				)
+			);
+
+			case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+				new StatusMessageResponse(
+					"User does not exist",
+					ExecutionStatus.NOT_FOUND
+				)
+			);
+
+			case SUCCESS -> ResponseEntity.ok(
+				new StatusMessageResponse(
+					"User lock status updated successfully",
+					ExecutionStatus.SUCCESS
+				)
+			);
+
+			default -> ResponseEntity.badRequest().body(
+				new StatusMessageResponse(
+					"Failed to update user lock status",
+					status
+				)
+			);
+		};
 	}
 
+
 	@PutMapping("/{id}/is-enabled")
-	public ResponseEntity<Map<String, ExecutionStatus>> updateIsActive(@PathVariable int id, @RequestParam boolean enabled) {
+	public ResponseEntity<StatusMessageResponse> updateIsActive(@PathVariable int id, @RequestParam boolean enabled) {
 		logger.info("Updating isActive for user with ID: {}", id);
 		ExecutionStatus status = userService.changeUserEnabledStatus(id, enabled);
-		Map<String, ExecutionStatus> statusMap = Map.of("status", status);
 
-		return ResponseEntity.ok(
-			statusMap
-		);
+		return switch (status) {
+			case VALIDATION_ERROR -> ResponseEntity.badRequest().body(
+				new StatusMessageResponse(
+					"User id might be invalid",
+					ExecutionStatus.VALIDATION_ERROR
+				)
+			);
+
+			case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+				new StatusMessageResponse(
+					"User does not exist",
+					ExecutionStatus.NOT_FOUND
+				)
+			);
+
+			case SUCCESS -> ResponseEntity.ok(
+				new StatusMessageResponse(
+					"User enabled status updated successfully",
+					ExecutionStatus.SUCCESS
+				)
+			);
+
+			default -> ResponseEntity.badRequest().body(
+				new StatusMessageResponse(
+					"Failed to update user enabled status",
+					status
+				)
+			);
+		};
 	}
 
 	@GetMapping("/{id}/is-expired")
-	public ResponseEntity<Map<String, ExecutionStatus>> isUserExpired(@PathVariable int id, @RequestParam boolean expired) {
+	public ResponseEntity<StatusMessageResponse> isUserExpired(@PathVariable int id, @RequestParam boolean expired) {
 		logger.info("Checking if user with ID: {} is expired", id);
-		return ResponseEntity.ok(
-			Map.of("status", userService.changeUserExpiredStatus(id, expired))
-		);
+		ExecutionStatus status = userService.changeUserExpiredStatus(id, expired);
+		return switch (status) {
+			case VALIDATION_ERROR -> ResponseEntity.badRequest().body(
+				new StatusMessageResponse(
+					"User id might be invalid",
+					ExecutionStatus.VALIDATION_ERROR
+				)
+			);
+
+			case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+				new StatusMessageResponse(
+					"User does not exist",
+					ExecutionStatus.NOT_FOUND
+				)
+			);
+
+			case SUCCESS -> ResponseEntity.ok(
+				new StatusMessageResponse(
+					"User expired status updated successfully",
+					ExecutionStatus.SUCCESS
+				)
+			);
+
+			default -> ResponseEntity.badRequest().body(
+				new StatusMessageResponse(
+					"Failed to update user expired status",
+					status
+				)
+			);
+		};
 	}
 
 	@GetMapping("/{id}/is-credentials-expired")
-	public ResponseEntity<Map<String, ExecutionStatus>> isUserCredentialsExpired(@PathVariable int id, @RequestParam boolean credentialsExpired) {
+	public ResponseEntity<StatusMessageResponse> isUserCredentialsExpired(@PathVariable int id, @RequestParam boolean credentialsExpired) {
 		logger.info("Checking if user with ID: {} has expired credentials", id);
-		return ResponseEntity.ok(
-			Map.of("status", userService.changeUserCredentialsExpiredStatus(id, credentialsExpired))
-		);
+		ExecutionStatus status = userService.changeUserCredentialsExpiredStatus(id, credentialsExpired);
+
+		return switch (status) {
+			case VALIDATION_ERROR -> ResponseEntity.badRequest().body(
+				new StatusMessageResponse(
+					"User ID might be invalid",
+					ExecutionStatus.VALIDATION_ERROR
+				)
+			);
+
+			case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+				new StatusMessageResponse(
+					"User does not exist",
+					ExecutionStatus.NOT_FOUND
+				)
+			);
+
+			case SUCCESS -> ResponseEntity.ok(
+				new StatusMessageResponse(
+					"User credentials expired status updated successfully",
+					ExecutionStatus.SUCCESS
+				)
+			);
+
+			default -> ResponseEntity.badRequest().body(
+				new StatusMessageResponse(
+					"Failed to update user credentials expired status",
+					status
+				)
+			);
+		};
 	}
 
 	@GetMapping("/search")
