@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -29,9 +28,9 @@ import org.springframework.util.MultiValueMap;
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 @Transactional
-class StrandImplTest {
+class StrandControllerTest {
 
-	private static final Logger logger = LogManager.getLogger(StrandImplTest.class);
+	private static final Logger logger = LogManager.getLogger(StrandControllerTest.class);
 	private final ObjectMapper mapper = new ObjectMapper();
 
 	@Autowired

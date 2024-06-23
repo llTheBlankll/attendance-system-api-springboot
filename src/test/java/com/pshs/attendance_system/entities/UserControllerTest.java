@@ -5,10 +5,8 @@ package com.pshs.attendance_system.entities;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.pshs.attendance_system.dto.UserCreationDTO;
-import com.pshs.attendance_system.dto.UserDTO;
 import com.pshs.attendance_system.dto.authentication.ChangePasswordDTO;
 import com.pshs.attendance_system.enums.ExecutionStatus;
-import com.pshs.attendance_system.services.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,24 +18,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 @Transactional
-class UserImplTest {
+class UserControllerTest {
 
-	private static final Logger logger = LogManager.getLogger(UserImplTest.class);
+	private static final Logger logger = LogManager.getLogger(UserControllerTest.class);
 
 	@Autowired
 	protected MockMvc mock;
