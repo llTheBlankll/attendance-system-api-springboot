@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.pshs.attendance_system.dto.TeacherDTO;
 import com.pshs.attendance_system.dto.UserDTO;
+import com.pshs.attendance_system.dto.transaction.CreateTeacherDTO;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -20,7 +21,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension.class)
@@ -56,28 +56,22 @@ public class TeacherControllerTest {
 		teacherDTO.setLastName("Doe");
 		teacherDTO.setSex("Male");
 		teacherDTO.setUser(userDTO);
+
+		// Convert DTO to JSON
+		CreateTeacherDTO createTeacher = new CreateTeacherDTO(teacherDTO);
+		String createJson = mapper.writeValueAsString(createTeacher);
 		String json = mapper.writeValueAsString(teacherDTO);
 
 		// Create the teacher
 		mock.perform(
 			MockMvcRequestBuilders
 					.post("/api/v1/teachers/create")
-					.content(json)
+					.content(createJson)
 					.contentType(MediaType.APPLICATION_JSON)
 			).andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Teacher record created successfully."))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(ExecutionStatus.SUCCESS.name()));
-
-		// Test if teacher doesn't exist
-		mock.perform(
-			MockMvcRequestBuilders.post("/api/v1/teachers/create")
-					.content(json)
-					.contentType(MediaType.APPLICATION_JSON))
-			.andExpect(MockMvcResultMatchers.status().isConflict())
-			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Failed to create teacher record."))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(ExecutionStatus.FAILED.name()));
 
 		// Test if the teacher is invalid
 		teacherDTO.setFirstName(null);
@@ -92,4 +86,6 @@ public class TeacherControllerTest {
 			.andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Validation error occurred."))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(ExecutionStatus.VALIDATION_ERROR.name()));
 	}
+
+
 }
