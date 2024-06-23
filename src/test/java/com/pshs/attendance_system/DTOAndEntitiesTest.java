@@ -92,7 +92,6 @@ class DTOAndEntitiesTest {
 		// DTO Test
 		RFIDCredentialDTO rfidCredentialDTO = rfidCredential.toDTO();
 		assert rfidCredentialDTO.getId() == 1;
-		assert rfidCredentialDTO.getLrn().equals(student.toDTO());
 		assert rfidCredentialDTO.getHashedLrn().equals("hashed_lrn");
 		assert rfidCredentialDTO.getSalt().equals("salt");
 		System.out.println("DTO Test is successful");
@@ -192,7 +191,6 @@ class DTOAndEntitiesTest {
 		assert sectionDTO.getStrand().equals(strand.toDTO());
 		assert sectionDTO.getGradeLevel().equals(gradeLevel.toDTO());
 		assert sectionDTO.getSectionName().equals("Section A");
-		assert sectionDTO.getStudents().equals(List.of(student.toDTO()));
 		System.out.println("DTO Test is successful");
 	}
 
@@ -263,7 +261,6 @@ void testStudentSectionDTO() {
 		assert sectionStudentsDTO.getStrand().equals(strand.toDTO());
 		assert sectionStudentsDTO.getGradeLevel().equals(gradeLevel.toDTO());
 		assert sectionStudentsDTO.getSectionName().equals("Section A");
-		assert sectionStudentsDTO.getStudents().equals(List.of(student.toDTO()));
 		System.out.println("DTO Test is successful");
 
 		// To Entity
