@@ -30,7 +30,8 @@ class DTOAndEntitiesTest {
 		1,
 		"Juan",
 		"Dela Cruz",
-		"Male"
+		"Male",
+		new User()
 	);
 
 	private final Section section = new Section(
