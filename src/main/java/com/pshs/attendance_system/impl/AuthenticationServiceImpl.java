@@ -2,7 +2,7 @@
 
 package com.pshs.attendance_system.impl;
 
-import com.pshs.attendance_system.dto.LoginDTO;
+import com.pshs.attendance_system.dto.authentication.LoginDTO;
 import com.pshs.attendance_system.entities.User;
 import com.pshs.attendance_system.services.AuthenticationService;
 import com.pshs.attendance_system.services.UserService;

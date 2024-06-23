@@ -90,10 +90,6 @@ public class User implements UserDetails {
 		return new UserDTO(id, username, email, role, lastLogin, createdAt);
 	}
 
-	public UserCreationDTO toUserCreationDTO() {
-		return new UserCreationDTO(this.toDTO(), isEnabled, isExpired, isLocked, isCredentialsExpired);
-	}
-
 	public Integer getId() {
 		return id;
 	}
