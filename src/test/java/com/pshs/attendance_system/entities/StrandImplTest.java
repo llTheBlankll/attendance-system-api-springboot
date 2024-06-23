@@ -2,63 +2,116 @@
 
 package com.pshs.attendance_system.entities;
 
-import com.pshs.attendance_system.repositories.StrandRepository;
-import jakarta.transaction.Transactional;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.pshs.attendance_system.dto.StatusMessageResponse;
+import com.pshs.attendance_system.dto.StrandDTO;
+import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 @SpringBootTest
+@AutoConfigureMockMvc
+@ExtendWith(SpringExtension.class)
+@Transactional
 class StrandImplTest {
 
-
 	private static final Logger logger = LogManager.getLogger(StrandImplTest.class);
-	private final StrandRepository strandRepository;
-
+	private final ObjectMapper mapper = new ObjectMapper();
 
 	@Autowired
-	public StrandImplTest(StrandRepository strandRepository) {
-		this.strandRepository = strandRepository;
+	protected MockMvc mock;
+
+	@BeforeEach
+	void setUp() {
+		logger.info("Strand Controller Test Started");
+		// Register JavaTimeModule to ObjectMapper
+		this.mapper.registerModule(
+			new JavaTimeModule()
+		);
 	}
 
 	@Test
-	@Transactional
-	@Rollback
-	void testCreateStrand() {
-		Strand strand = new Strand(
-			null,
-			"STEM TEST"
-		);
+	public void getAllStrands() throws Exception {
+		logger.info("Testing getAllStrands");
+		// Set Required Params
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.set("page", "0");
+		params.set("size", "10");
 
-		try {
-			assert strandRepository.save(strand).equals(strand);
-			logger.debug("Strand with ID {} has been created", strand.getId());
-		} catch (Exception e) {
-			logger.error("Error creating strand", e);
-		}
+		mock.perform(
+				MockMvcRequestBuilders.get("/api/v1/strands/all").params(params)
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
 	}
 
 	@Test
-	@Transactional
-	@Rollback
-	void testDeleteStrand() {
-		Strand strand = new Strand(
-			null,
-			"STEM TEST"
-		);
+	public void getStrandById() throws Exception {
+		logger.info("Testing getStrandById");
+		mock.perform(
+				MockMvcRequestBuilders.get("/api/v1/strands/1")
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+		mock.perform(
+				MockMvcRequestBuilders.get("/api/v1/strands/100")
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isNotFound())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+	}
 
-		try {
-			strandRepository.save(strand);
-			strandRepository.deleteById(strand.getId());
+	@Test
+	public void updateStrand() throws Exception {
+		int STRAND_ID = 1;
+		StatusMessageResponse SUCCESS_MESSAGE = new StatusMessageResponse("Strand updated successfully.", ExecutionStatus.SUCCESS);
+		StatusMessageResponse VALIDATION_ERROR_MESSAGE = new StatusMessageResponse("Strand not found.", ExecutionStatus.VALIDATION_ERROR);
 
-			// Check if exists
-			assert strandRepository.existsById(strand.getId());
-			logger.debug("Strand with ID {} has been deleted", strand.getId());
-		} catch (Exception e) {
-			logger.error("Error deleting strand", e);
-		}
+		StrandDTO strandDTO = new StrandDTO();
+		strandDTO.setId(STRAND_ID);
+		strandDTO.setName("Strand 1");
+
+		logger.info("Testing updateStrand");
+
+		// Success Test
+		mock.perform(
+				MockMvcRequestBuilders.put("/api/v1/strands/" + STRAND_ID)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(
+						mapper.writeValueAsString(strandDTO)
+					)
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.message").value(SUCCESS_MESSAGE.getMessage()))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(SUCCESS_MESSAGE.getStatus().toString()));
+
+		// Not Found Test
+		mock.perform(
+				MockMvcRequestBuilders.put("/api/v1/strands/100")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(
+						mapper.writeValueAsString(strandDTO)
+					)
+					.accept(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isNotFound())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.message").value(VALIDATION_ERROR_MESSAGE.getMessage()))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(VALIDATION_ERROR_MESSAGE.getStatus().toString()));
 	}
 }
