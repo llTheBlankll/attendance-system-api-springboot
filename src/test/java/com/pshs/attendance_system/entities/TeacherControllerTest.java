@@ -6,6 +6,7 @@ import com.pshs.attendance_system.dto.TeacherDTO;
 import com.pshs.attendance_system.dto.UserDTO;
 import com.pshs.attendance_system.dto.transaction.CreateTeacherDTO;
 import com.pshs.attendance_system.enums.ExecutionStatus;
+import com.pshs.attendance_system.services.TeacherService;
 import com.pshs.attendance_system.services.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,6 +38,9 @@ public class TeacherControllerTest {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private TeacherService teacherService;
+
 	@BeforeEach
 	public void setUp() {
 		logger.info("Setting up test");
@@ -60,11 +64,10 @@ public class TeacherControllerTest {
 		// Convert DTO to JSON
 		CreateTeacherDTO createTeacher = new CreateTeacherDTO(teacherDTO);
 		String createJson = mapper.writeValueAsString(createTeacher);
-		String json = mapper.writeValueAsString(teacherDTO);
 
 		// Create the teacher
 		mock.perform(
-			MockMvcRequestBuilders
+				MockMvcRequestBuilders
 					.post("/api/v1/teachers/create")
 					.content(createJson)
 					.contentType(MediaType.APPLICATION_JSON)
@@ -76,16 +79,103 @@ public class TeacherControllerTest {
 		// Test if the teacher is invalid
 		teacherDTO.setFirstName(null);
 		teacherDTO.setLastName(null);
-		json = mapper.writeValueAsString(teacherDTO);
+		String json = mapper.writeValueAsString(teacherDTO);
 
 		mock.perform(MockMvcRequestBuilders.post("/api/v1/teachers/create")
-			.content(json)
-			.contentType(MediaType.APPLICATION_JSON))
+				.content(json)
+				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
 			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Validation error occurred."))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(ExecutionStatus.VALIDATION_ERROR.name()));
 	}
 
+	@Test
+	public void testDeleteTeacher() throws Exception {
+		logger.info("Testing deleteTeacher() function in Teacher Controller");
 
+		// Delete the teacher
+		mock.perform(MockMvcRequestBuilders.delete("/api/v1/teachers/2")
+				.contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Teacher record deleted successfully."))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(ExecutionStatus.SUCCESS.name()));
+
+		// Missing teacher test
+		mock.perform(MockMvcRequestBuilders.delete("/api/v1/teachers/100000")
+				.contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isNotFound())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Teacher record not found."))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(ExecutionStatus.NOT_FOUND.name()));
+
+		// Negative number
+		mock.perform(MockMvcRequestBuilders.delete("/api/v1/teachers/-1")
+				.contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isBadRequest())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Failed to delete teacher record."))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(ExecutionStatus.FAILED.name()));
+	}
+
+	@Test
+	public void testUpdateTeacher() throws Exception {
+		logger.info("Testing updateTeacher() function in Teacher Controller");
+
+		TeacherDTO teacherDTO = new TeacherDTO();
+		teacherDTO.setId(1);
+		teacherDTO.setFirstName("John 2");
+		teacherDTO.setLastName("Doe 2");
+		teacherDTO.setSex("Female");
+		teacherDTO.setUser(userService.getUser(2).toDTO());
+
+		// Update the teacher
+		mock.perform(
+				MockMvcRequestBuilders.put("/api/v1/teachers/2")
+					.content(mapper.writeValueAsString(teacherDTO))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Teacher record updated successfully."))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(ExecutionStatus.SUCCESS.name()));
+
+		// Missing teacher test
+		mock.perform(MockMvcRequestBuilders.put("/api/v1/teachers/100000")
+				.content(mapper.writeValueAsString(teacherDTO))
+				.contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isNotFound())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Teacher record not found."))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(ExecutionStatus.NOT_FOUND.name()));
+
+		// negative teacher test
+		mock.perform(MockMvcRequestBuilders.put("/api/v1/teachers/-1")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsString(teacherDTO)))
+			.andExpect(MockMvcResultMatchers.status().isBadRequest())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Failed to update teacher record."))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(ExecutionStatus.FAILED.name()));
+	}
+
+	@Test
+	public void testGetTeacherByUserId() throws Exception {
+		logger.info("Testing getTeacher() function in Teacher Controller");
+
+		// Get the teacher
+		mock.perform(MockMvcRequestBuilders.get("/api/v1/teachers/user/1")
+				.contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+
+		// Missing teacher test
+		mock.perform(MockMvcRequestBuilders.get("/api/v1/teachers/user/100000")
+				.contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isNotFound())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Teacher record not found."))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(ExecutionStatus.NOT_FOUND.name()));
+	}
 }

@@ -7,6 +7,7 @@ import com.pshs.attendance_system.entities.*;
 import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,8 +78,8 @@ class DTOAndEntitiesTest {
 		"hashed_password",
 		"llTheBlankll@gmail.com",
 		"admin",
-		Instant.parse("2024-07-07T00:00:00Z"),
-		Instant.parse("2024-07-07T00:00:00Z")
+		LocalDateTime.parse("2024-07-07T00:00:00Z"),
+		LocalDateTime.parse("2024-07-07T00:00:00Z")
 	);
 
 	@Test
@@ -122,8 +123,8 @@ class DTOAndEntitiesTest {
 		assert user.getPassword().equals("hashed_password");
 		assert user.getEmail().equals("llTheBlankll@gmail.com");
 		assert user.getRole().equals("admin");
-		assert user.getLastLogin().equals(Instant.parse("2024-07-07T00:00:00Z"));
-		assert user.getCreatedAt().equals(Instant.parse("2024-07-07T00:00:00Z"));
+		assert user.getLastLogin().equals(LocalDateTime.parse("2024-07-07T00:00:00Z"));
+		assert user.getCreatedAt().equals(LocalDateTime.parse("2024-07-07T00:00:00Z"));
 		System.out.println("Entity Test is successful");
 
 		// DTO Test
@@ -132,8 +133,8 @@ class DTOAndEntitiesTest {
 		assert userDTO.getUsername().equals("vince");
 		assert userDTO.getEmail().equals("llTheBlankll@gmail.com");
 		assert userDTO.getRole().equals("admin");
-		assert userDTO.getLastLogin().equals(Instant.parse("2024-07-07T00:00:00Z"));
-		assert userDTO.getCreatedAt().equals(Instant.parse("2024-07-07T00:00:00Z"));
+		assert userDTO.getLastLogin().equals(LocalDateTime.parse("2024-07-07T00:00:00Z"));
+		assert userDTO.getCreatedAt().equals(LocalDateTime.parse("2024-07-07T00:00:00Z"));
 		System.out.println("DTO Test is successful");
 	}
 
