@@ -17,6 +17,8 @@ public class TeacherDTO implements Serializable {
 	private String sex;
 	private UserDTO user;
 
+	public TeacherDTO() {
+	}
 
 	public TeacherDTO(Integer id, String firstName, String lastName, String sex, UserDTO user) {
 		this.id = id;

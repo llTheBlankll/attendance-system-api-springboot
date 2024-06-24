@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 public class UserCreationDTO implements Serializable {
 
@@ -15,8 +16,8 @@ public class UserCreationDTO implements Serializable {
 	private String username;
 	private String email;
 	private String role;
-	private Instant lastLogin;
-	private Instant createdAt;
+	private LocalDateTime lastLogin;
+	private LocalDateTime createdAt;
 
 	@NotBlank(message = "Password is required")
 	private String password;
@@ -69,20 +70,20 @@ public class UserCreationDTO implements Serializable {
 		return this;
 	}
 
-	public Instant getLastLogin() {
+	public LocalDateTime getLastLogin() {
 		return lastLogin;
 	}
 
-	public UserCreationDTO setLastLogin(Instant lastLogin) {
+	public UserCreationDTO setLastLogin(LocalDateTime lastLogin) {
 		this.lastLogin = lastLogin;
 		return this;
 	}
 
-	public Instant getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 
-	public UserCreationDTO setCreatedAt(Instant createdAt) {
+	public UserCreationDTO setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
