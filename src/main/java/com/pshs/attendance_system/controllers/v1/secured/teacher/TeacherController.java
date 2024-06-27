@@ -267,7 +267,9 @@ public class TeacherController {
 			teachers = teacherService.getAllTeachers(pageable);
 		}
 
-		return ResponseEntity.ok(teachers);
+		return ResponseEntity.ok(
+			this.convertPageTeacherToDTO(teachers)
+		);
 	}
 
 	@GetMapping(value = "/count/all", produces = "application/json")
@@ -287,5 +289,9 @@ public class TeacherController {
 		}
 
 		return ResponseEntity.status(HttpStatus.OK).body(new StatusMessageResponse(String.valueOf(count), ExecutionStatus.SUCCESS));
+	}
+
+	private Page<TeacherDTO> convertPageTeacherToDTO(Page<Teacher> teachers) {
+		return teachers.map(TeacherDTO::new);
 	}
 }

@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension.class)
@@ -177,5 +178,40 @@ public class TeacherControllerTest {
 			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Teacher record not found."))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(ExecutionStatus.NOT_FOUND.name()));
+	}
+
+	@Test
+	public void testSearchTeacher() throws Exception {
+		logger.info("Testing searchTeacher() function in Teacher Controller");
+
+		// Params
+		LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.set("firstName", "Shepperd");
+		params.set("page", "0");
+		params.set("size", "10");
+
+		// Test search by first name
+		mock.perform(MockMvcRequestBuilders.get("/api/v1/teachers/search?firstName=Shepperd&page=0&size=10"))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+
+		// Set new param
+		params.remove("firstName");
+		params.set("lastName", "Jera");
+
+		// Test search by last name
+		mock.perform(MockMvcRequestBuilders.get("/api/v1/teachers/search?lastName=Jera&page=0&size=10"))
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isOk());
+
+		// Clear params and set the sex param
+		params.remove("lastName");
+		params.set("sex", "Male");
+
+		// Test search by sex
+		mock.perform(MockMvcRequestBuilders.get("/api/v1/teachers/search?sex=Male&page=0&size=10")
+				.params(params))
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 }

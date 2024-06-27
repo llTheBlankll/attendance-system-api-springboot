@@ -28,6 +28,14 @@ public class TeacherDTO implements Serializable {
 		this.user = user;
 	}
 
+	public TeacherDTO(Teacher teacher) {
+		this.id = teacher.getId();
+		this.firstName = teacher.getFirstName();
+		this.lastName = teacher.getLastName();
+		this.sex = teacher.getSex();
+		this.user = teacher.getUser().toDTO();
+	}
+
 	public Teacher toEntity() {
 		return new Teacher()
 			.setId(id)
