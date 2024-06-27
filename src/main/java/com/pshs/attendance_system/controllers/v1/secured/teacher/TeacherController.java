@@ -279,16 +279,10 @@ public class TeacherController {
 	})
 	public ResponseEntity<?> countAllTeachers() {
 		int count = teacherService.getTeacherCount();
-		if (count <= 0) {
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
-				new StatusMessageResponse(
-					"No teacher records found.",
-					ExecutionStatus.NOT_FOUND
-				)
-			);
-		}
-
-		return ResponseEntity.status(HttpStatus.OK).body(new StatusMessageResponse(String.valueOf(count), ExecutionStatus.SUCCESS));
+		return ResponseEntity.status(HttpStatus.OK).body(
+			new StatusMessageResponse(
+				String.valueOf(count), ExecutionStatus.SUCCESS)
+		);
 	}
 
 	private Page<TeacherDTO> convertPageTeacherToDTO(Page<Teacher> teachers) {

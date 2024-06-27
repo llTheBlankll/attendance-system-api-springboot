@@ -214,4 +214,13 @@ public class TeacherControllerTest {
 			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(MockMvcResultMatchers.status().isOk());
 	}
+
+	@Test
+	public void testCountAllTeachers() throws Exception {
+		logger.info("Testing countAllTeachers() function in Teacher Controller");
+		mock.perform(MockMvcRequestBuilders.get("/api/v1/teachers/count/all"))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(ExecutionStatus.SUCCESS.name()));
+	}
 }
