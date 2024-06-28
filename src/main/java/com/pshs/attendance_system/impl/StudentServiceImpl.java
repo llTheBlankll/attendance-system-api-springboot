@@ -16,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class StudentServiceImpl implements StudentService {
 
@@ -41,7 +43,7 @@ public class StudentServiceImpl implements StudentService {
 	public ExecutionStatus createStudent(Student student) {
 		// Validate the Student and check if it exists.
 		if (!isStudentValid(student)) {
-			logger.debug("Student is not valid: {}", student);
+			logger.debug("Student is not valid: {}", student.toString());
 			return ExecutionStatus.VALIDATION_ERROR;
 		} else if (isStudentExist(student)) {
 			logger.debug("Student already exists: {}", student);
@@ -150,7 +152,10 @@ public class StudentServiceImpl implements StudentService {
 			logger.debug("Grade Level does not exist: {}", gradeLevel);
 			return ExecutionStatus.FAILED;
 		} else {
-			student.setGradeLevel(gradeLevelService.getGradeLevel(gradeLevel));
+			Optional<GradeLevel> gradeLevelOptional = gradeLevelService.getGradeLevel(gradeLevel);
+
+			gradeLevelOptional.ifPresent(student::setGradeLevel);
+
 			studentRepository.save(student);
 			logger.debug("Student updated: {}", student);
 			return ExecutionStatus.SUCCESS;
@@ -366,7 +371,7 @@ public class StudentServiceImpl implements StudentService {
 	 * @return the number of students in the grade level and section
 	 */
 	@Override
-	public Long countStudentsInGradeLevelAndSection(GradeLevel gradeLevel, Section section) {
+	public Long countStudentsInGradeLevelAndSection(Optional<GradeLevel> gradeLevel, Optional<Section> section) {
 		return studentRepository.countStudentsInGradeLevelAndSection(gradeLevel, section);
 	}
 
@@ -396,6 +401,10 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	private boolean isStudentValid(Student student) {
+		if (student.getId() == null) {
+			return false;
+		}
+
 		if (student.getGradeLevel() == null) {
 			return false;
 		}

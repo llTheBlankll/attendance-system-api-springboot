@@ -4,7 +4,6 @@ package com.pshs.attendance_system.controllers.v1.secured.gradelevel;
 
 import com.pshs.attendance_system.dto.GradeLevelDTO;
 import com.pshs.attendance_system.dto.StatusMessageResponse;
-import com.pshs.attendance_system.dto.StrandDTO;
 import com.pshs.attendance_system.entities.GradeLevel;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.GradeLevelService;
@@ -13,7 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @RestController
 @Tag(name = "Grade Level", description = "API Endpoints for Grade Level")
@@ -77,7 +75,14 @@ public class GradeLevelController {
 	@GetMapping("/{id}")
 	public ResponseEntity<GradeLevelDTO> getGradeLevelById(@PathVariable Integer id) {
 		logger.debug("Fetching grade level by id: {}", id);
-		return ResponseEntity.ok(gradeLevelService.getGradeLevel(id).toDTO());
+		Optional<GradeLevel> gradeLevelOptional = gradeLevelService.getGradeLevel(id);
+
+		if (gradeLevelOptional.isPresent()) {
+			return ResponseEntity.notFound().build();
+		} else {
+			return ResponseEntity.ok(gradeLevelService.getGradeLevel(id).orElse(new GradeLevel()).toDTO());
+		}
+
 	}
 
 

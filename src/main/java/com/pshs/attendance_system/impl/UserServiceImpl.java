@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -20,9 +21,11 @@ public class UserServiceImpl implements UserService {
 
 	private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
 
-	public UserServiceImpl(UserRepository userRepository) {
+	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	/**
@@ -33,12 +36,14 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public User createUser(User user) {
-		if (validateUser(user) && isUserExists(user.getId())) {
+		if (validateUser(user) && isUserExists(user.getUsername())) {
 			logger.debug("User {} already exists.", user.getId());
-			return user;
+			return null;
 		}
 
 		logger.debug("User {} has been created.", user.getId());
+		// ! Hash the Password before storing it.
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return userRepository.save(user);
 	}
 
@@ -72,12 +77,12 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public ExecutionStatus deleteUser(int userId) {
-		// Is user negative? then nahh
+		// Is user negative? then nah
 		if (userId <= 0) {
 			return userInvalidId(userId);
 		}
 
-		// Does this person exists? If no, then return not found.
+		// Does this person exist? If no, then return is not found.
 		if (!isUserExists(userId)) {
 			return userNotFoundLog(userId);
 		}
@@ -131,8 +136,7 @@ public class UserServiceImpl implements UserService {
 		}
 
 		// Set the password and save it.
-		// TODO: Hash the password
-		user.setPassword(password);
+		user.setPassword(passwordEncoder.encode(password));
 		userRepository.save(user);
 		logger.debug("User {} password has been updated.", userId);
 		return ExecutionStatus.SUCCESS;
@@ -376,6 +380,25 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
+	 * Check if the provided password matches the user's password.
+	 *
+	 * @param userId   The user ID
+	 * @param password The password to check The password to check The password to check The password to check
+	 * @return true if the password matches, false otherwise
+	 */
+	@Override
+	public Boolean isUserPasswordMatch(int userId, String password) {
+		Optional<User> userOptional = userRepository.findById(userId);
+		// If the user is present, check if the password matches.
+		if (userOptional.isPresent()) {
+			User user = userOptional.get();
+			return passwordEncoder.matches(password, user.getPassword());
+		}
+
+		return false;
+	}
+
+	/**
 	 * Count all the users in existence within the database.
 	 *
 	 * @return The number of users in the database.
@@ -407,6 +430,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
+	 * Checks if the user exists by username in the database.
+	 *
+	 * @param username username that will be checked
+	 * @return true if the user exists, otherwise false
+	 */
+	private boolean isUserExists(String username) {
+		return userRepository.existsByUsername(username);
+	}
+
+	/**
 	 * THis will validate the user object. The user object should not be null
 	 * and the username and email should not be null.
 	 *
@@ -432,10 +465,10 @@ public class UserServiceImpl implements UserService {
 	 * This will log that the user id is invalid.
 	 *
 	 * @param userId The user id that is invalid
-	 * @return ExecutionStatus.FAILURE
+	 * @return {@link ExecutionStatus#VALIDATION_ERROR}
 	 */
 	private ExecutionStatus userInvalidId(int userId) {
 		logger.warn("Invalid user id {}.", userId);
-		return ExecutionStatus.FAILED;
+		return ExecutionStatus.VALIDATION_ERROR;
 	}
 }

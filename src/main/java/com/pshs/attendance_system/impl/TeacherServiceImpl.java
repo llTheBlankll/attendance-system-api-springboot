@@ -34,10 +34,6 @@ public class TeacherServiceImpl implements TeacherService {
 			return teacherValidationLog(teacher);
 		}
 
-		if (!isTeacherNotExists(teacher.getId())) {
-			logger.debug("Teacher ID: {} already exists.", teacher.getId());
-			return ExecutionStatus.FAILED;
-		}
 		teacherRepository.save(teacher);
 		return ExecutionStatus.SUCCESS;
 	}

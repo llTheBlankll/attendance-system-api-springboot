@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SectionService {
 
@@ -126,7 +127,7 @@ public interface SectionService {
 	 * @param sectionId id of the section that will be retrieved
 	 * @return The section object with the given section id. If not found, return null.
 	 */
-	Section getSection(int sectionId);
+	Optional<Section> getSection(int sectionId);
 
 	/**
 	 * Get all the sections associated with the teacher with the given teacher id.

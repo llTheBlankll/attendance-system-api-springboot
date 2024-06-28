@@ -74,4 +74,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	@Modifying
 	@Query("update User u set u.lastLogin = :lastLogin where u.id = :id")
 	void updateUserLastLoginTime(@NonNull @Param("lastLogin") Instant lastLogin, @NonNull @Param("id") Integer id);
+
+	@Query("select (count(u) > 0) from User u where u.username = :username")
+	boolean existsByUsername(@Param("username") @NonNull String username);
 }

@@ -198,6 +198,15 @@ public interface UserService {
 	 */
 	Page<User> searchUsersByUsernameAndEmailAndRole(String username, String email, String role, int page, int size);
 
+	/**
+	 * Check if the provided password matches the user's password.
+	 *
+	 * @param userId The user ID
+	 * @param password The password to check The password to check The password to check The password to check
+	 * @return true if the password matches, false otherwise
+	 */
+	Boolean isUserPasswordMatch(int userId, String password);
+
 	// Region: User Statistics
 
 	/**

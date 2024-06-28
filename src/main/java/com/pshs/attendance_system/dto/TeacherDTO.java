@@ -17,6 +17,8 @@ public class TeacherDTO implements Serializable {
 	private String sex;
 	private UserDTO user;
 
+	public TeacherDTO() {
+	}
 
 	public TeacherDTO(Integer id, String firstName, String lastName, String sex, UserDTO user) {
 		this.id = id;
@@ -24,6 +26,14 @@ public class TeacherDTO implements Serializable {
 		this.lastName = lastName;
 		this.sex = sex;
 		this.user = user;
+	}
+
+	public TeacherDTO(Teacher teacher) {
+		this.id = teacher.getId();
+		this.firstName = teacher.getFirstName();
+		this.lastName = teacher.getLastName();
+		this.sex = teacher.getSex();
+		this.user = teacher.getUser().toDTO();
 	}
 
 	public Teacher toEntity() {

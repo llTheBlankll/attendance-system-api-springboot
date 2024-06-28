@@ -2,6 +2,7 @@ package com.pshs.attendance_system.controllers.v1.secured.teacher;
 
 import com.pshs.attendance_system.dto.StatusMessageResponse;
 import com.pshs.attendance_system.dto.TeacherDTO;
+import com.pshs.attendance_system.dto.transaction.CreateTeacherDTO;
 import com.pshs.attendance_system.entities.Teacher;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.TeacherService;
@@ -33,7 +34,7 @@ public class TeacherController {
 		this.teacherService = teacherService;
 	}
 
-	@PostMapping(value = "/", consumes = "application/json", produces = "application/json")
+	@PostMapping(value = "/create", consumes = "application/json", produces = "application/json")
 	@Operation(summary = "Create Teacher", description = "Create a new teacher record.")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Teacher record created successfully.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")}),
@@ -41,7 +42,7 @@ public class TeacherController {
 		@ApiResponse(responseCode = "400", description = "Validation error occurred.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")})
 	})
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Teacher Object that will be required to create a new teacher record.", required = true)
-	public ResponseEntity<?> createTeacher(@RequestBody TeacherDTO teacherDTO) {
+	public ResponseEntity<?> createTeacher(@RequestBody CreateTeacherDTO teacherDTO) {
 		ExecutionStatus status = teacherService.createTeacher(teacherDTO.toEntity());
 		switch (status) {
 			case SUCCESS -> {
@@ -60,6 +61,7 @@ public class TeacherController {
 					)
 				);
 			}
+
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(
 					new StatusMessageResponse(
@@ -79,7 +81,7 @@ public class TeacherController {
 		}
 	}
 
-	@DeleteMapping(name = "/", consumes = "application/json", produces = "application/json")
+	@DeleteMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
 	@Operation(summary = "Delete Teacher", description = "Delete a teacher record.")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Teacher record deleted successfully.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")}),
@@ -89,7 +91,7 @@ public class TeacherController {
 	@Parameters({
 		@Parameter(name = "id", description = "The ID of the teacher.")
 	})
-	public ResponseEntity<?> deleteTeacher(@RequestParam int id) {
+	public ResponseEntity<?> deleteTeacher(@PathVariable Integer id) {
 		ExecutionStatus status = teacherService.deleteTeacher(id);
 		switch (status) {
 			case SUCCESS -> {
@@ -119,7 +121,7 @@ public class TeacherController {
 		}
 	}
 
-	@PutMapping(value = "/", consumes = "application/json", produces = "application/json")
+	@PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
 	@Operation(summary = "Update Teacher", description = "Update a teacher record.")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Teacher record updated successfully.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")}),
@@ -130,7 +132,7 @@ public class TeacherController {
 		@Parameter(name = "id", description = "The ID of the teacher.")
 	})
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Teacher Object that will be required to update a teacher record.", required = true)
-	public ResponseEntity<?> updateTeacher(@RequestParam int id, @RequestBody TeacherDTO teacherDTO) {
+	public ResponseEntity<?> updateTeacher(@PathVariable Integer id, @RequestBody TeacherDTO teacherDTO) {
 		ExecutionStatus status = teacherService.updateTeacher(id, teacherDTO.toEntity());
 		switch (status) {
 			case SUCCESS -> {
@@ -168,7 +170,7 @@ public class TeacherController {
 		}
 	}
 
-	@GetMapping("/user")
+	@GetMapping("/user/{id}")
 	@Operation(summary = "Get Teacher by User ID", description = "Get a teacher record by user ID.")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Teacher record retrieved successfully.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")}),
@@ -177,10 +179,11 @@ public class TeacherController {
 	@Parameters({
 		@Parameter(name = "id", description = "The ID of the user.")
 	})
-	public ResponseEntity<?> getTeacherByUserId(@RequestParam Integer id) {
+	public ResponseEntity<?> getTeacherByUserId(@PathVariable Integer id) {
 		if (id == null) {
 			return ResponseEntity.badRequest().body(new StatusMessageResponse("User ID is required.", ExecutionStatus.INVALID));
 		}
+
 		Teacher teacher = teacherService.getTeacherByUser(id);
 
 		// Check if teacher is null.
@@ -196,105 +199,7 @@ public class TeacherController {
 		return ResponseEntity.ok(teacher.toDTO());
 	}
 
-	@PatchMapping(value = "/first-name", consumes = "application/json", produces = "application/json")
-	@Operation(summary = "Update Teacher First Name", description = "Update a teacher's first name.")
-	@ApiResponses({
-		@ApiResponse(responseCode = "200", description = "Teacher record updated successfully.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")}),
-		@ApiResponse(responseCode = "404", description = "Teacher record not found.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")}),
-		@ApiResponse(responseCode = "400", description = "Validation error occurred.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")})
-	})
-	@Parameters({
-		@Parameter(name = "id", description = "The ID of the teacher."),
-		@Parameter(name = "firstName", description = "The first name of the teacher.")
-	})
-	public ResponseEntity<?> updateTeacherFirstName(@RequestParam int id, @RequestParam String firstName) {
-		ExecutionStatus status = teacherService.updateTeacherFirstName(id, firstName);
-		switch (status) {
-			case SUCCESS -> {
-				return ResponseEntity.ok(
-					new StatusMessageResponse(
-						"Teacher first name was updated successfully.",
-						ExecutionStatus.SUCCESS
-					)
-				);
-			}
-			case NOT_FOUND -> {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-					new StatusMessageResponse(
-						"Teacher record not found.",
-						ExecutionStatus.NOT_FOUND
-					)
-				);
-			}
-			case VALIDATION_ERROR -> {
-				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
-						"Validation error occurred.",
-						ExecutionStatus.VALIDATION_ERROR
-					)
-				);
-			}
-			default -> {
-				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
-						"Failed to update teacher record.",
-						ExecutionStatus.FAILED
-					)
-				);
-			}
-		}
-	}
-
-	@PatchMapping(value = "/last-name", consumes = "application/json", produces = "application/json")
-	@Operation(summary = "Update Teacher Last Name", description = "Update a teacher's last name.")
-	@ApiResponses({
-		@ApiResponse(responseCode = "200", description = "Teacher record updated successfully.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")}),
-		@ApiResponse(responseCode = "404", description = "Teacher record not found.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")}),
-		@ApiResponse(responseCode = "400", description = "Validation error occurred.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")})
-	})
-	@Parameters({
-		@Parameter(name = "id", description = "The ID of the teacher."),
-		@Parameter(name = "lastName", description = "The last name of the teacher.")
-	})
-	public ResponseEntity<?> updateTeacherLastName(@RequestParam int id, @RequestParam String lastName) {
-		ExecutionStatus status = teacherService.updateTeacherLastName(id, lastName);
-		switch (status) {
-			case SUCCESS -> {
-				return ResponseEntity.ok(
-					new StatusMessageResponse(
-						"Teacher last name was updated successfully.",
-						ExecutionStatus.SUCCESS
-					)
-				);
-			}
-			case NOT_FOUND -> {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-					new StatusMessageResponse(
-						"Teacher record not found.",
-						ExecutionStatus.NOT_FOUND
-					)
-				);
-			}
-			case VALIDATION_ERROR -> {
-				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
-						"Validation error occurred.",
-						ExecutionStatus.VALIDATION_ERROR
-					)
-				);
-			}
-			default -> {
-				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
-						"Failed to update teacher record.",
-						ExecutionStatus.FAILED
-					)
-				);
-			}
-		}
-	}
-
-	@GetMapping(value = "/", produces = "application/json")
+	@GetMapping(value = "/{id}", produces = "application/json")
 	@Operation(summary = "Get Teacher", description = "Get a teacher record.")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Teacher record retrieved successfully.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")}),
@@ -303,7 +208,7 @@ public class TeacherController {
 	@Parameters({
 		@Parameter(name = "id", description = "The ID of the teacher.")
 	})
-	public ResponseEntity<?> getTeacher(@RequestParam int id) {
+	public ResponseEntity<?> getTeacher(@PathVariable int id) {
 		Teacher teacher = teacherService.getTeacher(id);
 
 		// Check if teacher is null.
@@ -362,7 +267,9 @@ public class TeacherController {
 			teachers = teacherService.getAllTeachers(pageable);
 		}
 
-		return ResponseEntity.ok(teachers);
+		return ResponseEntity.ok(
+			this.convertPageTeacherToDTO(teachers)
+		);
 	}
 
 	@GetMapping(value = "/count/all", produces = "application/json")
@@ -372,15 +279,13 @@ public class TeacherController {
 	})
 	public ResponseEntity<?> countAllTeachers() {
 		int count = teacherService.getTeacherCount();
-		if (count <= 0) {
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
-				new StatusMessageResponse(
-					"No teacher records found.",
-					ExecutionStatus.NOT_FOUND
-				)
-			);
-		}
+		return ResponseEntity.status(HttpStatus.OK).body(
+			new StatusMessageResponse(
+				String.valueOf(count), ExecutionStatus.SUCCESS)
+		);
+	}
 
-		return ResponseEntity.status(HttpStatus.OK).body(new StatusMessageResponse(String.valueOf(count), ExecutionStatus.SUCCESS));
+	private Page<TeacherDTO> convertPageTeacherToDTO(Page<Teacher> teachers) {
+		return teachers.map(TeacherDTO::new);
 	}
 }

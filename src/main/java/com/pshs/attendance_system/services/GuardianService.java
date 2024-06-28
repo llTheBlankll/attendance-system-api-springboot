@@ -7,6 +7,8 @@ import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 public interface GuardianService {
 
 	/**
@@ -48,7 +50,7 @@ public interface GuardianService {
 	 * @param guardianId Guardian ID
 	 * @return Guardian Object, null if not found
 	 */
-	Guardian getGuardian(int guardianId);
+	Optional<Guardian> getGuardian(int guardianId);
 
 	/**
 	 * Search guardian records by full name.

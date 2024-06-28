@@ -9,6 +9,8 @@ import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 public interface StudentService {
 
 	/**
@@ -200,7 +202,7 @@ public interface StudentService {
 	 * @param section    the section to count the students in
 	 * @return the number of students in the grade level and section
 	 */
-	Long countStudentsInGradeLevelAndSection(GradeLevel gradeLevel, Section section);
+	Long countStudentsInGradeLevelAndSection(Optional<GradeLevel> gradeLevel, Optional<Section> section);
 
 	/**
 	 * Counts the number of students in the specified grade level and section.

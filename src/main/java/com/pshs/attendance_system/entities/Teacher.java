@@ -40,6 +40,11 @@ public class Teacher {
 	}
 
 	public User getUser() {
+		// If the teacher user is null, then return a new user to avoid NullPointerException.
+		if (user == null) {
+			return new User();
+		}
+
 		return user;
 	}
 

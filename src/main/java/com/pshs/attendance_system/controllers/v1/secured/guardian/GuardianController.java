@@ -18,6 +18,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/v1/guardians")
 @Tag(
@@ -165,9 +167,9 @@ public class GuardianController {
 
 	@GetMapping(value = "/{guardianId}", produces = "application/json")
 	public ResponseEntity<?> getGuardian(@PathVariable int guardianId) {
-		Guardian guardian = guardianService.getGuardian(guardianId);
+		Optional<Guardian> guardian = guardianService.getGuardian(guardianId);
 
-		if (guardian == null) {
+		if (guardian.isEmpty()) {
 			return ResponseEntity.status(404).body(
 				new StatusMessageResponse(
 					"Guardian not found.",
@@ -176,7 +178,7 @@ public class GuardianController {
 			);
 		}
 
-		return ResponseEntity.ok(guardian);
+		return ResponseEntity.ok(guardian.get().toDTO());
 	}
 
 	@GetMapping(value = "/search", produces = "application/json")

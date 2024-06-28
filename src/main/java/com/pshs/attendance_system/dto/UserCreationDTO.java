@@ -3,45 +3,89 @@
 package com.pshs.attendance_system.dto;
 
 import com.pshs.attendance_system.entities.User;
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDateTime;
 
-public class UserCreationDTO extends UserDTO implements Serializable {
+public class UserCreationDTO implements Serializable {
 
+	@NotBlank(message = "Username is required")
+	private String username;
+	private String email;
+	private String role;
+	private LocalDateTime lastLogin;
+	private LocalDateTime createdAt;
+
+	@NotBlank(message = "Password is required")
 	private String password;
 	private boolean isLocked;
 	private boolean isEnabled;
 	private boolean isExpired;
 	private boolean isCredentialsExpired;
 
-	public UserCreationDTO(boolean isLocked, boolean isEnabled, boolean isExpired, boolean isCredentialsExpired) {
-		this.isLocked = isLocked;
-		this.isEnabled = isEnabled;
-		this.isExpired = isExpired;
-		this.isCredentialsExpired = isCredentialsExpired;
-	}
-
-	public UserCreationDTO(UserDTO user, boolean isLocked, boolean isEnabled, boolean isExpired, boolean isCredentialsExpired) {
-		super(user.getId(), user.getUsername(), user.getEmail(), user.getRole(), user.getLastLogin(), user.getCreatedAt());
-		this.isLocked = isLocked;
-		this.isEnabled = isEnabled;
-		this.isExpired = isExpired;
-		this.isCredentialsExpired = isCredentialsExpired;
+	public UserCreationDTO() {
 	}
 
 	public User toEntity() {
 		return new User()
-			.setId(getId())
-			.setUsername(getUsername())
+			.setUsername(username)
+			.setEmail(email)
+			.setRole(role)
+			.setLastLogin(lastLogin)
+			.setCreatedAt(createdAt)
 			.setPassword(password)
-			.setEmail(getEmail())
-			.setRole(getRole())
-			.setLastLogin(getLastLogin())
-			.setCreatedAt(getCreatedAt())
 			.setLocked(isLocked)
 			.setEnabled(isEnabled)
 			.setExpired(isExpired)
 			.setCredentialsExpired(isCredentialsExpired);
+	}
+
+	public @NotBlank(message = "Username is required") String getUsername() {
+		return username;
+	}
+
+	public UserCreationDTO setUsername(@NotBlank(message = "Username is required") String username) {
+		this.username = username;
+		return this;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public UserCreationDTO setEmail(String email) {
+		this.email = email;
+		return this;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public UserCreationDTO setRole(String role) {
+		this.role = role;
+		return this;
+	}
+
+	public LocalDateTime getLastLogin() {
+		return lastLogin;
+	}
+
+	public UserCreationDTO setLastLogin(LocalDateTime lastLogin) {
+		this.lastLogin = lastLogin;
+		return this;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public UserCreationDTO setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+		return this;
 	}
 
 	public String getPassword() {

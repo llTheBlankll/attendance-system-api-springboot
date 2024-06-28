@@ -3,9 +3,11 @@
 package com.pshs.attendance_system.dto;
 
 import com.pshs.attendance_system.entities.User;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -13,16 +15,18 @@ import java.util.Objects;
  */
 public class UserDTO implements Serializable {
 	private Integer id;
+
+	@NotBlank(message = "Username is required")
 	private String username;
 	private String email;
 	private String role;
-	private Instant lastLogin;
-	private Instant createdAt;
+	private LocalDateTime lastLogin;
+	private LocalDateTime createdAt;
 
 	public UserDTO() {
 	}
 
-	public UserDTO(Integer id, String username, String email, String role, Instant lastLogin, Instant createdAt) {
+	public UserDTO(Integer id, String username, String email, String role, LocalDateTime lastLogin, LocalDateTime createdAt) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
@@ -77,20 +81,20 @@ public class UserDTO implements Serializable {
 		return this;
 	}
 
-	public Instant getLastLogin() {
+	public LocalDateTime getLastLogin() {
 		return lastLogin;
 	}
 
-	public UserDTO setLastLogin(Instant lastLogin) {
+	public UserDTO setLastLogin(LocalDateTime lastLogin) {
 		this.lastLogin = lastLogin;
 		return this;
 	}
 
-	public Instant getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 
-	public UserDTO setCreatedAt(Instant createdAt) {
+	public UserDTO setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}

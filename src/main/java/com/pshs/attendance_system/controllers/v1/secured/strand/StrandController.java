@@ -27,7 +27,7 @@ public class StrandController {
 		this.strandService = strandService;
 	}
 
-	@PostMapping(name = "/v1/strands", consumes = "application/json", produces = "application/json")
+	@PostMapping(value = "/create", consumes = "application/json", produces = "application/json")
 	@Operation(summary = "Create Strand", description = "Create a new strand")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "201", description = "Strand created successfully"),
@@ -134,18 +134,18 @@ public class StrandController {
 					)
 				);
 			}
-			case NOT_FOUND -> {
+			case VALIDATION_ERROR -> {
 				// return 404 Not Found
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
 					new StatusMessageResponse(
 						"Strand not found.",
-						ExecutionStatus.NOT_FOUND
+						ExecutionStatus.VALIDATION_ERROR
 					)
 				);
 			}
 			default -> {
 				// return 500 Internal Server Error
-				return ResponseEntity.status(500).body(
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
 					new StatusMessageResponse(
 						"Failed to update strand.",
 						ExecutionStatus.FAILED
@@ -177,7 +177,7 @@ public class StrandController {
 		return ResponseEntity.ok(strand.toDTO());
 	}
 
-	@GetMapping("/")
+	@GetMapping("/all")
 	@Operation(summary = "Get All Strands", description = "Get all strands")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "List of strands")
@@ -186,7 +186,7 @@ public class StrandController {
 		@Parameter(name = "page", description = "Page number", required = true),
 		@Parameter(name = "size", description = "Number of items per page", required = true)
 	})
-	public ResponseEntity<?> getAllStrands(int page, int size) {
+	public ResponseEntity<?> getAllStrands(@RequestParam int page, @RequestParam int size) {
 		return ResponseEntity.ok(strandService.getAllStrands(PageRequest.of(page, size)));
 	}
 }

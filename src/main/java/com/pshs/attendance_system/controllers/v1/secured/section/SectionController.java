@@ -17,6 +17,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/v1/sections")
 @Tag(
@@ -338,9 +340,10 @@ public class SectionController {
 		@Parameter(name = "id", description = "Section id", required = true)
 	})
 	public ResponseEntity<?> getSection(@PathVariable int id) {
-		Section section = sectionService.getSection(id);
-		if (section != null) {
-			return ResponseEntity.ok(section.toStudentSectionDTO());
+		Optional<Section> section = sectionService.getSection(id);
+
+		if (section.isPresent()) {
+			return ResponseEntity.ok(section.get().toStudentSectionDTO());
 		}
 
 		return ResponseEntity.status(404).body(

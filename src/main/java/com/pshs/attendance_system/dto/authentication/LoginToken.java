@@ -1,6 +1,8 @@
 
 
-package com.pshs.attendance_system.dto;
+package com.pshs.attendance_system.dto.authentication;
+
+import com.pshs.attendance_system.dto.UserDTO;
 
 import java.io.Serializable;
 import java.util.Date;

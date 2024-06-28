@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -47,16 +48,16 @@ public class User implements UserDetails {
 	private Boolean isCredentialsExpired = false;
 
 	@Column(name = "last_login")
-	private Instant lastLogin;
+	private LocalDateTime lastLogin;
 
 	@ColumnDefault("CURRENT_TIMESTAMP")
 	@Column(name = "created_at")
-	private Instant createdAt;
+	private LocalDateTime createdAt;
 
 	public User() {
 	}
 
-	public User(Integer id, String username, String password, String email, String role, Instant lastLogin, Instant createdAt) {
+	public User(Integer id, String username, String password, String email, String role, LocalDateTime lastLogin, LocalDateTime createdAt) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -88,10 +89,6 @@ public class User implements UserDetails {
 
 	public UserDTO toDTO() {
 		return new UserDTO(id, username, email, role, lastLogin, createdAt);
-	}
-
-	public UserCreationDTO toUserCreationDTO() {
-		return new UserCreationDTO(this.toDTO(), isEnabled, isExpired, isLocked, isCredentialsExpired);
 	}
 
 	public Integer getId() {
@@ -184,20 +181,20 @@ public class User implements UserDetails {
 		return this;
 	}
 
-	public Instant getLastLogin() {
+	public LocalDateTime getLastLogin() {
 		return lastLogin;
 	}
 
-	public User setLastLogin(Instant lastLogin) {
+	public User setLastLogin(LocalDateTime lastLogin) {
 		this.lastLogin = lastLogin;
 		return this;
 	}
 
-	public Instant getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 
-	public User setCreatedAt(Instant createdAt) {
+	public User setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}

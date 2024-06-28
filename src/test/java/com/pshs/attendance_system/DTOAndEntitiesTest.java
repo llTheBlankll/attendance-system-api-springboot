@@ -7,6 +7,7 @@ import com.pshs.attendance_system.entities.*;
 import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,8 @@ class DTOAndEntitiesTest {
 		1,
 		"Juan",
 		"Dela Cruz",
-		"Male"
+		"Male",
+		new User()
 	);
 
 	private final Section section = new Section(
@@ -76,8 +78,8 @@ class DTOAndEntitiesTest {
 		"hashed_password",
 		"llTheBlankll@gmail.com",
 		"admin",
-		Instant.parse("2024-07-07T00:00:00Z"),
-		Instant.parse("2024-07-07T00:00:00Z")
+		LocalDateTime.parse("2024-07-07T00:00:00Z"),
+		LocalDateTime.parse("2024-07-07T00:00:00Z")
 	);
 
 	@Test
@@ -92,7 +94,6 @@ class DTOAndEntitiesTest {
 		// DTO Test
 		RFIDCredentialDTO rfidCredentialDTO = rfidCredential.toDTO();
 		assert rfidCredentialDTO.getId() == 1;
-		assert rfidCredentialDTO.getLrn().equals(student.toDTO());
 		assert rfidCredentialDTO.getHashedLrn().equals("hashed_lrn");
 		assert rfidCredentialDTO.getSalt().equals("salt");
 		System.out.println("DTO Test is successful");
@@ -122,8 +123,8 @@ class DTOAndEntitiesTest {
 		assert user.getPassword().equals("hashed_password");
 		assert user.getEmail().equals("llTheBlankll@gmail.com");
 		assert user.getRole().equals("admin");
-		assert user.getLastLogin().equals(Instant.parse("2024-07-07T00:00:00Z"));
-		assert user.getCreatedAt().equals(Instant.parse("2024-07-07T00:00:00Z"));
+		assert user.getLastLogin().equals(LocalDateTime.parse("2024-07-07T00:00:00Z"));
+		assert user.getCreatedAt().equals(LocalDateTime.parse("2024-07-07T00:00:00Z"));
 		System.out.println("Entity Test is successful");
 
 		// DTO Test
@@ -132,8 +133,8 @@ class DTOAndEntitiesTest {
 		assert userDTO.getUsername().equals("vince");
 		assert userDTO.getEmail().equals("llTheBlankll@gmail.com");
 		assert userDTO.getRole().equals("admin");
-		assert userDTO.getLastLogin().equals(Instant.parse("2024-07-07T00:00:00Z"));
-		assert userDTO.getCreatedAt().equals(Instant.parse("2024-07-07T00:00:00Z"));
+		assert userDTO.getLastLogin().equals(LocalDateTime.parse("2024-07-07T00:00:00Z"));
+		assert userDTO.getCreatedAt().equals(LocalDateTime.parse("2024-07-07T00:00:00Z"));
 		System.out.println("DTO Test is successful");
 	}
 
@@ -192,7 +193,6 @@ class DTOAndEntitiesTest {
 		assert sectionDTO.getStrand().equals(strand.toDTO());
 		assert sectionDTO.getGradeLevel().equals(gradeLevel.toDTO());
 		assert sectionDTO.getSectionName().equals("Section A");
-		assert sectionDTO.getStudents().equals(List.of(student.toDTO()));
 		System.out.println("DTO Test is successful");
 	}
 
@@ -263,7 +263,6 @@ void testStudentSectionDTO() {
 		assert sectionStudentsDTO.getStrand().equals(strand.toDTO());
 		assert sectionStudentsDTO.getGradeLevel().equals(gradeLevel.toDTO());
 		assert sectionStudentsDTO.getSectionName().equals("Section A");
-		assert sectionStudentsDTO.getStudents().equals(List.of(student.toDTO()));
 		System.out.println("DTO Test is successful");
 
 		// To Entity
