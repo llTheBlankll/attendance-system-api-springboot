@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SectionServiceImpl implements SectionService {
@@ -292,21 +293,21 @@ public class SectionServiceImpl implements SectionService {
 	 * @return The section object with the given section id. If not found, return null.
 	 */
 	@Override
-	public Section getSection(int sectionId) {
+	public Optional<Section> getSection(int sectionId) {
 		// Check if the section id is valid
 		if (sectionId <= 0) {
 			logFailedValidation(sectionId);
-			return null;
+			return Optional.empty();
 		}
 
 		// Check if the section exists
 		if (!isExists(sectionId)) {
 			logNotFound(sectionId);
-			return null;
+			return Optional.empty();
 		}
 
 		// Return the section object
-		return sectionRepository.findById(sectionId).orElse(null);
+		return sectionRepository.findById(sectionId);
 	}
 
 	/**
@@ -474,7 +475,7 @@ public class SectionServiceImpl implements SectionService {
 	}
 
 	private boolean isNotValid(Section section) {
-		return section.getSectionName().isEmpty() || section.getRoom().isEmpty() || section.getStrand() == null || section.getGradeLevel() == null;
+		return section.getSectionName().isEmpty() || section.getRoom().isEmpty() || section.getStrand() == null || Optional.ofNullable(section.getGradeLevel()) == null;
 	}
 
 	private ExecutionStatus logFailedValidation(int sectionId) {

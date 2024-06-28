@@ -23,7 +23,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 	@Transactional
 	@Modifying
 	@Query("update Student s set s.section = :section where s.id = :id")
-	void updateStudentSection(@NonNull @Param("section") Section section, @NonNull @Param("id") Long id);
+	void updateStudentSection(@NonNull @Param("section") Optional<Section> section, @NonNull @Param("id") Long id);
 
 	@Query("select s from Student s where s.firstName like concat('%', :firstName, '%')")
 	Page<Student> searchStudentsByFirstName(@Param("firstName") @NonNull String firstName, Pageable pageable);
@@ -43,7 +43,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 	Page<Student> searchStudentsByGradeLevel(@Param("gradeLevel") GradeLevel gradeLevel, Pageable pageable);
 
 	@Query("select s from Student s where s.section = :section")
-	Page<Student> searchStudentsBySection(@Param("section") @NonNull Section section, Pageable pageable);
+	Page<Student> searchStudentsBySection(@Param("section") @NonNull Optional<Section> section, Pageable pageable);
 
 	@Query("select count(s) from Student s where s.sex = :sex")
 	long countStudentsBySex(@Param("sex") @NonNull String sex);
@@ -61,7 +61,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 	long countStudentsInGradeLevelById(@Param("id") Integer id);
 
 	@Query("select count(s) from Student s where s.gradeLevel = :gradeLevel and s.section = :section")
-	long countStudentsInGradeLevelAndSection(@Param("gradeLevel") GradeLevel gradeLevel, @Param("section") Section section);
+	long countStudentsInGradeLevelAndSection(@Param("gradeLevel") Optional<GradeLevel> gradeLevel, @Param("section") Optional<Section> section);
 
 	@Query("select s from Student s where s.guardian = ?1")
 	@NonNull

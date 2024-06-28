@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class GradeLevelServiceImpl implements GradeLevelService {
 
@@ -98,8 +100,8 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 	 * @return GradeLevel object, null if not found
 	 */
 	@Override
-	public GradeLevel getGradeLevel(int gradeLevelId) {
-		return gradeLevelRepository.findById(gradeLevelId).orElse(null);
+	public Optional<GradeLevel> getGradeLevel(int gradeLevelId) {
+		return gradeLevelRepository.findById(gradeLevelId);
 	}
 
 	/**

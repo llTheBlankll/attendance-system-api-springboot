@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class GuardianServiceImpl implements GuardianService {
 
@@ -137,8 +139,8 @@ public class GuardianServiceImpl implements GuardianService {
 	 * @return Guardian Object, null if not found
 	 */
 	@Override
-	public Guardian getGuardian(int guardianId) {
-		return guardianRepository.findById(guardianId).orElse(null);
+	public Optional<Guardian> getGuardian(int guardianId) {
+		return guardianRepository.findById(guardianId);
 	}
 
 	/**

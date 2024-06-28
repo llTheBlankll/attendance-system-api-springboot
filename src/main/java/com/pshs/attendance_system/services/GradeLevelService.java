@@ -7,6 +7,8 @@ import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 public interface GradeLevelService {
 
 	/**
@@ -40,7 +42,7 @@ public interface GradeLevelService {
 	 * @param gradeLevelId ID of the grade level to be retrieved
 	 * @return GradeLevel object, null if not found
 	 */
-	GradeLevel getGradeLevel(int gradeLevelId);
+	Optional<GradeLevel> getGradeLevel(int gradeLevelId);
 
 	/**
 	 * Retrieve all grade level records
