@@ -43,7 +43,7 @@ public class StudentServiceImpl implements StudentService {
 	public ExecutionStatus createStudent(Student student) {
 		// Validate the Student and check if it exists.
 		if (!isStudentValid(student)) {
-			logger.debug("Student is not valid: {}", student);
+			logger.debug("Student is not valid: {}", student.toString());
 			return ExecutionStatus.VALIDATION_ERROR;
 		} else if (isStudentExist(student)) {
 			logger.debug("Student already exists: {}", student);
@@ -401,7 +401,11 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	private boolean isStudentValid(Student student) {
-		if (Optional.ofNullable(student.getGradeLevel()) == null) {
+		if (student.getId() == null) {
+			return false;
+		}
+
+		if (student.getGradeLevel() == null) {
 			return false;
 		}
 

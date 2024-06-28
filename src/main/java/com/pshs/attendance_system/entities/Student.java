@@ -57,6 +57,23 @@ public class Student {
 	public Student() {
 	}
 
+	@Override
+	public String toString() {
+		return "Student{" +
+			"id=" + id +
+			", firstName='" + firstName + '\'' +
+			", middleInitial='" + middleInitial + '\'' +
+			", lastName='" + lastName + '\'' +
+			", prefix='" + prefix + '\'' +
+			", gradeLevel=" + gradeLevel +
+			", sex='" + sex + '\'' +
+			", section=" + section +
+			", guardian=" + guardian +
+			", address='" + address + '\'' +
+			", birthdate=" + birthdate +
+			'}';
+	}
+
 	public Student(Long id, String firstName, String middleInitial, String lastName, String prefix, GradeLevel gradeLevel, String sex, Section section, String address, LocalDate birthdate, Guardian guardian) {
 		this.id = id;
 		this.firstName = firstName;

@@ -61,9 +61,9 @@ public class StudentController {
 	public ResponseEntity<?> createStudent(@RequestBody StudentDTO studentDTO) {
 		ExecutionStatus status = studentService.createStudent(studentDTO.toEntity());
 		return switch (status) {
-			case SUCCESS -> ResponseEntity.ok(new StatusMessageResponse("Student created successfully", ExecutionStatus.SUCCESS));
+			case SUCCESS -> ResponseEntity.ok(new StatusMessageResponse("Student is created successfully", ExecutionStatus.SUCCESS));
 			case VALIDATION_ERROR -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new StatusMessageResponse("Student is not valid", ExecutionStatus.VALIDATION_ERROR));
-			case FAILED -> ResponseEntity.badRequest().body(new StatusMessageResponse("Student already exists.", ExecutionStatus.FAILED));
+			case FAILED -> ResponseEntity.badRequest().body(new StatusMessageResponse("Student already exists", ExecutionStatus.FAILED));
 			default -> ResponseEntity.badRequest().body(new StatusMessageResponse("Student creation failed", ExecutionStatus.FAILED));
 		};
 	}

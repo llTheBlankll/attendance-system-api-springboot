@@ -2,6 +2,7 @@
 
 package com.pshs.attendance_system.dto;
 
+import com.pshs.attendance_system.entities.Guardian;
 import com.pshs.attendance_system.entities.Student;
 
 import java.io.Serializable;
@@ -48,10 +49,11 @@ public class StudentDTO implements Serializable {
 			.setMiddleInitial(middleInitial)
 			.setLastName(lastName)
 			.setGradeLevel(gradeLevel.toEntity())
+			.setSection(section.toEntity())
 			.setSex(sex)
 			.setAddress(address)
 			.setBirthdate(birthdate)
-			.setGuardian(guardian.toEntity());
+			.setGuardian((this.guardian == null) ? new Guardian() : this.guardian.toEntity());
 	}
 
 	public Long getId() {
