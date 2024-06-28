@@ -11,9 +11,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
 @Tag(name = "Student", description = "Student API")
 public class StudentController {
 
-	private static final Logger logger = LogManager.getLogger(StudentController.class);
 	private final StudentService studentService;
 
 	public StudentController(StudentService studentService) {
@@ -62,11 +60,12 @@ public class StudentController {
 	})
 	public ResponseEntity<?> createStudent(@RequestBody StudentDTO studentDTO) {
 		ExecutionStatus status = studentService.createStudent(studentDTO.toEntity());
-		if (status == ExecutionStatus.SUCCESS) {
-			return ResponseEntity.ok(new StatusMessageResponse("Student created successfully", status));
-		} else {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student creation failed", status));
-		}
+		return switch (status) {
+			case SUCCESS -> ResponseEntity.ok(new StatusMessageResponse("Student created successfully", ExecutionStatus.SUCCESS));
+			case VALIDATION_ERROR -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new StatusMessageResponse("Student is not valid", ExecutionStatus.VALIDATION_ERROR));
+			case FAILED -> ResponseEntity.badRequest().body(new StatusMessageResponse("Student already exists.", ExecutionStatus.FAILED));
+			default -> ResponseEntity.badRequest().body(new StatusMessageResponse("Student creation failed", ExecutionStatus.FAILED));
+		};
 	}
 
 	@DeleteMapping("/{id}")
