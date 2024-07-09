@@ -35,6 +35,7 @@ class UserControllerTest {
 	@Autowired
 	protected MockMvc mock;
 
+	private final int USER_ID = 3;
 	private final ObjectMapper mapper = new ObjectMapper();
 
 	@BeforeEach
@@ -52,7 +53,7 @@ class UserControllerTest {
 
 		userCreationDTO.setUsername("testCreate"); // test create is a non-existing user
 		userCreationDTO.setPassword("test");
-		userCreationDTO.setEmail("test@gmail.com");
+		userCreationDTO.setEmail("testCreate@gmail.com");
 		userCreationDTO.setRole("TEACHER");
 		userCreationDTO.setEnabled(true);
 		userCreationDTO.setExpired(false);
@@ -120,7 +121,7 @@ class UserControllerTest {
 
 		userCreationDTO.setUsername("testedUser");
 		userCreationDTO.setPassword("tested!");
-		userCreationDTO.setEmail("test@gmail.com");
+		userCreationDTO.setEmail("testUser@gmail.com");
 		userCreationDTO.setRole("TEACHER");
 		userCreationDTO.setEnabled(true);
 		userCreationDTO.setExpired(false);
@@ -181,7 +182,7 @@ class UserControllerTest {
 
 	@Test
 	public void testUpdatePasswordOfUser() throws Exception {
-		int USER_ID = 15;
+		
 		logger.info("Testing update password of user");
 		ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO("test", "test123");
 
@@ -225,7 +226,7 @@ class UserControllerTest {
 
 	@Test
 	public void testUpdateIsLockedUser() throws Exception {
-		int USER_ID = 15;
+		
 		logger.info("Testing update isLocked of user");
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.set("isLocked", Boolean.TRUE.toString());
@@ -262,7 +263,7 @@ class UserControllerTest {
 
 	@Test
 	public void updateUserIsEnabled() throws Exception {
-		int USER_ID = 15;
+		
 		logger.info("Testing update is enabled of user");
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.set("enabled", Boolean.TRUE.toString());
@@ -299,7 +300,7 @@ class UserControllerTest {
 
 	@Test
 	public void updateUserIsExpired() throws Exception {
-		int USER_ID = 15;
+		
 		logger.info("Testing update is expired of user");
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.set("expired", Boolean.TRUE.toString());
@@ -336,7 +337,7 @@ class UserControllerTest {
 
 	@Test
 	public void updateUserIsCredentialsExpired() throws Exception {
-		int USER_ID = 15;
+		int USER_ID = 1;
 		logger.info("Testing update is credentials expired of user");
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.set("credentialsExpired", Boolean.TRUE.toString());
