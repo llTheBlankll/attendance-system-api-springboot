@@ -41,7 +41,7 @@ public class AuthenticationController {
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<?> handleHttpMessageNotReadableException() {
 		return ResponseEntity.badRequest().body(
-			new StatusMessageResponse(
+			new MessageResponse(
 				"Request body is missing.",
 				ExecutionStatus.INVALID
 			)
@@ -73,22 +73,22 @@ public class AuthenticationController {
 
 			// Return error response if the last login time was not updated which should not happen
 			return ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"Failed to update last login time.",
 					ExecutionStatus.FAILED
 				)
 			);
 		} catch (BadCredentialsException e) { // Catch bad credentials exception
 			return ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"Invalid username or password.",
 					ExecutionStatus.INVALID
 				)
 			);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
-					"An error occurred.",
+				new MessageResponse(
+					"An error occurred: " + e.getMessage(),
 					ExecutionStatus.FAILED
 				)
 			);
@@ -99,19 +99,19 @@ public class AuthenticationController {
 	public ResponseEntity<?> isTokenValid(@RequestParam String token, @RequestParam String username) {
 		boolean isValid = jwtService.isTokenValidAndNotExpired(token, username);
 		if (!isValid) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("INVALID", ExecutionStatus.INVALID));
+			return ResponseEntity.badRequest().body(new MessageResponse("INVALID", ExecutionStatus.INVALID));
 		}
 
-		return ResponseEntity.ok(new StatusMessageResponse("VALID", ExecutionStatus.VALID));
+		return ResponseEntity.ok(new MessageResponse("VALID", ExecutionStatus.VALID));
 	}
 
 	@PostMapping("/is-expired")
 	public ResponseEntity<?> isTokenExpired(@RequestParam String token) {
 		boolean isExpired = jwtService.isTokenExpired(token);
 		if (isExpired) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("EXPIRED", ExecutionStatus.INVALID));
+			return ResponseEntity.badRequest().body(new MessageResponse("EXPIRED", ExecutionStatus.INVALID));
 		}
 
-		return ResponseEntity.ok(new StatusMessageResponse("NOT EXPIRED", ExecutionStatus.VALID));
+		return ResponseEntity.ok(new MessageResponse("NOT EXPIRED", ExecutionStatus.VALID));
 	}
 }

@@ -20,13 +20,13 @@ public class UserDTO implements Serializable {
 	private String username;
 	private String email;
 	private String role;
-	private LocalDateTime lastLogin;
-	private LocalDateTime createdAt;
+	private Instant lastLogin;
+	private Instant createdAt;
 
 	public UserDTO() {
 	}
 
-	public UserDTO(Integer id, String username, String email, String role, LocalDateTime lastLogin, LocalDateTime createdAt) {
+	public UserDTO(Integer id, String username, String email, String role, Instant lastLogin, Instant createdAt) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
@@ -81,20 +81,20 @@ public class UserDTO implements Serializable {
 		return this;
 	}
 
-	public LocalDateTime getLastLogin() {
+	public Instant getLastLogin() {
 		return lastLogin;
 	}
 
-	public UserDTO setLastLogin(LocalDateTime lastLogin) {
+	public UserDTO setLastLogin(Instant lastLogin) {
 		this.lastLogin = lastLogin;
 		return this;
 	}
 
-	public LocalDateTime getCreatedAt() {
+	public Instant getCreatedAt() {
 		return createdAt;
 	}
 
-	public UserDTO setCreatedAt(LocalDateTime createdAt) {
+	public UserDTO setCreatedAt(Instant createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}

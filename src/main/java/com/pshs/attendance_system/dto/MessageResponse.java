@@ -2,16 +2,16 @@ package com.pshs.attendance_system.dto;
 
 import com.pshs.attendance_system.enums.ExecutionStatus;
 
-public class StatusMessageResponse {
+public class MessageResponse {
 
 	private String message;
 	private ExecutionStatus status;
 
-	public StatusMessageResponse() {
+	public MessageResponse() {
 
 	}
 
-	public StatusMessageResponse(String message, ExecutionStatus status) {
+	public MessageResponse(String message, ExecutionStatus status) {
 		this.message = message;
 		this.status = status;
 	}
@@ -20,7 +20,7 @@ public class StatusMessageResponse {
 		return message;
 	}
 
-	public StatusMessageResponse setMessage(String message) {
+	public MessageResponse setMessage(String message) {
 		this.message = message;
 		return this;
 	}
@@ -29,7 +29,7 @@ public class StatusMessageResponse {
 		return status;
 	}
 
-	public StatusMessageResponse setStatus(ExecutionStatus status) {
+	public MessageResponse setStatus(ExecutionStatus status) {
 		this.status = status;
 		return this;
 	}
