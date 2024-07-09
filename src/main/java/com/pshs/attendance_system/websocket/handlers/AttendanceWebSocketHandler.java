@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.pshs.attendance_system.dto.AttendanceResultDTO;
 import com.pshs.attendance_system.dto.CardRFIDCredentialDTO;
-import com.pshs.attendance_system.dto.StatusMessageResponse;
+import com.pshs.attendance_system.dto.MessageResponse;
 import com.pshs.attendance_system.entities.RFIDCredential;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.enums.Mode;
@@ -70,7 +70,7 @@ public class AttendanceWebSocketHandler extends TextWebSocketHandler {
 		// Checks if rfid credential doesn't exist and don't continue execution.
 		if (rfidCredential == null) {
 			session.sendMessage(
-				new TextMessage(mapper.writeValueAsString(new StatusMessageResponse("FAILURE", ExecutionStatus.FAILED)))
+				new TextMessage(mapper.writeValueAsString(new MessageResponse("FAILURE", ExecutionStatus.FAILED)))
 			);
 			return;
 		}

@@ -48,16 +48,16 @@ public class User implements UserDetails {
 	private Boolean isCredentialsExpired = false;
 
 	@Column(name = "last_login")
-	private LocalDateTime lastLogin;
+	private Instant lastLogin;
 
 	@ColumnDefault("CURRENT_TIMESTAMP")
 	@Column(name = "created_at")
-	private LocalDateTime createdAt;
+	private Instant createdAt;
 
 	public User() {
 	}
 
-	public User(Integer id, String username, String password, String email, String role, LocalDateTime lastLogin, LocalDateTime createdAt) {
+	public User(Integer id, String username, String password, String email, String role, Instant lastLogin, Instant createdAt) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -181,20 +181,20 @@ public class User implements UserDetails {
 		return this;
 	}
 
-	public LocalDateTime getLastLogin() {
+	public Instant getLastLogin() {
 		return lastLogin;
 	}
 
-	public User setLastLogin(LocalDateTime lastLogin) {
+	public User setLastLogin(Instant lastLogin) {
 		this.lastLogin = lastLogin;
 		return this;
 	}
 
-	public LocalDateTime getCreatedAt() {
+	public Instant getCreatedAt() {
 		return createdAt;
 	}
 
-	public User setCreatedAt(LocalDateTime createdAt) {
+	public User setCreatedAt(Instant createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
