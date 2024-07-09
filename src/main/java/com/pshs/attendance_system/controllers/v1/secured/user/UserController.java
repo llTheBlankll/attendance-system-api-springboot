@@ -27,12 +27,12 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/create")
-	public ResponseEntity<StatusMessageResponse> createUser(@RequestBody UserCreationDTO userCreationDTO) throws JsonProcessingException {
+	public ResponseEntity<MessageResponse> createUser(@RequestBody UserCreationDTO userCreationDTO) throws JsonProcessingException {
 		User status = userService.createUser(userCreationDTO.toEntity());
 
 		if (status == null) {
 			return ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User already exists or invalid data",
 					ExecutionStatus.VALIDATION_ERROR
 				)
@@ -40,7 +40,7 @@ public class UserController {
 		}
 
 		return ResponseEntity.ok(
-			new StatusMessageResponse(
+			new MessageResponse(
 				"User created successfully",
 				ExecutionStatus.SUCCESS
 			)
@@ -48,25 +48,25 @@ public class UserController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<StatusMessageResponse> deleteUser(@PathVariable Integer id) {
+	public ResponseEntity<MessageResponse> deleteUser(@PathVariable Integer id) {
 		logger.info("Deleting user with ID: {}", id);
 		ExecutionStatus status = userService.deleteUser(id);
 
 		return switch (status) {
 			case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User does not exist",
 					status
 				)
 			);
 			case SUCCESS -> ResponseEntity.ok(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User deleted successfully",
 					status
 				)
 			);
 			default -> ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"Failed to delete user",
 					status
 				)
@@ -75,27 +75,27 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<StatusMessageResponse> updateUser(@PathVariable Integer id, @RequestBody UserCreationDTO userCreationDTO) {
+	public ResponseEntity<MessageResponse> updateUser(@PathVariable Integer id, @RequestBody UserCreationDTO userCreationDTO) {
 		logger.info("Updating user with ID: {}", id);
 		ExecutionStatus status = userService.updateUser(id, userCreationDTO.toEntity());
 
 		return switch (status) {
 			case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User does not exist",
 					ExecutionStatus.NOT_FOUND
 				)
 			);
 
 			case SUCCESS -> ResponseEntity.ok(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User updated successfully",
 					ExecutionStatus.SUCCESS
 				)
 			);
 
 			default -> ResponseEntity.internalServerError().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"Failed to update user",
 					status
 				)
@@ -111,7 +111,7 @@ public class UserController {
 		// User does not exist
 		if (user == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User does not exist",
 					ExecutionStatus.NOT_FOUND
 				)
@@ -143,14 +143,14 @@ public class UserController {
 	}
 
 	@PatchMapping("/{id}/password")
-	public ResponseEntity<StatusMessageResponse> updatePassword(@PathVariable Integer id, @RequestBody ChangePasswordDTO changePasswordDTO) {
+	public ResponseEntity<MessageResponse> updatePassword(@PathVariable Integer id, @RequestBody ChangePasswordDTO changePasswordDTO) {
 		logger.info("Updating password for user with ID: {}", id);
 
 		// Checks if the old password is correct
 		Boolean isPasswordCorrect = userService.isUserPasswordMatch(id, changePasswordDTO.getOldPassword());
 		if (!isPasswordCorrect) {
 			return ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"Password is incorrect",
 					ExecutionStatus.VALIDATION_ERROR
 				)
@@ -161,21 +161,21 @@ public class UserController {
 		ExecutionStatus status = userService.updateUserPassword(id, changePasswordDTO.getNewPassword());
 		return switch (status) {
 			case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User does not exist",
 					ExecutionStatus.NOT_FOUND
 				)
 			);
 
 			case SUCCESS -> ResponseEntity.ok(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"Password updated successfully",
 					ExecutionStatus.SUCCESS
 				)
 			);
 
 			default -> ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"Failed to update password",
 					status
 				)
@@ -184,34 +184,34 @@ public class UserController {
 	}
 
 	@PatchMapping("/{id}/is-locked")
-	public ResponseEntity<StatusMessageResponse> updateIsLocked(@PathVariable Integer id, @RequestParam boolean isLocked) {
+	public ResponseEntity<MessageResponse> updateIsLocked(@PathVariable Integer id, @RequestParam boolean isLocked) {
 		logger.info("Updating isLocked for user with ID: {}", id);
 		ExecutionStatus status = userService.changeUserLockStatus(id, isLocked);
 
 		return switch (status) {
 			case VALIDATION_ERROR -> ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User id might be invalid",
 					ExecutionStatus.VALIDATION_ERROR
 				)
 			);
 
 			case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User does not exist",
 					ExecutionStatus.NOT_FOUND
 				)
 			);
 
 			case SUCCESS -> ResponseEntity.ok(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User lock status updated successfully",
 					ExecutionStatus.SUCCESS
 				)
 			);
 
 			default -> ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"Failed to update user lock status",
 					status
 				)
@@ -220,34 +220,34 @@ public class UserController {
 	}
 
 	@PatchMapping("/{id}/is-enabled")
-	public ResponseEntity<StatusMessageResponse> updateIsActive(@PathVariable Integer id, @RequestParam boolean enabled) {
+	public ResponseEntity<MessageResponse> updateIsActive(@PathVariable Integer id, @RequestParam boolean enabled) {
 		logger.info("Updating isActive for user with ID: {}", id);
 		ExecutionStatus status = userService.changeUserEnabledStatus(id, enabled);
 
 		return switch (status) {
 			case VALIDATION_ERROR -> ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User id might be invalid",
 					ExecutionStatus.VALIDATION_ERROR
 				)
 			);
 
 			case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User does not exist",
 					ExecutionStatus.NOT_FOUND
 				)
 			);
 
 			case SUCCESS -> ResponseEntity.ok(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User enabled status updated successfully",
 					ExecutionStatus.SUCCESS
 				)
 			);
 
 			default -> ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"Failed to update user enabled status",
 					status
 				)
@@ -256,33 +256,33 @@ public class UserController {
 	}
 
 	@PatchMapping("/{id}/is-expired")
-	public ResponseEntity<StatusMessageResponse> isUserExpired(@PathVariable Integer id, @RequestParam boolean expired) {
+	public ResponseEntity<MessageResponse> isUserExpired(@PathVariable Integer id, @RequestParam boolean expired) {
 		logger.info("Checking if user with ID: {} is expired", id);
 		ExecutionStatus status = userService.changeUserExpiredStatus(id, expired);
 		return switch (status) {
 			case VALIDATION_ERROR -> ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User id might be invalid",
 					ExecutionStatus.VALIDATION_ERROR
 				)
 			);
 
 			case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User does not exist",
 					ExecutionStatus.NOT_FOUND
 				)
 			);
 
 			case SUCCESS -> ResponseEntity.ok(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User expired status updated successfully",
 					ExecutionStatus.SUCCESS
 				)
 			);
 
 			default -> ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"Failed to update user expired status",
 					status
 				)
@@ -291,34 +291,34 @@ public class UserController {
 	}
 
 	@PatchMapping("/{id}/is-credentials-expired")
-	public ResponseEntity<StatusMessageResponse> isUserCredentialsExpired(@PathVariable Integer id, @RequestParam boolean credentialsExpired) {
+	public ResponseEntity<MessageResponse> isUserCredentialsExpired(@PathVariable Integer id, @RequestParam boolean credentialsExpired) {
 		logger.info("Checking if user with ID: {} has expired credentials", id);
 		ExecutionStatus status = userService.changeUserCredentialsExpiredStatus(id, credentialsExpired);
 
 		return switch (status) {
 			case VALIDATION_ERROR -> ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User ID might be invalid",
 					ExecutionStatus.VALIDATION_ERROR
 				)
 			);
 
 			case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User does not exist",
 					ExecutionStatus.NOT_FOUND
 				)
 			);
 
 			case SUCCESS -> ResponseEntity.ok(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"User credentials expired status updated successfully",
 					ExecutionStatus.SUCCESS
 				)
 			);
 
 			default -> ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"Failed to update user credentials expired status",
 					status
 				)
