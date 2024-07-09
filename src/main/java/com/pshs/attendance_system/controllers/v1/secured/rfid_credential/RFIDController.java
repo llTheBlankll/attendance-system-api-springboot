@@ -1,7 +1,7 @@
 package com.pshs.attendance_system.controllers.v1.secured.rfid_credential;
 
 import com.pshs.attendance_system.dto.RFIDCredentialDTO;
-import com.pshs.attendance_system.dto.StatusMessageResponse;
+import com.pshs.attendance_system.dto.MessageResponse;
 import com.pshs.attendance_system.dto.StudentDTO;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.RFIDCredentialService;
@@ -30,13 +30,13 @@ public class RFIDController {
 		ExecutionStatus status = rfidCredentialService.createRFIDCredential(rfidCredentialDTO.toEntity());
 		switch (status) {
 			case VALIDATION_ERROR -> {
-				return ResponseEntity.badRequest().body(new StatusMessageResponse("Validation Error", status));
+				return ResponseEntity.badRequest().body(new MessageResponse("Validation Error", status));
 			}
 			case SUCCESS -> {
-				return ResponseEntity.ok(new StatusMessageResponse("RFID Credential created successfully", status));
+				return ResponseEntity.ok(new MessageResponse("RFID Credential created successfully", status));
 			}
 			default -> {
-				return ResponseEntity.badRequest().body(new StatusMessageResponse("Failed to create RFID Credential", status));
+				return ResponseEntity.badRequest().body(new MessageResponse("Failed to create RFID Credential", status));
 			}
 		}
 	}
@@ -50,13 +50,13 @@ public class RFIDController {
 		ExecutionStatus status = rfidCredentialService.deleteRFIDCredential(rfidCredentialDTO.toEntity());
 		switch (status) {
 			case VALIDATION_ERROR -> {
-				return ResponseEntity.badRequest().body(new StatusMessageResponse("Validation Error", status));
+				return ResponseEntity.badRequest().body(new MessageResponse("Validation Error", status));
 			}
 			case SUCCESS -> {
-				return ResponseEntity.ok(new StatusMessageResponse("RFID Credential deleted successfully", status));
+				return ResponseEntity.ok(new MessageResponse("RFID Credential deleted successfully", status));
 			}
 			default -> {
-				return ResponseEntity.badRequest().body(new StatusMessageResponse("Failed to delete RFID Credential", status));
+				return ResponseEntity.badRequest().body(new MessageResponse("Failed to delete RFID Credential", status));
 			}
 		}
 	}
@@ -70,13 +70,13 @@ public class RFIDController {
 		ExecutionStatus status = rfidCredentialService.updateRFIDCredential(credentialDTO.toEntity());
 		switch (status) {
 			case VALIDATION_ERROR -> {
-				return ResponseEntity.badRequest().body(new StatusMessageResponse("Validation Error", status));
+				return ResponseEntity.badRequest().body(new MessageResponse("Validation Error", status));
 			}
 			case SUCCESS -> {
-				return ResponseEntity.ok(new StatusMessageResponse("RFID Credential updated successfully", status));
+				return ResponseEntity.ok(new MessageResponse("RFID Credential updated successfully", status));
 			}
 			default -> {
-				return ResponseEntity.badRequest().body(new StatusMessageResponse("Failed to update RFID Credential", status));
+				return ResponseEntity.badRequest().body(new MessageResponse("Failed to update RFID Credential", status));
 			}
 		}
 	}
@@ -90,7 +90,7 @@ public class RFIDController {
 		RFIDCredentialDTO credentialDTO = rfidCredentialService.getRFIDCredentialByStudentId(studentId).toDTO();
 
 		if (credentialDTO.getId() == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StatusMessageResponse("RFID Credential not found", ExecutionStatus.NOT_FOUND));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("RFID Credential not found", ExecutionStatus.NOT_FOUND));
 		}
 
 		return ResponseEntity.ok(credentialDTO);
@@ -105,7 +105,7 @@ public class RFIDController {
 		RFIDCredentialDTO credentialDTO = rfidCredentialService.getRFIDCredentialByStudent(student.toEntity()).toDTO();
 
 		if (credentialDTO.getId() == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StatusMessageResponse("RFID Credential not found", ExecutionStatus.NOT_FOUND));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("RFID Credential not found", ExecutionStatus.NOT_FOUND));
 		}
 
 		return ResponseEntity.ok(credentialDTO);

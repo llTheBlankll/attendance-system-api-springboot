@@ -1,7 +1,7 @@
 package com.pshs.attendance_system.controllers.v1.secured.guardian;
 
 import com.pshs.attendance_system.dto.GuardianDTO;
-import com.pshs.attendance_system.dto.StatusMessageResponse;
+import com.pshs.attendance_system.dto.MessageResponse;
 import com.pshs.attendance_system.entities.Guardian;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.GuardianService;
@@ -51,7 +51,7 @@ public class GuardianController {
 			}
 			case INVALID -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Guardian already exists.",
 						ExecutionStatus.VALIDATION_ERROR
 					)
@@ -59,7 +59,7 @@ public class GuardianController {
 			}
 			default -> {
 				return ResponseEntity.status(500).body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Failed to create guardian.",
 						ExecutionStatus.FAILED
 					)
@@ -84,7 +84,7 @@ public class GuardianController {
 		switch (status) {
 			case SUCCESS -> {
 				return ResponseEntity.ok(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Guardian deleted successfully.",
 						ExecutionStatus.SUCCESS
 					)
@@ -92,7 +92,7 @@ public class GuardianController {
 			}
 			case NOT_FOUND -> {
 				return ResponseEntity.status(404).body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Guardian not found.",
 						ExecutionStatus.NOT_FOUND
 					)
@@ -100,7 +100,7 @@ public class GuardianController {
 			}
 			default -> {
 				return ResponseEntity.status(500).body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Failed to delete guardian.",
 						ExecutionStatus.FAILED
 					)
@@ -127,7 +127,7 @@ public class GuardianController {
 		switch (status) {
 			case SUCCESS -> {
 				return ResponseEntity.ok(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Guardian updated successfully.",
 						ExecutionStatus.SUCCESS
 					)
@@ -135,7 +135,7 @@ public class GuardianController {
 			}
 			case NOT_FOUND -> {
 				return ResponseEntity.status(404).body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Guardian not found.",
 						ExecutionStatus.NOT_FOUND
 					)
@@ -143,7 +143,7 @@ public class GuardianController {
 			}
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Guardian already exists.",
 						ExecutionStatus.INVALID
 					)
@@ -151,7 +151,7 @@ public class GuardianController {
 			}
 			default -> {
 				return ResponseEntity.status(500).body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Failed to update guardian.",
 						ExecutionStatus.FAILED
 					)
@@ -171,7 +171,7 @@ public class GuardianController {
 
 		if (guardian.isEmpty()) {
 			return ResponseEntity.status(404).body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"Guardian not found.",
 					ExecutionStatus.NOT_FOUND
 				)

@@ -48,7 +48,7 @@ public class SectionController {
 		switch (status) {
 			case SUCCESS -> {
 				return ResponseEntity.ok(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Section " + section.getSectionName() + " was created successfully",
 						ExecutionStatus.SUCCESS
 					)
@@ -56,7 +56,7 @@ public class SectionController {
 			}
 			case FAILED -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Section " + section.getSectionName() + " already exists",
 						ExecutionStatus.INVALID
 					)
@@ -64,7 +64,7 @@ public class SectionController {
 			}
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Section " + section.getSectionName() + " validation error",
 						ExecutionStatus.VALIDATION_ERROR
 					)
@@ -72,7 +72,7 @@ public class SectionController {
 			}
 			default -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Section " + section.getSectionName() + " was not created",
 						ExecutionStatus.FAILED
 					)
@@ -96,7 +96,7 @@ public class SectionController {
 		switch (status) {
 			case SUCCESS -> {
 				return ResponseEntity.ok(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Section " + section.getSectionName() + " was updated successfully",
 						ExecutionStatus.SUCCESS
 					)
@@ -104,7 +104,7 @@ public class SectionController {
 			}
 			case FAILED -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Section " + section.getSectionName() + " not found",
 						ExecutionStatus.FAILED
 					)
@@ -112,14 +112,14 @@ public class SectionController {
 			}
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Section " + section.getSectionName() + " validation error",
 						ExecutionStatus.VALIDATION_ERROR
 					)
 				);
 			}
 			default -> {
-				return ResponseEntity.badRequest().body(new StatusMessageResponse(
+				return ResponseEntity.badRequest().body(new MessageResponse(
 						"Section " + section.getSectionName() + " not updated",
 						ExecutionStatus.FAILED
 					)
@@ -142,7 +142,7 @@ public class SectionController {
 	})
 	public ResponseEntity<?> updateSectionTeacher(@PathVariable Integer sectionId, @RequestParam Integer teacherId) {
 		if (sectionId == null || teacherId == null) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse(
+			return ResponseEntity.badRequest().body(new MessageResponse(
 				"Invalid Section/Teacher ID provided.",
 				ExecutionStatus.VALIDATION_ERROR
 			));
@@ -152,11 +152,11 @@ public class SectionController {
 
 		switch (status) {
 			case SUCCESS -> {
-				return ResponseEntity.ok(new StatusMessageResponse("Section teacher updated successfully", ExecutionStatus.SUCCESS));
+				return ResponseEntity.ok(new MessageResponse("Section teacher updated successfully", ExecutionStatus.SUCCESS));
 			}
 			case FAILED -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Teacher is not found",
 						ExecutionStatus.FAILED
 					)
@@ -164,7 +164,7 @@ public class SectionController {
 			}
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Invalid Section/Teacher ID provided.",
 						ExecutionStatus.VALIDATION_ERROR
 					)
@@ -172,7 +172,7 @@ public class SectionController {
 			}
 			default -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Section teacher not updated",
 						ExecutionStatus.FAILED)
 				);
@@ -198,7 +198,7 @@ public class SectionController {
 		switch (status) {
 			case SUCCESS -> {
 				return ResponseEntity.ok(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Section grade level updated successfully",
 						ExecutionStatus.SUCCESS
 					)
@@ -206,7 +206,7 @@ public class SectionController {
 			}
 			case FAILED -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Grade level is not found",
 						ExecutionStatus.FAILED
 					)
@@ -214,7 +214,7 @@ public class SectionController {
 			}
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Invalid Section/Grade Level ID provided.",
 						ExecutionStatus.VALIDATION_ERROR
 					)
@@ -222,7 +222,7 @@ public class SectionController {
 			}
 			default -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Section grade level not updated",
 						ExecutionStatus.FAILED
 					)
@@ -238,7 +238,7 @@ public class SectionController {
 		switch (status) {
 			case SUCCESS -> {
 				return ResponseEntity.ok(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Section name updated successfully",
 						ExecutionStatus.SUCCESS
 					)
@@ -246,7 +246,7 @@ public class SectionController {
 			}
 			case FAILED -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Section is not found",
 						ExecutionStatus.INVALID
 					)
@@ -254,7 +254,7 @@ public class SectionController {
 			}
 			case VALIDATION_ERROR -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Invalid Section ID provided.",
 						ExecutionStatus.VALIDATION_ERROR
 					)
@@ -262,7 +262,7 @@ public class SectionController {
 			}
 			default -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Section name not updated",
 						ExecutionStatus.FAILED
 					)
@@ -284,7 +284,7 @@ public class SectionController {
 		switch (status) {
 			case SUCCESS -> {
 				return ResponseEntity.ok(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Section deleted successfully",
 						ExecutionStatus.SUCCESS
 					)
@@ -292,7 +292,7 @@ public class SectionController {
 			}
 			case NOT_FOUND -> {
 				return ResponseEntity.status(404).body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Section not found",
 						ExecutionStatus.NOT_FOUND
 					)
@@ -300,7 +300,7 @@ public class SectionController {
 			}
 			default -> {
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Section not deleted",
 						ExecutionStatus.FAILED
 					)
@@ -347,7 +347,7 @@ public class SectionController {
 		}
 
 		return ResponseEntity.status(404).body(
-			new StatusMessageResponse(
+			new MessageResponse(
 				"No section with id " + id + " found",
 				ExecutionStatus.NOT_FOUND
 			)
@@ -369,7 +369,7 @@ public class SectionController {
 	public ResponseEntity<?> getSectionsByTeacher(@RequestParam Integer teacherId, @RequestParam int page, @RequestParam int size, @RequestParam(defaultValue = "ASC") Sort.Direction orderBy, @RequestParam(defaultValue = "sectionName") String sortBy) {
 		if (teacherId == null) {
 			return ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"No request parameter provided.",
 					ExecutionStatus.VALIDATION_ERROR
 				)
@@ -396,7 +396,7 @@ public class SectionController {
 		}
 
 		return ResponseEntity.badRequest().body(
-			new StatusMessageResponse(
+			new MessageResponse(
 				"No request parameter and request body provided.",
 				ExecutionStatus.VALIDATION_ERROR
 			)
@@ -419,7 +419,7 @@ public class SectionController {
 		}
 
 		return ResponseEntity.badRequest().body(
-			new StatusMessageResponse(
+			new MessageResponse(
 				"No request parameter and request body provided.",
 				ExecutionStatus.VALIDATION_ERROR
 			)
@@ -445,7 +445,7 @@ public class SectionController {
 		}
 
 		return ResponseEntity.badRequest().body(
-			new StatusMessageResponse(
+			new MessageResponse(
 				"No request parameter provided.",
 				ExecutionStatus.VALIDATION_ERROR
 			)
