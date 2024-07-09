@@ -4,7 +4,7 @@ package com.pshs.attendance_system.entities;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.pshs.attendance_system.dto.StatusMessageResponse;
+import com.pshs.attendance_system.dto.MessageResponse;
 import com.pshs.attendance_system.dto.StrandDTO;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.apache.logging.log4j.LogManager;
@@ -78,8 +78,8 @@ class StrandControllerTest {
 	@Test
 	public void updateStrand() throws Exception {
 		int STRAND_ID = 1;
-		StatusMessageResponse SUCCESS_MESSAGE = new StatusMessageResponse("Strand updated successfully.", ExecutionStatus.SUCCESS);
-		StatusMessageResponse VALIDATION_ERROR_MESSAGE = new StatusMessageResponse("Strand not found.", ExecutionStatus.VALIDATION_ERROR);
+		MessageResponse SUCCESS_MESSAGE = new MessageResponse("Strand updated successfully.", ExecutionStatus.SUCCESS);
+		MessageResponse VALIDATION_ERROR_MESSAGE = new MessageResponse("Strand not found.", ExecutionStatus.VALIDATION_ERROR);
 
 		StrandDTO strandDTO = new StrandDTO();
 		strandDTO.setId(STRAND_ID);

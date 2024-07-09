@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS users
     username               VARCHAR(64) UNIQUE,
     password               CHAR(60),
     email                  VARCHAR(128) UNIQUE,
+    profile_picture        TEXT,
     role                   VARCHAR(48) DEFAULT 'GUEST',
     is_expired             BOOLEAN     DEFAULT FALSE,
     is_locked              BOOLEAN     DEFAULT FALSE,

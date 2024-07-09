@@ -3,7 +3,7 @@
 package com.pshs.attendance_system.controllers.v1.secured.gradelevel;
 
 import com.pshs.attendance_system.dto.GradeLevelDTO;
-import com.pshs.attendance_system.dto.StatusMessageResponse;
+import com.pshs.attendance_system.dto.MessageResponse;
 import com.pshs.attendance_system.entities.GradeLevel;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.GradeLevelService;
@@ -58,10 +58,10 @@ public class GradeLevelController {
 		logger.debug("Creating grade level: {}", gradeLevelDTO);
 		ExecutionStatus status = gradeLevelService.createGradeLevel(gradeLevelDTO.toEntity());
 		if (Objects.requireNonNull(status) == ExecutionStatus.SUCCESS) {
-			return ResponseEntity.ok(new StatusMessageResponse("Grade Level created successfully", status));
+			return ResponseEntity.ok(new MessageResponse("Grade Level created successfully", status));
 		}
 
-		return ResponseEntity.badRequest().body(new StatusMessageResponse("Grade Level creation failed", status));
+		return ResponseEntity.badRequest().body(new MessageResponse("Grade Level creation failed", status));
 	}
 
 	@Operation(summary = "Delete Grade Level", description = "Delete a grade level by ID", responses = {@ApiResponse(responseCode = "200", description = "Shows the status of the operation")})

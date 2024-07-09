@@ -1,6 +1,6 @@
 package com.pshs.attendance_system.controllers;
 
-import com.pshs.attendance_system.dto.StatusMessageResponse;
+import com.pshs.attendance_system.dto.MessageResponse;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -14,7 +14,7 @@ public class RestExceptionHandlerController {
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
 		return ResponseEntity.badRequest().body(
-			new StatusMessageResponse(
+			new MessageResponse(
 				ex.getMessage(),
 				ExecutionStatus.FAILED
 			)
@@ -24,7 +24,7 @@ public class RestExceptionHandlerController {
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<?> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
 		return ResponseEntity.badRequest().body(
-			new StatusMessageResponse(
+			new MessageResponse(
 				ex.getMessage(),
 				ExecutionStatus.FAILED
 			)

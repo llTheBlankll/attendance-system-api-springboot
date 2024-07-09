@@ -61,10 +61,10 @@ public class StudentController {
 	public ResponseEntity<?> createStudent(@RequestBody StudentDTO studentDTO) {
 		ExecutionStatus status = studentService.createStudent(studentDTO.toEntity());
 		return switch (status) {
-			case SUCCESS -> ResponseEntity.ok(new StatusMessageResponse("Student is created successfully", ExecutionStatus.SUCCESS));
-			case VALIDATION_ERROR -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new StatusMessageResponse("Student is not valid", ExecutionStatus.VALIDATION_ERROR));
-			case FAILED -> ResponseEntity.badRequest().body(new StatusMessageResponse("Student already exists", ExecutionStatus.FAILED));
-			default -> ResponseEntity.badRequest().body(new StatusMessageResponse("Student creation failed", ExecutionStatus.FAILED));
+			case SUCCESS -> ResponseEntity.ok(new MessageResponse("Student is created successfully", ExecutionStatus.SUCCESS));
+			case VALIDATION_ERROR -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Student is not valid", ExecutionStatus.VALIDATION_ERROR));
+			case FAILED -> ResponseEntity.badRequest().body(new MessageResponse("Student already exists", ExecutionStatus.FAILED));
+			default -> ResponseEntity.badRequest().body(new MessageResponse("Student creation failed", ExecutionStatus.FAILED));
 		};
 	}
 
@@ -75,14 +75,14 @@ public class StudentController {
 	})
 	public ResponseEntity<?> deleteStudent(@PathVariable Integer id) {
 		if (id == null) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student ID is required", ExecutionStatus.FAILED));
+			return ResponseEntity.badRequest().body(new MessageResponse("Student ID is required", ExecutionStatus.FAILED));
 		}
 
 		ExecutionStatus status = studentService.deleteStudent(id);
 		if (status == ExecutionStatus.SUCCESS) {
-			return ResponseEntity.ok(new StatusMessageResponse("Student deleted successfully", status));
+			return ResponseEntity.ok(new MessageResponse("Student deleted successfully", status));
 		} else {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student deletion failed", status));
+			return ResponseEntity.badRequest().body(new MessageResponse("Student deletion failed", status));
 		}
 	}
 
@@ -99,14 +99,14 @@ public class StudentController {
 	public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO) {
 		// Validation
 		if (id == null) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student ID is required", ExecutionStatus.FAILED));
+			return ResponseEntity.badRequest().body(new MessageResponse("Student ID is required", ExecutionStatus.FAILED));
 		}
 
 		ExecutionStatus status = studentService.updateStudent(id, studentDTO.toEntity());
 		if (status == ExecutionStatus.SUCCESS) {
-			return ResponseEntity.ok(new StatusMessageResponse("Student updated successfully", status));
+			return ResponseEntity.ok(new MessageResponse("Student updated successfully", status));
 		} else {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student update failed", status));
+			return ResponseEntity.badRequest().body(new MessageResponse("Student update failed", status));
 		}
 	}
 
@@ -122,14 +122,14 @@ public class StudentController {
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Student grade level to update", required = true)
 	public ResponseEntity<?> updateStudentGradeLevel(@PathVariable Long id, @RequestParam Integer gradeLevelId) {
 		if (id == null) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student ID is required", ExecutionStatus.FAILED));
+			return ResponseEntity.badRequest().body(new MessageResponse("Student ID is required", ExecutionStatus.FAILED));
 		}
 
 		ExecutionStatus status = studentService.updateStudentGradeLevel(id, gradeLevelId);
 		if (status == ExecutionStatus.SUCCESS) {
-			return ResponseEntity.ok(new StatusMessageResponse("Student grade level updated successfully", status));
+			return ResponseEntity.ok(new MessageResponse("Student grade level updated successfully", status));
 		} else {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student grade level update failed", status));
+			return ResponseEntity.badRequest().body(new MessageResponse("Student grade level update failed", status));
 		}
 	}
 
@@ -144,14 +144,14 @@ public class StudentController {
 	})
 	public ResponseEntity<?> updateStudentSection(@PathVariable Long id, @RequestParam Integer sectionId) {
 		if (id == null) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student ID is required", ExecutionStatus.FAILED));
+			return ResponseEntity.badRequest().body(new MessageResponse("Student ID is required", ExecutionStatus.FAILED));
 		}
 
 		ExecutionStatus status = studentService.updateStudentSection(id, sectionId);
 		if (status == ExecutionStatus.SUCCESS) {
-			return ResponseEntity.ok(new StatusMessageResponse("Student section updated successfully", status));
+			return ResponseEntity.ok(new MessageResponse("Student section updated successfully", status));
 		} else {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student section update failed", status));
+			return ResponseEntity.badRequest().body(new MessageResponse("Student section update failed", status));
 		}
 	}
 
@@ -167,7 +167,7 @@ public class StudentController {
 	public ResponseEntity<?> getStudentById(@PathVariable Long id) {
 		Student student = studentService.getStudentById(id);
 		if (student == null) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse("Student not found", ExecutionStatus.FAILED));
+			return ResponseEntity.badRequest().body(new MessageResponse("Student not found", ExecutionStatus.FAILED));
 		}
 
 		return ResponseEntity.ok(student.toDTO());

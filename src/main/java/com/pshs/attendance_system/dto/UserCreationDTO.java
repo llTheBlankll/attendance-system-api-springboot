@@ -16,8 +16,8 @@ public class UserCreationDTO implements Serializable {
 	private String username;
 	private String email;
 	private String role;
-	private LocalDateTime lastLogin;
-	private LocalDateTime createdAt;
+	private Instant lastLogin;
+	private Instant createdAt;
 
 	@NotBlank(message = "Password is required")
 	private String password;
@@ -70,20 +70,20 @@ public class UserCreationDTO implements Serializable {
 		return this;
 	}
 
-	public LocalDateTime getLastLogin() {
+	public Instant getLastLogin() {
 		return lastLogin;
 	}
 
-	public UserCreationDTO setLastLogin(LocalDateTime lastLogin) {
+	public UserCreationDTO setLastLogin(Instant lastLogin) {
 		this.lastLogin = lastLogin;
 		return this;
 	}
 
-	public LocalDateTime getCreatedAt() {
+	public Instant getCreatedAt() {
 		return createdAt;
 	}
 
-	public UserCreationDTO setCreatedAt(LocalDateTime createdAt) {
+	public UserCreationDTO setCreatedAt(Instant createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}

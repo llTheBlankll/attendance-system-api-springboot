@@ -129,7 +129,7 @@ public class TeacherControllerTest {
 		teacherDTO.setFirstName("John 2");
 		teacherDTO.setLastName("Doe 2");
 		teacherDTO.setSex("Female");
-		teacherDTO.setUser(userService.getUser(2).toDTO());
+		teacherDTO.setUser(userService.getUser(4).toDTO());
 
 		// Update the teacher
 		mock.perform(

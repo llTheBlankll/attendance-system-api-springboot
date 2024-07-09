@@ -1,6 +1,6 @@
 package com.pshs.attendance_system.controllers.v1.secured.attendance;
 
-import com.pshs.attendance_system.dto.StatusMessageResponse;
+import com.pshs.attendance_system.dto.MessageResponse;
 import com.pshs.attendance_system.dto.charts.LineChartDTO;
 import com.pshs.attendance_system.dto.charts.LineChartDataDTO;
 import com.pshs.attendance_system.dto.charts.RealTimeLineChartDTO;
@@ -86,7 +86,7 @@ public class AttendanceGraphicOrganizerController {
 	@PostMapping("/real-time/line-chart")
 	public ResponseEntity<?> realTimeLineChartData(@RequestParam LocalDate date) {
 		if (date == null) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse(
+			return ResponseEntity.badRequest().body(new MessageResponse(
 				"Date is required.",
 				ExecutionStatus.INVALID
 			));
@@ -130,12 +130,12 @@ public class AttendanceGraphicOrganizerController {
 	@PostMapping("/real-time/sections/{sectionId}/line-chart")
 	public ResponseEntity<?> realTimeLineChartDataBySection(@RequestParam LocalDate date, @PathVariable Integer sectionId) {
 		if (sectionId == null) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse(
+			return ResponseEntity.badRequest().body(new MessageResponse(
 				"Section ID is required.",
 				ExecutionStatus.INVALID
 			));
 		} else if (date == null) {
-			return ResponseEntity.badRequest().body(new StatusMessageResponse(
+			return ResponseEntity.badRequest().body(new MessageResponse(
 				"Date is required.",
 				ExecutionStatus.INVALID
 			));

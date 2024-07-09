@@ -1,6 +1,6 @@
 package com.pshs.attendance_system.controllers.v1.secured.strand;
 
-import com.pshs.attendance_system.dto.StatusMessageResponse;
+import com.pshs.attendance_system.dto.MessageResponse;
 import com.pshs.attendance_system.dto.StrandDTO;
 import com.pshs.attendance_system.entities.Strand;
 import com.pshs.attendance_system.enums.ExecutionStatus;
@@ -41,7 +41,7 @@ public class StrandController {
 			case SUCCESS -> {
 				// return 201 Created
 				return ResponseEntity.status(201).body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Strand created successfully.",
 						ExecutionStatus.SUCCESS
 					)
@@ -50,7 +50,7 @@ public class StrandController {
 			case VALIDATION_ERROR -> {
 				// return 400 Bad Request
 				return ResponseEntity.badRequest().body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Strand already exists.",
 						ExecutionStatus.INVALID
 					)
@@ -59,7 +59,7 @@ public class StrandController {
 			default -> {
 				// return 500 Internal Server Error
 				return ResponseEntity.status(500).body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Failed to create strand.",
 						ExecutionStatus.FAILED
 					)
@@ -84,7 +84,7 @@ public class StrandController {
 			case SUCCESS -> {
 				// return 200 OK
 				return ResponseEntity.ok(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Strand deleted successfully.",
 						ExecutionStatus.SUCCESS
 						)
@@ -93,7 +93,7 @@ public class StrandController {
 			case NOT_FOUND -> {
 				// return 404 Not Found
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Strand not found.",
 						ExecutionStatus.NOT_FOUND
 						)
@@ -102,7 +102,7 @@ public class StrandController {
 			default -> {
 				// return 500 Internal Server Error
 				return ResponseEntity.status(500).body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Failed to delete strand.",
 						ExecutionStatus.FAILED
 						)
@@ -128,7 +128,7 @@ public class StrandController {
 			case SUCCESS -> {
 				// return 200 OK
 				return ResponseEntity.ok(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Strand updated successfully.",
 						ExecutionStatus.SUCCESS
 					)
@@ -137,7 +137,7 @@ public class StrandController {
 			case VALIDATION_ERROR -> {
 				// return 404 Not Found
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Strand not found.",
 						ExecutionStatus.VALIDATION_ERROR
 					)
@@ -146,7 +146,7 @@ public class StrandController {
 			default -> {
 				// return 500 Internal Server Error
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-					new StatusMessageResponse(
+					new MessageResponse(
 						"Failed to update strand.",
 						ExecutionStatus.FAILED
 					)
@@ -166,7 +166,7 @@ public class StrandController {
 		if (strand == null) {
 			// return 404 Not Found
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"Strand not found.",
 					ExecutionStatus.NOT_FOUND
 				)

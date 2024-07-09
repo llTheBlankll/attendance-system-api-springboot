@@ -1,6 +1,6 @@
 package com.pshs.attendance_system.controllers.v1.secured.student;
 
-import com.pshs.attendance_system.dto.StatusMessageResponse;
+import com.pshs.attendance_system.dto.MessageResponse;
 import com.pshs.attendance_system.dto.charts.CountDTO;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.StudentService;
@@ -44,7 +44,7 @@ public class StudentStatisticsController {
 	public ResponseEntity<?> countAllStudentsBySexuality(@RequestParam String sex) {
 		if (sex.isEmpty()) {
 			return ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"Sexuality is required",
 					ExecutionStatus.VALIDATION_ERROR
 				)
@@ -65,7 +65,7 @@ public class StudentStatisticsController {
 	public ResponseEntity<?> countAllStudentsBySection(@RequestParam Integer section) {
 		if (section == null) {
 			return ResponseEntity.badRequest().body(
-				new StatusMessageResponse(
+				new MessageResponse(
 					"Section object is required",
 					ExecutionStatus.VALIDATION_ERROR
 					)
