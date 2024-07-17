@@ -11,6 +11,9 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +26,7 @@ import java.time.LocalDate;
 @Tag(name = "Attendance", description = "Attendance API")
 public class AttendanceController {
 
+	private static final Logger logger = LogManager.getLogger(AttendanceController.class);
 	private final AttendanceService attendanceService;
 
 	public AttendanceController(AttendanceService attendanceService) {
@@ -54,8 +58,8 @@ public class AttendanceController {
 	@GetMapping("/student/{id}")
 	@Operation(summary = "Get All of the Attendance of the Student", description = "Get attendance by student ID")
 	@Parameters({@Parameter(name = "id", description = "Student ID", required = true)})
-	public ResponseEntity<?> getAttendanceByStudentId(@PathVariable Long id, @RequestParam Integer page, @RequestParam Integer size, @RequestParam(defaultValue = "date") String sortBy, @RequestParam(defaultValue = "ASC") String order) {
-		Sort sort = Sort.by(Sort.Direction.fromString(order), sortBy);
+	public ResponseEntity<?> getAttendanceByStudentId(@PathVariable Long id, @RequestParam Integer page, @RequestParam Integer size, @RequestParam(defaultValue = "date") String sortBy, @RequestParam(defaultValue = "ASC") Sort.Direction orderBy) {
+		Sort sort = Sort.by(orderBy, sortBy);
 		return ResponseEntity.ok(attendanceService.getAllAttendancesByStudentId(id, PageRequest.of(page, size).withSort(sort)));
 	}
 
@@ -72,9 +76,8 @@ public class AttendanceController {
 	@Parameters({@Parameter(name = "status", description = "Status", required = true),})
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Date Range", required = true, content = {@Content(schema = @Schema(implementation = DateRange.class))})
 	public ResponseEntity<?> getAttendanceByStatusAndDateRange(@PathVariable Status status, @RequestBody DateRange dateRange) {
-		int test = attendanceService.countStudentsByStatusAndDateRange(status, dateRange);
-		System.out.println(test);
-		return ResponseEntity.ok(attendanceService.countStudentsByStatusAndDateRange(status, dateRange));
+		int sum = attendanceService.countStudentsByStatusAndDateRange(status, dateRange);
+		return ResponseEntity.ok(sum);
 	}
 
 	@PostMapping("/status/{status}/section/{section}/date-range")
@@ -82,14 +85,7 @@ public class AttendanceController {
 	@Parameters({@Parameter(name = "status", description = "Status", required = true), @Parameter(name = "section", description = "Section", required = true)})
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Date Range", required = true, content = {@Content(schema = @Schema(implementation = DateRange.class))})
 	public ResponseEntity<?> getAttendanceByStatusAndSectionAndDateRange(@PathVariable Status status, @PathVariable Integer section, @RequestBody DateRange dateRange) {
-		int sum = 0;
-
-		// Loop the date range
-		for (LocalDate date = dateRange.getStartDate(); date.isBefore(dateRange.getEndDate()); date = date.plusDays(1)) {
-			// Get the attendance data.
-			sum += attendanceService.countAttendanceInSection(section, dateRange, status);
-		}
-
+		int sum = attendanceService.countAttendanceInSection(section, dateRange, status);
 		return ResponseEntity.ok(sum);
 	}
 

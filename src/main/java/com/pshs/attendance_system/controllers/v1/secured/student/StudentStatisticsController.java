@@ -51,10 +51,9 @@ public class StudentStatisticsController {
 			);
 		}
 
-		return ResponseEntity.ok(new CountDTO(
-			Math.toIntExact(studentService.countStudentsBySex(sex)),
-			"students"
-		));
+		return ResponseEntity.ok(
+			Math.toIntExact(studentService.countStudentsBySex(sex))
+		);
 	}
 
 	@GetMapping("/section")

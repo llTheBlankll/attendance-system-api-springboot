@@ -281,7 +281,7 @@ public class StudentController {
 		@ApiResponse(responseCode = "200", description = "Students returned successfully")
 	})
 	public ResponseEntity<?> getStudentsBySection(@PathVariable Integer id,
-	                                              @RequestParam int page, @RequestParam int size,
+	                                              @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size,
 	                                              @RequestParam(required = false, defaultValue = "false") Boolean noPaging,
 	                                              @RequestParam(required = false, defaultValue = "ASC") Sort.Direction orderBy,
 	                                              @RequestParam(required = false, defaultValue = "lastName") String sortBy) {

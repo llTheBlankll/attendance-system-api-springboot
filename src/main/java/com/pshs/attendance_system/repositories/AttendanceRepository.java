@@ -3,7 +3,6 @@
 package com.pshs.attendance_system.repositories;
 
 import com.pshs.attendance_system.entities.Attendance;
-import com.pshs.attendance_system.entities.Student;
 import com.pshs.attendance_system.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -79,9 +78,16 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Integer>
 	@Query("select count(distinct a) from Attendance a where a.date = :date and a.status = :status")
 	long getAttendanceCountByDateAndStatus(@Param("date") @NonNull LocalDate date, @Param("status") @NonNull Status status);
 
-	@Query("""
-		select count(a) from Attendance a
-		where a.student.section.id = :id and a.date between :dateStart and :dateEnd or (a.date = :dateStart and a.date = :dateEnd) and a.status = :status""")
+	@Query(
+		"""
+			    SELECT COUNT(a) FROM Attendance a
+			    JOIN a.student s
+			    JOIN s.section sec
+			    WHERE sec.id = :id
+			    AND a.date BETWEEN :dateStart AND :dateEnd
+			    AND a.status = :status
+			"""
+	)
 	long countAttendanceInSection(@Param("id") @NonNull Integer id, @Param("dateStart") @NonNull LocalDate dateStart, @Param("dateEnd") @NonNull LocalDate dateEnd, @Param("status") @NonNull Status status);
 
 	@Query("""

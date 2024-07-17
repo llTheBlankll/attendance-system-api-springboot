@@ -217,7 +217,6 @@ public interface AttendanceService {
 
 	int averageAttendanceInSection(Integer sectionId, DateRange dateRange, Status status);
 
-
 	// End: Statistics / Numbers
 
 	// Region: Custom Queries
