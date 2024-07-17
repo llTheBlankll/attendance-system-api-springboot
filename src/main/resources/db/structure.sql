@@ -124,7 +124,7 @@ CREATE INDEX guardian_full_name_idx ON guardians (full_name);
 CREATE TABLE IF NOT EXISTS attendances
 (
     id         SERIAL PRIMARY KEY,
-    student_id BIGINT NOT NULL,
+    student_id BIGINT NULL,
     status     Status,
     date       DATE DEFAULT CURRENT_DATE,
     time       TIME DEFAULT LOCALTIME,
