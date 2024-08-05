@@ -10,7 +10,7 @@ import com.pshs.attendance_system.entities.Attendance;
 import com.pshs.attendance_system.entities.RFIDCredential;
 import com.pshs.attendance_system.entities.Student;
 import com.pshs.attendance_system.entities.range.DateRange;
-import com.pshs.attendance_system.enums.Status;
+import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.repositories.AttendanceRepository;
 import com.pshs.attendance_system.services.AttendanceService;
@@ -77,12 +77,12 @@ public class AttendanceServiceImpl implements AttendanceService {
 		}
 
 		try {
-			// Get Student and Attendance Status
-			Status status = this.getAttendanceStatus();
+			// Get Student and Attendance AttendanceStatus
+			AttendanceStatus attendanceStatus = this.getAttendanceStatus();
 
 			// Set attendance info.
 			attendance.setStudent(student);
-			attendance.setStatus(status);
+			attendance.setStatus(attendanceStatus);
 			attendance.setTime(LocalTime.now());
 			attendance.setDate(LocalDate.now());
 
@@ -118,13 +118,13 @@ public class AttendanceServiceImpl implements AttendanceService {
 				return null;
 			}
 
-			// Get Student and Attendance Status
-			Status status = this.getAttendanceStatus();
+			// Get Student and Attendance AttendanceStatus
+			AttendanceStatus attendanceStatus = this.getAttendanceStatus();
 
 			// Set attendance info.
 			Attendance attendance = new Attendance();
 			attendance.setStudent(student);
-			attendance.setStatus(status);
+			attendance.setStatus(attendanceStatus);
 			attendance.setTime(LocalTime.now());
 			attendance.setDate(LocalDate.now());
 
@@ -188,7 +188,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 			}
 
 			// Successful attendance dto is used for sending a message to the topic exchange in topic attendance-notifications
-			if (attendance.getStatus() == Status.EXISTS) {
+			if (attendance.getStatus() == AttendanceStatus.EXISTS) {
 				attendanceResultDTO.setDate(attendance.getDate())
 					.setTime(attendance.getTime())
 					.setTimeOut(attendance.getTimeOut())
@@ -197,7 +197,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 					.setStudent(attendance.getStudent().toDTO())
 					.setMessage("Student already recorded.");
 				logger.debug("Student already recorded.");
-				logger.debug("Status: {}", attendance.getStatus());
+				logger.debug("AttendanceStatus: {}", attendance.getStatus());
 				logger.debug("Time Out: {}", attendance.getTimeOut());
 			} else {
 				attendanceResultDTO.setDate(attendance.getDate())
@@ -240,7 +240,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 					attendanceResultDTO.setDate(attendance.getDate())
 						.setTime(attendance.getTime())
 						.setTimeOut(timeSignOut)
-						.setStatus(Status.SIGNED_OUT) // * Status.OUT is used for marking the student as signed out
+						.setStatus(AttendanceStatus.SIGNED_OUT) // * AttendanceStatus.OUT is used for marking the student as signed out
 						.setStudent(attendance.getStudent().toDTO())
 						.setHashedLrn(rfidCredential.getHashedLrn())
 						.setMessage("Student successfully signed out.");
@@ -254,7 +254,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 					attendanceResultDTO.setDate(attendance.getDate())
 						.setTime(attendance.getTime())
 						.setTimeOut(attendance.getTimeOut())
-						.setStatus(Status.SIGNED_OUT) // * Status.OUT is used for marking the student as signed out
+						.setStatus(AttendanceStatus.SIGNED_OUT) // * AttendanceStatus.OUT is used for marking the student as signed out
 						.setStudent(attendance.getStudent().toDTO())
 						.setHashedLrn(rfidCredential.getHashedLrn())
 						.setMessage("Student already signed out.");
@@ -349,10 +349,10 @@ public class AttendanceServiceImpl implements AttendanceService {
 	 * the status is set to on time by default.
 	 * This would be the case if the current time is before onTimeArrival (5:30).
 	 *
-	 * @return {@link Status}
-	 * @see Status
+	 * @return {@link AttendanceStatus}
+	 * @see AttendanceStatus
 	 */
-	public Status getAttendanceStatus() {
+	public AttendanceStatus getAttendanceStatus() {
 		LocalTime lateArrivalTime;
 		LocalTime onTimeArrival = LocalTime.of(5, 30);
 
@@ -365,11 +365,11 @@ public class AttendanceServiceImpl implements AttendanceService {
 			lateArrivalTime = LocalTime.of(7, 0); // * Regular day
 		}
 		if (currentLocalTime.isBefore(lateArrivalTime) && currentLocalTime.isAfter(onTimeArrival)) {
-			return Status.ON_TIME;
+			return AttendanceStatus.ON_TIME;
 		} else if (currentLocalTime.isAfter(lateArrivalTime)) {
-			return Status.LATE;
+			return AttendanceStatus.LATE;
 		} else {
-			return Status.ON_TIME;
+			return AttendanceStatus.ON_TIME;
 		}
 	}
 
@@ -472,84 +472,84 @@ public class AttendanceServiceImpl implements AttendanceService {
 	// Region: Statistics Region
 
 	/**
-	 * Count the total number of students with the attendance status between two dates.
+	 * Count the total number of students with the attendance attendanceStatus between two dates.
 	 *
-	 * @param status Attendance Status (LATE, ON_TIME, ...)
+	 * @param attendanceStatus Attendance AttendanceStatus (LATE, ON_TIME, ...)
 	 * @param dateRange        from 2024-10-1 to 2024-12-1
 	 * @return the number of attendances from all students.
 	 */
 	@Override
-	public int countStudentsByStatusAndDateRange(Status status, DateRange dateRange) {
-		return (int) attendanceRepository.countStudentsByStatusAndDateRange(status, dateRange.getStartDate(), dateRange.getEndDate());
+	public int countStudentsByStatusAndDateRange(AttendanceStatus attendanceStatus, DateRange dateRange) {
+		return (int) attendanceRepository.countStudentsByStatusAndDateRange(attendanceStatus, dateRange.getStartDate(), dateRange.getEndDate());
 	}
 
 	/**
-	 * Count the total number of students with the attendance status on a specific date.
+	 * Count the total number of students with the attendance attendanceStatus on a specific date.
 	 *
-	 * @param status Attendance Status (LATE, ON_TIME, ...)
+	 * @param attendanceStatus Attendance AttendanceStatus (LATE, ON_TIME, ...)
 	 * @param date             Specific Date
-	 * @return the number of attendance of all the student with the specific status with the specific date
+	 * @return the number of attendance of all the student with the specific attendanceStatus with the specific date
 	 */
 	@Override
-	public int countStudentsByStatusAndDate(Status status, LocalDate date) {
-		return (int) attendanceRepository.countStudentsByStatusAndDate(status, date);
+	public int countStudentsByStatusAndDate(AttendanceStatus attendanceStatus, LocalDate date) {
+		return (int) attendanceRepository.countStudentsByStatusAndDate(attendanceStatus, date);
 	}
 
 	/**
-	 * Count the total number of students with the attendance status on a specific date.
+	 * Count the total number of students with the attendance attendanceStatus on a specific date.
 	 *
 	 * @param studentId        Student ID
-	 * @param status Attendance Status (LATE, ON_TIME, ...)
+	 * @param attendanceStatus Attendance AttendanceStatus (LATE, ON_TIME, ...)
 	 * @param date             Specific Date
-	 * @return the number of attendance of all the student with the specific status with the specific date
+	 * @return the number of attendance of all the student with the specific attendanceStatus with the specific date
 	 */
 	@Override
-	public int countStudentAttendanceByStatusAndDate(Long studentId, Status status, LocalDate date) {
-		return (int) attendanceRepository.countStudentAttendancesByStatusAndDate(studentId, status, date);
+	public int countStudentAttendanceByStatusAndDate(Long studentId, AttendanceStatus attendanceStatus, LocalDate date) {
+		return (int) attendanceRepository.countStudentAttendancesByStatusAndDate(studentId, attendanceStatus, date);
 	}
 
 	/**
-	 * Count the total number of students with the attendance status between two date.
+	 * Count the total number of students with the attendance attendanceStatus between two date.
 	 *
 	 * @param studentId        Student ID
-	 * @param status Attendance Status (LATE, ON_TIME, ...)
+	 * @param attendanceStatus Attendance AttendanceStatus (LATE, ON_TIME, ...)
 	 * @param dateRange        from 2024-10-1 to 2024-12-1
-	 * @return the number of attendance of all student with the specific status between the date range
+	 * @return the number of attendance of all student with the specific attendanceStatus between the date range
 	 */
 	@Override
-	public int countStudentAttendanceByStatusAndDate(Long studentId, Status status, DateRange dateRange) {
-		return (int) attendanceRepository.countStudentAttendancesByStatusBetweenDate(studentId, status, dateRange.getStartDate(), dateRange.getEndDate());
+	public int countStudentAttendanceByStatusAndDate(Long studentId, AttendanceStatus attendanceStatus, DateRange dateRange) {
+		return (int) attendanceRepository.countStudentAttendancesByStatusBetweenDate(studentId, attendanceStatus, dateRange.getStartDate(), dateRange.getEndDate());
 	}
 
 	/**
-	 * Returns the total number of attendances of a student with the specific status.
+	 * Returns the total number of attendances of a student with the specific attendanceStatus.
 	 *
 	 * @param date   Date
-	 * @param status Status
-	 * @return the number of attendances of a student with the specific status
+	 * @param attendanceStatus AttendanceStatus
+	 * @return the number of attendances of a student with the specific attendanceStatus
 	 */
 	@Override
-	public int getAttendanceCountByDateAndStatus(LocalDate date, Status status) {
-		return (int) attendanceRepository.getAttendanceCountByDateAndStatus(date, status);
+	public int getAttendanceCountByDateAndStatus(LocalDate date, AttendanceStatus attendanceStatus) {
+		return (int) attendanceRepository.getAttendanceCountByDateAndStatus(date, attendanceStatus);
 	}
 
 	@Override
-	public int countAttendanceInSection(Integer sectionId, LocalDate date, Status status) {
-		return (int) attendanceRepository.countAttendanceInSectionByDate(sectionId, date, status);
+	public int countAttendanceInSection(Integer sectionId, LocalDate date, AttendanceStatus attendanceStatus) {
+		return (int) attendanceRepository.countAttendanceInSectionByDate(sectionId, date, attendanceStatus);
 	}
 
 	@Override
-	public int countAttendanceInSection(Integer sectionId, DateRange dateRange, Status status) {
-		return (int) attendanceRepository.countAttendanceInSection(sectionId, dateRange.getStartDate(), dateRange.getEndDate(), status);
+	public int countAttendanceInSection(Integer sectionId, DateRange dateRange, AttendanceStatus attendanceStatus) {
+		return (int) attendanceRepository.countAttendanceInSection(sectionId, dateRange.getStartDate(), dateRange.getEndDate(), attendanceStatus);
 	}
 
 	@Override
-	public int averageAttendanceInSection(Integer sectionId, LocalDate date, Status status) {
+	public int averageAttendanceInSection(Integer sectionId, LocalDate date, AttendanceStatus attendanceStatus) {
 		return 0;
 	}
 
 	@Override
-	public int averageAttendanceInSection(Integer sectionId, DateRange dateRange, Status status) {
+	public int averageAttendanceInSection(Integer sectionId, DateRange dateRange, AttendanceStatus attendanceStatus) {
 		return 0;
 	}
 

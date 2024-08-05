@@ -29,7 +29,7 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 	 * Create a new grade level record
 	 *
 	 * @param gradeLevel GradeLevel object to be created
-	 * @return Execution Status (SUCCESS or FAILURE)
+	 * @return Execution AttendanceStatus (SUCCESS or FAILURE)
 	 */
 	@Override
 	public ExecutionStatus createGradeLevel(GradeLevel gradeLevel) {
@@ -50,7 +50,7 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 	 * Delete a grade level record
 	 *
 	 * @param gradeLevelId ID of the grade level to be deleted
-	 * @return Execution Status (SUCCESS, FAILURE, NOT_FOUND)
+	 * @return Execution AttendanceStatus (SUCCESS, FAILURE, NOT_FOUND)
 	 */
 	@Override
 	public ExecutionStatus deleteGradeLevel(int gradeLevelId) {
@@ -72,7 +72,7 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 	 *
 	 * @param gradeLevelId ID of the grade level to be updated
 	 * @param gradeLevel   Updated grade level object
-	 * @return Execution Status (SUCCESS, FAILURE, NOT_FOUND, or VALIDATION_ERROR)
+	 * @return Execution AttendanceStatus (SUCCESS, FAILURE, NOT_FOUND, or VALIDATION_ERROR)
 	 */
 	@Override
 	public ExecutionStatus updateGradeLevel(int gradeLevelId, GradeLevel gradeLevel) {

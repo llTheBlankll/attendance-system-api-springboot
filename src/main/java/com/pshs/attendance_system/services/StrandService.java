@@ -13,7 +13,7 @@ public interface StrandService {
 	 * Create a new strand record.
 	 *
 	 * @param strand Strand object to be created
-	 * @return Execution Status (SUCCESS, FAILURE, or VALIDATION_ERROR)
+	 * @return Execution AttendanceStatus (SUCCESS, FAILURE, or VALIDATION_ERROR)
 	 */
 	ExecutionStatus createStrand(Strand strand);
 
@@ -21,7 +21,7 @@ public interface StrandService {
 	 * Delete a strand record.
 	 *
 	 * @param strandId ID of the strand to be deleted
-	 * @return Execution Status (SUCCESS, FAILURE, or NOT_FOUND)
+	 * @return Execution AttendanceStatus (SUCCESS, FAILURE, or NOT_FOUND)
 	 */
 	ExecutionStatus deleteStrand(int strandId);
 
@@ -30,7 +30,7 @@ public interface StrandService {
 	 *
 	 * @param strandId ID of the strand to be updated
 	 * @param strand   Updated strand object
-	 * @return Execution Status (SUCCESS, FAILURE, NOT_FOUND, or VALIDATION_ERROR)
+	 * @return Execution AttendanceStatus (SUCCESS, FAILURE, NOT_FOUND, or VALIDATION_ERROR)
 	 */
 	ExecutionStatus updateStrand(int strandId, Strand strand);
 

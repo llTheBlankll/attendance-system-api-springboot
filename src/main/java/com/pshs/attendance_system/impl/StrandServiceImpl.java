@@ -26,7 +26,7 @@ public class StrandServiceImpl implements StrandService {
 	 * Create a new strand record.
 	 *
 	 * @param strand Strand object to be created
-	 * @return Execution Status (SUCCESS, FAILURE, or VALIDATION_ERROR)
+	 * @return Execution AttendanceStatus (SUCCESS, FAILURE, or VALIDATION_ERROR)
 	 */
 	@Override
 	public ExecutionStatus createStrand(Strand strand) {
@@ -43,7 +43,7 @@ public class StrandServiceImpl implements StrandService {
 	 * Delete a strand record.
 	 *
 	 * @param strandId ID of the strand to be deleted
-	 * @return Execution Status (SUCCESS, FAILURE, or NOT_FOUND)
+	 * @return Execution AttendanceStatus (SUCCESS, FAILURE, or NOT_FOUND)
 	 */
 	@Override
 	public ExecutionStatus deleteStrand(int strandId) {
@@ -61,7 +61,7 @@ public class StrandServiceImpl implements StrandService {
 	 *
 	 * @param strandId ID of the strand to be updated
 	 * @param strand   Updated strand object
-	 * @return Execution Status (SUCCESS, FAILURE, NOT_FOUND, or VALIDATION_ERROR)
+	 * @return Execution AttendanceStatus (SUCCESS, FAILURE, NOT_FOUND, or VALIDATION_ERROR)
 	 */
 	@Override
 	public ExecutionStatus updateStrand(int strandId, Strand strand) {

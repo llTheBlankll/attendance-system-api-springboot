@@ -15,7 +15,7 @@ public interface GradeLevelService {
 	 * Create a new grade level record
 	 *
 	 * @param gradeLevel The grade level object that will be created.
-	 * @return Execution Status (SUCCESS or FAILURE)
+	 * @return Execution AttendanceStatus (SUCCESS or FAILURE)
 	 */
 	ExecutionStatus createGradeLevel(GradeLevel gradeLevel);
 
@@ -23,7 +23,7 @@ public interface GradeLevelService {
 	 * Delete a grade level record
 	 *
 	 * @param gradeLevelId ID of the grade level to be deleted
-	 * @return Execution Status (SUCCESS, FAILURE, NOT_FOUND)
+	 * @return Execution AttendanceStatus (SUCCESS, FAILURE, NOT_FOUND)
 	 */
 	ExecutionStatus deleteGradeLevel(int gradeLevelId);
 
@@ -32,7 +32,7 @@ public interface GradeLevelService {
 	 *
 	 * @param gradeLevelId ID of the grade level to be updated
 	 * @param gradeLevel   Updated grade level object
-	 * @return Execution Status (SUCCESS, FAILURE, NOT_FOUND, or VALIDATION_ERROR)
+	 * @return Execution AttendanceStatus (SUCCESS, FAILURE, NOT_FOUND, or VALIDATION_ERROR)
 	 */
 	ExecutionStatus updateGradeLevel(int gradeLevelId, GradeLevel gradeLevel);
 
