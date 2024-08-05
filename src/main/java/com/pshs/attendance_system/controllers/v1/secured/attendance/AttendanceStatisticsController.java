@@ -2,7 +2,7 @@ package com.pshs.attendance_system.controllers.v1.secured.attendance;
 
 import com.pshs.attendance_system.entities.Attendance;
 import com.pshs.attendance_system.entities.range.DateRange;
-import com.pshs.attendance_system.enums.Status;
+import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.services.AttendanceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +34,7 @@ public class AttendanceStatisticsController {
 	}
 
 	@PostMapping("/student/{id}/days/{attendanceStatus}")
-	public ResponseEntity<?> getStudentTotalDaysByStatus(@PathVariable Long id, @PathVariable Status attendanceStatus, @RequestBody DateRange dateRange) {
+	public ResponseEntity<?> getStudentTotalDaysByStatus(@PathVariable Long id, @PathVariable AttendanceStatus attendanceStatus, @RequestBody DateRange dateRange) {
 		return ResponseEntity.ok(attendanceService.countStudentAttendanceByStatusAndDate(
 			id,
 			attendanceStatus,

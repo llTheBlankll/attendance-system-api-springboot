@@ -3,7 +3,7 @@ package com.pshs.attendance_system.controllers.v1.secured.attendance;
 import com.pshs.attendance_system.dto.AttendanceDTO;
 import com.pshs.attendance_system.dto.charts.CountDTO;
 import com.pshs.attendance_system.entities.range.DateRange;
-import com.pshs.attendance_system.enums.Status;
+import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.services.AttendanceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -71,40 +70,40 @@ public class AttendanceController {
 		return ResponseEntity.ok(attendanceService.getAllAttendancesByDate(date, PageRequest.of(page, size).withSort(sort)));
 	}
 
-	@PostMapping("/status/{status}/date-range")
-	@Operation(summary = "Get the total count of attendance by Status and Date Range", description = "Get All of the Attendances count")
-	@Parameters({@Parameter(name = "status", description = "Status", required = true),})
+	@PostMapping("/status/{attendanceStatus}/date-range")
+	@Operation(summary = "Get the total count of attendance by AttendanceStatus and Date Range", description = "Get All of the Attendances count")
+	@Parameters({@Parameter(name = "attendanceStatus", description = "AttendanceStatus", required = true),})
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Date Range", required = true, content = {@Content(schema = @Schema(implementation = DateRange.class))})
-	public ResponseEntity<?> getAttendanceByStatusAndDateRange(@PathVariable Status status, @RequestBody DateRange dateRange) {
-		int sum = attendanceService.countStudentsByStatusAndDateRange(status, dateRange);
+	public ResponseEntity<?> getAttendanceByStatusAndDateRange(@PathVariable AttendanceStatus attendanceStatus, @RequestBody DateRange dateRange) {
+		int sum = attendanceService.countStudentsByStatusAndDateRange(attendanceStatus, dateRange);
 		return ResponseEntity.ok(sum);
 	}
 
-	@PostMapping("/status/{status}/section/{section}/date-range")
-	@Operation(summary = "Get the total count of attendance by Status, Section and Date Range", description = "Get All of the Attendances count")
-	@Parameters({@Parameter(name = "status", description = "Status", required = true), @Parameter(name = "section", description = "Section", required = true)})
+	@PostMapping("/status/{attendanceStatus}/section/{section}/date-range")
+	@Operation(summary = "Get the total count of attendance by AttendanceStatus, Section and Date Range", description = "Get All of the Attendances count")
+	@Parameters({@Parameter(name = "attendanceStatus", description = "AttendanceStatus", required = true), @Parameter(name = "section", description = "Section", required = true)})
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Date Range", required = true, content = {@Content(schema = @Schema(implementation = DateRange.class))})
-	public ResponseEntity<?> getAttendanceByStatusAndSectionAndDateRange(@PathVariable Status status, @PathVariable Integer section, @RequestBody DateRange dateRange) {
-		int sum = attendanceService.countAttendanceInSection(section, dateRange, status);
+	public ResponseEntity<?> getAttendanceByStatusAndSectionAndDateRange(@PathVariable AttendanceStatus attendanceStatus, @PathVariable Integer section, @RequestBody DateRange dateRange) {
+		int sum = attendanceService.countAttendanceInSection(section, dateRange, attendanceStatus);
 		return ResponseEntity.ok(sum);
 	}
 
-	@GetMapping("/status/{status}/section/{section}/date")
-	@Operation(summary = "Get the total count of attendance by Status, Section and Date", description = "Get All of the Attendances count")
-	@Parameters({@Parameter(name = "status", description = "Status", required = true), @Parameter(name = "section", description = "Section", required = true)})
-	public ResponseEntity<?> getAttendanceByStatusAndSectionAndDate(@PathVariable Status status, @PathVariable Integer section, @RequestParam LocalDate date) {
+	@GetMapping("/status/{attendanceStatus}/section/{section}/date")
+	@Operation(summary = "Get the total count of attendance by AttendanceStatus, Section and Date", description = "Get All of the Attendances count")
+	@Parameters({@Parameter(name = "attendanceStatus", description = "AttendanceStatus", required = true), @Parameter(name = "section", description = "Section", required = true)})
+	public ResponseEntity<?> getAttendanceByStatusAndSectionAndDate(@PathVariable AttendanceStatus attendanceStatus, @PathVariable Integer section, @RequestParam LocalDate date) {
 		return ResponseEntity.ok(new CountDTO(
-			attendanceService.countAttendanceInSection(section, date, status),
+			attendanceService.countAttendanceInSection(section, date, attendanceStatus),
 			"attendance"
 		));
 	}
 
-	@GetMapping("/status/{status}/date")
-	@Operation(summary = "Get the total count of attendance by Status and Date", description = "Get All of the Attendances count")
-	@Parameters({@Parameter(name = "status", description = "Status", required = true), @Parameter(name = "date", description = "Date", required = true)})
-	public ResponseEntity<?> getAttendanceByStatusAndDate(@PathVariable Status status, @RequestParam LocalDate date) {
+	@GetMapping("/status/{attendanceStatus}/date")
+	@Operation(summary = "Get the total count of attendance by AttendanceStatus and Date", description = "Get All of the Attendances count")
+	@Parameters({@Parameter(name = "attendanceStatus", description = "AttendanceStatus", required = true), @Parameter(name = "date", description = "Date", required = true)})
+	public ResponseEntity<?> getAttendanceByStatusAndDate(@PathVariable AttendanceStatus attendanceStatus, @RequestParam LocalDate date) {
 		return ResponseEntity.ok(new CountDTO(
-			attendanceService.countStudentsByStatusAndDateRange(status, new DateRange(date, date)),
+			attendanceService.countStudentsByStatusAndDateRange(attendanceStatus, new DateRange(date, date)),
 			"attendance"
 		));
 	}

@@ -2,7 +2,7 @@
 
 package com.pshs.attendance_system.dto;
 
-import com.pshs.attendance_system.enums.Status;
+import com.pshs.attendance_system.enums.AttendanceStatus;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -14,16 +14,16 @@ public class AttendanceResultDTO implements Serializable {
 	private LocalDate date;
 	private LocalTime time;
 	private LocalTime timeOut;
-	private Status status;
+	private AttendanceStatus attendanceStatus;
 	private String message;
 	private String hashedLrn;
 
-	public AttendanceResultDTO(StudentDTO student, LocalDate date, LocalTime time, LocalTime timeOut, Status status, String message, String hashedLrn) {
+	public AttendanceResultDTO(StudentDTO student, LocalDate date, LocalTime time, LocalTime timeOut, AttendanceStatus attendanceStatus, String message, String hashedLrn) {
 		this.student = student;
 		this.date = date;
 		this.time = time;
 		this.timeOut = timeOut;
-		this.status = status;
+		this.attendanceStatus = attendanceStatus;
 		this.message = message;
 		this.hashedLrn = hashedLrn;
 	}
@@ -67,12 +67,12 @@ public class AttendanceResultDTO implements Serializable {
 		return this;
 	}
 
-	public Status getStatus() {
-		return status;
+	public AttendanceStatus getStatus() {
+		return attendanceStatus;
 	}
 
-	public AttendanceResultDTO setStatus(Status status) {
-		this.status = status;
+	public AttendanceResultDTO setStatus(AttendanceStatus attendanceStatus) {
+		this.attendanceStatus = attendanceStatus;
 		return this;
 	}
 

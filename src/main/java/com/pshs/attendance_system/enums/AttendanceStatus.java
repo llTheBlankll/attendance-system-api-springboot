@@ -2,7 +2,7 @@
 
 package com.pshs.attendance_system.enums;
 
-public enum Status {
+public enum AttendanceStatus {
 
 	LATE,
 	EXCUSED,

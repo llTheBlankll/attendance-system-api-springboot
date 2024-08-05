@@ -6,8 +6,8 @@ import com.pshs.attendance_system.dto.charts.LineChartDataDTO;
 import com.pshs.attendance_system.dto.charts.RealTimeLineChartDTO;
 import com.pshs.attendance_system.entities.Attendance;
 import com.pshs.attendance_system.entities.range.DateRange;
+import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.enums.ExecutionStatus;
-import com.pshs.attendance_system.enums.Status;
 import com.pshs.attendance_system.services.AttendanceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -33,14 +33,14 @@ public class AttendanceGraphicOrganizerController {
 
 	@PostMapping("/line-chart")
 	@Operation(
-		summary = "Get the total count of attendance by Status and Date Range",
+		summary = "Get the total count of attendance by AttendanceStatus and Date Range",
 		description = "Get All of the Attendances count",
 		method = "POST",
 		parameters = {
-			@Parameter(name = "status", description = "Status", required = true),
+			@Parameter(name = "attendanceStatus", description = "AttendanceStatus", required = true),
 		}
 	)
-	public LineChartDTO lineChartData(@RequestParam Status status, @RequestBody DateRange dateRange) {
+	public LineChartDTO lineChartData(@RequestParam AttendanceStatus attendanceStatus, @RequestBody DateRange dateRange) {
 		List<String> labels = new ArrayList<>();
 		List<Integer> data = new ArrayList<>();
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -51,14 +51,14 @@ public class AttendanceGraphicOrganizerController {
 			// Get the attendance data.
 			// Get the attendance count to the labels and data
 			labels.add(dateTimeFormatter.format(date));
-			data.add(attendanceService.getAttendanceCountByDateAndStatus(date, status));
+			data.add(attendanceService.getAttendanceCountByDateAndStatus(date, attendanceStatus));
 		}
 
 		return new LineChartDTO(labels, data);
 	}
 
 	@PostMapping("/sections/{sectionId}/line-chart")
-	public LineChartDTO lineChartDataBySection(@RequestParam Status status, @RequestBody DateRange dateRange, @PathVariable Integer sectionId) {
+	public LineChartDTO lineChartDataBySection(@RequestParam AttendanceStatus attendanceStatus, @RequestBody DateRange dateRange, @PathVariable Integer sectionId) {
 		List<String> labels = new ArrayList<>();
 		List<Integer> data = new ArrayList<>();
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -69,14 +69,14 @@ public class AttendanceGraphicOrganizerController {
 			// Get the attendance data.
 			// Get the attendance count to the labels and data
 			labels.add(dateTimeFormatter.format(date));
-			data.add(attendanceService.countAttendanceInSection(sectionId, date, status));
+			data.add(attendanceService.countAttendanceInSection(sectionId, date, attendanceStatus));
 		}
 
 		return new LineChartDTO(labels, data);
 	}
 
 	@PostMapping("/students/{studentId}/line-chart")
-	public LineChartDTO lineChartDataByStudent(@RequestParam Status status, @RequestBody DateRange dateRange, @PathVariable Long studentId) {
+	public LineChartDTO lineChartDataByStudent(@RequestParam AttendanceStatus attendanceStatus, @RequestBody DateRange dateRange, @PathVariable Long studentId) {
 		List<String> labels = new ArrayList<>();
 		List<Integer> data = new ArrayList<>();
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -87,7 +87,7 @@ public class AttendanceGraphicOrganizerController {
 			// Get the attendance data.
 			// Get the attendance count to the labels and data
 			labels.add(dateTimeFormatter.format(date));
-			data.add(attendanceService.countStudentAttendanceByStatusAndDate(studentId, status, date));
+			data.add(attendanceService.countStudentAttendanceByStatusAndDate(studentId, attendanceStatus, date));
 		}
 
 		return new LineChartDTO(labels, data);
@@ -118,13 +118,13 @@ public class AttendanceGraphicOrganizerController {
 			}
 
 			lineChartDataDTOs.add(new LineChartDataDTO(
-				Status.ON_TIME.name(),
+				AttendanceStatus.ON_TIME.name(),
 				attendance.getTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
 			);
 			labels.add(attendance.getTime().toString());
 
 			lineChartDataDTOs.add(new LineChartDataDTO(
-				Status.SIGNED_OUT.name(),
+				AttendanceStatus.SIGNED_OUT.name(),
 				attendance.getTimeOut().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
 			);
 			labels.add(attendance.getTimeOut().toString());
@@ -197,7 +197,7 @@ public class AttendanceGraphicOrganizerController {
 			}
 
 			lineChartDataDTOs.add(new LineChartDataDTO(
-				Status.SIGNED_OUT.name(),
+				AttendanceStatus.SIGNED_OUT.name(),
 				attendance.getTimeOut().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
 			);
 			labels.add(attendance.getTimeOut().toString());

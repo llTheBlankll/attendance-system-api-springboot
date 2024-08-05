@@ -3,7 +3,7 @@
 package com.pshs.attendance_system.entities;
 
 import com.pshs.attendance_system.dto.AttendanceDTO;
-import com.pshs.attendance_system.enums.Status;
+import com.pshs.attendance_system.enums.AttendanceStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
@@ -26,9 +26,9 @@ public class Attendance {
 	@JoinColumn(name = "student_id", nullable = false)
 	private Student student;
 
-	@Column(name = "status", length = Integer.MAX_VALUE)
+	@Column(name = "attendanceStatus", length = Integer.MAX_VALUE)
 	@Enumerated(EnumType.STRING)
-	private Status status;
+	private AttendanceStatus attendanceStatus;
 
 	@ColumnDefault("CURRENT_DATE")
 	@Column(name = "date")
@@ -45,17 +45,17 @@ public class Attendance {
 	public Attendance() {
 	}
 
-	public Attendance(Integer id, Student student, Status status, LocalDate date, LocalTime time, LocalTime timeOut) {
+	public Attendance(Integer id, Student student, AttendanceStatus attendanceStatus, LocalDate date, LocalTime time, LocalTime timeOut) {
 		this.id = id;
 		this.student = student;
-		this.status = status;
+		this.attendanceStatus = attendanceStatus;
 		this.date = date;
 		this.time = time;
 		this.timeOut = timeOut;
 	}
 
 	public AttendanceDTO toDTO() {
-		return new AttendanceDTO(id, student.toDTO(), status, date, time, timeOut);
+		return new AttendanceDTO(id, student.toDTO(), attendanceStatus, date, time, timeOut);
 	}
 
 	public Integer getId() {
@@ -76,12 +76,12 @@ public class Attendance {
 		return this;
 	}
 
-	public Status getStatus() {
-		return status;
+	public AttendanceStatus getStatus() {
+		return attendanceStatus;
 	}
 
-	public Attendance setStatus(Status status) {
-		this.status = status;
+	public Attendance setStatus(AttendanceStatus attendanceStatus) {
+		this.attendanceStatus = attendanceStatus;
 		return this;
 	}
 

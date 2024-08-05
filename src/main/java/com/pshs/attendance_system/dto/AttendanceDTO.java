@@ -3,7 +3,7 @@
 package com.pshs.attendance_system.dto;
 
 import com.pshs.attendance_system.entities.Attendance;
-import com.pshs.attendance_system.enums.Status;
+import com.pshs.attendance_system.enums.AttendanceStatus;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -16,7 +16,7 @@ import java.util.Objects;
 public class AttendanceDTO implements Serializable {
 	private Integer id;
 	private StudentDTO student;
-	private Status status;
+	private AttendanceStatus attendanceStatus;
 	private LocalDate date;
 	private LocalTime time;
 	private LocalTime timeOut;
@@ -24,10 +24,10 @@ public class AttendanceDTO implements Serializable {
 	public AttendanceDTO() {
 	}
 
-	public AttendanceDTO(Integer id, StudentDTO student, Status status, LocalDate date, LocalTime time, LocalTime timeOut) {
+	public AttendanceDTO(Integer id, StudentDTO student, AttendanceStatus attendanceStatus, LocalDate date, LocalTime time, LocalTime timeOut) {
 		this.id = id;
 		this.student = student;
-		this.status = status;
+		this.attendanceStatus = attendanceStatus;
 		this.date = date;
 		this.time = time;
 		this.timeOut = timeOut;
@@ -37,7 +37,7 @@ public class AttendanceDTO implements Serializable {
 		return new Attendance()
 			.setId(id)
 			.setStudent(student.toEntity())
-			.setStatus(status)
+			.setStatus(attendanceStatus)
 			.setDate(date)
 			.setTime(time)
 			.setTimeOut(timeOut);
@@ -61,12 +61,12 @@ public class AttendanceDTO implements Serializable {
 		return this;
 	}
 
-	public Status getStatus() {
-		return status;
+	public AttendanceStatus getStatus() {
+		return attendanceStatus;
 	}
 
-	public AttendanceDTO setStatus(Status status) {
-		this.status = status;
+	public AttendanceDTO setStatus(AttendanceStatus attendanceStatus) {
+		this.attendanceStatus = attendanceStatus;
 		return this;
 	}
 
@@ -104,7 +104,7 @@ public class AttendanceDTO implements Serializable {
 		AttendanceDTO entity = (AttendanceDTO) o;
 		return Objects.equals(this.id, entity.id) &&
 			Objects.equals(this.student, entity.student) &&
-			Objects.equals(this.status, entity.status) &&
+			Objects.equals(this.attendanceStatus, entity.attendanceStatus) &&
 			Objects.equals(this.date, entity.date) &&
 			Objects.equals(this.time, entity.time) &&
 			Objects.equals(this.timeOut, entity.timeOut);
@@ -112,7 +112,7 @@ public class AttendanceDTO implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, student, status, date, time, timeOut);
+		return Objects.hash(id, student, attendanceStatus, date, time, timeOut);
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class AttendanceDTO implements Serializable {
 		return getClass().getSimpleName() + "(" +
 			"id = " + id + ", " +
 			"student = " + student + ", " +
-			"status = " + status + ", " +
+			"attendanceStatus = " + attendanceStatus + ", " +
 			"date = " + date + ", " +
 			"time = " + time + ", " +
 			"timeOut = " + timeOut + ")";
