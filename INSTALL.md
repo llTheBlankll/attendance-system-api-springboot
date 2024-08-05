@@ -14,7 +14,7 @@
    ```
    cd attendance-system-api
    ```
-3. Import the database configuration at `src > main > resources > db > structure.sql`
+3. Import the database configuration at `src > main > resources > db > import.sql`
 4. **Optionally**, you can import mock data at `src > main > resources > db > mock_data`
 5. Edit spring boot configuration (application.properties) at **src > main > resources > application.properties**
     - Edit connection string, username, password to yours.
