@@ -9,6 +9,8 @@ import com.pshs.attendance_system.entities.range.DateRange;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.enums.Status;
 import com.pshs.attendance_system.services.AttendanceService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +32,14 @@ public class AttendanceGraphicOrganizerController {
 	}
 
 	@PostMapping("/line-chart")
+	@Operation(
+		summary = "Get the total count of attendance by Status and Date Range",
+		description = "Get All of the Attendances count",
+		method = "POST",
+		parameters = {
+			@Parameter(name = "status", description = "Status", required = true),
+		}
+	)
 	public LineChartDTO lineChartData(@RequestParam Status status, @RequestBody DateRange dateRange) {
 		List<String> labels = new ArrayList<>();
 		List<Integer> data = new ArrayList<>();

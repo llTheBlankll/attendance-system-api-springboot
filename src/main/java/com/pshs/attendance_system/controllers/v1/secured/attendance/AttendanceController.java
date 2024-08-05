@@ -40,7 +40,7 @@ public class AttendanceController {
 		return ResponseEntity.ok(attendanceService.getAllAttendances(PageRequest.of(page, size).withSort(sort)));
 	}
 
-	@PostMapping("/attendance")
+	@PostMapping("/create")
 	@Operation(summary = "Create Attendance", description = "Create a new attendance")
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Attendance object to be created", required = true)
 	public ResponseEntity<?> createAttendance(@RequestBody AttendanceDTO attendanceDTO) {
