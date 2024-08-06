@@ -16,13 +16,17 @@ def connect():
     """ Connect to the PostgreSQL database server """
     try:
         # connecting to the PostgreSQL server
-        with psycopg2.connect(database="attendance_system",
-                              user="USER",
-                              password="PASS",
+        with psycopg2.connect(database="attendance_system_api",
+                              user="nytri",
+                              password="Asharia2100",
                               host="localhost",
                               port=5432) as conn:
-            print('Connected to the PostgreSQL server.')
-            return conn
+            if conn is None:
+                print("Something happened!")
+                exit(1)
+            else:
+                print('Connected to the PostgreSQL server.')
+                return conn
     except (psycopg2.DatabaseError, Exception) as error:
         print(error)
 
@@ -47,10 +51,10 @@ def main():
     script_file.write("student_id, status, date, time, time_out\n")
 
     # Loop for n days
-    # O(n)^2 time complexity
+    # O(n * m) time complexity
     for date in range(loop_count):
         for student in student_list:
-            status: str = numpy.random.choice([Status.LATE, Status.ON_TIME, Status.ABSENT], p=[0.3, 0.6, 0.1])
+            status: str = numpy.random.choice([Status.LATE, Status.ON_TIME, Status.ABSENT], p=[0.3, 0.65, 0.05])
             if status == Status.ABSENT:
                 new_statement: str = f"{student},{status},{current_date},,"
             elif status == Status.ON_TIME:
