@@ -1,19 +1,19 @@
 
 
-package com.pshs.attendance_system.websocket.handlers;
+package com.pshs.attendance_system.messaging.handlers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.pshs.attendance_system.dto.AttendanceResultDTO;
-import com.pshs.attendance_system.dto.CardRFIDCredentialDTO;
-import com.pshs.attendance_system.dto.MessageResponse;
-import com.pshs.attendance_system.entities.RFIDCredential;
+import com.pshs.attendance_system.models.dto.AttendanceResultDTO;
+import com.pshs.attendance_system.models.dto.CardRFIDCredentialDTO;
+import com.pshs.attendance_system.models.dto.MessageResponse;
+import com.pshs.attendance_system.models.entities.RFIDCredential;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.enums.Mode;
 import com.pshs.attendance_system.services.AttendanceService;
 import com.pshs.attendance_system.services.RFIDCredentialService;
-import com.pshs.attendance_system.websocket.services.RealTimeNotificationSubscribers;
+import com.pshs.attendance_system.messaging.services.RealTimeNotificationSubscribers;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;

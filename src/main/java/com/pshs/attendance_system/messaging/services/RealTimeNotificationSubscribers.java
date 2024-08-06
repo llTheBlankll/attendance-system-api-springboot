@@ -1,4 +1,4 @@
-package com.pshs.attendance_system.websocket.services;
+package com.pshs.attendance_system.messaging.services;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

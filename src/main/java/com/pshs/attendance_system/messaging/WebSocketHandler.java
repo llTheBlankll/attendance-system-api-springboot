@@ -1,12 +1,12 @@
 
 
-package com.pshs.attendance_system.websocket;
+package com.pshs.attendance_system.messaging;
 
 import com.pshs.attendance_system.services.AttendanceService;
 import com.pshs.attendance_system.services.RFIDCredentialService;
-import com.pshs.attendance_system.websocket.handlers.AttendanceWebSocketHandler;
-import com.pshs.attendance_system.websocket.handlers.RealTimeNotificationsHandler;
-import com.pshs.attendance_system.websocket.services.RealTimeNotificationSubscribers;
+import com.pshs.attendance_system.messaging.handlers.AttendanceWebSocketHandler;
+import com.pshs.attendance_system.messaging.handlers.RealTimeNotificationsHandler;
+import com.pshs.attendance_system.messaging.services.RealTimeNotificationSubscribers;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;

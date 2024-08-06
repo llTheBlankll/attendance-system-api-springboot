@@ -1,6 +1,6 @@
 
 
-package com.pshs.attendance_system.broker;
+package com.pshs.attendance_system.messaging.broker;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Queue;

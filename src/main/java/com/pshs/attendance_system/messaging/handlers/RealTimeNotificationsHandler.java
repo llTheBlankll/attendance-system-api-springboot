@@ -1,6 +1,6 @@
-package com.pshs.attendance_system.websocket.handlers;
+package com.pshs.attendance_system.messaging.handlers;
 
-import com.pshs.attendance_system.websocket.services.RealTimeNotificationSubscribers;
+import com.pshs.attendance_system.messaging.services.RealTimeNotificationSubscribers;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;

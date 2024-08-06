@@ -1,12 +1,12 @@
 
 
-package com.pshs.attendance_system.broker;
+package com.pshs.attendance_system.messaging.broker;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.pshs.attendance_system.dto.AttendanceResultDTO;
-import com.pshs.attendance_system.dto.CardRFIDCredentialDTO;
-import com.pshs.attendance_system.entities.RFIDCredential;
+import com.pshs.attendance_system.models.dto.AttendanceResultDTO;
+import com.pshs.attendance_system.models.dto.CardRFIDCredentialDTO;
+import com.pshs.attendance_system.models.entities.RFIDCredential;
 import com.pshs.attendance_system.enums.Mode;
 import com.pshs.attendance_system.services.AttendanceService;
 import com.pshs.attendance_system.services.RFIDCredentialService;
