@@ -2,9 +2,9 @@
 
 package com.pshs.attendance_system.controllers.v1.secured.gradelevel;
 
-import com.pshs.attendance_system.dto.GradeLevelDTO;
-import com.pshs.attendance_system.dto.MessageResponse;
-import com.pshs.attendance_system.entities.GradeLevel;
+import com.pshs.attendance_system.models.dto.GradeLevelDTO;
+import com.pshs.attendance_system.models.dto.MessageResponse;
+import com.pshs.attendance_system.models.entities.GradeLevel;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.GradeLevelService;
 import io.swagger.v3.oas.annotations.Operation;

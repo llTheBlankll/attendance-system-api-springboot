@@ -1,6 +1,6 @@
-package com.pshs.attendance_system.controllers;
+package com.pshs.attendance_system.controllers.v1.exposed;
 
-import com.pshs.attendance_system.dto.MessageResponse;
+import com.pshs.attendance_system.models.dto.MessageResponse;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;

@@ -1,7 +1,9 @@
 package com.pshs.attendance_system.controllers.v1.secured.section;
 
-import com.pshs.attendance_system.dto.*;
-import com.pshs.attendance_system.entities.Section;
+import com.pshs.attendance_system.models.dto.MessageResponse;
+import com.pshs.attendance_system.models.dto.SectionDTO;
+import com.pshs.attendance_system.models.dto.TeacherDTO;
+import com.pshs.attendance_system.models.entities.Section;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.SectionService;
 import io.swagger.v3.oas.annotations.Operation;

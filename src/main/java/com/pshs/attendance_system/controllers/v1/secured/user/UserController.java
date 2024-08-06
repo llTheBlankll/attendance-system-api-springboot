@@ -3,9 +3,12 @@
 package com.pshs.attendance_system.controllers.v1.secured.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.pshs.attendance_system.dto.*;
-import com.pshs.attendance_system.dto.authentication.ChangePasswordDTO;
-import com.pshs.attendance_system.entities.User;
+import com.pshs.attendance_system.models.dto.CountDTO;
+import com.pshs.attendance_system.models.dto.MessageResponse;
+import com.pshs.attendance_system.models.dto.UserCreationDTO;
+import com.pshs.attendance_system.models.dto.UserDTO;
+import com.pshs.attendance_system.models.dto.authentication.ChangePasswordDTO;
+import com.pshs.attendance_system.models.entities.User;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.UserService;
 import org.apache.logging.log4j.LogManager;

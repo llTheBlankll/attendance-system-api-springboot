@@ -1,9 +1,9 @@
 package com.pshs.attendance_system.controllers.v1.secured.teacher;
 
-import com.pshs.attendance_system.dto.MessageResponse;
-import com.pshs.attendance_system.dto.TeacherDTO;
-import com.pshs.attendance_system.dto.transaction.CreateTeacherDTO;
-import com.pshs.attendance_system.entities.Teacher;
+import com.pshs.attendance_system.models.dto.MessageResponse;
+import com.pshs.attendance_system.models.dto.TeacherDTO;
+import com.pshs.attendance_system.models.dto.transaction.CreateTeacherDTO;
+import com.pshs.attendance_system.models.entities.Teacher;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.TeacherService;
 import io.swagger.v3.oas.annotations.Operation;

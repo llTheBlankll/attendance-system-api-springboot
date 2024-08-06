@@ -1,8 +1,7 @@
 package com.pshs.attendance_system.controllers.v1.secured.attendance;
 
-import com.pshs.attendance_system.dto.AttendanceDTO;
-import com.pshs.attendance_system.dto.charts.CountDTO;
-import com.pshs.attendance_system.entities.range.DateRange;
+import com.pshs.attendance_system.models.dto.AttendanceDTO;
+import com.pshs.attendance_system.models.entities.range.DateRange;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.services.AttendanceService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,8 +10,6 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +22,6 @@ import java.time.LocalDate;
 @Tag(name = "Attendance", description = "Attendance API")
 public class AttendanceController {
 
-	private static final Logger logger = LogManager.getLogger(AttendanceController.class);
 	private final AttendanceService attendanceService;
 
 	public AttendanceController(AttendanceService attendanceService) {
@@ -33,7 +29,7 @@ public class AttendanceController {
 	}
 
 	@GetMapping("/all")
-	public ResponseEntity<?> getAllRecentAttendance(@RequestParam Integer page, @RequestParam Integer size, @RequestParam(defaultValue = "date") String sortBy, @RequestParam(defaultValue = "ASC") Sort.Direction order) {
+	public ResponseEntity<?> getAllAttendance(@RequestParam Integer page, @RequestParam Integer size, @RequestParam(defaultValue = "date") String sortBy, @RequestParam(defaultValue = "ASC") Sort.Direction order) {
 		Sort sort = Sort.by(order, sortBy);
 
 		return ResponseEntity.ok(attendanceService.getAllAttendances(PageRequest.of(page, size).withSort(sort)));
@@ -79,6 +75,13 @@ public class AttendanceController {
 		return ResponseEntity.ok(sum);
 	}
 
+	@GetMapping("/status/{attendanceStatus}/date")
+	public ResponseEntity<?> totalAttendanceByAttendanceStatusAndDate(@PathVariable AttendanceStatus attendanceStatus, @RequestParam LocalDate date) {
+		return ResponseEntity.ok(
+			attendanceService.countStudentsByStatusAndDate(attendanceStatus, date)
+		);
+	}
+
 	@PostMapping("/status/{attendanceStatus}/section/{section}/date-range")
 	@Operation(summary = "Get the total count of attendance by AttendanceStatus, Section and Date Range", description = "Get All of the Attendances count")
 	@Parameters({@Parameter(name = "attendanceStatus", description = "AttendanceStatus", required = true), @Parameter(name = "section", description = "Section", required = true)})
@@ -92,19 +95,17 @@ public class AttendanceController {
 	@Operation(summary = "Get the total count of attendance by AttendanceStatus, Section and Date", description = "Get All of the Attendances count")
 	@Parameters({@Parameter(name = "attendanceStatus", description = "AttendanceStatus", required = true), @Parameter(name = "section", description = "Section", required = true)})
 	public ResponseEntity<?> getAttendanceByStatusAndSectionAndDate(@PathVariable AttendanceStatus attendanceStatus, @PathVariable Integer section, @RequestParam LocalDate date) {
-		return ResponseEntity.ok(new CountDTO(
-			attendanceService.countAttendanceInSection(section, date, attendanceStatus),
-			"attendance"
-		));
+		return ResponseEntity.ok(
+			attendanceService.countAttendanceInSection(section, date, attendanceStatus)
+		);
 	}
 
-	@GetMapping("/status/{attendanceStatus}/date")
+	@GetMapping("/status/{attendanceStatus}/date-range")
 	@Operation(summary = "Get the total count of attendance by AttendanceStatus and Date", description = "Get All of the Attendances count")
 	@Parameters({@Parameter(name = "attendanceStatus", description = "AttendanceStatus", required = true), @Parameter(name = "date", description = "Date", required = true)})
 	public ResponseEntity<?> getAttendanceByStatusAndDate(@PathVariable AttendanceStatus attendanceStatus, @RequestParam LocalDate date) {
-		return ResponseEntity.ok(new CountDTO(
-			attendanceService.countStudentsByStatusAndDateRange(attendanceStatus, new DateRange(date, date)),
-			"attendance"
-		));
+		return ResponseEntity.ok(
+			attendanceService.countStudentsByStatusAndDateRange(attendanceStatus, new DateRange(date, date))
+		);
 	}
 }

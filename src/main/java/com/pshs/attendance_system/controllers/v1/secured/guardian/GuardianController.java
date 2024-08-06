@@ -1,8 +1,8 @@
 package com.pshs.attendance_system.controllers.v1.secured.guardian;
 
-import com.pshs.attendance_system.dto.GuardianDTO;
-import com.pshs.attendance_system.dto.MessageResponse;
-import com.pshs.attendance_system.entities.Guardian;
+import com.pshs.attendance_system.models.dto.GuardianDTO;
+import com.pshs.attendance_system.models.dto.MessageResponse;
+import com.pshs.attendance_system.models.entities.Guardian;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.GuardianService;
 import io.swagger.v3.oas.annotations.Operation;

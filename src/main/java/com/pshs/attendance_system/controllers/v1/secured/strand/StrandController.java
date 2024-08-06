@@ -1,8 +1,8 @@
 package com.pshs.attendance_system.controllers.v1.secured.strand;
 
-import com.pshs.attendance_system.dto.MessageResponse;
-import com.pshs.attendance_system.dto.StrandDTO;
-import com.pshs.attendance_system.entities.Strand;
+import com.pshs.attendance_system.models.dto.MessageResponse;
+import com.pshs.attendance_system.models.dto.StrandDTO;
+import com.pshs.attendance_system.models.entities.Strand;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.StrandService;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,16 +1,19 @@
 package com.pshs.attendance_system.controllers.v1.secured.attendance;
 
-import com.pshs.attendance_system.dto.MessageResponse;
-import com.pshs.attendance_system.dto.charts.LineChartDTO;
-import com.pshs.attendance_system.dto.charts.LineChartDataDTO;
-import com.pshs.attendance_system.dto.charts.RealTimeLineChartDTO;
-import com.pshs.attendance_system.entities.Attendance;
-import com.pshs.attendance_system.entities.range.DateRange;
+import com.pshs.attendance_system.models.dto.MessageResponse;
+import com.pshs.attendance_system.models.dto.charts.LineChartDTO;
+import com.pshs.attendance_system.models.dto.charts.LineChartDataDTO;
+import com.pshs.attendance_system.models.dto.charts.RealTimeLineChartDTO;
+import com.pshs.attendance_system.models.entities.Attendance;
+import com.pshs.attendance_system.models.entities.range.DateRange;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.AttendanceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +50,7 @@ public class AttendanceGraphicOrganizerController {
 
 		// Get the data from the service
 		// Loop the date range
-		for (LocalDate date = dateRange.getStartDate(); date.isBefore(dateRange.getEndDate()); date = date.plusDays(1)) {
+		for (LocalDate date = dateRange.getStartDate().minusDays(1); date.isBefore(dateRange.getEndDate()); date = date.plusDays(1)) {
 			// Get the attendance data.
 			// Get the attendance count to the labels and data
 			labels.add(dateTimeFormatter.format(date));
@@ -55,6 +58,40 @@ public class AttendanceGraphicOrganizerController {
 		}
 
 		return new LineChartDTO(labels, data);
+	}
+
+	@PostMapping("/total-attendance/line-chart")
+	@Operation(
+		summary = "Returns Line Chart of total attendance by Date Range",
+		description = "Returns Line Chart of total attendance by Date Range",
+		method = "POST",
+		requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Date Range", required = true, content = {@Content(schema = @Schema(implementation = DateRange.class))}),
+		responses = {
+			@ApiResponse(responseCode = "200", description = "Returns Line Chart of total attendance by Date Range", content = @Content(schema = @Schema(implementation = LineChartDTO.class))),
+			@ApiResponse(responseCode = "400", description = "Invalid Date Range", content = @Content(schema = @Schema(implementation = MessageResponse.class)))
+		}
+	)
+	public ResponseEntity<?> totalAttendanceLineChart(@RequestBody DateRange dateRange) {
+		if (dateRange == null) {
+			return ResponseEntity.badRequest().body(new MessageResponse(
+				"Date is required.",
+				ExecutionStatus.INVALID
+			));
+		}
+
+		List<String> labels = new ArrayList<>();
+		List<Integer> data = new ArrayList<>();
+
+		// Get the data from the service
+		// Loop the date range
+		for (LocalDate date = dateRange.getStartDate(); date.isBefore(dateRange.getEndDate()); date = date.plusDays(1)) {
+			// Get the attendance data.
+			// Get the attendance count to the labels and data
+			labels.add(date.toString());
+			data.add((int) attendanceService.totalAttendanceByDate(date));
+		}
+
+		return ResponseEntity.ok(new LineChartDTO(labels, data));
 	}
 
 	@PostMapping("/sections/{sectionId}/line-chart")

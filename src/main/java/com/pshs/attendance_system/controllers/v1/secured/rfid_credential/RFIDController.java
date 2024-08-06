@@ -1,8 +1,8 @@
 package com.pshs.attendance_system.controllers.v1.secured.rfid_credential;
 
-import com.pshs.attendance_system.dto.RFIDCredentialDTO;
-import com.pshs.attendance_system.dto.MessageResponse;
-import com.pshs.attendance_system.dto.StudentDTO;
+import com.pshs.attendance_system.models.dto.RFIDCredentialDTO;
+import com.pshs.attendance_system.models.dto.MessageResponse;
+import com.pshs.attendance_system.models.dto.StudentDTO;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.RFIDCredentialService;
 import io.swagger.v3.oas.annotations.tags.Tag;

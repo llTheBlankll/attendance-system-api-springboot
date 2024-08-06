@@ -1,7 +1,7 @@
 package com.pshs.attendance_system.controllers.v1.secured.attendance;
 
-import com.pshs.attendance_system.entities.Attendance;
-import com.pshs.attendance_system.entities.range.DateRange;
+import com.pshs.attendance_system.models.entities.Attendance;
+import com.pshs.attendance_system.models.entities.range.DateRange;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.services.AttendanceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,5 +40,10 @@ public class AttendanceStatisticsController {
 			attendanceStatus,
 			dateRange
 		));
+	}
+
+	@GetMapping("/top-10-students")
+	public ResponseEntity<?> getTop10StudentsByAttendance() {
+		return null;
 	}
 }

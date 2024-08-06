@@ -1,7 +1,8 @@
 package com.pshs.attendance_system.controllers.v1.secured.student;
 
-import com.pshs.attendance_system.dto.*;
-import com.pshs.attendance_system.entities.Student;
+import com.pshs.attendance_system.models.dto.MessageResponse;
+import com.pshs.attendance_system.models.dto.StudentDTO;
+import com.pshs.attendance_system.models.entities.Student;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
