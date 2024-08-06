@@ -2,8 +2,8 @@
 
 package com.pshs.attendance_system.services;
 
-import com.pshs.attendance_system.entities.RFIDCredential;
-import com.pshs.attendance_system.entities.Student;
+import com.pshs.attendance_system.models.entities.RFIDCredential;
+import com.pshs.attendance_system.models.entities.Student;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 
 public interface RFIDCredentialService {

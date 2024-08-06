@@ -1,9 +1,9 @@
 
 
-package com.pshs.attendance_system.impl;
+package com.pshs.attendance_system.services.impl;
 
-import com.pshs.attendance_system.dto.authentication.LoginDTO;
-import com.pshs.attendance_system.entities.User;
+import com.pshs.attendance_system.models.dto.authentication.LoginDTO;
+import com.pshs.attendance_system.models.entities.User;
 import com.pshs.attendance_system.services.AuthenticationService;
 import com.pshs.attendance_system.services.UserService;
 import org.apache.logging.log4j.LogManager;

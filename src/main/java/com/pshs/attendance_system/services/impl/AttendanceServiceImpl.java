@@ -1,18 +1,18 @@
 
 
-package com.pshs.attendance_system.impl;
+package com.pshs.attendance_system.services.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.pshs.attendance_system.dto.AttendanceResultDTO;
-import com.pshs.attendance_system.entities.Attendance;
-import com.pshs.attendance_system.entities.RFIDCredential;
-import com.pshs.attendance_system.entities.Student;
-import com.pshs.attendance_system.entities.range.DateRange;
+import com.pshs.attendance_system.models.dto.AttendanceResultDTO;
+import com.pshs.attendance_system.models.entities.Attendance;
+import com.pshs.attendance_system.models.entities.RFIDCredential;
+import com.pshs.attendance_system.models.entities.Student;
+import com.pshs.attendance_system.models.entities.range.DateRange;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.enums.ExecutionStatus;
-import com.pshs.attendance_system.repositories.AttendanceRepository;
+import com.pshs.attendance_system.models.repositories.AttendanceRepository;
 import com.pshs.attendance_system.services.AttendanceService;
 import com.pshs.attendance_system.services.StudentService;
 import org.apache.logging.log4j.LogManager;
@@ -551,6 +551,10 @@ public class AttendanceServiceImpl implements AttendanceService {
 	@Override
 	public int averageAttendanceInSection(Integer sectionId, DateRange dateRange, AttendanceStatus attendanceStatus) {
 		return 0;
+	}
+
+	public long totalAttendanceByDate(LocalDate date) {
+		return attendanceRepository.countStudentsByStatusAndDate(AttendanceStatus.ON_TIME, date) + attendanceRepository.countStudentsByStatusAndDate(AttendanceStatus.LATE, date);
 	}
 
 	// End: Statistics Region

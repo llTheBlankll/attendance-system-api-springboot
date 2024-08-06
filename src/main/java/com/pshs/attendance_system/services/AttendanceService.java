@@ -3,10 +3,10 @@
 package com.pshs.attendance_system.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.pshs.attendance_system.dto.AttendanceResultDTO;
-import com.pshs.attendance_system.entities.Attendance;
-import com.pshs.attendance_system.entities.RFIDCredential;
-import com.pshs.attendance_system.entities.range.DateRange;
+import com.pshs.attendance_system.models.dto.AttendanceResultDTO;
+import com.pshs.attendance_system.models.entities.Attendance;
+import com.pshs.attendance_system.models.entities.RFIDCredential;
+import com.pshs.attendance_system.models.entities.range.DateRange;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
@@ -216,6 +216,8 @@ public interface AttendanceService {
 	int averageAttendanceInSection(Integer sectionId, LocalDate date, AttendanceStatus attendanceStatus);
 
 	int averageAttendanceInSection(Integer sectionId, DateRange dateRange, AttendanceStatus attendanceStatus);
+
+	long totalAttendanceByDate(LocalDate date);
 
 	// End: Statistics / Numbers
 

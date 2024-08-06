@@ -2,8 +2,8 @@
 
 package com.pshs.attendance_system.services;
 
-import com.pshs.attendance_system.dto.authentication.LoginDTO;
-import com.pshs.attendance_system.entities.User;
+import com.pshs.attendance_system.models.dto.authentication.LoginDTO;
+import com.pshs.attendance_system.models.entities.User;
 
 public interface AuthenticationService {
 

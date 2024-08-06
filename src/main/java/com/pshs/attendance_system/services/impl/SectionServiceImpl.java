@@ -1,13 +1,13 @@
 
 
-package com.pshs.attendance_system.impl;
+package com.pshs.attendance_system.services.impl;
 
-import com.pshs.attendance_system.entities.GradeLevel;
-import com.pshs.attendance_system.entities.Section;
-import com.pshs.attendance_system.entities.Strand;
-import com.pshs.attendance_system.entities.Teacher;
+import com.pshs.attendance_system.models.entities.GradeLevel;
+import com.pshs.attendance_system.models.entities.Section;
+import com.pshs.attendance_system.models.entities.Strand;
+import com.pshs.attendance_system.models.entities.Teacher;
 import com.pshs.attendance_system.enums.ExecutionStatus;
-import com.pshs.attendance_system.repositories.SectionRepository;
+import com.pshs.attendance_system.models.repositories.SectionRepository;
 import com.pshs.attendance_system.services.SectionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

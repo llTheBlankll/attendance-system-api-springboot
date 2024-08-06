@@ -1,10 +1,10 @@
 
 
-package com.pshs.attendance_system.impl;
+package com.pshs.attendance_system.services.impl;
 
-import com.pshs.attendance_system.entities.GradeLevel;
+import com.pshs.attendance_system.models.entities.GradeLevel;
 import com.pshs.attendance_system.enums.ExecutionStatus;
-import com.pshs.attendance_system.repositories.GradeLevelRepository;
+import com.pshs.attendance_system.models.repositories.GradeLevelRepository;
 import com.pshs.attendance_system.services.GradeLevelService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

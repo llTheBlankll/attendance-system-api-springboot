@@ -2,10 +2,10 @@
 
 package com.pshs.attendance_system.services;
 
-import com.pshs.attendance_system.entities.GradeLevel;
-import com.pshs.attendance_system.entities.Section;
-import com.pshs.attendance_system.entities.Strand;
-import com.pshs.attendance_system.entities.Teacher;
+import com.pshs.attendance_system.models.entities.GradeLevel;
+import com.pshs.attendance_system.models.entities.Section;
+import com.pshs.attendance_system.models.entities.Strand;
+import com.pshs.attendance_system.models.entities.Teacher;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

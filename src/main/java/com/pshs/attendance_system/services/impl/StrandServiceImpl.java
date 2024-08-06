@@ -1,10 +1,10 @@
 
 
-package com.pshs.attendance_system.impl;
+package com.pshs.attendance_system.services.impl;
 
-import com.pshs.attendance_system.entities.Strand;
+import com.pshs.attendance_system.models.entities.Strand;
 import com.pshs.attendance_system.enums.ExecutionStatus;
-import com.pshs.attendance_system.repositories.StrandRepository;
+import com.pshs.attendance_system.models.repositories.StrandRepository;
 import com.pshs.attendance_system.services.StrandService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

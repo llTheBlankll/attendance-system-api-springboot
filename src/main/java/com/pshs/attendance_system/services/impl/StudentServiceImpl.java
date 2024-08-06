@@ -1,12 +1,12 @@
 
 
-package com.pshs.attendance_system.impl;
+package com.pshs.attendance_system.services.impl;
 
-import com.pshs.attendance_system.entities.GradeLevel;
-import com.pshs.attendance_system.entities.Section;
-import com.pshs.attendance_system.entities.Student;
+import com.pshs.attendance_system.models.entities.GradeLevel;
+import com.pshs.attendance_system.models.entities.Section;
+import com.pshs.attendance_system.models.entities.Student;
 import com.pshs.attendance_system.enums.ExecutionStatus;
-import com.pshs.attendance_system.repositories.StudentRepository;
+import com.pshs.attendance_system.models.repositories.StudentRepository;
 import com.pshs.attendance_system.services.GradeLevelService;
 import com.pshs.attendance_system.services.SectionService;
 import com.pshs.attendance_system.services.StudentService;
