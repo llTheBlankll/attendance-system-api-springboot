@@ -2,8 +2,11 @@ package com.pshs.attendance_system.entities;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.pshs.attendance_system.dto.StudentDTO;
+import com.pshs.attendance_system.models.dto.StudentDTO;
 import com.pshs.attendance_system.enums.ExecutionStatus;
+import com.pshs.attendance_system.models.entities.GradeLevel;
+import com.pshs.attendance_system.models.entities.Guardian;
+import com.pshs.attendance_system.models.entities.Section;
 import com.pshs.attendance_system.services.GradeLevelService;
 import com.pshs.attendance_system.services.GuardianService;
 import com.pshs.attendance_system.services.SectionService;

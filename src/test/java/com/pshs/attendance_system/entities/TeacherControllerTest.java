@@ -2,9 +2,9 @@ package com.pshs.attendance_system.entities;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.pshs.attendance_system.dto.TeacherDTO;
-import com.pshs.attendance_system.dto.UserDTO;
-import com.pshs.attendance_system.dto.transaction.CreateTeacherDTO;
+import com.pshs.attendance_system.models.dto.TeacherDTO;
+import com.pshs.attendance_system.models.dto.UserDTO;
+import com.pshs.attendance_system.models.dto.transaction.CreateTeacherDTO;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.services.TeacherService;
 import com.pshs.attendance_system.services.UserService;

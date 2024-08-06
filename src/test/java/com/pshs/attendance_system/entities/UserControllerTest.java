@@ -4,8 +4,8 @@ package com.pshs.attendance_system.entities;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.pshs.attendance_system.dto.UserCreationDTO;
-import com.pshs.attendance_system.dto.authentication.ChangePasswordDTO;
+import com.pshs.attendance_system.models.dto.UserCreationDTO;
+import com.pshs.attendance_system.models.dto.authentication.ChangePasswordDTO;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

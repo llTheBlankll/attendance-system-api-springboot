@@ -2,12 +2,11 @@
 
 package com.pshs.attendance_system;
 
-import com.pshs.attendance_system.dto.*;
-import com.pshs.attendance_system.entities.*;
+import com.pshs.attendance_system.models.dto.*;
+import com.pshs.attendance_system.models.entities.*;
 import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
