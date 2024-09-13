@@ -3,21 +3,20 @@
 package com.pshs.attendance_system.services.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.pshs.attendance_system.enums.AttendanceStatus;
+import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.models.dto.AttendanceResultDTO;
 import com.pshs.attendance_system.models.entities.Attendance;
 import com.pshs.attendance_system.models.entities.RFIDCredential;
 import com.pshs.attendance_system.models.entities.Student;
 import com.pshs.attendance_system.models.entities.range.DateRange;
-import com.pshs.attendance_system.enums.AttendanceStatus;
-import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.models.repositories.AttendanceRepository;
 import com.pshs.attendance_system.services.AttendanceService;
 import com.pshs.attendance_system.services.StudentService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -36,17 +35,14 @@ public class AttendanceServiceImpl implements AttendanceService {
 	private static final Logger logger = LogManager.getLogger(AttendanceServiceImpl.class);
 	private final StudentService studentService;
 	private final AttendanceRepository attendanceRepository;
-	private final ObjectMapper mapper = new ObjectMapper();
-	private final RabbitTemplate rabbitTemplate;
 
-	public AttendanceServiceImpl(StudentService studentService, AttendanceRepository attendanceRepository, RabbitTemplate rabbitTemplate) {
+	public AttendanceServiceImpl(StudentService studentService, AttendanceRepository attendanceRepository) {
 		this.studentService = studentService;
 		this.attendanceRepository = attendanceRepository;
-		this.rabbitTemplate = rabbitTemplate;
-		mapper.registerModule(new JavaTimeModule());
 	}
 
 	// Region: AttendanceService Implementation
+
 	/**
 	 * Create a new attendance record with the student.
 	 *
@@ -129,12 +125,8 @@ public class AttendanceServiceImpl implements AttendanceService {
 			attendance.setDate(LocalDate.now());
 
 			// Save attendance and send a message to the topic exchange in topic attendance-notifications
-			Attendance savedAttendance = this.attendanceRepository.save(attendance);
-			logger.debug("Attendance of {}, {} has been created.", savedAttendance.getStudent().getFirstName(), savedAttendance.getStudent().getLastName());
-			rabbitTemplate.convertAndSend("amq.topic", "attendance-notifications", mapper.writeValueAsString(savedAttendance));
-			return savedAttendance;
+			return this.attendanceRepository.save(attendance);
 		} catch (Exception e) {
-			rabbitTemplate.convertAndSend("amq.topic", "attendance-logs", e.getMessage());
 			logger.error(e.getMessage());
 		}
 
@@ -208,7 +200,6 @@ public class AttendanceServiceImpl implements AttendanceService {
 					.setHashedLrn(rfidCredential.getHashedLrn())
 					.setMessage("Student successfully recorded.");
 			}
-
 		} else {
 			logger.debug("Student not found.");
 			attendanceResultDTO.setMessage("Student not found.");
@@ -246,7 +237,6 @@ public class AttendanceServiceImpl implements AttendanceService {
 						.setMessage("Student successfully signed out.");
 
 					logger.debug("Student successfully signed out.");
-					rabbitTemplate.convertAndSend("amq.topic", "attendance-notifications", mapper.writeValueAsString(attendanceResultDTO));
 				} else {
 					// ! If a student has already signed out, send a message to the topic exchange in topic attendance-logs
 					logger.debug("Student already signed out.");
@@ -325,6 +315,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 	// End: AttendanceService Implementation
 
 	// Region: Retrieval Region
+
 	/**
 	 * Get the attendance status of the student. The status can be one of the following:
 	 * <p>
@@ -364,6 +355,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 		} else {
 			lateArrivalTime = LocalTime.of(7, 0); // * Regular day
 		}
+
 		if (currentLocalTime.isBefore(lateArrivalTime) && currentLocalTime.isAfter(onTimeArrival)) {
 			return AttendanceStatus.ON_TIME;
 		} else if (currentLocalTime.isAfter(lateArrivalTime)) {
@@ -524,7 +516,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 	/**
 	 * Returns the total number of attendances of a student with the specific attendanceStatus.
 	 *
-	 * @param date   Date
+	 * @param date             Date
 	 * @param attendanceStatus AttendanceStatus
 	 * @return the number of attendances of a student with the specific attendanceStatus
 	 */
