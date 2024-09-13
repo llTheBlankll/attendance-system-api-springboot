@@ -1,4 +1,4 @@
-package com.pshs.attendance_system.controllers.v1.secured.attendance;
+package com.pshs.attendance_system.controllers.secured.attendance;
 
 import com.pshs.attendance_system.models.entities.Attendance;
 import com.pshs.attendance_system.models.entities.range.DateRange;

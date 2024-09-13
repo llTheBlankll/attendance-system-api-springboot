@@ -1,4 +1,4 @@
-package com.pshs.attendance_system.controllers.v1.secured.rfid_credential;
+package com.pshs.attendance_system.controllers.secured.rfid_credential;
 
 import com.pshs.attendance_system.models.dto.RFIDCredentialDTO;
 import com.pshs.attendance_system.models.dto.MessageResponse;

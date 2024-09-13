@@ -1,4 +1,4 @@
-package com.pshs.attendance_system.controllers.v1.secured.guardian;
+package com.pshs.attendance_system.controllers.secured.guardian;
 
 import com.pshs.attendance_system.models.dto.GuardianDTO;
 import com.pshs.attendance_system.models.dto.MessageResponse;

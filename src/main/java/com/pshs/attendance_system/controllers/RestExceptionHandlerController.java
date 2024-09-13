@@ -1,4 +1,4 @@
-package com.pshs.attendance_system.controllers.v1.exposed;
+package com.pshs.attendance_system.controllers;
 
 import com.pshs.attendance_system.models.dto.MessageResponse;
 import com.pshs.attendance_system.enums.ExecutionStatus;

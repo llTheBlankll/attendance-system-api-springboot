@@ -1,4 +1,4 @@
-package com.pshs.attendance_system.controllers.v1.secured.attendance;
+package com.pshs.attendance_system.controllers.secured.attendance;
 
 import com.pshs.attendance_system.models.dto.MessageResponse;
 import com.pshs.attendance_system.models.dto.charts.LineChartDTO;

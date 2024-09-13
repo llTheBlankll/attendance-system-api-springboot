@@ -1,6 +1,6 @@
 
 
-package com.pshs.attendance_system.controllers.v1.secured.gradelevel;
+package com.pshs.attendance_system.controllers.secured.gradelevel;
 
 import com.pshs.attendance_system.models.dto.GradeLevelDTO;
 import com.pshs.attendance_system.models.dto.MessageResponse;

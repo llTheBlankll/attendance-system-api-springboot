@@ -1,4 +1,4 @@
-package com.pshs.attendance_system.controllers.v1.secured.strand;
+package com.pshs.attendance_system.controllers.secured.strand;
 
 import com.pshs.attendance_system.models.dto.MessageResponse;
 import com.pshs.attendance_system.models.dto.StrandDTO;

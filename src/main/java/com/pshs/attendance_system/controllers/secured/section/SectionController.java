@@ -1,4 +1,4 @@
-package com.pshs.attendance_system.controllers.v1.secured.section;
+package com.pshs.attendance_system.controllers.secured.section;
 
 import com.pshs.attendance_system.models.dto.MessageResponse;
 import com.pshs.attendance_system.models.dto.SectionDTO;

@@ -1,6 +1,6 @@
 
 
-package com.pshs.attendance_system.controllers.v1.secured.user;
+package com.pshs.attendance_system.controllers.secured.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pshs.attendance_system.models.dto.CountDTO;

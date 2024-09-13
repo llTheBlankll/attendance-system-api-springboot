@@ -1,4 +1,4 @@
-package com.pshs.attendance_system.controllers.v1.secured.student;
+package com.pshs.attendance_system.controllers.secured.student;
 
 import com.pshs.attendance_system.models.dto.MessageResponse;
 import com.pshs.attendance_system.models.dto.StudentDTO;
