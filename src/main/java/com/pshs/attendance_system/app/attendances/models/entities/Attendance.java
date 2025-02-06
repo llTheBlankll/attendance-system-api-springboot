@@ -1,8 +1,9 @@
 
 
-package com.pshs.attendance_system.models.entities;
+package com.pshs.attendance_system.app.attendances.models.entities;
 
-import com.pshs.attendance_system.models.dto.AttendanceDTO;
+import com.pshs.attendance_system.app.attendances.models.dto.AttendanceDTO;
+import com.pshs.attendance_system.app.students.models.entities.Student;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;

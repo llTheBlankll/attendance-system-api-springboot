@@ -1,8 +1,9 @@
 
 
-package com.pshs.attendance_system.models.dto;
+package com.pshs.attendance_system.app.attendances.models.dto;
 
-import com.pshs.attendance_system.models.entities.Attendance;
+import com.pshs.attendance_system.app.students.models.dto.StudentDTO;
+import com.pshs.attendance_system.app.attendances.models.entities.Attendance;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 
 import java.io.Serializable;

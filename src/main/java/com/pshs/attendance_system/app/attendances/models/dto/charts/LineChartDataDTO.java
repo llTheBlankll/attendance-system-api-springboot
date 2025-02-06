@@ -1,4 +1,4 @@
-package com.pshs.attendance_system.models.dto.charts;
+package com.pshs.attendance_system.app.attendances.models.dto.charts;
 
 public class LineChartDataDTO {
 
