@@ -46,7 +46,7 @@ class StrandControllerTest {
 	}
 
 	@Test
-	public void getAllStrands() throws Exception {
+	void getAllStrands() throws Exception {
 		logger.info("Testing getAllStrands");
 		// Set Required Params
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -61,7 +61,7 @@ class StrandControllerTest {
 	}
 
 	@Test
-	public void getStrandById() throws Exception {
+	void getStrandById() throws Exception {
 		logger.info("Testing getStrandById");
 		mock.perform(
 				MockMvcRequestBuilders.get("/api/v1/strands/1")
@@ -76,7 +76,7 @@ class StrandControllerTest {
 	}
 
 	@Test
-	public void updateStrand() throws Exception {
+	void updateStrand() throws Exception {
 		int STRAND_ID = 1;
 		MessageResponse SUCCESS_MESSAGE = new MessageResponse("Strand updated successfully.", ExecutionStatus.SUCCESS);
 		MessageResponse VALIDATION_ERROR_MESSAGE = new MessageResponse("Strand not found.", ExecutionStatus.VALIDATION_ERROR);
