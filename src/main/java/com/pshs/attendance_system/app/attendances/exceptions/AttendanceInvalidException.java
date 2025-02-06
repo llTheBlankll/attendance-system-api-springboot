@@ -1,6 +1,6 @@
 
 
-package com.pshs.attendance_system.exceptions;
+package com.pshs.attendance_system.app.attendances.exceptions;
 
 public class AttendanceInvalidException extends Exception {
 

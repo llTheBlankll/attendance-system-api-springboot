@@ -1,9 +1,9 @@
-package com.pshs.attendance_system.controllers.secured.attendance;
+package com.pshs.attendance_system.app.attendances.controllers;
 
-import com.pshs.attendance_system.models.entities.Attendance;
-import com.pshs.attendance_system.models.entities.range.DateRange;
+import com.pshs.attendance_system.app.attendances.models.entities.Attendance;
+import com.pshs.attendance_system.models.DateRange;
 import com.pshs.attendance_system.enums.AttendanceStatus;
-import com.pshs.attendance_system.services.AttendanceService;
+import com.pshs.attendance_system.app.attendances.services.AttendanceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

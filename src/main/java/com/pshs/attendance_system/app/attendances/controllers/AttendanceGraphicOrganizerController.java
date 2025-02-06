@@ -1,14 +1,14 @@
-package com.pshs.attendance_system.controllers.secured.attendance;
+package com.pshs.attendance_system.app.attendances.controllers;
 
-import com.pshs.attendance_system.models.dto.MessageResponse;
-import com.pshs.attendance_system.models.dto.charts.LineChartDTO;
-import com.pshs.attendance_system.models.dto.charts.LineChartDataDTO;
-import com.pshs.attendance_system.models.dto.charts.RealTimeLineChartDTO;
-import com.pshs.attendance_system.models.entities.Attendance;
-import com.pshs.attendance_system.models.entities.range.DateRange;
+import com.pshs.attendance_system.models.MessageResponse;
+import com.pshs.attendance_system.app.attendances.models.dto.charts.LineChartDTO;
+import com.pshs.attendance_system.app.attendances.models.dto.charts.LineChartDataDTO;
+import com.pshs.attendance_system.app.attendances.models.dto.charts.RealTimeLineChartDTO;
+import com.pshs.attendance_system.app.attendances.models.entities.Attendance;
+import com.pshs.attendance_system.models.DateRange;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.enums.ExecutionStatus;
-import com.pshs.attendance_system.services.AttendanceService;
+import com.pshs.attendance_system.app.attendances.services.AttendanceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

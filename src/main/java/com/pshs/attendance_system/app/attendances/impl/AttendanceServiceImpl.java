@@ -1,22 +1,20 @@
 
 
-package com.pshs.attendance_system.services.impl;
+package com.pshs.attendance_system.app.attendances.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.enums.ExecutionStatus;
-import com.pshs.attendance_system.models.dto.AttendanceResultDTO;
-import com.pshs.attendance_system.models.entities.Attendance;
-import com.pshs.attendance_system.models.entities.RFIDCredential;
-import com.pshs.attendance_system.models.entities.Student;
-import com.pshs.attendance_system.models.entities.range.DateRange;
-import com.pshs.attendance_system.models.repositories.AttendanceRepository;
-import com.pshs.attendance_system.services.AttendanceService;
-import com.pshs.attendance_system.services.StudentService;
+import com.pshs.attendance_system.app.attendances.models.dto.AttendanceResultDTO;
+import com.pshs.attendance_system.app.attendances.models.entities.Attendance;
+import com.pshs.attendance_system.app.rfid_credentials.models.entities.RFIDCredential;
+import com.pshs.attendance_system.app.students.models.entities.Student;
+import com.pshs.attendance_system.models.DateRange;
+import com.pshs.attendance_system.app.attendances.repositories.AttendanceRepository;
+import com.pshs.attendance_system.app.attendances.services.AttendanceService;
+import com.pshs.attendance_system.app.students.services.StudentService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

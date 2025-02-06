@@ -1,12 +1,12 @@
 
 
-package com.pshs.attendance_system.services;
+package com.pshs.attendance_system.app.attendances.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.pshs.attendance_system.models.dto.AttendanceResultDTO;
-import com.pshs.attendance_system.models.entities.Attendance;
-import com.pshs.attendance_system.models.entities.RFIDCredential;
-import com.pshs.attendance_system.models.entities.range.DateRange;
+import com.pshs.attendance_system.app.attendances.models.dto.AttendanceResultDTO;
+import com.pshs.attendance_system.app.attendances.models.entities.Attendance;
+import com.pshs.attendance_system.app.rfid_credentials.models.entities.RFIDCredential;
+import com.pshs.attendance_system.models.DateRange;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;

@@ -1,8 +1,8 @@
 
 
-package com.pshs.attendance_system.models.repositories;
+package com.pshs.attendance_system.app.attendances.repositories;
 
-import com.pshs.attendance_system.models.entities.Attendance;
+import com.pshs.attendance_system.app.attendances.models.entities.Attendance;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
