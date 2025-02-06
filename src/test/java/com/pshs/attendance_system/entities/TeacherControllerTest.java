@@ -28,7 +28,7 @@ import org.springframework.util.LinkedMultiValueMap;
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 @Transactional
-public class TeacherControllerTest {
+class TeacherControllerTest {
 
 	private static final Logger logger = LogManager.getLogger(TeacherControllerTest.class);
 	protected ObjectMapper mapper = new ObjectMapper();
@@ -52,7 +52,7 @@ public class TeacherControllerTest {
 	}
 
 	@Test
-	public void testCreateTeacher() throws Exception {
+	void testCreateTeacher() throws Exception {
 		logger.info("Testing createTeacher");
 
 		UserDTO userDTO = userService.getUser(1).toDTO();
@@ -92,7 +92,7 @@ public class TeacherControllerTest {
 	}
 
 	@Test
-	public void testDeleteTeacher() throws Exception {
+	void testDeleteTeacher() throws Exception {
 		logger.info("Testing deleteTeacher() function in Teacher Controller");
 
 		// Delete the teacher
@@ -121,7 +121,7 @@ public class TeacherControllerTest {
 	}
 
 	@Test
-	public void testUpdateTeacher() throws Exception {
+	void testUpdateTeacher() throws Exception {
 		logger.info("Testing updateTeacher() function in Teacher Controller");
 
 		TeacherDTO teacherDTO = new TeacherDTO();
@@ -162,7 +162,7 @@ public class TeacherControllerTest {
 	}
 
 	@Test
-	public void testGetTeacherByUserId() throws Exception {
+	void testGetTeacherByUserId() throws Exception {
 		logger.info("Testing getTeacher() function in Teacher Controller");
 
 		// Get the teacher
@@ -181,7 +181,7 @@ public class TeacherControllerTest {
 	}
 
 	@Test
-	public void testSearchTeacher() throws Exception {
+	void testSearchTeacher() throws Exception {
 		logger.info("Testing searchTeacher() function in Teacher Controller");
 
 		// Params
@@ -216,7 +216,7 @@ public class TeacherControllerTest {
 	}
 
 	@Test
-	public void testCountAllTeachers() throws Exception {
+	void testCountAllTeachers() throws Exception {
 		logger.info("Testing countAllTeachers() function in Teacher Controller");
 		mock.perform(MockMvcRequestBuilders.get("/api/v1/teachers/count/all"))
 			.andExpect(MockMvcResultMatchers.status().isOk())

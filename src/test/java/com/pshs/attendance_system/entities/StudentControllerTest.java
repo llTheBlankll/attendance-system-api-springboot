@@ -32,7 +32,7 @@ import java.time.LocalDate;
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 @Transactional
-public class StudentControllerTest {
+class StudentControllerTest {
 
 	private static final Logger logger = LogManager.getLogger(StudentControllerTest.class);
 
@@ -59,7 +59,7 @@ public class StudentControllerTest {
 	}
 
 	@Test
-	public void testGetAllStudents() throws Exception {
+	void testGetAllStudents() throws Exception {
 		LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.set("page", "0");
 		params.set("size", "10");
@@ -73,7 +73,7 @@ public class StudentControllerTest {
 	}
 
 	@Test
-	public void testCreateStudent() throws Exception {
+	void testCreateStudent() throws Exception {
 		StudentDTO studentDTO = new StudentDTO();
 		studentDTO.setId(592152315L);
 		studentDTO.setFirstName("Vince Angelo");
@@ -150,7 +150,7 @@ public class StudentControllerTest {
 	}
 
 	@Test
-	public void testDeleteStudent() throws Exception {
+	void testDeleteStudent() throws Exception {
 
 	}
 }
