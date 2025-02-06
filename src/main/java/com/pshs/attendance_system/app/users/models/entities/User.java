@@ -1,8 +1,8 @@
 
 
-package com.pshs.attendance_system.models.entities;
+package com.pshs.attendance_system.app.users.models.entities;
 
-import com.pshs.attendance_system.models.dto.UserDTO;
+import com.pshs.attendance_system.app.users.models.dto.UserDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;

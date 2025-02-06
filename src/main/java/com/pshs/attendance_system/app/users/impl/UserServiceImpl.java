@@ -1,15 +1,17 @@
 
 
-package com.pshs.attendance_system.services.impl;
+package com.pshs.attendance_system.app.users.impl;
 
-import com.pshs.attendance_system.models.entities.User;
+import com.pshs.attendance_system.app.users.models.dto.UserSearchInput;
+import com.pshs.attendance_system.app.users.models.entities.User;
 import com.pshs.attendance_system.enums.ExecutionStatus;
-import com.pshs.attendance_system.models.repositories.UserRepository;
-import com.pshs.attendance_system.services.UserService;
+import com.pshs.attendance_system.app.users.repositories.UserRepository;
+import com.pshs.attendance_system.app.users.services.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -310,74 +312,7 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findAll(PageRequest.of(page, size));
 	}
 
-	/**
-	 * Search all users with the given username.
-	 *
-	 * @param username The username that will be searched.
-	 * @param page     Page
-	 * @param size     Shows how many users will it display.
-	 * @return return the page object
-	 */
-	@Override
-	public Page<User> searchUsersByUsername(String username, int page, int size) {
-		return userRepository.searchUsersByUsername(username, PageRequest.of(page, size));
-	}
 
-	/**
-	 * Search all users with the given email.
-	 *
-	 * @param email The email that will be searched.
-	 * @param page  Page
-	 * @param size  Shows how many users will it display.
-	 * @return return the page object
-	 */
-	@Override
-	public Page<User> searchUsersByEmail(String email, int page, int size) {
-		return userRepository.searchUsersByEmail(email, PageRequest.of(page, size));
-	}
-
-	@Override
-	public Page<User> searchUsersByRole(String role, int page, int size) {
-		return userRepository.searchUsersByRole(role, PageRequest.of(page, size));
-	}
-
-	@Override
-	public Page<User> searchUsersByUsernameAndEmail(String username, String email, int page, int size) {
-		return userRepository.searchUsersByUsernameAndEmail(username, email, PageRequest.of(page, size));
-	}
-
-	/**
-	 * Search all users with the given role and username.
-	 *
-	 * @param username The username that will be searched.
-	 * @param role     The user with the given role.
-	 * @param page     Page
-	 * @param size     Shows how many users will it display.
-	 * @return return the page object
-	 */
-	@Override
-	public Page<User> searchUsersByUsernameAndRole(String username, String role, int page, int size) {
-		return userRepository.searchUsersByUsernameAndRole(username, role, PageRequest.of(page, size));
-	}
-
-	/**
-	 * Search all users with the given role and email.
-	 *
-	 * @param email The email that will be searched.
-	 * @param role  The user with the given role.
-	 * @param page  Page
-	 * @param size  Shows how many users will it display.
-	 * @return return the page object
-	 */
-	@Override
-	public Page<User> searchUsersByEmailAndRole(String email, String role, int page, int size) {
-		return userRepository.searchUsersByEmailAndRole(email, role, PageRequest.of(page, size));
-	}
-
-	@Override
-	public Page<User> searchUsersByUsernameAndEmailAndRole(String username, String email, String role, int page, int size) {
-		return userRepository.searchUsersByUsernameAndEmailAndRole(username, email, role, PageRequest.of(page, size));
-	}
 
 	/**
 	 * Check if the provided password matches the user's password.
@@ -396,6 +331,23 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Search for users based on the given search input criteria.
+	 *
+	 * @param searchInput The criteria used to search for users, including fields such as username, email, and role.
+	 * @param pageable    The pagination information, including page number and size.
+	 * @return A page of users that match the search criteria.
+	 * @throws IllegalArgumentException if the search input is invalid or null
+	 */
+	@Override
+	public Page<User> search(UserSearchInput searchInput, Pageable pageable) throws IllegalArgumentException {
+		if (searchInput == null) {
+			throw new IllegalArgumentException("Search input cannot be null.");
+		}
+
+		return userRepository.search(searchInput, pageable);
 	}
 
 	/**

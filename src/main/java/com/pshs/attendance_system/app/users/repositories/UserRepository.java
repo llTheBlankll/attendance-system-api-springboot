@@ -1,8 +1,10 @@
 
 
-package com.pshs.attendance_system.models.repositories;
+package com.pshs.attendance_system.app.users.repositories;
 
-import com.pshs.attendance_system.models.entities.User;
+import com.pshs.attendance_system.app.users.models.dto.UserSearchInput;
+import com.pshs.attendance_system.app.users.models.entities.User;
+import com.pshs.attendance_system.enums.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -38,34 +40,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	@Query("update User u set u.isCredentialsExpired = :isCredentialsExpired where u.id = :id")
 	int updateIsCredentialsExpiredById(@NonNull @Param("isCredentialsExpired") Boolean isCredentialsExpired, @NonNull @Param("id") Integer id);
 
-	@Query("select u from User u where u.username = :username")
-	Page<User> searchUsersByUsername(@Param("username") @NonNull String username, Pageable pageable);
-
-	@Query("select u from User u where u.email = :email")
-	Page<User> searchUsersByEmail(@Param("email") @NonNull String email, Pageable pageable);
-
-	@Query("""
-		select u from User u
-		where u.username like concat('%', :username, '%') and u.role like concat('%', :role, '%')""")
-	Page<User> searchUsersByUsernameAndRole(@Param("username") @NonNull String username, @Param("role") @NonNull String role, Pageable pageable);
-
-	@Query("select u from User u where u.email like concat('%', :email, '%') and u.role like concat('%', :role, '%')")
-	Page<User> searchUsersByEmailAndRole(@Param("email") @NonNull String email, @Param("role") @NonNull String role, Pageable pageable);
-
 	int countByRole(@NonNull String role);
-
-	@Query("""
-		select u from User u
-		where u.username like concat('%', :username, '%') and u.email like concat('%', :email, '%') and upper(u.role) like upper(concat('%', :role, '%'))""")
-	Page<User> searchUsersByUsernameAndEmailAndRole(@Param("username") @NonNull String username, @Param("email") @NonNull String email, @Param("role") @NonNull String role, Pageable pageable);
-
-	@Query("select u from User u where upper(u.role) like upper(concat('%', :role, '%'))")
-	Page<User> searchUsersByRole(@Param("role") @NonNull String role, Pageable pageable);
-
-	@Query("""
-		select u from User u
-		where u.username like concat('%', :username, '%') and u.email like concat('%', :email, '%')""")
-	Page<User> searchUsersByUsernameAndEmail(@Param("username") @NonNull String username, @Param("email") @NonNull String email, Pageable pageable);
 
 	@Query("select u from User u where u.username = :username")
 	Optional<User> findByUsername(@Param("username") @NonNull String username);
@@ -77,4 +52,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	@Query("select (count(u) > 0) from User u where u.username = :username")
 	boolean existsByUsername(@Param("username") @NonNull String username);
+
+	@Query("""
+		    SELECT u FROM User u 
+		    WHERE (:#{#input.email} IS NULL OR u.email LIKE CONCAT('%', :#{#input.email}, '%'))
+		    AND (:#{#input.username} IS NULL OR u.username LIKE CONCAT('%', :#{#input.username}, '%'))
+		    AND (:#{#input.role} IS NULL OR u.role = :#{#input.role})
+		""")
+	Page<User> search(@Param("input") UserSearchInput input, Pageable pageable);
 }

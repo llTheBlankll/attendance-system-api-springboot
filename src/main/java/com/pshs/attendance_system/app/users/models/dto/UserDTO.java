@@ -1,8 +1,8 @@
 
 
-package com.pshs.attendance_system.models.dto;
+package com.pshs.attendance_system.app.users.models.dto;
 
-import com.pshs.attendance_system.models.entities.User;
+import com.pshs.attendance_system.app.users.models.entities.User;
 import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
