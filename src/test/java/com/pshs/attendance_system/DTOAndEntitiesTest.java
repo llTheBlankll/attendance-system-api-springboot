@@ -2,8 +2,22 @@
 
 package com.pshs.attendance_system;
 
-import com.pshs.attendance_system.models.dto.*;
-import com.pshs.attendance_system.models.entities.*;
+import com.pshs.attendance_system.app.gradelevels.models.dto.GradeLevelDTO;
+import com.pshs.attendance_system.app.gradelevels.models.entities.GradeLevel;
+import com.pshs.attendance_system.app.guardians.models.dto.GuardianDTO;
+import com.pshs.attendance_system.app.guardians.models.entities.Guardian;
+import com.pshs.attendance_system.app.rfid_credentials.models.dto.RFIDCredentialDTO;
+import com.pshs.attendance_system.app.rfid_credentials.models.entities.RFIDCredential;
+import com.pshs.attendance_system.app.sections.models.dto.SectionStudentsDTO;
+import com.pshs.attendance_system.app.sections.models.entities.Section;
+import com.pshs.attendance_system.app.strands.models.dto.StrandDTO;
+import com.pshs.attendance_system.app.strands.models.entities.Strand;
+import com.pshs.attendance_system.app.students.models.dto.StudentDTO;
+import com.pshs.attendance_system.app.students.models.entities.Student;
+import com.pshs.attendance_system.app.teachers.models.dto.TeacherDTO;
+import com.pshs.attendance_system.app.teachers.models.entities.Teacher;
+import com.pshs.attendance_system.app.users.models.dto.UserDTO;
+import com.pshs.attendance_system.app.users.models.entities.User;
 import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.time.LocalDate;
