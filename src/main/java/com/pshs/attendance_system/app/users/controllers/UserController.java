@@ -1,28 +1,30 @@
 
 
-package com.pshs.attendance_system.controllers.secured.user;
+package com.pshs.attendance_system.app.users.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.pshs.attendance_system.models.dto.CountDTO;
-import com.pshs.attendance_system.models.dto.MessageResponse;
-import com.pshs.attendance_system.models.dto.UserCreationDTO;
-import com.pshs.attendance_system.models.dto.UserDTO;
-import com.pshs.attendance_system.models.dto.authentication.ChangePasswordDTO;
-import com.pshs.attendance_system.models.entities.User;
+import com.pshs.attendance_system.app.users.models.dto.UserSearchInput;
+import com.pshs.attendance_system.models.MessageResponse;
+import com.pshs.attendance_system.app.users.models.dto.UserCreationDTO;
+import com.pshs.attendance_system.app.users.models.dto.UserDTO;
+import com.pshs.attendance_system.app.authentication.models.dto.ChangePasswordDTO;
+import com.pshs.attendance_system.app.users.models.entities.User;
 import com.pshs.attendance_system.enums.ExecutionStatus;
-import com.pshs.attendance_system.services.UserService;
+import com.pshs.attendance_system.app.users.services.UserService;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@Log4j2
 public class UserController {
 
-	private static final Logger logger = LogManager.getLogger(UserController.class);
 	private final UserService userService;
 
 	public UserController(UserService userService) {
@@ -52,7 +54,7 @@ public class UserController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<MessageResponse> deleteUser(@PathVariable Integer id) {
-		logger.info("Deleting user with ID: {}", id);
+		log.info("Deleting user with ID: {}", id);
 		ExecutionStatus status = userService.deleteUser(id);
 
 		return switch (status) {
@@ -79,7 +81,7 @@ public class UserController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<MessageResponse> updateUser(@PathVariable Integer id, @RequestBody UserCreationDTO userCreationDTO) {
-		logger.info("Updating user with ID: {}", id);
+		log.info("Updating user with ID: {}", id);
 		ExecutionStatus status = userService.updateUser(id, userCreationDTO.toEntity());
 
 		return switch (status) {
@@ -108,7 +110,7 @@ public class UserController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getUser(@PathVariable Integer id) {
-		logger.info("Retrieving user with ID: {}", id);
+		log.info("Retrieving user with ID: {}", id);
 		User user = userService.getUser(id);
 
 		// User does not exist
@@ -129,25 +131,23 @@ public class UserController {
 
 	@GetMapping("")
 	public ResponseEntity<Page<UserDTO>> getAllUsers(@RequestParam int page, @RequestParam int size) {
-		logger.info("Retrieving all users");
+		log.info("Retrieving all users");
 		return ResponseEntity.ok(
 			userService.getAllUsers(page, size).map(User::toDTO)
 		);
 	}
 
 	@GetMapping("/count")
-	public ResponseEntity<CountDTO> countAllUsers() {
-		logger.info("Counting all users");
+	public ResponseEntity<?> countAllUsers() {
+		log.info("Counting all users");
 		return ResponseEntity.ok(
-			new CountDTO(
-				userService.countAllUsers()
-			)
+			userService.countAllUsers()
 		);
 	}
 
 	@PatchMapping("/{id}/password")
 	public ResponseEntity<MessageResponse> updatePassword(@PathVariable Integer id, @RequestBody ChangePasswordDTO changePasswordDTO) {
-		logger.info("Updating password for user with ID: {}", id);
+		log.info("Updating password for user with ID: {}", id);
 
 		// Checks if the old password is correct
 		Boolean isPasswordCorrect = userService.isUserPasswordMatch(id, changePasswordDTO.getOldPassword());
@@ -188,7 +188,7 @@ public class UserController {
 
 	@PatchMapping("/{id}/is-locked")
 	public ResponseEntity<MessageResponse> updateIsLocked(@PathVariable Integer id, @RequestParam boolean isLocked) {
-		logger.info("Updating isLocked for user with ID: {}", id);
+		log.info("Updating isLocked for user with ID: {}", id);
 		ExecutionStatus status = userService.changeUserLockStatus(id, isLocked);
 
 		return switch (status) {
@@ -224,7 +224,7 @@ public class UserController {
 
 	@PatchMapping("/{id}/is-enabled")
 	public ResponseEntity<MessageResponse> updateIsActive(@PathVariable Integer id, @RequestParam boolean enabled) {
-		logger.info("Updating isActive for user with ID: {}", id);
+		log.info("Updating isActive for user with ID: {}", id);
 		ExecutionStatus status = userService.changeUserEnabledStatus(id, enabled);
 
 		return switch (status) {
@@ -260,7 +260,7 @@ public class UserController {
 
 	@PatchMapping("/{id}/is-expired")
 	public ResponseEntity<MessageResponse> isUserExpired(@PathVariable Integer id, @RequestParam boolean expired) {
-		logger.info("Checking if user with ID: {} is expired", id);
+		log.info("Checking if user with ID: {} is expired", id);
 		ExecutionStatus status = userService.changeUserExpiredStatus(id, expired);
 		return switch (status) {
 			case VALIDATION_ERROR -> ResponseEntity.badRequest().body(
@@ -295,7 +295,7 @@ public class UserController {
 
 	@PatchMapping("/{id}/is-credentials-expired")
 	public ResponseEntity<MessageResponse> isUserCredentialsExpired(@PathVariable Integer id, @RequestParam boolean credentialsExpired) {
-		logger.info("Checking if user with ID: {} has expired credentials", id);
+		log.info("Checking if user with ID: {} has expired credentials", id);
 		ExecutionStatus status = userService.changeUserCredentialsExpiredStatus(id, credentialsExpired);
 
 		return switch (status) {
@@ -331,35 +331,16 @@ public class UserController {
 
 	@GetMapping("/search")
 	public ResponseEntity<Page<UserDTO>> searchUsers(
-		@RequestParam(required = false) String username,
-		@RequestParam(required = false) String email,
-		@RequestParam(required = false) String role,
+		@RequestBody UserSearchInput searchInput,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "10") int size
 	) {
-		boolean isUsernameEmpty = username.isEmpty();
-		boolean isEmailEmpty = email.isEmpty();
-		boolean isRoleEmpty = role.isEmpty();
-		Page<User> result;
+		try {
+			Page<User> result = userService.search(searchInput, PageRequest.of(page, size));
 
-		if (!isUsernameEmpty && isEmailEmpty && isRoleEmpty) {
-			result = userService.searchUsersByUsername(username, page, size);
-		} else if (isUsernameEmpty && !isEmailEmpty && isRoleEmpty) {
-			result = userService.searchUsersByEmail(email, page, size);
-		} else if (isUsernameEmpty && isEmailEmpty && !isRoleEmpty) {
-			result = userService.searchUsersByRole(role, page, size);
-		} else if (!isUsernameEmpty && !isEmailEmpty && isRoleEmpty) {
-			result = userService.searchUsersByUsernameAndEmail(username, email, page, size);
-		} else if (!isUsernameEmpty && isEmailEmpty) {
-			result = userService.searchUsersByUsernameAndRole(username, role, page, size);
-		} else if (isUsernameEmpty && !isEmailEmpty) {
-			result = userService.searchUsersByEmailAndRole(email, role, page, size);
-		} else {
-			result = userService.searchUsersByUsernameAndEmailAndRole(username, email, role, page, size);
+			return ResponseEntity.ok(result.map(User::toDTO));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.badRequest().build();
 		}
-
-		return ResponseEntity.ok(
-			result.map(User::toDTO)
-		);
 	}
 }

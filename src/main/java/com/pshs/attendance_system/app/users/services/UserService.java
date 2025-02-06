@@ -1,10 +1,12 @@
 
 
-package com.pshs.attendance_system.services;
+package com.pshs.attendance_system.app.users.services;
 
-import com.pshs.attendance_system.models.entities.User;
+import com.pshs.attendance_system.app.users.models.dto.UserSearchInput;
+import com.pshs.attendance_system.app.users.models.entities.User;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
 
@@ -124,79 +126,14 @@ public interface UserService {
 	Page<User> getAllUsers(int page, int size);
 
 	/**
-	 * Search all users with the given username.
+	 * Search for users based on the given search input criteria.
 	 *
-	 * @param username The username that will be searched.
-	 * @param page     Page
-	 * @param size     Shows how many users will it display.
-	 * @return return the page object
+	 * @param searchInput The criteria used to search for users, including fields such as username, email, and role.
+	 * @param pageable    The pagination information, including page number and size.
+	 * @return A page of users that match the search criteria.
+	 * @throws IllegalArgumentException if the search input is invalid or null
 	 */
-	Page<User> searchUsersByUsername(String username, int page, int size);
-
-	/**
-	 * Search all users with the given email.
-	 *
-	 * @param email The email that will be searched.
-	 * @param page  Page
-	 * @param size  Shows how many users will it display.
-	 * @return return the page object
-	 */
-	Page<User> searchUsersByEmail(String email, int page, int size);
-
-	/**
-	 * Search users with the given role.
-	 *
-	 * @param role The role of the user.
-	 * @param page Page
-	 * @param size Shows how many users will it display.
-	 * @return return the page object
-	 */
-	Page<User> searchUsersByRole(String role, int page, int size);
-
-	/**
-	 * Search all users with the given username and email.
-	 *
-	 * @param username The username that will be searched.
-	 * @param email    The email that will be searched.
-	 * @param page     Page
-	 * @param size     Shows how many users will it display.
-	 * @return return the page object
-	 */
-	Page<User> searchUsersByUsernameAndEmail(String username, String email, int page, int size);
-
-	/**
-	 * Search all users with the given role and username.
-	 *
-	 * @param username The username that will be searched.
-	 * @param role     The user with the given role.
-	 * @param page     Page
-	 * @param size     Shows how many users will it display.
-	 * @return return the page object
-	 */
-	Page<User> searchUsersByUsernameAndRole(String username, String role, int page, int size);
-
-	/**
-	 * Search all users with the given role and email.
-	 *
-	 * @param email The email that will be searched.
-	 * @param role  The user with the given role.
-	 * @param page  Page
-	 * @param size  Shows how many users will it display.
-	 * @return return the page object
-	 */
-	Page<User> searchUsersByEmailAndRole(String email, String role, int page, int size);
-
-	/**
-	 * Search users by their username, email, and role.
-	 *
-	 * @param username The username of the user that will be searched
-	 * @param email    The email of the user that will be searched.
-	 * @param role     The role of the user that will be searced.
-	 * @param page     The page
-	 * @param size     The maximum size of a page.
-	 * @return return the page of users.
-	 */
-	Page<User> searchUsersByUsernameAndEmailAndRole(String username, String email, String role, int page, int size);
+	Page<User> search(UserSearchInput searchInput, Pageable pageable) throws IllegalArgumentException;
 
 	/**
 	 * Check if the provided password matches the user's password.
