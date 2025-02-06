@@ -1,6 +1,6 @@
 
 
-package com.pshs.attendance_system.models.entities.range;
+package com.pshs.attendance_system.models;
 
 import java.time.LocalDate;
 

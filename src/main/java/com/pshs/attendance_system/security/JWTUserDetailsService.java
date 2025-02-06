@@ -2,8 +2,8 @@
 
 package com.pshs.attendance_system.security;
 
-import com.pshs.attendance_system.models.entities.User;
-import com.pshs.attendance_system.models.repositories.UserRepository;
+import com.pshs.attendance_system.app.users.models.entities.User;
+import com.pshs.attendance_system.app.users.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

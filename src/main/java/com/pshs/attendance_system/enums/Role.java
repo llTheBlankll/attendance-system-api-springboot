@@ -1,6 +1,6 @@
 package com.pshs.attendance_system.enums;
 
-public enum Roles {
+public enum Role {
 	SYS_ADMIN,
 	PRINCIPAL,
 	TEACHER,

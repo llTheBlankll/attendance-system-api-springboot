@@ -2,7 +2,7 @@
 
 package com.pshs.attendance_system.security;
 
-import com.pshs.attendance_system.models.entities.User;
+import com.pshs.attendance_system.app.users.models.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.impl.lang.Function;
