@@ -2,33 +2,19 @@
 
 package com.pshs.attendance_system.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalTime;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TimeRange {
 
 	private LocalTime startTime;
 	private LocalTime endTime;
-
-	public TimeRange(LocalTime startTime, LocalTime endTime) {
-		this.startTime = startTime;
-		this.endTime = endTime;
-	}
-
-	public LocalTime getStartTime() {
-		return startTime;
-	}
-
-	public TimeRange setStartTime(LocalTime startTime) {
-		this.startTime = startTime;
-		return this;
-	}
-
-	public LocalTime getEndTime() {
-		return endTime;
-	}
-
-	public TimeRange setEndTime(LocalTime endTime) {
-		this.endTime = endTime;
-		return this;
-	}
 }

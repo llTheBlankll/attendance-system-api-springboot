@@ -2,33 +2,19 @@
 
 package com.pshs.attendance_system.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class DateRange {
 
 	private LocalDate startDate;
 	private LocalDate endDate;
-
-	public DateRange(LocalDate startDate, LocalDate endDate) {
-		this.startDate = startDate;
-		this.endDate = endDate;
-	}
-
-	public LocalDate getStartDate() {
-		return startDate;
-	}
-
-	public DateRange setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-		return this;
-	}
-
-	public LocalDate getEndDate() {
-		return endDate;
-	}
-
-	public DateRange setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-		return this;
-	}
 }
