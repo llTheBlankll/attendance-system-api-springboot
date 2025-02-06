@@ -5,15 +5,13 @@ package com.pshs.attendance_system.app.users.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pshs.attendance_system.app.users.models.dto.UserSearchInput;
 import com.pshs.attendance_system.models.MessageResponse;
-import com.pshs.attendance_system.app.users.models.dto.UserCreationDTO;
+import com.pshs.attendance_system.app.users.models.dto.UserInput;
 import com.pshs.attendance_system.app.users.models.dto.UserDTO;
 import com.pshs.attendance_system.app.authentication.models.dto.ChangePasswordDTO;
 import com.pshs.attendance_system.app.users.models.entities.User;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.app.users.services.UserService;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -32,8 +30,8 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/create")
-	public ResponseEntity<MessageResponse> createUser(@RequestBody UserCreationDTO userCreationDTO) throws JsonProcessingException {
-		User status = userService.createUser(userCreationDTO.toEntity());
+	public ResponseEntity<MessageResponse> createUser(@RequestBody UserInput userInput) throws JsonProcessingException {
+		User status = userService.createUser(userInput.toEntity());
 
 		if (status == null) {
 			return ResponseEntity.badRequest().body(
@@ -80,9 +78,9 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<MessageResponse> updateUser(@PathVariable Integer id, @RequestBody UserCreationDTO userCreationDTO) {
+	public ResponseEntity<MessageResponse> updateUser(@PathVariable Integer id, @RequestBody UserInput userInput) {
 		log.info("Updating user with ID: {}", id);
-		ExecutionStatus status = userService.updateUser(id, userCreationDTO.toEntity());
+		ExecutionStatus status = userService.updateUser(id, userInput.toEntity());
 
 		return switch (status) {
 			case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(

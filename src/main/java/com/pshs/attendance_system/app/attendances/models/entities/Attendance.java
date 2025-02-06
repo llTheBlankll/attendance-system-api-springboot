@@ -6,6 +6,10 @@ import com.pshs.attendance_system.app.attendances.models.dto.AttendanceDTO;
 import com.pshs.attendance_system.app.students.models.entities.Student;
 import com.pshs.attendance_system.enums.AttendanceStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -15,6 +19,10 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "attendances")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Attendance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "attendances_id_gen")
@@ -42,74 +50,7 @@ public class Attendance {
 	@ColumnDefault("LOCALTIME")
 	@Column(name = "time_out")
 	private LocalTime timeOut;
-
-	public Attendance() {
-	}
-
-	public Attendance(Integer id, Student student, AttendanceStatus attendanceStatus, LocalDate date, LocalTime time, LocalTime timeOut) {
-		this.id = id;
-		this.student = student;
-		this.attendanceStatus = attendanceStatus;
-		this.date = date;
-		this.time = time;
-		this.timeOut = timeOut;
-	}
-
 	public AttendanceDTO toDTO() {
 		return new AttendanceDTO(id, student.toDTO(), attendanceStatus, date, time, timeOut);
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public Attendance setId(Integer id) {
-		this.id = id;
-		return this;
-	}
-
-	public Student getStudent() {
-		return student;
-	}
-
-	public Attendance setStudent(Student student) {
-		this.student = student;
-		return this;
-	}
-
-	public AttendanceStatus getStatus() {
-		return attendanceStatus;
-	}
-
-	public Attendance setStatus(AttendanceStatus attendanceStatus) {
-		this.attendanceStatus = attendanceStatus;
-		return this;
-	}
-
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public Attendance setDate(LocalDate date) {
-		this.date = date;
-		return this;
-	}
-
-	public LocalTime getTime() {
-		return time;
-	}
-
-	public Attendance setTime(LocalTime time) {
-		this.time = time;
-		return this;
-	}
-
-	public LocalTime getTimeOut() {
-		return timeOut;
-	}
-
-	public Attendance setTimeOut(LocalTime timeOut) {
-		this.timeOut = timeOut;
-		return this;
 	}
 }

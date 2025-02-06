@@ -11,17 +11,13 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
 
-/**
- * DTO for {@link User}
- */
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO implements Serializable {
-	private Integer id;
+@AllArgsConstructor
+public class UserInput implements Serializable {
+
 	@NotBlank(message = "Username is required")
 	private String username;
 	private String email;
@@ -29,15 +25,24 @@ public class UserDTO implements Serializable {
 	private Instant lastLogin;
 	private Instant createdAt;
 
+	@NotBlank(message = "Password is required")
+	private String password;
+	private boolean isLocked;
+	private boolean isEnabled;
+	private boolean isExpired;
+	private boolean isCredentialsExpired;
+
 	public User toEntity() {
-		new User();
-		return User.builder()
-			.id(id)
-			.username(username)
-			.email(email)
-			.role(role)
-			.lastLogin(lastLogin)
-			.createdAt(createdAt)
-			.build();
+		return new User()
+			.setUsername(username)
+			.setEmail(email)
+			.setRole(role)
+			.setLastLogin(lastLogin)
+			.setCreatedAt(createdAt)
+			.setPassword(password)
+			.setLocked(isLocked)
+			.setEnabled(isEnabled)
+			.setExpired(isExpired)
+			.setCredentialsExpired(isCredentialsExpired);
 	}
 }

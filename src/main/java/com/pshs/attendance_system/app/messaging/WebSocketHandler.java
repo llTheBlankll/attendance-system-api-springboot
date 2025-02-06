@@ -26,19 +26,12 @@ public class WebSocketHandler implements WebSocketConfigurer {
 		this.realTimeNotificationSubscribers = realTimeNotificationSubscribers;
 	}
 
-<<<<<<<<<<<<<<  ✨ Codeium Command ⭐ >>>>>>>>>>>>>>>>
+
 	/**
 	 * Register the WebSocket handlers.
 	 *
-	 * <p>This method registers the following WebSocket handlers:
-	 * <ul>
-	 *     <li>{@link AttendanceWebSocketHandler} on "/wsocket/attendance" path</li>
-	 *     <li>{@link RealTimeNotificationsHandler} on "/wsocket/realtime-attendance" path</li>
-	 * </ul>
-	 *
-	 * @param registry The {@link WebSocketHandlerRegistry} to register the handlers with.
+	 * @param registry The registry to use for registering the handlers.
 	 */
-<<<<<<<  9f80ec08-2e60-430e-a9d3-f7f6b04c3c28  >>>>>>>
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(new AttendanceWebSocketHandler(attendanceService, rfidCredentialService, realTimeNotificationSubscribers), "/wsocket/attendance");

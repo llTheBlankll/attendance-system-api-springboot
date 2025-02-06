@@ -6,11 +6,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pshs.attendance_system.app.guardians.models.dto.GuardianDTO;
 import com.pshs.attendance_system.app.students.models.entities.Student;
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "guardians")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Guardian {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "guardians_id_gen")
@@ -29,52 +34,7 @@ public class Guardian {
 	@JsonIgnore
 	private Student student;
 
-	public Guardian() {
-	}
-
-	public Guardian(Integer id,  String fullName, String contactNumber) {
-		this.id = id;
-		this.fullName = fullName;
-		this.contactNumber = contactNumber;
-	}
-
-	public Student getStudent() {
-		return student;
-	}
-
-	public Guardian setStudent(Student student) {
-		this.student = student;
-		return this;
-	}
-
 	public GuardianDTO toDTO() {
-		return new GuardianDTO(id, fullName, contactNumber);
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public Guardian setId(Integer id) {
-		this.id = id;
-		return this;
-	}
-
-	public String getFullName() {
-		return fullName;
-	}
-
-	public Guardian setFullName(String fullName) {
-		this.fullName = fullName;
-		return this;
-	}
-
-	public String getContactNumber() {
-		return contactNumber;
-	}
-
-	public Guardian setContactNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
-		return this;
+		return new GuardianDTO(id, fullName, contactNumber, student.toDTO());
 	}
 }

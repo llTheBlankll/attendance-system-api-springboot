@@ -6,9 +6,17 @@ import com.pshs.attendance_system.app.teachers.models.dto.TeacherDTO;
 import com.pshs.attendance_system.app.users.models.dto.UserDTO;
 import com.pshs.attendance_system.app.users.models.entities.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "teachers")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Teacher {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teachers_id_gen")
@@ -29,68 +37,7 @@ public class Teacher {
 	@OneToOne(fetch = FetchType.EAGER)
 	private User user;
 
-	public Teacher(Integer id, String firstName, String lastName, String sex, User user) {
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.sex = sex;
-		this.user = user;
-	}
-
-	public Teacher() {
-	}
-
-	public User getUser() {
-		// If the teacher user is null, then return a new user to avoid NullPointerException.
-		if (user == null) {
-			return new User();
-		}
-
-		return user;
-	}
-
-	public Teacher setUser(User user) {
-		this.user = user;
-		return this;
-	}
-
 	public TeacherDTO toDTO() {
 		return new TeacherDTO(id, firstName, lastName, sex, (user != null) ? user.toDTO() : new UserDTO());
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public Teacher setId(Integer id) {
-		this.id = id;
-		return this;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public Teacher setFirstName(String firstName) {
-		this.firstName = firstName;
-		return this;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public Teacher setLastName(String lastName) {
-		this.lastName = lastName;
-		return this;
-	}
-
-	public String getSex() {
-		return sex;
-	}
-
-	public Teacher setSex(String sex) {
-		this.sex = sex;
-		return this;
 	}
 }

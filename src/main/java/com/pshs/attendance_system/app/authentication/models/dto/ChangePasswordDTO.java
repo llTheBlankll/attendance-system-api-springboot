@@ -1,35 +1,18 @@
 package com.pshs.attendance_system.app.authentication.models.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ChangePasswordDTO implements Serializable {
 
 	private String oldPassword;
 	private String newPassword;
-
-	public ChangePasswordDTO() {
-	}
-
-	public ChangePasswordDTO(String oldPassword, String newPassword) {
-		this.oldPassword = oldPassword;
-		this.newPassword = newPassword;
-	}
-
-	public String getOldPassword() {
-		return oldPassword;
-	}
-
-	public ChangePasswordDTO setOldPassword(String oldPassword) {
-		this.oldPassword = oldPassword;
-		return this;
-	}
-
-	public String getNewPassword() {
-		return newPassword;
-	}
-
-	public ChangePasswordDTO setNewPassword(String newPassword) {
-		this.newPassword = newPassword;
-		return this;
-	}
 }

@@ -2,7 +2,7 @@ package com.pshs.attendance_system.app.teachers.controllers;
 
 import com.pshs.attendance_system.models.MessageResponse;
 import com.pshs.attendance_system.app.teachers.models.dto.TeacherDTO;
-import com.pshs.attendance_system.app.teachers.models.dto.transaction.CreateTeacherDTO;
+import com.pshs.attendance_system.app.teachers.models.dto.transaction.TeacherInput;
 import com.pshs.attendance_system.app.teachers.models.entities.Teacher;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.app.teachers.services.TeacherService;
@@ -35,7 +35,7 @@ public class TeacherController {
 	@Operation(summary = "Create Teacher", description = "Create a new teacher record.")
 	@ApiResponses({@ApiResponse(responseCode = "200", description = "Teacher record created successfully.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json", schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = MessageResponse.class))}), @ApiResponse(responseCode = "400", description = "Failed to create teacher record.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json", schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = MessageResponse.class))}), @ApiResponse(responseCode = "400", description = "Validation error occurred.", content = {@io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json", schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = MessageResponse.class))})})
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Teacher Object that will be required to create a new teacher record.", required = true)
-	public ResponseEntity<?> createTeacher(@RequestBody CreateTeacherDTO teacherDTO) {
+	public ResponseEntity<?> createTeacher(@RequestBody TeacherInput teacherDTO) {
 		ExecutionStatus status = teacherService.createTeacher(teacherDTO.toEntity());
 		switch (status) {
 			case SUCCESS -> {

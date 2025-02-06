@@ -3,6 +3,12 @@
 package com.pshs.attendance_system.app.guardians.models.dto;
 
 import com.pshs.attendance_system.app.guardians.models.entities.Guardian;
+import com.pshs.attendance_system.app.students.models.dto.StudentDTO;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -10,78 +16,22 @@ import java.util.Objects;
 /**
  * DTO for {@link Guardian}
  */
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class GuardianDTO implements Serializable {
 	private Integer id;
 	private String fullName;
 	private String contactNumber;
-
-	public GuardianDTO() {
-	}
-
-	public GuardianDTO(Integer id, String fullName, String contactNumber) {
-		this.id = id;
-		this.fullName = fullName;
-		this.contactNumber = contactNumber;
-	}
+	@JsonIgnore
+	private StudentDTO student;
 
 	public Guardian toEntity() {
-		return new Guardian()
-			.setId(id)
-			.setFullName(fullName)
-			.setContactNumber(contactNumber);
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public GuardianDTO setId(Integer id) {
-		this.id = id;
-		return this;
-	}
-
-	public String getFullName() {
-		return fullName;
-	}
-
-	public GuardianDTO setFullName(String fullName) {
-		this.fullName = fullName;
-		return this;
-	}
-
-	public String getContactNumber() {
-		return contactNumber;
-	}
-
-	public GuardianDTO setContactNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
-		return this;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		GuardianDTO that = (GuardianDTO) o;
-		return Objects.equals(id, that.id) && Objects.equals(fullName, that.fullName) && Objects.equals(contactNumber, that.contactNumber);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, fullName, contactNumber);
-	}
-
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-
-	@Override
-	public String toString() {
-		return "GuardianDTO{" +
-			"id=" + id +
-			", fullName='" + fullName + '\'' +
-			", contactNumber='" + contactNumber + '\'' +
-			'}';
+		Guardian guardian = new Guardian();
+		guardian.setId(id);
+		guardian.setFullName(fullName);
+		guardian.setContactNumber(contactNumber);
+		return guardian;
 	}
 }

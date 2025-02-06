@@ -1,32 +1,18 @@
 package com.pshs.attendance_system.app.attendances.models.dto.charts;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class LineChartDTO {
 
 	private List<String> labels;
 	private List<Integer> data;
-
-	public LineChartDTO(List<String> labels, List<Integer> data) {
-		this.labels = labels;
-		this.data = data;
-	}
-
-	public List<String> getLabels() {
-		return labels;
-	}
-
-	public LineChartDTO setLabels(List<String> labels) {
-		this.labels = labels;
-		return this;
-	}
-
-	public List<Integer> getData() {
-		return data;
-	}
-
-	public LineChartDTO setData(List<Integer> data) {
-		this.data = data;
-		return this;
-	}
 }

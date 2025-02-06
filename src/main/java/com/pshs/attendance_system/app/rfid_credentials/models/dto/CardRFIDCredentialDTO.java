@@ -3,34 +3,17 @@
 package com.pshs.attendance_system.app.rfid_credentials.models.dto;
 
 import com.pshs.attendance_system.enums.Mode;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CardRFIDCredentialDTO {
 
 	private String hashedLrn;
 	private Mode mode;
-
-	public CardRFIDCredentialDTO() {
-	}
-
-	public CardRFIDCredentialDTO(String hashedLrn) {
-		this.hashedLrn = hashedLrn;
-	}
-
-	public Mode getMode() {
-		return mode;
-	}
-
-	public CardRFIDCredentialDTO setMode(Mode mode) {
-		this.mode = mode;
-		return this;
-	}
-
-	public String getHashedLrn() {
-		return hashedLrn;
-	}
-
-	public CardRFIDCredentialDTO setHashedLrn(String hashedLrn) {
-		this.hashedLrn = hashedLrn;
-		return this;
-	}
 }

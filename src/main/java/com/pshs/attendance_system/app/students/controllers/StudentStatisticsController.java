@@ -1,7 +1,6 @@
 package com.pshs.attendance_system.app.students.controllers;
 
 import com.pshs.attendance_system.models.MessageResponse;
-import com.pshs.attendance_system.app.attendances.models.dto.charts.CountDTO;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.app.students.services.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
