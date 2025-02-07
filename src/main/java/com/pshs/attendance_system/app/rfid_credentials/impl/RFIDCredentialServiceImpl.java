@@ -5,15 +5,15 @@ import com.pshs.attendance_system.app.students.models.entities.Student;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.app.rfid_credentials.repositories.RFIDCredentialRepository;
 import com.pshs.attendance_system.app.rfid_credentials.services.RFIDCredentialService;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 @Service
+@Log4j2
 public class RFIDCredentialServiceImpl implements RFIDCredentialService {
 
-
-	private static final Logger logger = LogManager.getLogger(RFIDCredentialServiceImpl.class);
 	private final RFIDCredentialRepository rfidCredentialRepository;
 
 	public RFIDCredentialServiceImpl(RFIDCredentialRepository rfidCredentialRepository) {
@@ -37,7 +37,7 @@ public class RFIDCredentialServiceImpl implements RFIDCredentialService {
 		}
 
 		rfidCredentialRepository.save(rfidCredential);
-		logger.debug("RFID Credential {} created", rfidCredential.getId());
+		log.debug("RFID Credential {} created", rfidCredential.getId());
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -54,7 +54,7 @@ public class RFIDCredentialServiceImpl implements RFIDCredentialService {
 		}
 
 		rfidCredentialRepository.delete(rfidCredential);
-		logger.debug("RFID Credential {} deleted", rfidCredential.getId());
+		log.debug("RFID Credential {} deleted", rfidCredential.getId());
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -75,7 +75,7 @@ public class RFIDCredentialServiceImpl implements RFIDCredentialService {
 		}
 
 		rfidCredentialRepository.save(rfidCredential);
-		logger.debug("RFID Credential {} updated", rfidCredential.getId());
+		log.debug("RFID Credential {} updated", rfidCredential.getId());
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -125,12 +125,12 @@ public class RFIDCredentialServiceImpl implements RFIDCredentialService {
 	}
 
 	private ExecutionStatus validationFailedLog(int credentialId) {
-		logger.debug("RFID Credential {} validation failed", credentialId);
+		log.debug("RFID Credential {} validation failed", credentialId);
 		return ExecutionStatus.VALIDATION_ERROR;
 	}
 
 	private ExecutionStatus notFoundLog(int credentialId) {
-		logger.debug("RFID Credential {} not found", credentialId);
+		log.debug("RFID Credential {} not found", credentialId);
 		return ExecutionStatus.NOT_FOUND;
 	}
 }

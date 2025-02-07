@@ -6,6 +6,7 @@ import com.pshs.attendance_system.app.gradelevels.models.entities.GradeLevel;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.app.gradelevels.repositories.GradeLevelRepository;
 import com.pshs.attendance_system.app.gradelevels.services.GradeLevelService;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -15,9 +16,9 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Log4j2
 public class GradeLevelServiceImpl implements GradeLevelService {
 
-	private static final Logger logger = LogManager.getLogger(GradeLevelServiceImpl.class);
 	private final GradeLevelRepository gradeLevelRepository;
 
 
@@ -42,7 +43,7 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 		}
 
 		gradeLevelRepository.save(gradeLevel);
-		logger.debug("Grade Level with ID {} has been created", gradeLevel.getId());
+		log.debug("Grade Level with ID {} has been created", gradeLevel.getId());
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -63,7 +64,7 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 		}
 
 		gradeLevelRepository.deleteById(gradeLevelId);
-		logger.debug("Grade Level with ID {} has been deleted", gradeLevelId);
+		log.debug("Grade Level with ID {} has been deleted", gradeLevelId);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -89,7 +90,7 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 		}
 
 		gradeLevelRepository.save(gradeLevel);
-		logger.debug("Grade Level with ID {} has been updated", gradeLevelId);
+		log.debug("Grade Level with ID {} has been updated", gradeLevelId);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -195,17 +196,17 @@ public class GradeLevelServiceImpl implements GradeLevelService {
 	}
 
 	private ExecutionStatus gradeLevelNotFound(int gradeLevelId) {
-		logger.debug("Grade Level with ID {} does not exist", gradeLevelId);
+		log.debug("Grade Level with ID {} does not exist", gradeLevelId);
 		return ExecutionStatus.NOT_FOUND;
 	}
 
 	private ExecutionStatus gradeLevelExists(int gradeLevelId) {
-		logger.debug("Grade Level with ID {} already exists", gradeLevelId);
+		log.debug("Grade Level with ID {} already exists", gradeLevelId);
 		return ExecutionStatus.FAILED;
 	}
 
 	private ExecutionStatus gradeLevelValidationFailed(GradeLevel gradeLevel) {
-		logger.debug("Grade Level {} validation failed", gradeLevel.getName());
+		log.debug("Grade Level {} validation failed", gradeLevel.getName());
 		return ExecutionStatus.VALIDATION_ERROR;
 	}
 }

@@ -6,6 +6,7 @@ import com.pshs.attendance_system.app.guardians.models.entities.Guardian;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.app.guardians.repositories.GuardianRepository;
 import com.pshs.attendance_system.app.guardians.services.GuardianService;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -15,9 +16,9 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Log4j2
 public class GuardianServiceImpl implements GuardianService {
 
-	private static final Logger logger = LogManager.getLogger(GuardianServiceImpl.class);
 	private final GuardianRepository guardianRepository;
 
 
@@ -42,7 +43,7 @@ public class GuardianServiceImpl implements GuardianService {
 		try {
 			// Check if guardian already exists
 			if (isGuardianExist(guardian.getId())) {
-				logger.debug("Guardian {} already exists.", guardian.getFullName());
+				log.debug("Guardian {} already exists.", guardian.getFullName());
 				return ExecutionStatus.VALIDATION_ERROR;
 			}
 
@@ -51,7 +52,7 @@ public class GuardianServiceImpl implements GuardianService {
 			return ExecutionStatus.SUCCESS;
 		} catch (Exception e) {
 			// Log the error
-			logger.debug("Failed to create guardian record.", e);
+			log.debug("Failed to create guardian record.", e);
 			return ExecutionStatus.FAILED;
 		}
 	}
@@ -80,7 +81,7 @@ public class GuardianServiceImpl implements GuardianService {
 			return ExecutionStatus.SUCCESS;
 		} catch (Exception e) {
 			// Log the error
-			logger.debug("Failed to delete guardian record.", e);
+			log.debug("Failed to delete guardian record.", e);
 			return ExecutionStatus.FAILED;
 		}
 	}
@@ -116,7 +117,7 @@ public class GuardianServiceImpl implements GuardianService {
 			return ExecutionStatus.SUCCESS;
 		} catch (Exception e) {
 			// Log the error
-			logger.debug("Failed to update guardian record.", e);
+			log.debug("Failed to update guardian record.", e);
 			return ExecutionStatus.FAILED;
 		}
 	}
@@ -214,7 +215,7 @@ public class GuardianServiceImpl implements GuardianService {
 	 * @see Guardian
 	 */
 	private ExecutionStatus guardianValidationFailedLog(Guardian guardian) {
-		logger.debug("Guardian {} validation failed.", guardian.getFullName());
+		log.debug("Guardian {} validation failed.", guardian.getFullName());
 		return ExecutionStatus.VALIDATION_ERROR;
 	}
 
@@ -226,7 +227,7 @@ public class GuardianServiceImpl implements GuardianService {
 	 * @see Guardian
 	 */
 	private ExecutionStatus guardianNotFoundLog(int guardianId) {
-		logger.debug("Guardian with id {} not found.", guardianId);
+		log.debug("Guardian with id {} not found.", guardianId);
 		return ExecutionStatus.NOT_FOUND;
 	}
 
@@ -238,7 +239,7 @@ public class GuardianServiceImpl implements GuardianService {
 	 * @see Guardian
 	 */
 	private ExecutionStatus guardianInvalidIdLog(int guardianId) {
-		logger.debug("Invalid guardian id {}.", guardianId);
+		log.debug("Invalid guardian id {}.", guardianId);
 		return ExecutionStatus.FAILED;
 	}
 }

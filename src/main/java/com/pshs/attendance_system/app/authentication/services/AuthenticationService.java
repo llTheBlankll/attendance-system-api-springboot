@@ -11,8 +11,6 @@ public interface AuthenticationService {
 
 	User signIn(LoginDTO loginDTO);
 
-	User signOut(User user);
-
 	User changePassword(User user, String newPassword);
 
 	User resetPassword(User user);

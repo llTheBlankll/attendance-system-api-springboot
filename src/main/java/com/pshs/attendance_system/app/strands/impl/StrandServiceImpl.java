@@ -6,6 +6,7 @@ import com.pshs.attendance_system.app.strands.models.entities.Strand;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.app.strands.repositories.StrandRepository;
 import com.pshs.attendance_system.app.strands.services.StrandService;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -13,9 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
+@Log4j2
 public class StrandServiceImpl implements StrandService {
-
-	private static final Logger logger = LogManager.getLogger(StrandServiceImpl.class);
 	private final StrandRepository strandRepository;
 
 	public StrandServiceImpl(StrandRepository strandRepository) {
@@ -35,7 +35,7 @@ public class StrandServiceImpl implements StrandService {
 		}
 
 		strandRepository.save(strand);
-		logger.debug("Strand with ID {} has been created", strand.getId());
+		log.debug("Strand with ID {} has been created", strand.getId());
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -52,7 +52,7 @@ public class StrandServiceImpl implements StrandService {
 		}
 
 		strandRepository.deleteById(strandId);
-		logger.debug("Strand with ID {} has been deleted", strandId);
+		log.debug("Strand with ID {} has been deleted", strandId);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -70,7 +70,7 @@ public class StrandServiceImpl implements StrandService {
 		}
 
 		strandRepository.save(strand);
-		logger.debug("Strand with ID {} has been updated", strandId);
+		log.debug("Strand with ID {} has been updated", strandId);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -113,7 +113,7 @@ public class StrandServiceImpl implements StrandService {
 	 * @return ExecutionStatus.VALIDATION_ERROR
 	 */
 	private ExecutionStatus strandExisted(String message) {
-		logger.warn(message);
+		log.warn(message);
 		return ExecutionStatus.VALIDATION_ERROR;
 	}
 }

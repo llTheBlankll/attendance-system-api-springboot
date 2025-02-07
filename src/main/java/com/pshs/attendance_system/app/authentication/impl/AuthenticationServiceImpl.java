@@ -2,22 +2,27 @@
 
 package com.pshs.attendance_system.app.authentication.impl;
 
+import com.pshs.attendance_system.app.authentication.exceptions.InvalidUserException;
 import com.pshs.attendance_system.app.authentication.models.dto.LoginDTO;
 import com.pshs.attendance_system.app.users.models.entities.User;
 import com.pshs.attendance_system.app.authentication.services.AuthenticationService;
 import com.pshs.attendance_system.app.users.services.UserService;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
+@Log4j2
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-	private static final Logger logger = LogManager.getLogger(AuthenticationServiceImpl.class);
 	private final UserService userService;
 	private final AuthenticationManager authManager;
 	private final PasswordEncoder passwordEncoder;
@@ -43,7 +48,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		);
 
 		User user = userService.getUserByUsername(loginDTO.getUsername());
-
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found");
 		} else {
@@ -52,13 +56,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	}
 
 	@Override
-	public User signOut(User user) {
-		return null;
-	}
-
-	@Override
 	public User changePassword(User user, String newPassword) {
-		return null;
+		User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (loggedUser == null) {
+			throw new InvalidUserException("The password of the user cannot be change because the user is not logged in.");
+		}
+
+		// * Check if the logged user is the same as the user that is trying to change the password.
+		if (!Objects.equals(loggedUser.getId(), user.getId()) &&  !Objects.equals(loggedUser.getUsername(), user.getUsername())) {
+			throw new InvalidUserException("The password of the user cannot be change because the user is not logged in.");
+		}
+
+		loggedUser.setPassword(passwordEncoder.encode(newPassword));
+		userService.updateUserPassword(user.getId(), newPassword);
 	}
 
 	@Override

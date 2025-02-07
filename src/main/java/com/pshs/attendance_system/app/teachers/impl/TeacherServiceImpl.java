@@ -7,6 +7,7 @@ import com.pshs.attendance_system.app.teachers.models.entities.Teacher;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.app.teachers.repositories.TeacherRepository;
 import com.pshs.attendance_system.app.teachers.services.TeacherService;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -14,9 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
+@Log4j2
 public class TeacherServiceImpl implements TeacherService {
 
-	private static final Logger logger = LogManager.getLogger(TeacherServiceImpl.class);
 	private final TeacherRepository teacherRepository;
 
 	public TeacherServiceImpl(TeacherRepository teacherRepository) {
@@ -56,7 +57,7 @@ public class TeacherServiceImpl implements TeacherService {
 		}
 
 		teacherRepository.deleteById(teacherId);
-		logger.debug("Teacher ID: {} has been deleted.", teacherId);
+		log.debug("Teacher ID: {} has been deleted.", teacherId);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -82,7 +83,7 @@ public class TeacherServiceImpl implements TeacherService {
 		}
 
 		teacherRepository.save(teacher);
-		logger.debug("Teacher ID: {} has been updated.", teacherId);
+		log.debug("Teacher ID: {} has been updated.", teacherId);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -104,17 +105,17 @@ public class TeacherServiceImpl implements TeacherService {
 		}
 
 		if (firstName.isEmpty()) {
-			logger.debug("First name is empty.");
+			log.debug("First name is empty.");
 			return ExecutionStatus.VALIDATION_ERROR;
 		}
 
 		int affectedRows = teacherRepository.updateTeacherFirstName(firstName, teacherId);
 		if (affectedRows > 0) {
-			logger.debug("Teacher ID: {} first name has been changed.", teacherId);
+			log.debug("Teacher ID: {} first name has been changed.", teacherId);
 			return ExecutionStatus.SUCCESS;
 		}
 
-		logger.debug("Failed to update teacher ID: {} first name.", teacherId);
+		log.debug("Failed to update teacher ID: {} first name.", teacherId);
 		return ExecutionStatus.FAILED;
 	}
 
@@ -136,17 +137,17 @@ public class TeacherServiceImpl implements TeacherService {
 		}
 
 		if (lastName.isEmpty()) {
-			logger.debug("Last name is empty.");
+			log.debug("Last name is empty.");
 			return ExecutionStatus.VALIDATION_ERROR;
 		}
 
 		int affectedRows = teacherRepository.updateTeacherLastName(lastName, teacherId);
 		if (affectedRows > 0) {
-			logger.debug("Teacher ID: {} last name has been changed.", teacherId);
+			log.debug("Teacher ID: {} last name has been changed.", teacherId);
 			return ExecutionStatus.SUCCESS;
 		}
 
-		logger.debug("Failed to update teacher ID: {} last name.", teacherId);
+		log.debug("Failed to update teacher ID: {} last name.", teacherId);
 		return ExecutionStatus.FAILED;
 	}
 
@@ -207,17 +208,17 @@ public class TeacherServiceImpl implements TeacherService {
 	}
 
 	private ExecutionStatus teacherInvalidIdLog(int teacherId) {
-		logger.debug("Teacher ID: {} is invalid.", teacherId);
+		log.debug("Teacher ID: {} is invalid.", teacherId);
 		return ExecutionStatus.FAILED;
 	}
 
 	private ExecutionStatus teacherNotFoundLog(int teacherId) {
-		logger.debug("Teacher ID: {} not found.", teacherId);
+		log.debug("Teacher ID: {} not found.", teacherId);
 		return ExecutionStatus.NOT_FOUND;
 	}
 
 	private ExecutionStatus teacherValidationLog(Teacher teacher) {
-		logger.debug("Teacher object: {} is invalid.", teacher);
+		log.debug("Teacher object: {} is invalid.", teacher);
 		return ExecutionStatus.VALIDATION_ERROR;
 	}
 }

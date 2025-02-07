@@ -9,6 +9,7 @@ import com.pshs.attendance_system.app.teachers.models.entities.Teacher;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.app.sections.repositories.SectionRepository;
 import com.pshs.attendance_system.app.sections.services.SectionService;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -19,15 +20,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Log4j2
 public class SectionServiceImpl implements SectionService {
 
-	private static final Logger logger = LogManager.getLogger(SectionServiceImpl.class);
 	private final SectionRepository sectionRepository;
 
 	public SectionServiceImpl(SectionRepository sectionRepository) {
 		this.sectionRepository = sectionRepository;
 	}
-
 
 	/**
 	 * Create a new section in the database.
@@ -42,12 +42,12 @@ public class SectionServiceImpl implements SectionService {
 		}
 
 		if (isExists(section)) {
-			logger.debug("Can't create section {}, Section already exists.", section.getSectionName());
+			log.debug("Can't create section {}, Section already exists.", section.getSectionName());
 			return ExecutionStatus.FAILED;
 		}
 
 		sectionRepository.save(section);
-		logger.debug("Section with id: {} has been created.", section.getId());
+		log.debug("Section with id: {} has been created.", section.getId());
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -68,7 +68,7 @@ public class SectionServiceImpl implements SectionService {
 		}
 
 		sectionRepository.deleteById(sectionId);
-		logger.debug("Section with id: {} has been deleted.", sectionId);
+		log.debug("Section with id: {} has been deleted.", sectionId);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -112,7 +112,7 @@ public class SectionServiceImpl implements SectionService {
 		}
 
 		Teacher teacher = sectionRepository.findById(sectionId).map(Section::getTeacher).orElse(null);
-		logger.debug("Teacher was found: {}", teacher != null ? teacher.getId() : null);
+		log.debug("Teacher was found: {}", teacher != null ? teacher.getId() : null);
 
 		if (teacher != null) {
 			int rowsAffected = sectionRepository.updateSectionTeacher(teacher, sectionId);
@@ -120,7 +120,7 @@ public class SectionServiceImpl implements SectionService {
 			return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILED;
 		}
 
-		logger.debug("Failed to update section with id: {} Teacher not found.", sectionId);
+		log.debug("Failed to update section with id: {} Teacher not found.", sectionId);
 		return ExecutionStatus.FAILED;
 	}
 
@@ -191,7 +191,7 @@ public class SectionServiceImpl implements SectionService {
 		}
 
 		int rowsAffected = sectionRepository.updateSectionStrand(strand, sectionId);
-		logger.debug("Section with id: {} has been updated with new strand: {}.", sectionId, strand.getId());
+		log.debug("Section with id: {} has been updated with new strand: {}.", sectionId, strand.getId());
 		return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILED;
 	}
 
@@ -230,7 +230,7 @@ public class SectionServiceImpl implements SectionService {
 		}
 
 		int rowsAffected = sectionRepository.updateSectionName(sectionName, sectionId);
-		logger.debug("Section with id: {} has been updated with new section name: {}.", sectionId, sectionName);
+		log.debug("Section with id: {} has been updated with new section name: {}.", sectionId, sectionName);
 		return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILED;
 	}
 
@@ -252,15 +252,15 @@ public class SectionServiceImpl implements SectionService {
 		}
 
 		GradeLevel gradeLevel = sectionRepository.getGradeLevelBySectionId(sectionId).orElse(null);
-		logger.debug("Grade level retrieval: {}", gradeLevel != null ? gradeLevel.getId() : "null");
+		log.debug("Grade level retrieval: {}", gradeLevel != null ? gradeLevel.getId() : "null");
 
 		if (gradeLevel != null) {
 			int rowsAffected = sectionRepository.updateSectionGradeLevel(gradeLevel, sectionId);
-			logger.debug("Section with id: {} has been updated with new grade level: {}.", sectionId, gradeLevel.getId());
+			log.debug("Section with id: {} has been updated with new grade level: {}.", sectionId, gradeLevel.getId());
 			return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILED;
 		}
 
-		logger.debug("Failed to update section with id: {} Grade level not found.", sectionId);
+		log.debug("Failed to update section with id: {} Grade level not found.", sectionId);
 		return ExecutionStatus.FAILED;
 	}
 
@@ -279,7 +279,7 @@ public class SectionServiceImpl implements SectionService {
 
 		if (isExists(sectionId)) {
 			int rowsAffected = sectionRepository.updateSectionGradeLevel(gradeLevel, sectionId);
-			logger.debug("Section with id: {} has been assigned with new grade level: {}.", sectionId, gradeLevel.getId());
+			log.debug("Section with id: {} has been assigned with new grade level: {}.", sectionId, gradeLevel.getId());
 			return (rowsAffected > 0) ? ExecutionStatus.SUCCESS : ExecutionStatus.FAILED;
 		}
 
@@ -320,11 +320,11 @@ public class SectionServiceImpl implements SectionService {
 	@Override
 	public Page<Section> getSectionByTeacher(int teacherId, Pageable page) {
 		if (teacherId <= 0) {
-			logger.debug("Teacher id {} is invalid.", teacherId);
+			log.debug("Teacher id {} is invalid.", teacherId);
 			return null;
 		}
 
-		logger.debug("Retrieving sections with teacher id: {}.", teacherId);
+		log.debug("Retrieving sections with teacher id: {}.", teacherId);
 		return sectionRepository.getSectionByTeacher(teacherId, page);
 	}
 
@@ -338,7 +338,7 @@ public class SectionServiceImpl implements SectionService {
 	@Override
 	public Page<Section> getSectionByTeacher(Teacher teacher, Pageable page) {
 		if (teacher == null) {
-			logger.debug("Teacher object is null.");
+			log.debug("Teacher object is null.");
 			return null;
 		}
 
@@ -356,7 +356,7 @@ public class SectionServiceImpl implements SectionService {
 	@Override
 	public Page<Section> getSectionByStrand(int strandId, Pageable page) {
 		if (strandId <= 0) {
-			logger.debug("Strand id {} is invalid.", strandId);
+			log.debug("Strand id {} is invalid.", strandId);
 			return Page.empty();
 		}
 
@@ -374,7 +374,7 @@ public class SectionServiceImpl implements SectionService {
 	@Override
 	public Page<Section> getSectionByStrand(Strand strand, Pageable page) {
 		if (strand == null) {
-			logger.debug("Strand object is null.");
+			log.debug("Strand object is null.");
 			return Page.empty();
 		}
 
@@ -392,7 +392,7 @@ public class SectionServiceImpl implements SectionService {
 	@Override
 	public Page<Section> getSectionByGradeLevel(int gradeLevelId, Pageable page) {
 		if (gradeLevelId <= 0) {
-			logger.debug("Grade level id {} is invalid.", gradeLevelId);
+			log.debug("Grade level id {} is invalid.", gradeLevelId);
 			return Page.empty();
 		}
 
@@ -410,7 +410,7 @@ public class SectionServiceImpl implements SectionService {
 	@Override
 	public Page<Section> getSectionByGradeLevel(GradeLevel gradeLevel, Pageable page) {
 		if (gradeLevel == null) {
-			logger.debug("Grade level object is null.");
+			log.debug("Grade level object is null.");
 			return Page.empty();
 		}
 
@@ -428,11 +428,11 @@ public class SectionServiceImpl implements SectionService {
 	@Override
 	public Page<Section> searchSectionByRoom(String room, Pageable page) {
 		if (room.isEmpty()) {
-			logger.debug("Room name is empty.");
+			log.debug("Room name is empty.");
 			return Page.empty();
 		}
 
-		logger.debug("Retrieving sections with room name: {}.", room);
+		log.debug("Retrieving sections with room name: {}.", room);
 		return sectionRepository.searchSectionByRoom(room, page);
 	}
 
@@ -446,11 +446,11 @@ public class SectionServiceImpl implements SectionService {
 	@Override
 	public Page<Section> searchSectionBySectionName(String sectionName, Pageable page) {
 		if (sectionName.isEmpty()) {
-			logger.debug("Section name is empty.");
+			log.debug("Section name is empty.");
 			return Page.empty();
 		}
 
-		logger.debug("Retrieving sections with section name: {}.", sectionName);
+		log.debug("Retrieving sections with section name: {}.", sectionName);
 		return sectionRepository.searchSectionBySectionName(sectionName, page);
 	}
 
@@ -479,29 +479,29 @@ public class SectionServiceImpl implements SectionService {
 	}
 
 	private ExecutionStatus logFailedValidation(int sectionId) {
-		logger.debug("Failed to update section with id: {} Validation failed.", sectionId);
+		log.debug("Failed to update section with id: {} Validation failed.", sectionId);
 		return ExecutionStatus.VALIDATION_ERROR;
 	}
 
 	private ExecutionStatus logNotFound(int sectionId) {
-		logger.debug("Failed to update section with id: {} Not found.", sectionId);
+		log.debug("Failed to update section with id: {} Not found.", sectionId);
 		return ExecutionStatus.NOT_FOUND;
 	}
 
 	private void logSectionRetrievalWithStrandId(int strandId) {
-		logger.debug("Retrieving sections with strand id: {}.", strandId);
+		log.debug("Retrieving sections with strand id: {}.", strandId);
 	}
 
 	private void logSectionRetrievalWithGradeLevelId(int gradeLevelId) {
-		logger.debug("Retrieving sections with grade level id: {}.", gradeLevelId);
+		log.debug("Retrieving sections with grade level id: {}.", gradeLevelId);
 	}
 
 	private void logTeacherRetrieval(int teacherId) {
-		logger.debug("Retrieving teacher with id: {}.", teacherId);
+		log.debug("Retrieving teacher with id: {}.", teacherId);
 	}
 
 	private void logTeacherAssigned(int sectionId, int teacherId) {
-		logger.debug("Teacher with id: {} has been assigned to section with id: {}.", teacherId, sectionId);
+		log.debug("Teacher with id: {} has been assigned to section with id: {}.", teacherId, sectionId);
 	}
 
 	private boolean isExists(Section section) {

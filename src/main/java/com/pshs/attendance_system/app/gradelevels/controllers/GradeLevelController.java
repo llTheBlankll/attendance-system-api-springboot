@@ -82,9 +82,7 @@ public class GradeLevelController {
 		} else {
 			return ResponseEntity.ok(gradeLevelService.getGradeLevel(id).orElse(new GradeLevel()).toDTO());
 		}
-
 	}
-
 
 	@Operation(summary = "Update Grade Level", description = "Update a grade level by ID", responses = {@ApiResponse(responseCode = "200", description = "Shows the status of the operation")})
 	@PutMapping("/{id}")

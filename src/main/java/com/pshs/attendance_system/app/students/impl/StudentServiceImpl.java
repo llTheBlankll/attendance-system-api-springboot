@@ -10,6 +10,7 @@ import com.pshs.attendance_system.app.students.repositories.StudentRepository;
 import com.pshs.attendance_system.app.gradelevels.services.GradeLevelService;
 import com.pshs.attendance_system.app.sections.services.SectionService;
 import com.pshs.attendance_system.app.students.services.StudentService;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -19,9 +20,9 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Log4j2
 public class StudentServiceImpl implements StudentService {
 
-	private static final Logger logger = LogManager.getLogger(StudentServiceImpl.class);
 	private final StudentRepository studentRepository;
 	private final GradeLevelService gradeLevelService;
 	private final SectionService sectionService;
@@ -43,10 +44,10 @@ public class StudentServiceImpl implements StudentService {
 	public ExecutionStatus createStudent(Student student) {
 		// Validate the Student and check if it exists.
 		if (!isStudentValid(student)) {
-			logger.debug("Student is not valid: {}", student.toString());
+			log.debug("Student is not valid: {}", student.toString());
 			return ExecutionStatus.VALIDATION_ERROR;
 		} else if (isStudentExist(student)) {
-			logger.debug("Student already exists: {}", student);
+			log.debug("Student already exists: {}", student);
 			return ExecutionStatus.FAILED;
 		}
 
@@ -63,17 +64,17 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public ExecutionStatus deleteStudent(Student student) {
 		if (isStudentValid(student)) {
-			logger.debug("Student  is not valid: {}", student);
+			log.debug("Student  is not valid: {}", student);
 			return ExecutionStatus.VALIDATION_ERROR;
 		}
 
 		if (!isStudentExist(student)) {
-			logger.debug("Student ID does not exist: {}", student.getId());
+			log.debug("Student ID does not exist: {}", student.getId());
 			return ExecutionStatus.FAILED;
 		}
 
 		studentRepository.delete(student);
-		logger.debug("Student deleted: {}", student);
+		log.debug("Student deleted: {}", student);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -86,12 +87,12 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public ExecutionStatus deleteStudent(int id) {
 		if (isStudentExist((long) id)) {
-			logger.debug("Cannot delete Student ID because it does not exist: {}", id);
+			log.debug("Cannot delete Student ID because it does not exist: {}", id);
 			return ExecutionStatus.FAILED;
 		}
 
 		studentRepository.deleteById((long) id);
-		logger.debug("Student ID deleted: {}", id);
+		log.debug("Student ID deleted: {}", id);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -105,12 +106,12 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public ExecutionStatus updateStudent(Long studentId, Student student) {
 		if (studentId <= 0) {
-			logger.debug("Student ID is invalid: {}", studentId);
+			log.debug("Student ID is invalid: {}", studentId);
 			return ExecutionStatus.VALIDATION_ERROR;
 		}
 
 		if (!isStudentExist(studentId)) {
-			logger.debug("Cannot update Student ID because it does not exist: {}", studentId);
+			log.debug("Cannot update Student ID because it does not exist: {}", studentId);
 			return ExecutionStatus.FAILED;
 		}
 
@@ -118,7 +119,7 @@ public class StudentServiceImpl implements StudentService {
 		student.setId(studentId);
 		// Update the student record
 		studentRepository.save(student);
-		logger.debug("Student updated: {}", student);
+		log.debug("Student updated: {}", student);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -132,24 +133,24 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public ExecutionStatus updateStudentGradeLevel(Long studentId, int gradeLevel) {
 		if (studentId <= 0) {
-			logger.debug("Student ID is invalid: {}", studentId);
+			log.debug("Student ID is invalid: {}", studentId);
 			return ExecutionStatus.VALIDATION_ERROR;
 		}
 
 		if (!isStudentExist(studentId)) {
-			logger.debug("Cannot update Student ID because it does not exist: {}", studentId);
+			log.debug("Cannot update Student ID because it does not exist: {}", studentId);
 			return ExecutionStatus.FAILED;
 		}
 
 		Student student = studentRepository.findById(studentId).orElse(null);
 		if (student == null) {
-			logger.debug("Student ID does not exist: {}", studentId);
+			log.debug("Student ID does not exist: {}", studentId);
 			return ExecutionStatus.FAILED;
 		}
 
 		// Check if Grade Level exists
 		if (gradeLevelService.isGradeLevelExist(gradeLevel)) {
-			logger.debug("Grade Level does not exist: {}", gradeLevel);
+			log.debug("Grade Level does not exist: {}", gradeLevel);
 			return ExecutionStatus.FAILED;
 		} else {
 			Optional<GradeLevel> gradeLevelOptional = gradeLevelService.getGradeLevel(gradeLevel);
@@ -157,7 +158,7 @@ public class StudentServiceImpl implements StudentService {
 			gradeLevelOptional.ifPresent(student::setGradeLevel);
 
 			studentRepository.save(student);
-			logger.debug("Student updated: {}", student);
+			log.debug("Student updated: {}", student);
 			return ExecutionStatus.SUCCESS;
 		}
 	}
@@ -172,24 +173,24 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public ExecutionStatus updateStudentSection(Long studentId, int section) {
 		if (studentId <= 0 || section <= 0) {
-			logger.debug("Student ID or Section ID is invalid: {} {}", studentId, section);
+			log.debug("Student ID or Section ID is invalid: {} {}", studentId, section);
 			return ExecutionStatus.VALIDATION_ERROR;
 		}
 
 		// Check if a student exists
 		if (!isStudentExist(studentId)) {
-			logger.debug("Cannot update Student ID because it does not exist: {}", studentId);
+			log.debug("Cannot update Student ID because it does not exist: {}", studentId);
 			return ExecutionStatus.FAILED;
 		}
 
 		// Check if a section exists
 		if (!sectionService.isSectionExist(section)) {
-			logger.debug("Section does not exist: {}", section);
+			log.debug("Section does not exist: {}", section);
 			return ExecutionStatus.FAILED;
 		}
 
 		studentRepository.updateStudentSection(sectionService.getSection(section), studentId);
-		logger.debug("Student updated: {}", studentId);
+		log.debug("Student updated: {}", studentId);
 		return ExecutionStatus.SUCCESS;
 	}
 
