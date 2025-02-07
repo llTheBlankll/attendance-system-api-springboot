@@ -33,16 +33,18 @@ public class UserInput implements Serializable {
 	private boolean isCredentialsExpired;
 
 	public User toEntity() {
-		return new User()
-			.setUsername(username)
-			.setEmail(email)
-			.setRole(role)
-			.setLastLogin(lastLogin)
-			.setCreatedAt(createdAt)
-			.setPassword(password)
-			.setLocked(isLocked)
-			.setEnabled(isEnabled)
-			.setExpired(isExpired)
-			.setCredentialsExpired(isCredentialsExpired);
+		new User();
+		return User.builder()
+			.username(username)
+			.email(email)
+			.role(role)
+			.lastLogin(lastLogin)
+			.createdAt(createdAt)
+			.password(password)
+			.isLocked(isLocked)
+			.isEnabled(isEnabled)
+			.isExpired(isExpired)
+			.isCredentialsExpired(isCredentialsExpired)
+			.build();
 	}
 }

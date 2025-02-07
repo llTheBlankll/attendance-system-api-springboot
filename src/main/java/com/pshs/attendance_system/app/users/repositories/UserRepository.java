@@ -54,7 +54,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	boolean existsByUsername(@Param("username") @NonNull String username);
 
 	@Query("""
-		    SELECT u FROM User u 
+		    SELECT u FROM User u
 		    WHERE (:#{#input.email} IS NULL OR u.email LIKE CONCAT('%', :#{#input.email}, '%'))
 		    AND (:#{#input.username} IS NULL OR u.username LIKE CONCAT('%', :#{#input.username}, '%'))
 		    AND (:#{#input.role} IS NULL OR u.role = :#{#input.role})

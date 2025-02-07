@@ -62,51 +62,68 @@ public class User implements UserDetails {
 		return new UserDTO(id, username, email, role, lastLogin, createdAt);
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public User setUsername(String username) {
+		this.username = username;
+		return this;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public User setPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
+	/**
+	 * Indicates whether the user's account has expired. An expired account cannot be
+	 * authenticated.
+	 *
+	 * @return <code>true</code> if the user's account is valid (ie non-expired),
+	 * <code>false</code> if no longer valid (ie expired)
+	 */
 	@Override
 	public boolean isAccountNonExpired() {
 		return !isExpired;
 	}
 
+	/**
+	 * Indicates whether the user is locked or unlocked. A locked user cannot be
+	 * authenticated.
+	 *
+	 * @return <code>true</code> if the user is not locked, <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isAccountNonLocked() {
 		return !isLocked;
 	}
 
+	/**
+	 * Indicates whether the user's credentials (password) has expired. Expired
+	 * credentials prevent authentication.
+	 *
+	 * @return <code>true</code> if the user's credentials are valid (ie non-expired),
+	 * <code>false</code> if no longer valid (ie expired)
+	 */
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return !isCredentialsExpired;
 	}
 
+	/**
+	 * Indicates whether the user is enabled or disabled. A disabled user cannot be
+	 * authenticated.
+	 *
+	 * @return <code>true</code> if the user is enabled, <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isEnabled() {
 		return isEnabled;
-	}
-
-	public Boolean getEnabled() {
-		return isEnabled;
-	}
-
-	public User setEnabled(Boolean enabled) {
-		isEnabled = enabled;
-		return this;
-	}
-
-	public Boolean getExpired() {
-		return isExpired;
-	}
-
-	public User setExpired(Boolean expired) {
-		isExpired = expired;
-		return this;
-	}
-
-	public Boolean getCredentialsExpired() {
-		return isCredentialsExpired;
-	}
-
-	public User setCredentialsExpired(Boolean credentialsExpired) {
-		isCredentialsExpired = credentialsExpired;
-		return this;
 	}
 
 	@Override
