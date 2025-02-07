@@ -2,14 +2,12 @@
 
 package com.pshs.attendance_system.app.teachers.models.entities;
 
+import com.pshs.attendance_system.app.students.enums.Sex;
 import com.pshs.attendance_system.app.teachers.models.dto.TeacherDTO;
 import com.pshs.attendance_system.app.users.models.dto.UserDTO;
 import com.pshs.attendance_system.app.users.models.entities.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "teachers")
@@ -17,6 +15,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Teacher {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teachers_id_gen")
@@ -31,7 +30,8 @@ public class Teacher {
 	private String lastName;
 
 	@Column(name = "sex", length = 8)
-	private String sex;
+	@Enumerated(EnumType.STRING)
+	private Sex sex;
 
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	@OneToOne(fetch = FetchType.EAGER)

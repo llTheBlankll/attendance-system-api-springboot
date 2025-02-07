@@ -2,12 +2,10 @@
 
 package com.pshs.attendance_system.app.teachers.models.dto;
 
+import com.pshs.attendance_system.app.students.enums.Sex;
 import com.pshs.attendance_system.app.teachers.models.entities.Teacher;
 import com.pshs.attendance_system.app.users.models.dto.UserDTO;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -19,11 +17,12 @@ import java.util.Objects;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class TeacherDTO implements Serializable {
 	private Integer id;
 	private String firstName;
 	private String lastName;
-	private String sex;
+	private Sex sex;
 	private UserDTO user;
 
 	public TeacherDTO(Teacher teacher) {
@@ -35,11 +34,12 @@ public class TeacherDTO implements Serializable {
 	}
 
 	public Teacher toEntity() {
-		return new Teacher()
-			.setId(id)
-			.setFirstName(firstName)
-			.setLastName(lastName)
-			.setSex(sex)
-			.setUser(user.toEntity());
+		return new Teacher(
+			id,
+			firstName,
+			lastName,
+			sex,
+			user.toEntity()
+		);
 	}
 }
