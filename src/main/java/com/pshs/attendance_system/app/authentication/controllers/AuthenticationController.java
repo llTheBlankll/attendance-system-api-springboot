@@ -1,6 +1,6 @@
 
 
-package com.pshs.attendance_system.app;
+package com.pshs.attendance_system.app.authentication.controllers;
 
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.models.MessageResponse;
