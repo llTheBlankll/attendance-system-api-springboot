@@ -7,6 +7,7 @@ import com.pshs.attendance_system.app.users.models.entities.User;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.app.users.repositories.UserRepository;
 import com.pshs.attendance_system.app.users.services.UserService;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -19,9 +20,9 @@ import java.time.Instant;
 import java.util.Optional;
 
 @Service
+@Log4j2
 public class UserServiceImpl implements UserService {
 
-	private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 
@@ -39,11 +40,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User createUser(User user) {
 		if (validateUser(user) && isUserExists(user.getUsername())) {
-			logger.debug("User {} already exists.", user.getId());
+			log.debug("User {} already exists.", user.getId());
 			return null;
 		}
 
-		logger.debug("User {} has been created.", user.getId());
+		log.debug("User {} has been created.", user.getId());
 		// ! Hash the Password before storing it.
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return userRepository.save(user);
@@ -91,7 +92,7 @@ public class UserServiceImpl implements UserService {
 
 		// delete the user!
 		userRepository.deleteById(userId);
-		logger.debug("User {} has been deleted.", userId);
+		log.debug("User {} has been deleted.", userId);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -110,7 +111,7 @@ public class UserServiceImpl implements UserService {
 
 		user.setId(userId);
 		userRepository.save(user);
-		logger.debug("User {} details has been updated.", userId);
+		log.debug("User {} details has been updated.", userId);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -140,7 +141,7 @@ public class UserServiceImpl implements UserService {
 		// Set the password and save it.
 		user.setPassword(passwordEncoder.encode(password));
 		userRepository.save(user);
-		logger.debug("User {} password has been updated.", userId);
+		log.debug("User {} password has been updated.", userId);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -169,11 +170,11 @@ public class UserServiceImpl implements UserService {
 		int status = userRepository.updateUserLockStatus(isLocked, userId);
 
 		if (status <= 0) {
-			logger.debug("Failed to update user {} lock status.", userId);
+			log.debug("Failed to update user {} lock status.", userId);
 			return ExecutionStatus.FAILED;
 		}
 
-		logger.debug("User {} lock status has been updated.", userId);
+		log.debug("User {} lock status has been updated.", userId);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -202,11 +203,11 @@ public class UserServiceImpl implements UserService {
 		int status = userRepository.updateUserEnableStatus(isEnabled, userId);
 
 		if (status <= 0) {
-			logger.debug("Failed to update user {} enabled status.", userId);
+			log.debug("Failed to update user {} enabled status.", userId);
 			return ExecutionStatus.FAILED;
 		}
 
-		logger.debug("User {} enabled status has been updated.", userId);
+		log.debug("User {} enabled status has been updated.", userId);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -235,11 +236,11 @@ public class UserServiceImpl implements UserService {
 		int status = userRepository.updateIsExpiredById(isExpired, userId);
 
 		if (status <= 0) {
-			logger.debug("Failed to update user {} expired status.", userId);
+			log.debug("Failed to update user {} expired status.", userId);
 			return ExecutionStatus.FAILED;
 		}
 
-		logger.debug("User {} expired status has been updated.", userId);
+		log.debug("User {} expired status has been updated.", userId);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -269,11 +270,11 @@ public class UserServiceImpl implements UserService {
 		int status = userRepository.updateIsCredentialsExpiredById(isCredentialsExpired, userId);
 
 		if (status <= 0) {
-			logger.debug("Failed to update user {} credentials is expired status", userId);
+			log.debug("Failed to update user {} credentials is expired status", userId);
 			return ExecutionStatus.FAILED;
 		}
 
-		logger.debug("User {} credentials expired status", userId);
+		log.debug("User {} credentials expired status", userId);
 		return ExecutionStatus.SUCCESS;
 	}
 
@@ -409,7 +410,7 @@ public class UserServiceImpl implements UserService {
 	 * @return ExecutionStatus.NOT_FOUND
 	 */
 	private ExecutionStatus userNotFoundLog(int userId) {
-		logger.warn("User {} not found.", userId);
+		log.warn("User {} not found.", userId);
 		return ExecutionStatus.NOT_FOUND;
 	}
 
@@ -420,7 +421,7 @@ public class UserServiceImpl implements UserService {
 	 * @return {@link ExecutionStatus#VALIDATION_ERROR}
 	 */
 	private ExecutionStatus userInvalidId(int userId) {
-		logger.warn("Invalid user id {}.", userId);
+		log.warn("Invalid user id {}.", userId);
 		return ExecutionStatus.VALIDATION_ERROR;
 	}
 }

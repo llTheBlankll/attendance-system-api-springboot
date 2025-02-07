@@ -99,7 +99,6 @@ public interface UserService {
 	 */
 	ExecutionStatus changeUserCredentialsExpiredStatus(int userId, boolean isCredentialsExpired);
 
-
 	/**
 	 * Get a user with the given user id.
 	 *
