@@ -2,7 +2,11 @@
 
 package com.pshs.attendance_system.app.teachers.repositories;
 
+import com.pshs.attendance_system.app.students.enums.Sex;
+import com.pshs.attendance_system.app.teachers.models.dto.TeacherSearchInput;
 import com.pshs.attendance_system.app.teachers.models.entities.Teacher;
+import com.pshs.attendance_system.app.users.models.dto.UserSearchInput;
+import com.pshs.attendance_system.app.users.models.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,31 +31,14 @@ public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
 	@Query("update Teacher t set t.lastName = :lastName where t.id = :id")
 	int updateTeacherLastName(@NonNull @Param("lastName") String lastName, @NonNull @Param("id") Integer id);
 
-	@Query("select t from Teacher t where t.firstName like concat('%', :firstName, '%')")
-	Page<Teacher> searchTeachersByFirstName(@Param("firstName") @NonNull String firstName, Pageable pageable);
-
-	@Query("select t from Teacher t where t.lastName like concat('%', :lastName, '%')")
-	Page<Teacher> searchTeachersByLastName(@Param("lastName") @NonNull String lastName, Pageable pageable);
-
-	@Query("select t from Teacher t where t.firstName like concat('%', :firstName, '%') and t.sex = :sex")
-	Page<Teacher> searchTeacherByFirstNameAndSex(@Param("firstName") @NonNull String firstName, @Param("sex") @NonNull String sex, Pageable pageable);
-
-	@Query("select t from Teacher t where t.lastName like concat('%', :lastName, '%') and t.sex = :sex")
-	Page<Teacher> searchTeachersByLastNameAndSex(@Param("lastName") @NonNull String lastName, @Param("sex") @NonNull String sex, Pageable pageable);
-
-	@Query("""
-		select t from Teacher t
-		where t.firstName like concat('%', :firstName, '%') and t.lastName like concat('%', :lastName, '%')""")
-	Page<Teacher> searchTeachersByFirstNameAndLastName(@Param("firstName") @NonNull String firstName, @Param("lastName") @NonNull String lastName, Pageable pageable);
-
-	@Query("""
-		select t from Teacher t
-		where t.firstName like concat('%', :firstName, '%') and t.lastName like concat('%', :lastName, '%') and t.sex like concat('%', :sex, '%')""")
-	Page<Teacher> searchByFirstNameAndLastNameAndSex(@Param("firstName") String firstName, @Param("lastName") String lastName, @Param("sex") String sex, Pageable pageable);
-
-	@Query("select t from Teacher t where t.sex like concat('%', :sex, '%')")
-	Page<Teacher> searchBySex(@Param("sex") String sex, Pageable pageable);
-
 	@Query("select t from Teacher t where t.user.id = :id")
 	Optional<Teacher> findByUserId(@Param("id") Integer id);
+
+	@Query("""
+		    SELECT t FROM Teacher t
+		    WHERE (:#{#input.firstName} IS NULL OR t.firstName LIKE CONCAT('%', :#{#input.firstName}, '%'))
+		    AND (:#{#input.lastName} IS NULL OR t.lastName LIKE CONCAT('%', :#{#input.lastName}, '%'))
+		    AND (:#{#input.sex} IS NULL OR t.sex = :#{#input.sex})
+		""")
+	Page<Teacher> search(TeacherSearchInput input, Pageable pageable);
 }
