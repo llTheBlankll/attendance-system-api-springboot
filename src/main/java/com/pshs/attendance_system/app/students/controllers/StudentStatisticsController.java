@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/students/statistics")
 @Tag(name = "Student Statistics", description = "Student Statistics API")
@@ -66,14 +68,15 @@ public class StudentStatisticsController {
 				new MessageResponse(
 					"Section object is required",
 					ExecutionStatus.VALIDATION_ERROR
-					)
+				)
 			);
 		}
 
-		return ResponseEntity.ok(new CountDTO(
-			Math.toIntExact(studentService.countStudentsInSection(section)),
-			"students"
-		));
+		return ResponseEntity.ok(
+			Map.of(
+				"students", Math.toIntExact(studentService.countStudentsInSection(section))
+			)
+		);
 	}
 
 	@GetMapping("/grade-level")
@@ -85,10 +88,11 @@ public class StudentStatisticsController {
 		@Parameter(name = "id", description = "The grade level id", required = true)
 	})
 	public ResponseEntity<?> countAllStudentsByGradeLevelById(@RequestParam int id) {
-		return ResponseEntity.ok(new CountDTO(
-			Math.toIntExact(studentService.countStudentsInGradeLevel(id)),
-			"students"
-		));
+		return ResponseEntity.ok(
+			Map.of(
+				"students", Math.toIntExact(studentService.countStudentsInGradeLevel(id))
+			)
+		);
 	}
 
 	@GetMapping("/grade-level/section")
@@ -101,9 +105,10 @@ public class StudentStatisticsController {
 		@Parameter(name = "section", description = "The section of the student", required = true)
 	})
 	public ResponseEntity<?> countAllStudentsByGradeLevelAndSection(@RequestParam Integer gradeLevelId, @RequestParam Integer section) {
-		return ResponseEntity.ok(new CountDTO(
-			Math.toIntExact(studentService.countStudentsInGradeLevelAndSection(gradeLevelId, section)),
-			"students"
-		));
+		return ResponseEntity.ok(
+			Map.of(
+				"students", Math.toIntExact(studentService.countStudentsInGradeLevelAndSection(gradeLevelId, section))
+			)
+		);
 	}
 }

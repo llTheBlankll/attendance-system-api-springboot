@@ -6,6 +6,7 @@ import com.pshs.attendance_system.app.gradelevels.models.dto.GradeLevelDTO;
 import com.pshs.attendance_system.app.guardians.models.dto.GuardianDTO;
 import com.pshs.attendance_system.app.guardians.models.entities.Guardian;
 import com.pshs.attendance_system.app.sections.models.dto.SectionDTO;
+import com.pshs.attendance_system.app.students.enums.Sex;
 import com.pshs.attendance_system.app.students.models.entities.Student;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class StudentDTO implements Serializable {
 	private String prefix;
 	private GradeLevelDTO gradeLevel;
 	private GuardianDTO guardian;
-	private String sex;
+	private Sex sex;
 	private SectionDTO section;
 	private String address;
 	private LocalDate birthdate;

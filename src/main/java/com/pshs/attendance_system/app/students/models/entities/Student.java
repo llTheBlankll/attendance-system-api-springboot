@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.pshs.attendance_system.app.gradelevels.models.entities.GradeLevel;
 import com.pshs.attendance_system.app.guardians.models.entities.Guardian;
 import com.pshs.attendance_system.app.sections.models.entities.Section;
+import com.pshs.attendance_system.app.students.enums.Sex;
 import com.pshs.attendance_system.app.students.models.dto.StudentDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -47,7 +48,8 @@ public class Student {
 	private GradeLevel gradeLevel;
 
 	@Column(name = "sex", length = 6)
-	private String sex;
+	@Enumerated(EnumType.STRING)
+	private Sex sex;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.SET_NULL)
