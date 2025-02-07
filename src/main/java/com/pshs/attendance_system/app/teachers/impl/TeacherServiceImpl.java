@@ -2,6 +2,7 @@
 
 package com.pshs.attendance_system.app.teachers.impl;
 
+import com.pshs.attendance_system.app.teachers.models.dto.TeacherSearchInput;
 import com.pshs.attendance_system.app.teachers.models.entities.Teacher;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.app.teachers.repositories.TeacherRepository;
@@ -36,32 +37,6 @@ public class TeacherServiceImpl implements TeacherService {
 
 		teacherRepository.save(teacher);
 		return ExecutionStatus.SUCCESS;
-	}
-
-	/**
-	 * Search teacher by their first name, last name, and sexuality.
-	 *
-	 * @param firstName First name of the teacher that will be searched.
-	 * @param lastName  Last name of the teacher that will be searched.
-	 * @param sex       Sexuality of the teacher that will be searched.
-	 * @param page      Page
-	 * @return Page containing teacher records
-	 */
-	@Override
-	public Page<Teacher> searchTeacherByFirstNameAndLastNameAndSex(String firstName, String lastName, String sex, Pageable page) {
-		return teacherRepository.searchByFirstNameAndLastNameAndSex(firstName, lastName, sex, page);
-	}
-
-	/**
-	 * Search teacher by their sexuality.
-	 *
-	 * @param sex  Sexuality of the teacher that will be searched.
-	 * @param page Page
-	 * @return Page containing teacher records
-	 */
-	@Override
-	public Page<Teacher> searchTeacherBySex(String sex, Pageable page) {
-		return teacherRepository.searchBySex(sex, page);
 	}
 
 	/**
@@ -208,71 +183,9 @@ public class TeacherServiceImpl implements TeacherService {
 		return teacherRepository.findAll(page);
 	}
 
-	/**
-	 * Search teacher records by first name.
-	 *
-	 * @param firstName First Name of the teacher.
-	 * @param page      Page
-	 * @return Page containing teacher records
-	 */
 	@Override
-	public Page<Teacher> searchTeacherByFirstName(String firstName, Pageable page) {
-		if (firstName.isEmpty()) return Page.empty();
-
-		return teacherRepository.searchTeachersByFirstName(firstName, page);
-	}
-
-	/**
-	 * Search teacher records by last name.
-	 *
-	 * @param lastName Last Name of the teacher.
-	 * @param page     Page
-	 * @return Page containing teacher records
-	 */
-	@Override
-	public Page<Teacher> searchTeacherByLastName(String lastName, Pageable page) {
-		if (lastName.isEmpty()) return Page.empty();
-
-		return teacherRepository.searchTeachersByLastName(lastName, page);
-	}
-
-	/**
-	 * Search teacher by their first name and sexuality.
-	 *
-	 * @param firstName First name of the teacher that will be searched.
-	 * @param sex       Sexuality of the teacher that will be searched.
-	 * @param page      Page
-	 * @return Page containing teacher records
-	 */
-	@Override
-	public Page<Teacher> searchTeacherByFirstNameAndSex(String firstName, String sex, Pageable page) {
-		return teacherRepository.searchTeacherByFirstNameAndSex(firstName, sex, page);
-	}
-
-	/**
-	 * Search teacher by their last name and sexuality.
-	 *
-	 * @param lastName Last name of the teacher that will be searched.
-	 * @param sex      Sexuality of the teacher that will be searched.
-	 * @param page     Page
-	 * @return Page containing teacher records
-	 */
-	@Override
-	public Page<Teacher> searchTeacherByLastNameAndSex(String lastName, String sex, Pageable page) {
-		return teacherRepository.searchTeachersByLastNameAndSex(lastName, sex, page);
-	}
-
-	/**
-	 * Search teacher by their first name and last name.
-	 *
-	 * @param firstName First name of the teacher that will be searched.
-	 * @param lastName  Last name of the teacher that will be searched.
-	 * @param page      Page
-	 * @return Page containing teacher records
-	 */
-	@Override
-	public Page<Teacher> searchTeacherByFirstNameAndLastName(String firstName, String lastName, Pageable page) {
-		return teacherRepository.searchTeachersByFirstNameAndLastName(firstName, lastName, page);
+	public Page<Teacher> search(TeacherSearchInput searchInput, Pageable pageable) {
+		return teacherRepository.search(searchInput, pageable);
 	}
 
 	/**

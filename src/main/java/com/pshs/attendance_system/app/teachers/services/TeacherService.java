@@ -2,6 +2,7 @@
 
 package com.pshs.attendance_system.app.teachers.services;
 
+import com.pshs.attendance_system.app.teachers.models.dto.TeacherSearchInput;
 import com.pshs.attendance_system.app.teachers.models.entities.Teacher;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.springframework.data.domain.Page;
@@ -76,74 +77,8 @@ public interface TeacherService {
 	 */
 	Page<Teacher> getAllTeachers(Pageable page);
 
-	/**
-	 * Search teacher records by first name.
-	 *
-	 * @param firstName First Name of the teacher.
-	 * @param page      Page
-	 * @return Page containing teacher records
-	 */
-	Page<Teacher> searchTeacherByFirstName(String firstName, Pageable page);
+	Page<Teacher> search(TeacherSearchInput searchInput, Pageable pageable);
 
-	/**
-	 * Search teacher records by last name.
-	 *
-	 * @param lastName Last Name of the teacher.
-	 * @param page     Page
-	 * @return Page containing teacher records
-	 */
-	Page<Teacher> searchTeacherByLastName(String lastName, Pageable page);
-
-	/**
-	 * Search teacher by their first name and sexuality.
-	 *
-	 * @param firstName First name of the teacher that will be searched.
-	 * @param sex       Sexuality of the teacher that will be searched.
-	 * @param page      Page
-	 * @return Page containing teacher records
-	 */
-	Page<Teacher> searchTeacherByFirstNameAndSex(String firstName, String sex, Pageable page);
-
-	/**
-	 * Search teacher by their last name and sexuality.
-	 *
-	 * @param lastName Last name of the teacher that will be searched.
-	 * @param sex      Sexuality of the teacher that will be searched.
-	 * @param page     Page
-	 * @return Page containing teacher records
-	 */
-	Page<Teacher> searchTeacherByLastNameAndSex(String lastName, String sex, Pageable page);
-
-	/**
-	 * Search teacher by their first name and last name.
-	 *
-	 * @param firstName First name of the teacher that will be searched.
-	 * @param lastName  Last name of the teacher that will be searched.
-	 * @param page      Page
-	 * @return Page containing teacher records
-	 */
-	Page<Teacher> searchTeacherByFirstNameAndLastName(String firstName, String lastName, Pageable page);
-
-	/**
-	 * Search teacher by their first name, last name, and sexuality.
-	 *
-	 * @param firstName First name of the teacher that will be searched.
-	 * @param lastName  Last name of the teacher that will be searched.
-	 * @param sex       Sexuality of the teacher that will be searched.
-	 * @param page      Page
-	 * @return Page containing teacher records
-	 */
-	Page<Teacher> searchTeacherByFirstNameAndLastNameAndSex(String firstName, String lastName, String sex, Pageable page);
-
-	/**
-	 * Search teacher by their sexuality.
-	 *
-	 * @param sex  Sexuality of the teacher that will be searched.
-	 * @param page Page
-	 * @param size How many records per page it will show
-	 * @return Page containing teacher records
-	 */
-	Page<Teacher> searchTeacherBySex(String sex, Pageable page);
 	// Region: Statistics
 
 	/**
