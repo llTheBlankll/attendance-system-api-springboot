@@ -47,7 +47,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testCreateUser() throws Exception {
+	void testCreateUser() throws Exception {
 		logger.info("Testing create user");
 		UserCreationDTO userCreationDTO = new UserCreationDTO();
 
@@ -97,7 +97,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testDeleteUser() throws Exception {
+	void testDeleteUser() throws Exception {
 		logger.info("Testing delete user");
 		// Test if user exists
 		mock.perform(MockMvcRequestBuilders.delete("/api/v1/users/100"))
@@ -115,7 +115,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testUpdateUser() throws Exception {
+	void testUpdateUser() throws Exception {
 		logger.info("Testing update user");
 		UserCreationDTO userCreationDTO = new UserCreationDTO();
 
@@ -156,7 +156,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testGetUserById() throws Exception {
+	void testGetUserById() throws Exception {
 		logger.info("Testing get user by ID");
 		// Test if user exists
 		mock.perform(MockMvcRequestBuilders.get("/api/v1/users/1"))
@@ -172,7 +172,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void getAllUsers() throws Exception {
+	void getAllUsers() throws Exception {
 		logger.info("Testing get all users");
 		// Test if user exists
 		mock.perform(MockMvcRequestBuilders.get("/api/v1/users?page=0&size=10"))
@@ -181,7 +181,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testUpdatePasswordOfUser() throws Exception {
+	void testUpdatePasswordOfUser() throws Exception {
 		
 		logger.info("Testing update password of user");
 		ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO("test", "test123");
@@ -225,7 +225,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testUpdateIsLockedUser() throws Exception {
+	void testUpdateIsLockedUser() throws Exception {
 		
 		logger.info("Testing update isLocked of user");
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -262,7 +262,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void updateUserIsEnabled() throws Exception {
+	void updateUserIsEnabled() throws Exception {
 		
 		logger.info("Testing update is enabled of user");
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -299,7 +299,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void updateUserIsExpired() throws Exception {
+	void updateUserIsExpired() throws Exception {
 		
 		logger.info("Testing update is expired of user");
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -336,7 +336,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void updateUserIsCredentialsExpired() throws Exception {
+	void updateUserIsCredentialsExpired() throws Exception {
 		int USER_ID = 1;
 		logger.info("Testing update is credentials expired of user");
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -373,7 +373,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void testGetAllUsers() throws Exception {
+	void testGetAllUsers() throws Exception {
 		logger.info("Testing get all users");
 		LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.set("page", "0");
@@ -387,7 +387,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void searchUsers() throws Exception {
+	void searchUsers() throws Exception {
 		logger.info("Testing search users");
 		LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.set("username", "test");
