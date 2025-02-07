@@ -39,9 +39,9 @@ def between_time(start: str, end: str) -> str:
     return new_time.strftime("%H:%M")
 
 def main():
-    current_date = datetime.date(2023, 1, 1)
+    current_date = datetime.date(2024, 9, 1)
     # Get the days of the current_date minus the specified date
-    to_date = current_date - datetime.date(2025, 1, 1)
+    to_date = current_date - datetime.date(2025, 4, 1)
     print(to_date.days)
 
     script_file = open("attendance.csv", "w")
