@@ -16,11 +16,11 @@ def connect():
     """ Connect to the PostgreSQL database server """
     try:
         # connecting to the PostgreSQL server
-        with psycopg2.connect(database="attendance_system_api",
-                              user="nytri",
-                              password="Asharia2100",
+        with psycopg2.connect(database="postgres",
+                              user="postgres",
+                              password="1234",
                               host="localhost",
-                              port=5432) as conn:
+                              port=55433) as conn:
             if conn is None:
                 print("Something happened!")
                 exit(1)
@@ -39,7 +39,7 @@ def between_time(start: str, end: str) -> str:
     return new_time.strftime("%H:%M")
 
 def main():
-    current_date = datetime.date(2020, 1, 1)
+    current_date = datetime.date(2023, 1, 1)
     # Get the days of the current_date minus the specified date
     to_date = current_date - datetime.date(2025, 1, 1)
     print(to_date.days)
