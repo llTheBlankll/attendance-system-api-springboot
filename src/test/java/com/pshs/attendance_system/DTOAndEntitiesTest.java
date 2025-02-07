@@ -12,6 +12,7 @@ import com.pshs.attendance_system.app.sections.models.dto.SectionStudentsDTO;
 import com.pshs.attendance_system.app.sections.models.entities.Section;
 import com.pshs.attendance_system.app.strands.models.dto.StrandDTO;
 import com.pshs.attendance_system.app.strands.models.entities.Strand;
+import com.pshs.attendance_system.app.students.enums.Sex;
 import com.pshs.attendance_system.app.students.models.dto.StudentDTO;
 import com.pshs.attendance_system.app.students.models.entities.Student;
 import com.pshs.attendance_system.app.teachers.models.dto.TeacherDTO;
@@ -19,6 +20,7 @@ import com.pshs.attendance_system.app.teachers.models.entities.Teacher;
 import com.pshs.attendance_system.app.users.models.dto.UserDTO;
 import com.pshs.attendance_system.app.users.models.entities.User;
 import org.junit.jupiter.api.Test;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -65,11 +67,11 @@ class DTOAndEntitiesTest {
 		"Batecan",
 		null,
 		gradeLevel,
-		"Male",
+		Sex.MALE,
 		section,
+		new Guardian(),
 		"1234 Punturin St. Punturin, Valenzuela City",
-		LocalDate.parse("2004-07-07"),
-		new Guardian()
+		LocalDate.parse("2004-07-07")
 	);
 
 	private final RFIDCredential rfidCredential = new RFIDCredential(
@@ -82,7 +84,8 @@ class DTOAndEntitiesTest {
 	private final Guardian guardian = new Guardian(
 		1,
 		"Juan Dela Cruz",
-		"09123456789"
+		"09123456789",
+		student
 	);
 
 	private final User user = new User(
@@ -91,8 +94,12 @@ class DTOAndEntitiesTest {
 		"hashed_password",
 		"llTheBlankll@gmail.com",
 		"admin",
-		Instant.parse("2024-07-07T00:00:00Z"),
-		Instant.parse("2024-07-07T00:00:00Z")
+		true,
+		false,
+		false,
+		false,
+		Instant.now(),
+		Instant.now()
 	);
 
 	@Test
@@ -258,7 +265,7 @@ class DTOAndEntitiesTest {
 	}
 
 	@Test
-void testStudentSectionDTO() {
+	void testStudentSectionDTO() {
 		// DTO Test
 		SectionStudentsDTO sectionStudentsDTO = new SectionStudentsDTO(
 			1,

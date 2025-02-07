@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.pshs.attendance_system.app.teachers.models.dto.TeacherDTO;
 import com.pshs.attendance_system.app.users.models.dto.UserDTO;
-import com.pshs.attendance_system.app.teachers.models.dto.transaction.CreateTeacherDTO;
+import com.pshs.attendance_system.app.teachers.models.dto.transaction.TeacherInput;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.app.teachers.services.TeacherService;
 import com.pshs.attendance_system.app.users.services.UserService;
@@ -63,7 +63,7 @@ class TeacherControllerTest {
 		teacherDTO.setUser(userDTO);
 
 		// Convert DTO to JSON
-		CreateTeacherDTO createTeacher = new CreateTeacherDTO(teacherDTO);
+		TeacherInput createTeacher = new TeacherInput(teacherDTO);
 		String createJson = mapper.writeValueAsString(createTeacher);
 
 		// Create the teacher

@@ -4,7 +4,7 @@ package com.pshs.attendance_system.entities;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.pshs.attendance_system.app.users.models.dto.UserCreationDTO;
+import com.pshs.attendance_system.app.users.models.dto.UserInput;
 import com.pshs.attendance_system.app.authentication.models.dto.ChangePasswordDTO;
 import com.pshs.attendance_system.enums.ExecutionStatus;
 import org.apache.logging.log4j.LogManager;
@@ -49,20 +49,20 @@ class UserControllerTest {
 	@Test
 	void testCreateUser() throws Exception {
 		logger.info("Testing create user");
-		UserCreationDTO userCreationDTO = new UserCreationDTO();
+		UserInput userInput = new UserInput();
 
-		userCreationDTO.setUsername("testCreate"); // test create is a non-existing user
-		userCreationDTO.setPassword("test");
-		userCreationDTO.setEmail("testCreate@gmail.com");
-		userCreationDTO.setRole("TEACHER");
-		userCreationDTO.setEnabled(true);
-		userCreationDTO.setExpired(false);
-		userCreationDTO.setCredentialsExpired(false);
-		userCreationDTO.setLocked(false);
+		userInput.setUsername("testCreate"); // test create is a non-existing user
+		userInput.setPassword("test");
+		userInput.setEmail("testCreate@gmail.com");
+		userInput.setRole("TEACHER");
+		userInput.setEnabled(true);
+		userInput.setExpired(false);
+		userInput.setCredentialsExpired(false);
+		userInput.setLocked(false);
 
 		logger.info(
 			mapper.writeValueAsString(
-				userCreationDTO
+				userInput
 			)
 		);
 
@@ -71,7 +71,7 @@ class UserControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(
 					mapper.writeValueAsString(
-						userCreationDTO
+						userInput
 					)
 				))
 			.andExpect(MockMvcResultMatchers.status().isOk())
@@ -80,12 +80,12 @@ class UserControllerTest {
 			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE));
 
 		// Test if user exists
-		userCreationDTO.setUsername("test"); // test is an existing user in the database that has a role GUEST.
+		userInput.setUsername("test"); // test is an existing user in the database that has a role GUEST.
 		mock.perform(MockMvcRequestBuilders.post("/api/v1/users/create")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(
 					mapper.writeValueAsString(
-						userCreationDTO
+						userInput
 					)
 				))
 			.andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -117,23 +117,23 @@ class UserControllerTest {
 	@Test
 	void testUpdateUser() throws Exception {
 		logger.info("Testing update user");
-		UserCreationDTO userCreationDTO = new UserCreationDTO();
+		UserInput userInput = new UserInput();
 
-		userCreationDTO.setUsername("testedUser");
-		userCreationDTO.setPassword("tested!");
-		userCreationDTO.setEmail("testUser@gmail.com");
-		userCreationDTO.setRole("TEACHER");
-		userCreationDTO.setEnabled(true);
-		userCreationDTO.setExpired(false);
-		userCreationDTO.setCredentialsExpired(false);
-		userCreationDTO.setLocked(false);
+		userInput.setUsername("testedUser");
+		userInput.setPassword("tested!");
+		userInput.setEmail("testUser@gmail.com");
+		userInput.setRole("TEACHER");
+		userInput.setEnabled(true);
+		userInput.setExpired(false);
+		userInput.setCredentialsExpired(false);
+		userInput.setLocked(false);
 
 		// Test if a user is updated
 		mock.perform(MockMvcRequestBuilders.put("/api/v1/users/1")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(
 					mapper.writeValueAsString(
-						userCreationDTO
+						userInput
 					)
 				))
 			.andExpect(MockMvcResultMatchers.status().isOk())
@@ -146,7 +146,7 @@ class UserControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(
 					mapper.writeValueAsString(
-						userCreationDTO
+						userInput
 					)
 				))
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
