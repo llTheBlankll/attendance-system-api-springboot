@@ -23,9 +23,10 @@ public class StrandDTO implements Serializable {
 	private String name;
 
 	public Strand toEntity() {
-		return new Strand()
-			.setId(id)
-			.setName(name);
-
+		new Strand();
+		return Strand.builder()
+			.id(id)
+			.name(name)
+			.build();
 	}
 }

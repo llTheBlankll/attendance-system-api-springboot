@@ -4,10 +4,7 @@ package com.pshs.attendance_system.app.strands.models.entities;
 
 import com.pshs.attendance_system.app.strands.models.dto.StrandDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "strands")
@@ -15,6 +12,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Strand {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "strand_id_gen")
