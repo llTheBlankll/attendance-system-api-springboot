@@ -40,13 +40,15 @@ public class SectionStudentsDTO extends SectionDTO implements Serializable {
 	}
 
 	public Section toEntity() {
-		return new Section()
-			.setId(getId())
-			.setTeacher(getTeacher().toEntity())
-			.setRoom(getRoom())
-			.setStrand(getStrand().toEntity())
-			.setGradeLevel(getGradeLevel().toEntity())
-			.setSectionName(getSectionName())
-			.setStudents(students.stream().map(StudentDTO::toEntity).collect(Collectors.toList()));
+		new Section();
+		return Section.builder()
+			.id(getId())
+			.teacher(getTeacher().toEntity())
+			.room(getRoom())
+			.strand(getStrand().toEntity())
+			.gradeLevel(getGradeLevel().toEntity())
+			.sectionName(getSectionName())
+			.students(students.stream().map(StudentDTO::toEntity).collect(Collectors.toList()))
+			.build();
 	}
 }

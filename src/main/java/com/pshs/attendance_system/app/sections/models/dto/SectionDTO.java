@@ -30,12 +30,14 @@ public class SectionDTO implements Serializable {
 	private String sectionName;
 
 	public Section toEntity() {
-		return new Section()
-			.setId(id)
-			.setTeacher(teacher.toEntity())
-			.setRoom(room)
-			.setStrand(strand.toEntity())
-			.setGradeLevel(gradeLevel.toEntity())
-			.setSectionName(sectionName);
+		return new Section(
+			id,
+			teacher.toEntity(),
+			room,
+			strand.toEntity(),
+			gradeLevel.toEntity(),
+			sectionName,
+			null
+		);
 	}
 }

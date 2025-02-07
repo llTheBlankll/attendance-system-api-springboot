@@ -2,17 +2,16 @@
 
 package com.pshs.attendance_system.app.attendances.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.pshs.attendance_system.enums.AttendanceStatus;
-import com.pshs.attendance_system.enums.ExecutionStatus;
 import com.pshs.attendance_system.app.attendances.models.dto.AttendanceResultDTO;
 import com.pshs.attendance_system.app.attendances.models.entities.Attendance;
-import com.pshs.attendance_system.app.rfid_credentials.models.entities.RFIDCredential;
-import com.pshs.attendance_system.app.students.models.entities.Student;
-import com.pshs.attendance_system.models.DateRange;
 import com.pshs.attendance_system.app.attendances.repositories.AttendanceRepository;
 import com.pshs.attendance_system.app.attendances.services.AttendanceService;
+import com.pshs.attendance_system.app.rfid_credentials.models.entities.RFIDCredential;
+import com.pshs.attendance_system.app.students.models.entities.Student;
 import com.pshs.attendance_system.app.students.services.StudentService;
+import com.pshs.attendance_system.enums.AttendanceStatus;
+import com.pshs.attendance_system.enums.ExecutionStatus;
+import com.pshs.attendance_system.models.DateRange;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -76,7 +75,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 			// Set attendance info.
 			attendance.setStudent(student);
-			attendance.setStatus(attendanceStatus);
+			attendance.setAttendanceStatus(attendanceStatus);
 			attendance.setTime(LocalTime.now());
 			attendance.setDate(LocalDate.now());
 
@@ -118,7 +117,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 			// Set attendance info.
 			Attendance attendance = new Attendance();
 			attendance.setStudent(student);
-			attendance.setStatus(attendanceStatus);
+			attendance.setAttendanceStatus(attendanceStatus);
 			attendance.setTime(LocalTime.now());
 			attendance.setDate(LocalDate.now());
 
@@ -155,7 +154,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 	@Override
 	public AttendanceResultDTO attendanceIn(RFIDCredential rfidCredential) {
-		AttendanceResultDTO attendanceResultDTO = new AttendanceResultDTO();
+		AttendanceResultDTO attendanceResult = new AttendanceResultDTO();
 		Attendance attendance = this.createAttendance(rfidCredential.getLrn().getId());
 		if (rfidCredential.getLrn() != null) {
 			if (attendance == null) { // attendance being null has many meanings,
@@ -163,52 +162,54 @@ public class AttendanceServiceImpl implements AttendanceService {
 				attendance = getAttendanceByStudentDate(rfidCredential.getLrn().getId(), LocalDate.now());
 				if (attendance != null) {
 					// If the existing attendance is not null, it means that the student is already recorded.
-					attendanceResultDTO.setDate(attendance.getDate())
-						.setTime(attendance.getTime())
-						.setTimeOut(attendance.getTimeOut())
-						.setStatus(attendance.getStatus())
-						.setStudent(attendance.getStudent().toDTO())
-						.setHashedLrn(rfidCredential.getHashedLrn())
-						.setMessage("Student already recorded.");
-
+					attendanceResult = AttendanceResultDTO.builder()
+						.date(attendance.getDate())
+						.time(attendance.getTime())
+						.timeOut(attendance.getTimeOut())
+						.attendanceStatus(attendance.getAttendanceStatus())
+						.student(attendance.getStudent().toDTO())
+						.hashedLrn(rfidCredential.getHashedLrn())
+						.message("Student already recorded.")
+						.build();
 				} else {
-					attendanceResultDTO.setMessage("Student not found.");
+					attendanceResult.setMessage("Student not found.");
 				}
-				return attendanceResultDTO;
+				return attendanceResult;
 			}
 
 			// Successful attendance dto is used for sending a message to the topic exchange in topic attendance-notifications
-			if (attendance.getStatus() == AttendanceStatus.EXISTS) {
-				attendanceResultDTO.setDate(attendance.getDate())
-					.setTime(attendance.getTime())
-					.setTimeOut(attendance.getTimeOut())
-					.setStatus(attendance.getStatus())
-					.setHashedLrn(rfidCredential.getHashedLrn())
-					.setStudent(attendance.getStudent().toDTO())
-					.setMessage("Student already recorded.");
+			if (attendance.getAttendanceStatus() == AttendanceStatus.EXISTS) {
+				// If the existing attendance is not null, it means that the student is already recorded.
+				attendanceResult = AttendanceResultDTO.builder()
+					.date(attendance.getDate())
+					.time(attendance.getTime())
+					.timeOut(attendance.getTimeOut())
+					.attendanceStatus(attendance.getAttendanceStatus())
+					.student(attendance.getStudent().toDTO())
+					.hashedLrn(rfidCredential.getHashedLrn())
+					.message("Student already recorded.")
+					.build();
 				logger.debug("Student already recorded.");
-				logger.debug("AttendanceStatus: {}", attendance.getStatus());
-				logger.debug("Time Out: {}", attendance.getTimeOut());
 			} else {
-				attendanceResultDTO.setDate(attendance.getDate())
-					.setTime(attendance.getTime())
-					.setTimeOut(attendance.getTimeOut())
-					.setStatus(attendance.getStatus())
-					.setStudent(attendance.getStudent().toDTO())
-					.setHashedLrn(rfidCredential.getHashedLrn())
-					.setMessage("Student successfully recorded.");
+				attendanceResult = AttendanceResultDTO.builder()
+					.time(attendance.getTime())
+					.timeOut(attendance.getTimeOut())
+					.attendanceStatus(attendance.getAttendanceStatus())
+					.student(attendance.getStudent().toDTO())
+					.hashedLrn(rfidCredential.getHashedLrn())
+					.message("Student successfully recorded.")
+					.build();
 			}
 		} else {
-			logger.debug("Student not found.");
-			attendanceResultDTO.setMessage("Student not found.");
+			attendanceResult.setMessage("Student not found.");
 		}
 
-		return attendanceResultDTO;
+		return attendanceResult;
 	}
 
 	@Override
-	public AttendanceResultDTO attendanceOut(RFIDCredential rfidCredential) throws JsonProcessingException {
-		AttendanceResultDTO attendanceResultDTO = new AttendanceResultDTO();
+	public AttendanceResultDTO attendanceOut(RFIDCredential rfidCredential) {
+		AttendanceResultDTO attendanceResult = new AttendanceResultDTO();
 		if (rfidCredential != null && rfidCredential.getLrn() != null) {
 			// Get the attendance record of the student by the student id and the current date
 			Attendance attendance = this.getAttendanceByStudentDate(rfidCredential.getLrn().getId(), LocalDate.now());
@@ -221,42 +222,42 @@ public class AttendanceServiceImpl implements AttendanceService {
 					ExecutionStatus status = this.updateAttendanceTimeOut(attendance.getId(), timeSignOut);
 					if (status == ExecutionStatus.FAILED) {
 						logger.debug("Failed to update the attendance record.");
-						attendanceResultDTO.setMessage("Failed to update the attendance record.");
-						return attendanceResultDTO;
+						attendanceResult.setMessage("Failed to update the attendance record.");
+						return attendanceResult;
 					}
 
 					// Successful attendance dto is used for sending a message to the topic exchange in topic attendance-notifications
-					attendanceResultDTO.setDate(attendance.getDate())
-						.setTime(attendance.getTime())
-						.setTimeOut(timeSignOut)
-						.setStatus(AttendanceStatus.SIGNED_OUT) // * AttendanceStatus.OUT is used for marking the student as signed out
-						.setStudent(attendance.getStudent().toDTO())
-						.setHashedLrn(rfidCredential.getHashedLrn())
-						.setMessage("Student successfully signed out.");
-
+					attendanceResult = AttendanceResultDTO.builder()
+						.time(attendance.getTime())
+						.timeOut(timeSignOut)
+						.attendanceStatus(AttendanceStatus.SIGNED_OUT) // * AttendanceStatus.OUT is used for marking the student as signed out
+						.student(attendance.getStudent().toDTO())
+						.hashedLrn(rfidCredential.getHashedLrn())
+						.message("Student successfully signed out.")
+						.build();
 					logger.debug("Student successfully signed out.");
 				} else {
 					// ! If a student has already signed out, send a message to the topic exchange in topic attendance-logs
 					logger.debug("Student already signed out.");
-
-					attendanceResultDTO.setDate(attendance.getDate())
-						.setTime(attendance.getTime())
-						.setTimeOut(attendance.getTimeOut())
-						.setStatus(AttendanceStatus.SIGNED_OUT) // * AttendanceStatus.OUT is used for marking the student as signed out
-						.setStudent(attendance.getStudent().toDTO())
-						.setHashedLrn(rfidCredential.getHashedLrn())
-						.setMessage("Student already signed out.");
+					attendanceResult = AttendanceResultDTO.builder()
+						.time(attendance.getTime())
+						.timeOut(attendance.getTimeOut())
+						.attendanceStatus(AttendanceStatus.SIGNED_OUT) // * AttendanceStatus.OUT is used for marking the student as signed out
+						.student(attendance.getStudent().toDTO())
+						.hashedLrn(rfidCredential.getHashedLrn())
+						.message("Student already signed out.")
+						.build();
 				}
 			} else {
 				logger.debug("Attendance not found.");
-				attendanceResultDTO.setMessage("Attendance not found.");
+				attendanceResult.setMessage("Attendance not found.");
 			}
 		} else {
 			logger.debug("Student not found.");
-			attendanceResultDTO.setMessage("Student not found.");
+			attendanceResult.setMessage("Student not found.");
 		}
 
-		return attendanceResultDTO;
+		return attendanceResult;
 	}
 
 	private boolean isTodayMonday() {
@@ -618,7 +619,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 	}
 
 	private boolean isAttendanceNotValid(Attendance attendance) {
-		return attendance.getStudent() == null && attendance.getStatus() == null && attendance.getTime() == null && attendance.getTimeOut() == null;
+		return attendance.getStudent() == null && attendance.getAttendanceStatus() == null && attendance.getTime() == null && attendance.getTimeOut() == null;
 	}
 
 	private ExecutionStatus attendanceValidationFailedLog(Attendance attendance) {

@@ -4,10 +4,7 @@ package com.pshs.attendance_system.app.attendances.models.dto;
 
 import com.pshs.attendance_system.app.students.models.dto.StudentDTO;
 import com.pshs.attendance_system.enums.AttendanceStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -17,6 +14,7 @@ import java.time.LocalTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class AttendanceResultDTO implements Serializable {
 
 	private StudentDTO student;

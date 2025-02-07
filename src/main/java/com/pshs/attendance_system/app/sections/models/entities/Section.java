@@ -11,10 +11,7 @@ import com.pshs.attendance_system.app.strands.models.entities.Strand;
 import com.pshs.attendance_system.app.students.models.entities.Student;
 import com.pshs.attendance_system.app.teachers.models.entities.Teacher;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -28,6 +25,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Section {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sections_id_gen")

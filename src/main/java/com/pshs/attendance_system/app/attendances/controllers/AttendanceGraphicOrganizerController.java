@@ -219,7 +219,7 @@ public class AttendanceGraphicOrganizerController {
 			}
 
 			lineChartDataDTOs.add(new LineChartDataDTO(
-				attendance.getStatus().name(),
+				attendance.getAttendanceStatus().name(),
 				attendance.getTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
 			);
 			labels.add(attendance.getTime().toString());
@@ -233,6 +233,7 @@ public class AttendanceGraphicOrganizerController {
 				continue;
 			}
 
+			assert attendance.getTimeOut() != null;
 			lineChartDataDTOs.add(new LineChartDataDTO(
 				AttendanceStatus.SIGNED_OUT.name(),
 				attendance.getTimeOut().format(DateTimeFormatter.ofPattern("HH:mm:ss")))

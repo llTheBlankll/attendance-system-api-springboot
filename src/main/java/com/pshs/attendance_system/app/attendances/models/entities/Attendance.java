@@ -50,6 +50,7 @@ public class Attendance {
 	@ColumnDefault("LOCALTIME")
 	@Column(name = "time_out")
 	private LocalTime timeOut;
+
 	public AttendanceDTO toDTO() {
 		return new AttendanceDTO(id, student.toDTO(), attendanceStatus, date, time, timeOut);
 	}
