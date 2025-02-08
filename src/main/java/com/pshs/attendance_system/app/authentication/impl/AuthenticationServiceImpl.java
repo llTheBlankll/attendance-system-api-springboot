@@ -64,7 +64,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		}
 
 		// * Check if the logged user is the same as the user that is trying to change the password.
-		if (!Objects.equals(loggedUser.getId(), user.getId()) &&  !Objects.equals(loggedUser.getUsername(), user.getUsername())) {
+		if (!Objects.equals(loggedUser.getId(), user.getId()) && !Objects.equals(loggedUser.getUsername(), user.getUsername())) {
 			throw new InvalidUserException("The password of the user cannot be change because the user is not logged in.");
 		}
 
